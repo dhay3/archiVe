@@ -1,10 +1,14 @@
 # Github note repo
 
-> It's a note repo of cyberpelican
+[aliyun](docs/aliyun)
+
+[Apache](docs/Apache)
 
 [Blog](docs/Blog)
 
 [Bonus](docs/Bonus)
+
+[Chrome](docs/Chrome)
 
 [CTF](docs/CTF)
 
@@ -22,6 +26,8 @@
 
 [Go](docs/Go)
 
+[GPG](docs/GPG)
+
 [Gradle](docs/Gradle)
 
 [Hardware](docs/Hardware)
@@ -37,6 +43,8 @@
 [Kali](docs/Kali)
 
 [koolshare](docs/koolshare)
+
+[Kurbernetes](docs/Kurbernetes)
 
 [Linux](docs/Linux/)
 
@@ -65,6 +73,8 @@
 [SpringCloud](docs/SpringCloud)
 
 [SpringSecurity](docs/SpringSecurity)
+
+[SSH](docs/SSH)
 
 [V2ray](docs/V2ray)
 
