@@ -1,0 +1,23 @@
+# kali 安装 Burpsuite Pro v2020.8 破解
+
+参考:
+
+https://www.52pojie.cn/thread-1194411-1-1.html
+
+如有侵权告删
+
+将下载好的jar包放入kali中
+
+<img src="..\..\imgs\_Kali\burpsuite\Snipaste_2020-09-10_20-54-39.png"/>
+
+这里的`keygen.sh`和`runburp.sh`是两个运行脚本, 分别用于patch和burpsuite pro
+
+```shell
+#keygen.sh
+java -jar burp-loader-keygen-2020_2.jar
+    
+#runburp.sh
+java -Dfile.encoding=utf-8 -javaagent:BurpSuiteLoader.jar -noverify -jar burpsuite_pro_v2020.8.jar
+```
+
+这里先运行`sh keygen.sh`, 获取到license。选择manual将license复制到里面获取request，然后将request复制到response。
