@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/boot-order-service-consumer/boot-order-service-consumer.iml" filepath="$PROJECT_DIR$/boot-order-service-consumer/boot-order-service-consumer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/boot-user-service-provider/boot-user-service-provider.iml" filepath="$PROJECT_DIR$/boot-user-service-provider/boot-user-service-provider.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gmall-interface/gmall-interface.iml" filepath="$PROJECT_DIR$/gmall-interface/gmall-interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/order-service-consumer/order-service-consumer.iml" filepath="$PROJECT_DIR$/order-service-consumer/order-service-consumer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/user-service-provider/user-service-provider.iml" filepath="$PROJECT_DIR$/user-service-provider/user-service-provider.iml" />
+    </modules>
+  </component>
+</project>
