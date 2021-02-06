@@ -1,0 +1,1636 @@
+2020-07-28 00:11:58,852 INFO DEFAULT_GROUP@@service-vod is changed, add it to push queue.
+
+2020-07-28 00:14:31,540 INFO DEFAULT_GROUP@@service-vod is changed, add it to push queue.
+
+2020-07-28 00:14:31,540 INFO serviceName: DEFAULT_GROUP@@service-vod changed, schedule push for: 192.168.56.1:49824, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,49824,46256633103700
+
+2020-07-28 00:14:31,540 INFO send udp packet: 192.168.56.1,49824,46256633103700
+
+2020-07-28 00:14:31,541 INFO serviceName: DEFAULT_GROUP@@service-vod changed, schedule push for: 192.168.56.1:64801, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,64801,46256633103700
+
+2020-07-28 00:14:31,541 INFO send udp packet: 192.168.56.1,64801,46256633103700
+
+2020-07-28 00:14:31,541 INFO serviceName: DEFAULT_GROUP@@service-vod changed, schedule push for: 192.168.56.1:56693, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,56693,46256633103700
+
+2020-07-28 00:14:31,541 INFO send udp packet: 192.168.56.1,56693,46256633103700
+
+2020-07-28 00:14:31,541 INFO serviceName: DEFAULT_GROUP@@service-vod changed, schedule push for: 192.168.56.1:64985, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,64985,46256633103700
+
+2020-07-28 00:14:31,541 INFO send udp packet: 192.168.56.1,64985,46256633103700
+
+2020-07-28 00:14:31,551 INFO received ack: {"type": "push-ack", "lastRefTime":"46256633103700", "data":""} from: 192.168.56.1:64801, cost: 10 ms, unacked: 3, total push: 4
+
+2020-07-28 00:14:31,552 INFO received ack: {"type": "push-ack", "lastRefTime":"46256633103700", "data":""} from: 192.168.56.1:56693, cost: 11 ms, unacked: 2, total push: 4
+
+2020-07-28 00:14:31,564 INFO received ack: {"type": "push-ack", "lastRefTime":"46256633103700", "data":""} from: 192.168.56.1:64985, cost: 23 ms, unacked: 1, total push: 4
+
+2020-07-28 00:14:31,584 INFO received ack: {"type": "push-ack", "lastRefTime":"46256633103700", "data":""} from: 192.168.56.1:49824, cost: 44 ms, unacked: 0, total push: 4
+
+2020-07-28 00:14:36,711 INFO DEFAULT_GROUP@@service-vod is changed, add it to push queue.
+
+2020-07-28 00:14:36,711 INFO serviceName: DEFAULT_GROUP@@service-vod changed, schedule push for: 192.168.56.1:49824, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,49824,46261804262200
+
+2020-07-28 00:14:36,711 INFO send udp packet: 192.168.56.1,49824,46261804262200
+
+2020-07-28 00:14:36,711 INFO serviceName: DEFAULT_GROUP@@service-vod changed, schedule push for: 192.168.56.1:64801, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,64801,46261804262200
+
+2020-07-28 00:14:36,711 INFO send udp packet: 192.168.56.1,64801,46261804262200
+
+2020-07-28 00:14:36,711 INFO serviceName: DEFAULT_GROUP@@service-vod changed, schedule push for: 192.168.56.1:56693, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,56693,46261804262200
+
+2020-07-28 00:14:36,711 INFO send udp packet: 192.168.56.1,56693,46261804262200
+
+2020-07-28 00:14:36,711 INFO serviceName: DEFAULT_GROUP@@service-vod changed, schedule push for: 192.168.56.1:59561, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59561,46261804262200
+
+2020-07-28 00:14:36,711 INFO send udp packet: 192.168.56.1,59561,46261804262200
+
+2020-07-28 00:14:36,712 INFO serviceName: DEFAULT_GROUP@@service-vod changed, schedule push for: 192.168.56.1:64985, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,64985,46261804262200
+
+2020-07-28 00:14:36,712 INFO send udp packet: 192.168.56.1,64985,46261804262200
+
+2020-07-28 00:14:36,718 INFO received ack: {"type": "push-ack", "lastRefTime":"46261804262200", "data":""} from: 192.168.56.1:64985, cost: 6 ms, unacked: 4, total push: 9
+
+2020-07-28 00:14:36,718 INFO received ack: {"type": "push-ack", "lastRefTime":"46261804262200", "data":""} from: 192.168.56.1:59561, cost: 7 ms, unacked: 3, total push: 9
+
+2020-07-28 00:14:36,728 INFO received ack: {"type": "push-ack", "lastRefTime":"46261804262200", "data":""} from: 192.168.56.1:49824, cost: 17 ms, unacked: 2, total push: 9
+
+2020-07-28 00:14:36,728 INFO received ack: {"type": "push-ack", "lastRefTime":"46261804262200", "data":""} from: 192.168.56.1:64801, cost: 17 ms, unacked: 1, total push: 9
+
+2020-07-28 00:14:36,729 INFO received ack: {"type": "push-ack", "lastRefTime":"46261804262200", "data":""} from: 192.168.56.1:56693, cost: 18 ms, unacked: 0, total push: 9
+
+2020-07-28 00:16:35,353 INFO DEFAULT_GROUP@@service-vod is changed, add it to push queue.
+
+2020-07-28 00:16:35,353 INFO serviceName: DEFAULT_GROUP@@service-vod changed, schedule push for: 192.168.56.1:49824, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,49824,46380446088100
+
+2020-07-28 00:16:35,353 INFO send udp packet: 192.168.56.1,49824,46380446088100
+
+2020-07-28 00:16:35,353 INFO serviceName: DEFAULT_GROUP@@service-vod changed, schedule push for: 192.168.56.1:64801, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,64801,46380446088100
+
+2020-07-28 00:16:35,353 INFO send udp packet: 192.168.56.1,64801,46380446088100
+
+2020-07-28 00:16:35,353 INFO serviceName: DEFAULT_GROUP@@service-vod changed, schedule push for: 192.168.56.1:55643, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,55643,46380446088100
+
+2020-07-28 00:16:35,353 INFO send udp packet: 192.168.56.1,55643,46380446088100
+
+2020-07-28 00:16:35,354 INFO serviceName: DEFAULT_GROUP@@service-vod changed, schedule push for: 192.168.56.1:64985, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,64985,46380446088100
+
+2020-07-28 00:16:35,354 INFO send udp packet: 192.168.56.1,64985,46380446088100
+
+2020-07-28 00:16:35,354 INFO received ack: {"type": "push-ack", "lastRefTime":"46380446088100", "data":""} from: 192.168.56.1:64801, cost: 1 ms, unacked: 3, total push: 13
+
+2020-07-28 00:16:35,354 INFO received ack: {"type": "push-ack", "lastRefTime":"46380446088100", "data":""} from: 192.168.56.1:49824, cost: 1 ms, unacked: 2, total push: 13
+
+2020-07-28 00:16:35,355 INFO received ack: {"type": "push-ack", "lastRefTime":"46380446088100", "data":""} from: 192.168.56.1:64985, cost: 1 ms, unacked: 1, total push: 13
+
+2020-07-28 00:16:35,358 INFO received ack: {"type": "push-ack", "lastRefTime":"46380446088100", "data":""} from: 192.168.56.1:55643, cost: 5 ms, unacked: 0, total push: 13
+
+2020-07-28 00:43:08,753 INFO DEFAULT_GROUP@@service-vod is changed, add it to push queue.
+
+2020-07-28 00:43:08,753 INFO serviceName: DEFAULT_GROUP@@service-vod changed, schedule push for: 192.168.56.1:64340, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,64340,47973845899700
+
+2020-07-28 00:43:08,753 INFO send udp packet: 192.168.56.1,64340,47973845899700
+
+2020-07-28 00:43:08,753 INFO serviceName: DEFAULT_GROUP@@service-vod changed, schedule push for: 192.168.56.1:49824, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,49824,47973845899700
+
+2020-07-28 00:43:08,753 INFO send udp packet: 192.168.56.1,49824,47973845899700
+
+2020-07-28 00:43:08,754 INFO serviceName: DEFAULT_GROUP@@service-vod changed, schedule push for: 192.168.56.1:64801, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,64801,47973845899700
+
+2020-07-28 00:43:08,754 INFO send udp packet: 192.168.56.1,64801,47973845899700
+
+2020-07-28 00:43:08,754 INFO serviceName: DEFAULT_GROUP@@service-vod changed, schedule push for: 192.168.56.1:64985, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,64985,47973845899700
+
+2020-07-28 00:43:08,754 INFO send udp packet: 192.168.56.1,64985,47973845899700
+
+2020-07-28 00:43:08,755 INFO received ack: {"type": "push-ack", "lastRefTime":"47973845899700", "data":""} from: 192.168.56.1:64801, cost: 1 ms, unacked: 3, total push: 17
+
+2020-07-28 00:43:08,755 INFO received ack: {"type": "push-ack", "lastRefTime":"47973845899700", "data":""} from: 192.168.56.1:49824, cost: 2 ms, unacked: 2, total push: 17
+
+2020-07-28 00:43:08,755 INFO received ack: {"type": "push-ack", "lastRefTime":"47973845899700", "data":""} from: 192.168.56.1:64985, cost: 1 ms, unacked: 1, total push: 17
+
+2020-07-28 00:43:08,757 INFO received ack: {"type": "push-ack", "lastRefTime":"47973845899700", "data":""} from: 192.168.56.1:64340, cost: 4 ms, unacked: 0, total push: 17
+
+2020-07-28 00:52:29,315 INFO DEFAULT_GROUP@@service-vod is changed, add it to push queue.
+
+2020-07-28 00:52:32,953 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 00:52:44,323 INFO DEFAULT_GROUP@@service-vod is changed, add it to push queue.
+
+2020-07-28 00:52:47,957 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 17:43:13,289 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 17:43:13,342 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 17:43:13,351 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:50938, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,50938,23468436231400
+
+2020-07-28 17:43:13,351 INFO send udp packet: 192.168.56.1,50938,23468436231400
+
+2020-07-28 17:43:13,358 INFO received ack: {"type": "push-ack", "lastRefTime":"23468436231400", "data":""} from: 192.168.56.1:50938, cost: 7 ms, unacked: 0, total push: 1
+
+2020-07-28 17:44:23,232 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 17:44:23,232 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:58957, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,58957,23538325672200
+
+2020-07-28 17:44:23,232 INFO send udp packet: 192.168.56.1,58957,23538325672200
+
+2020-07-28 17:44:23,237 INFO received ack: {"type": "push-ack", "lastRefTime":"23538325672200", "data":""} from: 192.168.56.1:58957, cost: 5 ms, unacked: 0, total push: 2
+
+2020-07-28 17:44:24,573 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 17:44:24,573 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:58957, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,58957,23539666879400
+
+2020-07-28 17:44:24,573 INFO send udp packet: 192.168.56.1,58957,23539666879400
+
+2020-07-28 17:44:24,574 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59005, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59005,23539666879400
+
+2020-07-28 17:44:24,574 INFO send udp packet: 192.168.56.1,59005,23539666879400
+
+2020-07-28 17:44:24,577 INFO received ack: {"type": "push-ack", "lastRefTime":"23539666879400", "data":""} from: 192.168.56.1:58957, cost: 4 ms, unacked: 1, total push: 4
+
+2020-07-28 17:44:24,578 INFO received ack: {"type": "push-ack", "lastRefTime":"23539666879400", "data":""} from: 192.168.56.1:59005, cost: 4 ms, unacked: 0, total push: 4
+
+2020-07-28 17:44:27,707 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 17:44:27,707 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:58957, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,58957,23542801198700
+
+2020-07-28 17:44:27,707 INFO send udp packet: 192.168.56.1,58957,23542801198700
+
+2020-07-28 17:44:27,708 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59005, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59005,23542801198700
+
+2020-07-28 17:44:27,708 INFO send udp packet: 192.168.56.1,59005,23542801198700
+
+2020-07-28 17:44:27,709 INFO received ack: {"type": "push-ack", "lastRefTime":"23542801198700", "data":""} from: 192.168.56.1:58957, cost: 2 ms, unacked: 1, total push: 6
+
+2020-07-28 17:44:27,710 INFO received ack: {"type": "push-ack", "lastRefTime":"23542801198700", "data":""} from: 192.168.56.1:59005, cost: 2 ms, unacked: 0, total push: 6
+
+2020-07-28 17:47:43,260 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 17:47:43,260 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:59005, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59005,23738353953200
+
+2020-07-28 17:47:43,260 INFO send udp packet: 192.168.56.1,59005,23738353953200
+
+2020-07-28 17:47:43,263 INFO received ack: {"type": "push-ack", "lastRefTime":"23738353953200", "data":""} from: 192.168.56.1:59005, cost: 3 ms, unacked: 0, total push: 7
+
+2020-07-28 17:47:46,663 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 17:47:46,664 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:50281, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,50281,23741756972000
+
+2020-07-28 17:47:46,664 INFO send udp packet: 192.168.56.1,50281,23741756972000
+
+2020-07-28 17:47:46,665 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:59005, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59005,23741756972000
+
+2020-07-28 17:47:46,665 INFO send udp packet: 192.168.56.1,59005,23741756972000
+
+2020-07-28 17:47:46,667 INFO received ack: {"type": "push-ack", "lastRefTime":"23741756972000", "data":""} from: 192.168.56.1:59005, cost: 2 ms, unacked: 1, total push: 9
+
+2020-07-28 17:47:46,670 INFO received ack: {"type": "push-ack", "lastRefTime":"23741756972000", "data":""} from: 192.168.56.1:50281, cost: 6 ms, unacked: 0, total push: 9
+
+2020-07-28 17:47:49,854 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 17:47:49,854 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:50281, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,50281,23744948288400
+
+2020-07-28 17:47:49,854 INFO send udp packet: 192.168.56.1,50281,23744948288400
+
+2020-07-28 17:47:49,854 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:59005, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59005,23744948288400
+
+2020-07-28 17:47:49,854 INFO send udp packet: 192.168.56.1,59005,23744948288400
+
+2020-07-28 17:47:49,856 INFO received ack: {"type": "push-ack", "lastRefTime":"23744948288400", "data":""} from: 192.168.56.1:59005, cost: 2 ms, unacked: 1, total push: 11
+
+2020-07-28 17:47:49,860 INFO received ack: {"type": "push-ack", "lastRefTime":"23744948288400", "data":""} from: 192.168.56.1:50281, cost: 6 ms, unacked: 0, total push: 11
+
+2020-07-28 17:49:08,624 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 17:49:08,624 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59005, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59005,23823717384100
+
+2020-07-28 17:49:08,624 INFO send udp packet: 192.168.56.1,59005,23823717384100
+
+2020-07-28 17:49:08,678 INFO received ack: {"type": "push-ack", "lastRefTime":"23823717384100", "data":""} from: 192.168.56.1:59005, cost: 54 ms, unacked: 0, total push: 12
+
+2020-07-28 17:49:14,780 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 17:49:14,781 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:60927, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60927,23829874139500
+
+2020-07-28 17:49:14,781 INFO send udp packet: 192.168.56.1,60927,23829874139500
+
+2020-07-28 17:49:14,786 INFO received ack: {"type": "push-ack", "lastRefTime":"23829874139500", "data":""} from: 192.168.56.1:60927, cost: 5 ms, unacked: 0, total push: 13
+
+2020-07-28 17:49:41,341 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 17:49:41,341 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60927, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60927,23856434475800
+
+2020-07-28 17:49:41,341 INFO send udp packet: 192.168.56.1,60927,23856434475800
+
+2020-07-28 17:49:41,341 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:61038, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,61038,23856434475800
+
+2020-07-28 17:49:41,341 INFO send udp packet: 192.168.56.1,61038,23856434475800
+
+2020-07-28 17:49:41,346 INFO received ack: {"type": "push-ack", "lastRefTime":"23856434475800", "data":""} from: 192.168.56.1:61038, cost: 5 ms, unacked: 1, total push: 15
+
+2020-07-28 17:49:41,350 INFO received ack: {"type": "push-ack", "lastRefTime":"23856434475800", "data":""} from: 192.168.56.1:60927, cost: 9 ms, unacked: 0, total push: 15
+
+2020-07-28 17:52:41,013 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 17:52:41,013 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60927, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60927,24036106967900
+
+2020-07-28 17:52:41,013 INFO send udp packet: 192.168.56.1,60927,24036106967900
+
+2020-07-28 17:52:41,013 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:61038, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,61038,24036106967900
+
+2020-07-28 17:52:41,014 INFO send udp packet: 192.168.56.1,61038,24036106967900
+
+2020-07-28 17:52:41,021 INFO received ack: {"type": "push-ack", "lastRefTime":"24036106967900", "data":""} from: 192.168.56.1:60927, cost: 8 ms, unacked: 1, total push: 17
+
+2020-07-28 17:52:41,021 INFO received ack: {"type": "push-ack", "lastRefTime":"24036106967900", "data":""} from: 192.168.56.1:61038, cost: 7 ms, unacked: 0, total push: 17
+
+2020-07-28 17:52:47,665 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 17:52:47,665 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60927, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60927,24042758365700
+
+2020-07-28 17:52:47,665 INFO send udp packet: 192.168.56.1,60927,24042758365700
+
+2020-07-28 17:52:47,665 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60511, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60511,24042758365700
+
+2020-07-28 17:52:47,665 INFO send udp packet: 192.168.56.1,60511,24042758365700
+
+2020-07-28 17:52:47,665 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:61038, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,61038,24042758365700
+
+2020-07-28 17:52:47,665 INFO send udp packet: 192.168.56.1,61038,24042758365700
+
+2020-07-28 17:52:47,666 INFO received ack: {"type": "push-ack", "lastRefTime":"24042758365700", "data":""} from: 192.168.56.1:60511, cost: 1 ms, unacked: 2, total push: 20
+
+2020-07-28 17:52:47,670 INFO received ack: {"type": "push-ack", "lastRefTime":"24042758365700", "data":""} from: 192.168.56.1:60927, cost: 5 ms, unacked: 1, total push: 20
+
+2020-07-28 17:52:47,670 INFO received ack: {"type": "push-ack", "lastRefTime":"24042758365700", "data":""} from: 192.168.56.1:61038, cost: 5 ms, unacked: 0, total push: 20
+
+2020-07-28 17:54:53,344 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 17:54:53,344 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60927, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60927,24168437660900
+
+2020-07-28 17:54:53,344 INFO send udp packet: 192.168.56.1,60927,24168437660900
+
+2020-07-28 17:54:53,345 INFO received ack: {"type": "push-ack", "lastRefTime":"24168437660900", "data":""} from: 192.168.56.1:60927, cost: 1 ms, unacked: 0, total push: 21
+
+2020-07-28 17:54:57,479 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 17:54:57,479 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60927, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60927,24172572605900
+
+2020-07-28 17:54:57,479 INFO send udp packet: 192.168.56.1,60927,24172572605900
+
+2020-07-28 17:54:57,479 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:54348, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,54348,24172572605900
+
+2020-07-28 17:54:57,479 INFO send udp packet: 192.168.56.1,54348,24172572605900
+
+2020-07-28 17:54:57,480 INFO received ack: {"type": "push-ack", "lastRefTime":"24172572605900", "data":""} from: 192.168.56.1:60927, cost: 1 ms, unacked: 1, total push: 23
+
+2020-07-28 17:54:57,484 INFO received ack: {"type": "push-ack", "lastRefTime":"24172572605900", "data":""} from: 192.168.56.1:54348, cost: 5 ms, unacked: 0, total push: 23
+
+2020-07-28 17:55:00,695 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 17:55:00,695 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60927, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60927,24175789338000
+
+2020-07-28 17:55:00,695 INFO send udp packet: 192.168.56.1,60927,24175789338000
+
+2020-07-28 17:55:00,695 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:54348, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,54348,24175789338000
+
+2020-07-28 17:55:00,695 INFO send udp packet: 192.168.56.1,54348,24175789338000
+
+2020-07-28 17:55:00,696 INFO received ack: {"type": "push-ack", "lastRefTime":"24175789338000", "data":""} from: 192.168.56.1:60927, cost: 1 ms, unacked: 1, total push: 25
+
+2020-07-28 17:55:00,697 INFO received ack: {"type": "push-ack", "lastRefTime":"24175789338000", "data":""} from: 192.168.56.1:54348, cost: 2 ms, unacked: 0, total push: 25
+
+2020-07-28 18:00:48,198 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:00:48,198 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60927, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60927,24523292236300
+
+2020-07-28 18:00:48,198 INFO send udp packet: 192.168.56.1,60927,24523292236300
+
+2020-07-28 18:00:48,199 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:54947, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,54947,24523292236300
+
+2020-07-28 18:00:48,199 INFO send udp packet: 192.168.56.1,54947,24523292236300
+
+2020-07-28 18:00:48,200 INFO received ack: {"type": "push-ack", "lastRefTime":"24523292236300", "data":""} from: 192.168.56.1:60927, cost: 2 ms, unacked: 1, total push: 27
+
+2020-07-28 18:00:48,203 INFO received ack: {"type": "push-ack", "lastRefTime":"24523292236300", "data":""} from: 192.168.56.1:54947, cost: 4 ms, unacked: 0, total push: 27
+
+2020-07-28 18:02:31,697 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:02:31,697 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60927, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60927,24626790681400
+
+2020-07-28 18:02:31,697 INFO send udp packet: 192.168.56.1,60927,24626790681400
+
+2020-07-28 18:02:31,697 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:55378, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,55378,24626790681400
+
+2020-07-28 18:02:31,697 INFO send udp packet: 192.168.56.1,55378,24626790681400
+
+2020-07-28 18:02:31,698 INFO received ack: {"type": "push-ack", "lastRefTime":"24626790681400", "data":""} from: 192.168.56.1:60927, cost: 1 ms, unacked: 1, total push: 29
+
+2020-07-28 18:02:31,701 INFO received ack: {"type": "push-ack", "lastRefTime":"24626790681400", "data":""} from: 192.168.56.1:55378, cost: 4 ms, unacked: 0, total push: 29
+
+2020-07-28 18:04:43,442 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 18:04:48,444 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:04:51,864 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:04:51,864 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63947, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63947,24766958009700
+
+2020-07-28 18:04:51,864 INFO send udp packet: 192.168.56.1,63947,24766958009700
+
+2020-07-28 18:04:51,869 INFO received ack: {"type": "push-ack", "lastRefTime":"24766958009700", "data":""} from: 192.168.56.1:63947, cost: 5 ms, unacked: 0, total push: 30
+
+2020-07-28 18:04:54,472 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 18:04:54,472 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:63947, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63947,24769566107500
+
+2020-07-28 18:04:54,472 INFO send udp packet: 192.168.56.1,63947,24769566107500
+
+2020-07-28 18:04:54,472 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:63960, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63960,24769566107500
+
+2020-07-28 18:04:54,472 INFO send udp packet: 192.168.56.1,63960,24769566107500
+
+2020-07-28 18:04:54,474 INFO received ack: {"type": "push-ack", "lastRefTime":"24769566107500", "data":""} from: 192.168.56.1:63947, cost: 2 ms, unacked: 1, total push: 32
+
+2020-07-28 18:04:54,478 INFO received ack: {"type": "push-ack", "lastRefTime":"24769566107500", "data":""} from: 192.168.56.1:63960, cost: 6 ms, unacked: 0, total push: 32
+
+2020-07-28 18:04:54,729 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:04:54,730 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63947, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63947,24769823057400
+
+2020-07-28 18:04:54,730 INFO send udp packet: 192.168.56.1,63947,24769823057400
+
+2020-07-28 18:04:54,731 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63960, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63960,24769823057400
+
+2020-07-28 18:04:54,731 INFO send udp packet: 192.168.56.1,63960,24769823057400
+
+2020-07-28 18:04:54,731 INFO received ack: {"type": "push-ack", "lastRefTime":"24769823057400", "data":""} from: 192.168.56.1:63947, cost: 1 ms, unacked: 1, total push: 34
+
+2020-07-28 18:04:54,733 INFO received ack: {"type": "push-ack", "lastRefTime":"24769823057400", "data":""} from: 192.168.56.1:63960, cost: 2 ms, unacked: 0, total push: 34
+
+2020-07-28 18:04:57,497 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 18:04:57,497 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:63947, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63947,24772591143000
+
+2020-07-28 18:04:57,497 INFO send udp packet: 192.168.56.1,63947,24772591143000
+
+2020-07-28 18:04:57,498 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:63960, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63960,24772591143000
+
+2020-07-28 18:04:57,498 INFO send udp packet: 192.168.56.1,63960,24772591143000
+
+2020-07-28 18:04:57,499 INFO received ack: {"type": "push-ack", "lastRefTime":"24772591143000", "data":""} from: 192.168.56.1:63947, cost: 2 ms, unacked: 1, total push: 36
+
+2020-07-28 18:04:57,500 INFO received ack: {"type": "push-ack", "lastRefTime":"24772591143000", "data":""} from: 192.168.56.1:63960, cost: 2 ms, unacked: 0, total push: 36
+
+2020-07-28 18:10:50,702 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 18:10:50,702 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:63947, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63947,25125795756700
+
+2020-07-28 18:10:50,702 INFO send udp packet: 192.168.56.1,63947,25125795756700
+
+2020-07-28 18:10:50,702 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:63960, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63960,25125795756700
+
+2020-07-28 18:10:50,702 INFO send udp packet: 192.168.56.1,63960,25125795756700
+
+2020-07-28 18:10:50,711 INFO received ack: {"type": "push-ack", "lastRefTime":"25125795756700", "data":""} from: 192.168.56.1:63960, cost: 9 ms, unacked: 1, total push: 38
+
+2020-07-28 18:10:50,711 INFO received ack: {"type": "push-ack", "lastRefTime":"25125795756700", "data":""} from: 192.168.56.1:63947, cost: 9 ms, unacked: 0, total push: 38
+
+2020-07-28 18:10:53,254 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:10:53,255 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63947, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63947,25128349115400
+
+2020-07-28 18:10:53,255 INFO send udp packet: 192.168.56.1,63947,25128349115400
+
+2020-07-28 18:10:53,257 INFO received ack: {"type": "push-ack", "lastRefTime":"25128349115400", "data":""} from: 192.168.56.1:63947, cost: 2 ms, unacked: 0, total push: 39
+
+2020-07-28 18:10:53,257 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63960, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63960,25128349115400
+
+2020-07-28 18:10:53,257 INFO send udp packet: 192.168.56.1,63960,25128349115400
+
+2020-07-28 18:10:53,273 INFO received ack: {"type": "push-ack", "lastRefTime":"25128349115400", "data":""} from: 192.168.56.1:63960, cost: 16 ms, unacked: 0, total push: 40
+
+2020-07-28 18:10:58,196 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 18:10:58,196 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:63947, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63947,25133289745600
+
+2020-07-28 18:10:58,196 INFO send udp packet: 192.168.56.1,63947,25133289745600
+
+2020-07-28 18:10:58,196 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:60056, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60056,25133289745600
+
+2020-07-28 18:10:58,196 INFO send udp packet: 192.168.56.1,60056,25133289745600
+
+2020-07-28 18:10:58,196 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:63960, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63960,25133289745600
+
+2020-07-28 18:10:58,197 INFO send udp packet: 192.168.56.1,63960,25133289745600
+
+2020-07-28 18:10:58,199 INFO received ack: {"type": "push-ack", "lastRefTime":"25133289745600", "data":""} from: 192.168.56.1:60056, cost: 3 ms, unacked: 2, total push: 43
+
+2020-07-28 18:10:58,204 INFO received ack: {"type": "push-ack", "lastRefTime":"25133289745600", "data":""} from: 192.168.56.1:63960, cost: 7 ms, unacked: 1, total push: 43
+
+2020-07-28 18:10:58,205 INFO received ack: {"type": "push-ack", "lastRefTime":"25133289745600", "data":""} from: 192.168.56.1:63947, cost: 9 ms, unacked: 0, total push: 43
+
+2020-07-28 18:11:38,518 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 18:11:40,520 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 18:11:40,521 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:59435, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59435,25175614690600
+
+2020-07-28 18:11:40,521 INFO send udp packet: 192.168.56.1,59435,25175614690600
+
+2020-07-28 18:11:40,525 INFO received ack: {"type": "push-ack", "lastRefTime":"25175614690600", "data":""} from: 192.168.56.1:59435, cost: 4 ms, unacked: 0, total push: 44
+
+2020-07-28 18:11:43,780 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 18:11:43,783 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:59435, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59435,25178874708200
+
+2020-07-28 18:11:43,783 INFO send udp packet: 192.168.56.1,59435,25178874708200
+
+2020-07-28 18:11:43,785 INFO received ack: {"type": "push-ack", "lastRefTime":"25178874708200", "data":""} from: 192.168.56.1:59435, cost: 2 ms, unacked: 0, total push: 45
+
+2020-07-28 18:11:55,319 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:11:55,319 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:55302, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,55302,25190412387900
+
+2020-07-28 18:11:55,319 INFO send udp packet: 192.168.56.1,55302,25190412387900
+
+2020-07-28 18:11:55,319 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59435, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59435,25190412387900
+
+2020-07-28 18:11:55,319 INFO send udp packet: 192.168.56.1,59435,25190412387900
+
+2020-07-28 18:11:55,323 INFO received ack: {"type": "push-ack", "lastRefTime":"25190412387900", "data":""} from: 192.168.56.1:55302, cost: 4 ms, unacked: 1, total push: 47
+
+2020-07-28 18:11:55,328 INFO received ack: {"type": "push-ack", "lastRefTime":"25190412387900", "data":""} from: 192.168.56.1:59435, cost: 9 ms, unacked: 0, total push: 47
+
+2020-07-28 18:12:58,531 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:12:58,531 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59435, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59435,25253625312300
+
+2020-07-28 18:12:58,531 INFO send udp packet: 192.168.56.1,59435,25253625312300
+
+2020-07-28 18:12:58,533 INFO received ack: {"type": "push-ack", "lastRefTime":"25253625312300", "data":""} from: 192.168.56.1:59435, cost: 2 ms, unacked: 0, total push: 48
+
+2020-07-28 18:13:02,559 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:13:02,559 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59435, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59435,25257653114800
+
+2020-07-28 18:13:02,559 INFO send udp packet: 192.168.56.1,59435,25257653114800
+
+2020-07-28 18:13:02,559 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:57350, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,57350,25257653114800
+
+2020-07-28 18:13:02,559 INFO send udp packet: 192.168.56.1,57350,25257653114800
+
+2020-07-28 18:13:02,561 INFO received ack: {"type": "push-ack", "lastRefTime":"25257653114800", "data":""} from: 192.168.56.1:59435, cost: 2 ms, unacked: 1, total push: 50
+
+2020-07-28 18:13:02,564 INFO received ack: {"type": "push-ack", "lastRefTime":"25257653114800", "data":""} from: 192.168.56.1:57350, cost: 5 ms, unacked: 0, total push: 50
+
+2020-07-28 18:13:05,862 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:13:05,862 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59435, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59435,25260956103500
+
+2020-07-28 18:13:05,862 INFO send udp packet: 192.168.56.1,59435,25260956103500
+
+2020-07-28 18:13:05,862 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:57350, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,57350,25260956103500
+
+2020-07-28 18:13:05,862 INFO send udp packet: 192.168.56.1,57350,25260956103500
+
+2020-07-28 18:13:05,863 INFO received ack: {"type": "push-ack", "lastRefTime":"25260956103500", "data":""} from: 192.168.56.1:59435, cost: 1 ms, unacked: 1, total push: 52
+
+2020-07-28 18:13:05,864 INFO received ack: {"type": "push-ack", "lastRefTime":"25260956103500", "data":""} from: 192.168.56.1:57350, cost: 2 ms, unacked: 0, total push: 52
+
+2020-07-28 18:15:08,550 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:15:13,550 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 18:15:23,666 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:15:28,557 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 18:16:52,784 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:16:52,784 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:56346, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,56346,25487877428200
+
+2020-07-28 18:16:52,784 INFO send udp packet: 192.168.56.1,56346,25487877428200
+
+2020-07-28 18:16:52,788 INFO received ack: {"type": "push-ack", "lastRefTime":"25487877428200", "data":""} from: 192.168.56.1:56346, cost: 4 ms, unacked: 0, total push: 53
+
+2020-07-28 18:16:59,251 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 18:16:59,251 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:62560, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,62560,25494345584100
+
+2020-07-28 18:16:59,252 INFO send udp packet: 192.168.56.1,62560,25494345584100
+
+2020-07-28 18:16:59,252 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:56346, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,56346,25494345584100
+
+2020-07-28 18:16:59,252 INFO send udp packet: 192.168.56.1,56346,25494345584100
+
+2020-07-28 18:16:59,256 INFO received ack: {"type": "push-ack", "lastRefTime":"25494345584100", "data":""} from: 192.168.56.1:62560, cost: 4 ms, unacked: 1, total push: 55
+
+2020-07-28 18:16:59,504 INFO received ack: {"type": "push-ack", "lastRefTime":"25494345584100", "data":""} from: 192.168.56.1:56346, cost: 252 ms, unacked: 0, total push: 55
+
+2020-07-28 18:19:28,598 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 18:19:28,709 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:19:34,952 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:19:34,952 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63378, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63378,25650046007500
+
+2020-07-28 18:19:34,952 INFO send udp packet: 192.168.56.1,63378,25650046007500
+
+2020-07-28 18:19:34,957 INFO received ack: {"type": "push-ack", "lastRefTime":"25650046007500", "data":""} from: 192.168.56.1:63378, cost: 5 ms, unacked: 0, total push: 56
+
+2020-07-28 18:19:37,178 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:19:37,178 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63378, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63378,25652272043300
+
+2020-07-28 18:19:37,178 INFO send udp packet: 192.168.56.1,63378,25652272043300
+
+2020-07-28 18:19:37,180 INFO received ack: {"type": "push-ack", "lastRefTime":"25652272043300", "data":""} from: 192.168.56.1:63378, cost: 2 ms, unacked: 0, total push: 57
+
+2020-07-28 18:19:42,759 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 18:19:42,759 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,25657852641000
+
+2020-07-28 18:19:42,759 INFO send udp packet: 192.168.56.1,63415,25657852641000
+
+2020-07-28 18:19:42,759 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:63378, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63378,25657852641000
+
+2020-07-28 18:19:42,759 INFO send udp packet: 192.168.56.1,63378,25657852641000
+
+2020-07-28 18:19:42,761 INFO received ack: {"type": "push-ack", "lastRefTime":"25657852641000", "data":""} from: 192.168.56.1:63378, cost: 2 ms, unacked: 1, total push: 59
+
+2020-07-28 18:19:42,764 INFO received ack: {"type": "push-ack", "lastRefTime":"25657852641000", "data":""} from: 192.168.56.1:63415, cost: 5 ms, unacked: 0, total push: 59
+
+2020-07-28 18:19:43,821 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:19:43,822 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,25658915167100
+
+2020-07-28 18:19:43,822 INFO send udp packet: 192.168.56.1,63415,25658915167100
+
+2020-07-28 18:19:43,822 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63378, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63378,25658915167100
+
+2020-07-28 18:19:43,822 INFO send udp packet: 192.168.56.1,63378,25658915167100
+
+2020-07-28 18:19:43,832 INFO received ack: {"type": "push-ack", "lastRefTime":"25658915167100", "data":""} from: 192.168.56.1:63378, cost: 10 ms, unacked: 1, total push: 61
+
+2020-07-28 18:19:43,832 INFO received ack: {"type": "push-ack", "lastRefTime":"25658915167100", "data":""} from: 192.168.56.1:63415, cost: 10 ms, unacked: 0, total push: 61
+
+2020-07-28 18:19:45,851 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 18:19:45,851 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,25660944297600
+
+2020-07-28 18:19:45,851 INFO send udp packet: 192.168.56.1,63415,25660944297600
+
+2020-07-28 18:19:45,851 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:63378, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63378,25660944297600
+
+2020-07-28 18:19:45,851 INFO send udp packet: 192.168.56.1,63378,25660944297600
+
+2020-07-28 18:19:45,853 INFO received ack: {"type": "push-ack", "lastRefTime":"25660944297600", "data":""} from: 192.168.56.1:63415, cost: 2 ms, unacked: 1, total push: 63
+
+2020-07-28 18:19:45,856 INFO received ack: {"type": "push-ack", "lastRefTime":"25660944297600", "data":""} from: 192.168.56.1:63378, cost: 5 ms, unacked: 0, total push: 63
+
+2020-07-28 18:19:50,822 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:19:50,822 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:57237, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,57237,25665916052900
+
+2020-07-28 18:19:50,822 INFO send udp packet: 192.168.56.1,57237,25665916052900
+
+2020-07-28 18:19:50,822 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,25665916052900
+
+2020-07-28 18:19:50,822 INFO send udp packet: 192.168.56.1,63415,25665916052900
+
+2020-07-28 18:19:50,823 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63378, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63378,25665916052900
+
+2020-07-28 18:19:50,823 INFO send udp packet: 192.168.56.1,63378,25665916052900
+
+2020-07-28 18:19:50,824 INFO received ack: {"type": "push-ack", "lastRefTime":"25665916052900", "data":""} from: 192.168.56.1:57237, cost: 2 ms, unacked: 2, total push: 66
+
+2020-07-28 18:19:50,829 INFO received ack: {"type": "push-ack", "lastRefTime":"25665916052900", "data":""} from: 192.168.56.1:63378, cost: 6 ms, unacked: 1, total push: 66
+
+2020-07-28 18:19:50,829 INFO received ack: {"type": "push-ack", "lastRefTime":"25665916052900", "data":""} from: 192.168.56.1:63415, cost: 7 ms, unacked: 0, total push: 66
+
+2020-07-28 18:20:12,142 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:20:12,142 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:57237, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,57237,25687236148200
+
+2020-07-28 18:20:12,143 INFO send udp packet: 192.168.56.1,57237,25687236148200
+
+2020-07-28 18:20:12,143 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,25687236148200
+
+2020-07-28 18:20:12,143 INFO send udp packet: 192.168.56.1,63415,25687236148200
+
+2020-07-28 18:20:12,144 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63378, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63378,25687236148200
+
+2020-07-28 18:20:12,144 INFO send udp packet: 192.168.56.1,63378,25687236148200
+
+2020-07-28 18:20:12,160 INFO received ack: {"type": "push-ack", "lastRefTime":"25687236148200", "data":""} from: 192.168.56.1:63378, cost: 16 ms, unacked: 2, total push: 69
+
+2020-07-28 18:20:12,161 INFO received ack: {"type": "push-ack", "lastRefTime":"25687236148200", "data":""} from: 192.168.56.1:63415, cost: 18 ms, unacked: 1, total push: 69
+
+2020-07-28 18:20:12,166 INFO received ack: {"type": "push-ack", "lastRefTime":"25687236148200", "data":""} from: 192.168.56.1:57237, cost: 23 ms, unacked: 0, total push: 69
+
+2020-07-28 18:20:52,981 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:20:52,981 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:52557, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,52557,25728074909500
+
+2020-07-28 18:20:52,981 INFO send udp packet: 192.168.56.1,52557,25728074909500
+
+2020-07-28 18:20:52,981 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,25728074909500
+
+2020-07-28 18:20:52,981 INFO send udp packet: 192.168.56.1,63415,25728074909500
+
+2020-07-28 18:20:52,984 INFO received ack: {"type": "push-ack", "lastRefTime":"25728074909500", "data":""} from: 192.168.56.1:63415, cost: 3 ms, unacked: 1, total push: 71
+
+2020-07-28 18:20:52,985 INFO received ack: {"type": "push-ack", "lastRefTime":"25728074909500", "data":""} from: 192.168.56.1:52557, cost: 4 ms, unacked: 0, total push: 71
+
+2020-07-28 18:22:43,677 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:22:43,677 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,25838770475200
+
+2020-07-28 18:22:43,677 INFO send udp packet: 192.168.56.1,63415,25838770475200
+
+2020-07-28 18:22:43,677 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:57932, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,57932,25838770475200
+
+2020-07-28 18:22:43,677 INFO send udp packet: 192.168.56.1,57932,25838770475200
+
+2020-07-28 18:22:43,678 INFO received ack: {"type": "push-ack", "lastRefTime":"25838770475200", "data":""} from: 192.168.56.1:63415, cost: 1 ms, unacked: 1, total push: 73
+
+2020-07-28 18:22:43,681 INFO received ack: {"type": "push-ack", "lastRefTime":"25838770475200", "data":""} from: 192.168.56.1:57932, cost: 4 ms, unacked: 0, total push: 73
+
+2020-07-28 18:23:22,838 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:23:22,838 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,25877932128500
+
+2020-07-28 18:23:22,838 INFO send udp packet: 192.168.56.1,63415,25877932128500
+
+2020-07-28 18:23:22,838 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:54660, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,54660,25877932128500
+
+2020-07-28 18:23:22,838 INFO send udp packet: 192.168.56.1,54660,25877932128500
+
+2020-07-28 18:23:22,839 INFO received ack: {"type": "push-ack", "lastRefTime":"25877932128500", "data":""} from: 192.168.56.1:63415, cost: 1 ms, unacked: 1, total push: 75
+
+2020-07-28 18:23:22,842 INFO received ack: {"type": "push-ack", "lastRefTime":"25877932128500", "data":""} from: 192.168.56.1:54660, cost: 4 ms, unacked: 0, total push: 75
+
+2020-07-28 18:24:25,403 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:24:25,403 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,25940496410200
+
+2020-07-28 18:24:25,403 INFO send udp packet: 192.168.56.1,63415,25940496410200
+
+2020-07-28 18:24:25,403 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:54660, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,54660,25940496410200
+
+2020-07-28 18:24:25,403 INFO send udp packet: 192.168.56.1,54660,25940496410200
+
+2020-07-28 18:24:25,413 INFO received ack: {"type": "push-ack", "lastRefTime":"25940496410200", "data":""} from: 192.168.56.1:63415, cost: 10 ms, unacked: 1, total push: 77
+
+2020-07-28 18:24:25,413 INFO received ack: {"type": "push-ack", "lastRefTime":"25940496410200", "data":""} from: 192.168.56.1:54660, cost: 10 ms, unacked: 0, total push: 77
+
+2020-07-28 18:24:32,581 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:24:32,581 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,25947674716800
+
+2020-07-28 18:24:32,581 INFO send udp packet: 192.168.56.1,63415,25947674716800
+
+2020-07-28 18:24:32,581 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63093, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63093,25947674716800
+
+2020-07-28 18:24:32,581 INFO send udp packet: 192.168.56.1,63093,25947674716800
+
+2020-07-28 18:24:32,581 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:54660, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,54660,25947674716800
+
+2020-07-28 18:24:32,581 INFO send udp packet: 192.168.56.1,54660,25947674716800
+
+2020-07-28 18:24:32,583 INFO received ack: {"type": "push-ack", "lastRefTime":"25947674716800", "data":""} from: 192.168.56.1:63093, cost: 2 ms, unacked: 2, total push: 80
+
+2020-07-28 18:24:32,588 INFO received ack: {"type": "push-ack", "lastRefTime":"25947674716800", "data":""} from: 192.168.56.1:63415, cost: 7 ms, unacked: 1, total push: 80
+
+2020-07-28 18:24:32,588 INFO received ack: {"type": "push-ack", "lastRefTime":"25947674716800", "data":""} from: 192.168.56.1:54660, cost: 7 ms, unacked: 0, total push: 80
+
+2020-07-28 18:27:03,697 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:27:03,697 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,26098790672800
+
+2020-07-28 18:27:03,697 INFO send udp packet: 192.168.56.1,63415,26098790672800
+
+2020-07-28 18:27:03,697 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63093, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63093,26098790672800
+
+2020-07-28 18:27:03,697 INFO send udp packet: 192.168.56.1,63093,26098790672800
+
+2020-07-28 18:27:03,697 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:54660, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,54660,26098790672800
+
+2020-07-28 18:27:03,697 INFO send udp packet: 192.168.56.1,54660,26098790672800
+
+2020-07-28 18:27:03,698 INFO received ack: {"type": "push-ack", "lastRefTime":"26098790672800", "data":""} from: 192.168.56.1:63415, cost: 1 ms, unacked: 2, total push: 83
+
+2020-07-28 18:27:03,698 INFO received ack: {"type": "push-ack", "lastRefTime":"26098790672800", "data":""} from: 192.168.56.1:54660, cost: 1 ms, unacked: 1, total push: 83
+
+2020-07-28 18:27:03,704 INFO received ack: {"type": "push-ack", "lastRefTime":"26098790672800", "data":""} from: 192.168.56.1:63093, cost: 7 ms, unacked: 0, total push: 83
+
+2020-07-28 18:27:10,696 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:27:10,696 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60195, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60195,26105790108100
+
+2020-07-28 18:27:10,696 INFO send udp packet: 192.168.56.1,60195,26105790108100
+
+2020-07-28 18:27:10,696 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,26105790108100
+
+2020-07-28 18:27:10,696 INFO send udp packet: 192.168.56.1,63415,26105790108100
+
+2020-07-28 18:27:10,696 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63093, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63093,26105790108100
+
+2020-07-28 18:27:10,697 INFO send udp packet: 192.168.56.1,63093,26105790108100
+
+2020-07-28 18:27:10,697 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:54660, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,54660,26105790108100
+
+2020-07-28 18:27:10,697 INFO send udp packet: 192.168.56.1,54660,26105790108100
+
+2020-07-28 18:27:10,697 INFO received ack: {"type": "push-ack", "lastRefTime":"26105790108100", "data":""} from: 192.168.56.1:60195, cost: 1 ms, unacked: 3, total push: 87
+
+2020-07-28 18:27:10,703 INFO received ack: {"type": "push-ack", "lastRefTime":"26105790108100", "data":""} from: 192.168.56.1:63415, cost: 7 ms, unacked: 2, total push: 87
+
+2020-07-28 18:27:10,703 INFO received ack: {"type": "push-ack", "lastRefTime":"26105790108100", "data":""} from: 192.168.56.1:54660, cost: 6 ms, unacked: 1, total push: 87
+
+2020-07-28 18:27:10,714 INFO received ack: {"type": "push-ack", "lastRefTime":"26105790108100", "data":""} from: 192.168.56.1:63093, cost: 17 ms, unacked: 0, total push: 87
+
+2020-07-28 18:27:46,168 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:27:46,168 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60195, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60195,26141261946600
+
+2020-07-28 18:27:46,168 INFO send udp packet: 192.168.56.1,60195,26141261946600
+
+2020-07-28 18:27:46,168 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,26141261946600
+
+2020-07-28 18:27:46,168 INFO send udp packet: 192.168.56.1,63415,26141261946600
+
+2020-07-28 18:27:46,168 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63093, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63093,26141261946600
+
+2020-07-28 18:27:46,168 INFO send udp packet: 192.168.56.1,63093,26141261946600
+
+2020-07-28 18:27:46,168 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:54660, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,54660,26141261946600
+
+2020-07-28 18:27:46,168 INFO send udp packet: 192.168.56.1,54660,26141261946600
+
+2020-07-28 18:27:46,175 INFO received ack: {"type": "push-ack", "lastRefTime":"26141261946600", "data":""} from: 192.168.56.1:60195, cost: 7 ms, unacked: 3, total push: 91
+
+2020-07-28 18:27:46,176 INFO received ack: {"type": "push-ack", "lastRefTime":"26141261946600", "data":""} from: 192.168.56.1:63415, cost: 8 ms, unacked: 2, total push: 91
+
+2020-07-28 18:27:46,186 INFO received ack: {"type": "push-ack", "lastRefTime":"26141261946600", "data":""} from: 192.168.56.1:63093, cost: 18 ms, unacked: 1, total push: 91
+
+2020-07-28 18:27:46,207 INFO received ack: {"type": "push-ack", "lastRefTime":"26141261946600", "data":""} from: 192.168.56.1:54660, cost: 39 ms, unacked: 0, total push: 91
+
+2020-07-28 18:27:52,250 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:27:52,250 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60195, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60195,26147344232800
+
+2020-07-28 18:27:52,250 INFO send udp packet: 192.168.56.1,60195,26147344232800
+
+2020-07-28 18:27:52,250 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:51608, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,51608,26147344232800
+
+2020-07-28 18:27:52,250 INFO send udp packet: 192.168.56.1,51608,26147344232800
+
+2020-07-28 18:27:52,250 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,26147344232800
+
+2020-07-28 18:27:52,250 INFO send udp packet: 192.168.56.1,63415,26147344232800
+
+2020-07-28 18:27:52,251 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63093, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63093,26147344232800
+
+2020-07-28 18:27:52,251 INFO send udp packet: 192.168.56.1,63093,26147344232800
+
+2020-07-28 18:27:52,251 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:54660, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,54660,26147344232800
+
+2020-07-28 18:27:52,251 INFO send udp packet: 192.168.56.1,54660,26147344232800
+
+2020-07-28 18:27:52,251 INFO received ack: {"type": "push-ack", "lastRefTime":"26147344232800", "data":""} from: 192.168.56.1:51608, cost: 1 ms, unacked: 4, total push: 96
+
+2020-07-28 18:27:52,257 INFO received ack: {"type": "push-ack", "lastRefTime":"26147344232800", "data":""} from: 192.168.56.1:60195, cost: 7 ms, unacked: 3, total push: 96
+
+2020-07-28 18:27:52,257 INFO received ack: {"type": "push-ack", "lastRefTime":"26147344232800", "data":""} from: 192.168.56.1:63415, cost: 7 ms, unacked: 2, total push: 96
+
+2020-07-28 18:27:52,269 INFO received ack: {"type": "push-ack", "lastRefTime":"26147344232800", "data":""} from: 192.168.56.1:63093, cost: 18 ms, unacked: 1, total push: 96
+
+2020-07-28 18:27:52,269 INFO received ack: {"type": "push-ack", "lastRefTime":"26147344232800", "data":""} from: 192.168.56.1:54660, cost: 18 ms, unacked: 0, total push: 96
+
+2020-07-28 18:28:40,011 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:28:40,011 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60195, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60195,26195104588000
+
+2020-07-28 18:28:40,011 INFO send udp packet: 192.168.56.1,60195,26195104588000
+
+2020-07-28 18:28:40,011 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:51608, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,51608,26195104588000
+
+2020-07-28 18:28:40,011 INFO send udp packet: 192.168.56.1,51608,26195104588000
+
+2020-07-28 18:28:40,011 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,26195104588000
+
+2020-07-28 18:28:40,011 INFO send udp packet: 192.168.56.1,63415,26195104588000
+
+2020-07-28 18:28:40,011 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63093, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63093,26195104588000
+
+2020-07-28 18:28:40,011 INFO send udp packet: 192.168.56.1,63093,26195104588000
+
+2020-07-28 18:28:40,011 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:54660, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,54660,26195104588000
+
+2020-07-28 18:28:40,011 INFO send udp packet: 192.168.56.1,54660,26195104588000
+
+2020-07-28 18:28:40,020 INFO received ack: {"type": "push-ack", "lastRefTime":"26195104588000", "data":""} from: 192.168.56.1:51608, cost: 9 ms, unacked: 4, total push: 101
+
+2020-07-28 18:28:40,020 INFO received ack: {"type": "push-ack", "lastRefTime":"26195104588000", "data":""} from: 192.168.56.1:63415, cost: 9 ms, unacked: 3, total push: 101
+
+2020-07-28 18:28:40,030 INFO received ack: {"type": "push-ack", "lastRefTime":"26195104588000", "data":""} from: 192.168.56.1:54660, cost: 19 ms, unacked: 2, total push: 101
+
+2020-07-28 18:28:40,051 INFO received ack: {"type": "push-ack", "lastRefTime":"26195104588000", "data":""} from: 192.168.56.1:60195, cost: 40 ms, unacked: 1, total push: 101
+
+2020-07-28 18:28:40,082 INFO received ack: {"type": "push-ack", "lastRefTime":"26195104588000", "data":""} from: 192.168.56.1:63093, cost: 71 ms, unacked: 0, total push: 101
+
+2020-07-28 18:28:46,696 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:28:46,696 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60195, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60195,26201789780400
+
+2020-07-28 18:28:46,696 INFO send udp packet: 192.168.56.1,60195,26201789780400
+
+2020-07-28 18:28:46,696 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:51608, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,51608,26201789780400
+
+2020-07-28 18:28:46,696 INFO send udp packet: 192.168.56.1,51608,26201789780400
+
+2020-07-28 18:28:46,696 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,26201789780400
+
+2020-07-28 18:28:46,696 INFO send udp packet: 192.168.56.1,63415,26201789780400
+
+2020-07-28 18:28:46,696 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63093, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63093,26201789780400
+
+2020-07-28 18:28:46,696 INFO send udp packet: 192.168.56.1,63093,26201789780400
+
+2020-07-28 18:28:46,696 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:53008, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,53008,26201789780400
+
+2020-07-28 18:28:46,696 INFO send udp packet: 192.168.56.1,53008,26201789780400
+
+2020-07-28 18:28:46,697 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:54660, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,54660,26201789780400
+
+2020-07-28 18:28:46,697 INFO send udp packet: 192.168.56.1,54660,26201789780400
+
+2020-07-28 18:28:46,697 INFO received ack: {"type": "push-ack", "lastRefTime":"26201789780400", "data":""} from: 192.168.56.1:53008, cost: 1 ms, unacked: 5, total push: 107
+
+2020-07-28 18:28:46,706 INFO received ack: {"type": "push-ack", "lastRefTime":"26201789780400", "data":""} from: 192.168.56.1:63093, cost: 10 ms, unacked: 4, total push: 107
+
+2020-07-28 18:28:46,706 INFO received ack: {"type": "push-ack", "lastRefTime":"26201789780400", "data":""} from: 192.168.56.1:63415, cost: 10 ms, unacked: 3, total push: 107
+
+2020-07-28 18:28:46,718 INFO received ack: {"type": "push-ack", "lastRefTime":"26201789780400", "data":""} from: 192.168.56.1:51608, cost: 22 ms, unacked: 2, total push: 107
+
+2020-07-28 18:28:46,718 INFO received ack: {"type": "push-ack", "lastRefTime":"26201789780400", "data":""} from: 192.168.56.1:60195, cost: 22 ms, unacked: 1, total push: 107
+
+2020-07-28 18:28:46,738 INFO received ack: {"type": "push-ack", "lastRefTime":"26201789780400", "data":""} from: 192.168.56.1:54660, cost: 41 ms, unacked: 0, total push: 107
+
+2020-07-28 18:34:04,467 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 18:34:04,467 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,26519560440600
+
+2020-07-28 18:34:04,467 INFO send udp packet: 192.168.56.1,63415,26519560440600
+
+2020-07-28 18:34:04,467 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:53008, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,53008,26519560440600
+
+2020-07-28 18:34:04,467 INFO send udp packet: 192.168.56.1,53008,26519560440600
+
+2020-07-28 18:34:04,467 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:54660, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,54660,26519560440600
+
+2020-07-28 18:34:04,467 INFO send udp packet: 192.168.56.1,54660,26519560440600
+
+2020-07-28 18:34:04,468 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:63093, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63093,26519560440600
+
+2020-07-28 18:34:04,468 INFO send udp packet: 192.168.56.1,63093,26519560440600
+
+2020-07-28 18:34:04,468 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:60195, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60195,26519560440600
+
+2020-07-28 18:34:04,468 INFO send udp packet: 192.168.56.1,60195,26519560440600
+
+2020-07-28 18:34:04,468 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:51608, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,51608,26519560440600
+
+2020-07-28 18:34:04,469 INFO send udp packet: 192.168.56.1,51608,26519560440600
+
+2020-07-28 18:34:04,474 INFO received ack: {"type": "push-ack", "lastRefTime":"26519560440600", "data":""} from: 192.168.56.1:63415, cost: 7 ms, unacked: 5, total push: 113
+
+2020-07-28 18:34:04,475 INFO received ack: {"type": "push-ack", "lastRefTime":"26519560440600", "data":""} from: 192.168.56.1:53008, cost: 8 ms, unacked: 4, total push: 113
+
+2020-07-28 18:34:04,485 INFO received ack: {"type": "push-ack", "lastRefTime":"26519560440600", "data":""} from: 192.168.56.1:60195, cost: 17 ms, unacked: 3, total push: 113
+
+2020-07-28 18:34:04,506 INFO received ack: {"type": "push-ack", "lastRefTime":"26519560440600", "data":""} from: 192.168.56.1:63093, cost: 38 ms, unacked: 2, total push: 113
+
+2020-07-28 18:34:04,536 INFO received ack: {"type": "push-ack", "lastRefTime":"26519560440600", "data":""} from: 192.168.56.1:54660, cost: 69 ms, unacked: 1, total push: 113
+
+2020-07-28 18:34:04,577 INFO received ack: {"type": "push-ack", "lastRefTime":"26519560440600", "data":""} from: 192.168.56.1:51608, cost: 108 ms, unacked: 0, total push: 113
+
+2020-07-28 18:34:11,212 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 18:34:11,212 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,26526305864000
+
+2020-07-28 18:34:11,212 INFO send udp packet: 192.168.56.1,63415,26526305864000
+
+2020-07-28 18:34:11,212 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:53008, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,53008,26526305864000
+
+2020-07-28 18:34:11,212 INFO send udp packet: 192.168.56.1,53008,26526305864000
+
+2020-07-28 18:34:11,212 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:54660, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,54660,26526305864000
+
+2020-07-28 18:34:11,212 INFO send udp packet: 192.168.56.1,54660,26526305864000
+
+2020-07-28 18:34:11,213 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:63093, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63093,26526305864000
+
+2020-07-28 18:34:11,213 INFO send udp packet: 192.168.56.1,63093,26526305864000
+
+2020-07-28 18:34:11,213 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,26526305864000
+
+2020-07-28 18:34:11,213 INFO send udp packet: 192.168.56.1,59698,26526305864000
+
+2020-07-28 18:34:11,213 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:60195, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60195,26526305864000
+
+2020-07-28 18:34:11,213 INFO send udp packet: 192.168.56.1,60195,26526305864000
+
+2020-07-28 18:34:11,214 INFO serviceName: DEFAULT_GROUP@@service-ucenter changed, schedule push for: 192.168.56.1:51608, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,51608,26526305864000
+
+2020-07-28 18:34:11,214 INFO send udp packet: 192.168.56.1,51608,26526305864000
+
+2020-07-28 18:34:11,214 INFO received ack: {"type": "push-ack", "lastRefTime":"26526305864000", "data":""} from: 192.168.56.1:59698, cost: 1 ms, unacked: 6, total push: 120
+
+2020-07-28 18:34:11,219 INFO received ack: {"type": "push-ack", "lastRefTime":"26526305864000", "data":""} from: 192.168.56.1:63093, cost: 6 ms, unacked: 5, total push: 120
+
+2020-07-28 18:34:11,220 INFO received ack: {"type": "push-ack", "lastRefTime":"26526305864000", "data":""} from: 192.168.56.1:63415, cost: 8 ms, unacked: 4, total push: 120
+
+2020-07-28 18:34:11,230 INFO received ack: {"type": "push-ack", "lastRefTime":"26526305864000", "data":""} from: 192.168.56.1:60195, cost: 17 ms, unacked: 3, total push: 120
+
+2020-07-28 18:34:11,230 INFO received ack: {"type": "push-ack", "lastRefTime":"26526305864000", "data":""} from: 192.168.56.1:51608, cost: 16 ms, unacked: 2, total push: 120
+
+2020-07-28 18:34:11,251 INFO received ack: {"type": "push-ack", "lastRefTime":"26526305864000", "data":""} from: 192.168.56.1:54660, cost: 39 ms, unacked: 1, total push: 120
+
+2020-07-28 18:34:11,280 INFO received ack: {"type": "push-ack", "lastRefTime":"26526305864000", "data":""} from: 192.168.56.1:53008, cost: 68 ms, unacked: 0, total push: 120
+
+2020-07-28 18:37:30,664 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:37:30,664 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:56320, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,56320,26725757633600
+
+2020-07-28 18:37:30,664 INFO send udp packet: 192.168.56.1,56320,26725757633600
+
+2020-07-28 18:37:30,664 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,26725757633600
+
+2020-07-28 18:37:30,664 INFO send udp packet: 192.168.56.1,63415,26725757633600
+
+2020-07-28 18:37:30,664 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,26725757633600
+
+2020-07-28 18:37:30,665 INFO send udp packet: 192.168.56.1,59698,26725757633600
+
+2020-07-28 18:37:30,665 INFO received ack: {"type": "push-ack", "lastRefTime":"26725757633600", "data":""} from: 192.168.56.1:63415, cost: 1 ms, unacked: 2, total push: 123
+
+2020-07-28 18:37:30,666 INFO received ack: {"type": "push-ack", "lastRefTime":"26725757633600", "data":""} from: 192.168.56.1:59698, cost: 1 ms, unacked: 1, total push: 123
+
+2020-07-28 18:37:30,668 INFO received ack: {"type": "push-ack", "lastRefTime":"26725757633600", "data":""} from: 192.168.56.1:56320, cost: 4 ms, unacked: 0, total push: 123
+
+2020-07-28 18:40:39,102 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:40:39,102 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:56320, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,56320,26914195862300
+
+2020-07-28 18:40:39,102 INFO send udp packet: 192.168.56.1,56320,26914195862300
+
+2020-07-28 18:40:39,102 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,26914195862300
+
+2020-07-28 18:40:39,102 INFO send udp packet: 192.168.56.1,63415,26914195862300
+
+2020-07-28 18:40:39,102 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,26914195862300
+
+2020-07-28 18:40:39,102 INFO send udp packet: 192.168.56.1,59698,26914195862300
+
+2020-07-28 18:40:39,109 INFO received ack: {"type": "push-ack", "lastRefTime":"26914195862300", "data":""} from: 192.168.56.1:56320, cost: 7 ms, unacked: 2, total push: 126
+
+2020-07-28 18:40:39,109 INFO received ack: {"type": "push-ack", "lastRefTime":"26914195862300", "data":""} from: 192.168.56.1:63415, cost: 7 ms, unacked: 1, total push: 126
+
+2020-07-28 18:40:39,119 INFO received ack: {"type": "push-ack", "lastRefTime":"26914195862300", "data":""} from: 192.168.56.1:59698, cost: 17 ms, unacked: 0, total push: 126
+
+2020-07-28 18:40:45,306 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:40:45,306 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:56320, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,56320,26920399406800
+
+2020-07-28 18:40:45,306 INFO send udp packet: 192.168.56.1,56320,26920399406800
+
+2020-07-28 18:40:45,306 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:50306, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,50306,26920399406800
+
+2020-07-28 18:40:45,306 INFO send udp packet: 192.168.56.1,50306,26920399406800
+
+2020-07-28 18:40:45,306 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,26920399406800
+
+2020-07-28 18:40:45,306 INFO send udp packet: 192.168.56.1,63415,26920399406800
+
+2020-07-28 18:40:45,306 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,26920399406800
+
+2020-07-28 18:40:45,306 INFO send udp packet: 192.168.56.1,59698,26920399406800
+
+2020-07-28 18:40:45,307 INFO received ack: {"type": "push-ack", "lastRefTime":"26920399406800", "data":""} from: 192.168.56.1:50306, cost: 1 ms, unacked: 3, total push: 130
+
+2020-07-28 18:40:45,312 INFO received ack: {"type": "push-ack", "lastRefTime":"26920399406800", "data":""} from: 192.168.56.1:59698, cost: 6 ms, unacked: 2, total push: 130
+
+2020-07-28 18:40:45,312 INFO received ack: {"type": "push-ack", "lastRefTime":"26920399406800", "data":""} from: 192.168.56.1:56320, cost: 6 ms, unacked: 1, total push: 130
+
+2020-07-28 18:40:45,323 INFO received ack: {"type": "push-ack", "lastRefTime":"26920399406800", "data":""} from: 192.168.56.1:63415, cost: 17 ms, unacked: 0, total push: 130
+
+2020-07-28 18:43:19,926 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:43:19,926 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:52283, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,52283,27075019435500
+
+2020-07-28 18:43:19,926 INFO send udp packet: 192.168.56.1,52283,27075019435500
+
+2020-07-28 18:43:19,926 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,27075019435500
+
+2020-07-28 18:43:19,926 INFO send udp packet: 192.168.56.1,63415,27075019435500
+
+2020-07-28 18:43:19,927 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,27075019435500
+
+2020-07-28 18:43:19,927 INFO send udp packet: 192.168.56.1,59698,27075019435500
+
+2020-07-28 18:43:19,928 INFO received ack: {"type": "push-ack", "lastRefTime":"27075019435500", "data":""} from: 192.168.56.1:63415, cost: 2 ms, unacked: 2, total push: 133
+
+2020-07-28 18:43:19,928 INFO received ack: {"type": "push-ack", "lastRefTime":"27075019435500", "data":""} from: 192.168.56.1:59698, cost: 1 ms, unacked: 1, total push: 133
+
+2020-07-28 18:43:19,931 INFO received ack: {"type": "push-ack", "lastRefTime":"27075019435500", "data":""} from: 192.168.56.1:52283, cost: 5 ms, unacked: 0, total push: 133
+
+2020-07-28 18:44:08,952 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:44:08,952 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,27124045406400
+
+2020-07-28 18:44:08,952 INFO send udp packet: 192.168.56.1,63415,27124045406400
+
+2020-07-28 18:44:08,952 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,27124045406400
+
+2020-07-28 18:44:08,952 INFO send udp packet: 192.168.56.1,59698,27124045406400
+
+2020-07-28 18:44:08,953 INFO received ack: {"type": "push-ack", "lastRefTime":"27124045406400", "data":""} from: 192.168.56.1:63415, cost: 1 ms, unacked: 1, total push: 135
+
+2020-07-28 18:44:08,953 INFO received ack: {"type": "push-ack", "lastRefTime":"27124045406400", "data":""} from: 192.168.56.1:59698, cost: 1 ms, unacked: 0, total push: 135
+
+2020-07-28 18:44:10,972 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:44:10,972 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,27126066276200
+
+2020-07-28 18:44:10,972 INFO send udp packet: 192.168.56.1,63415,27126066276200
+
+2020-07-28 18:44:10,972 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:62386, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,62386,27126066276200
+
+2020-07-28 18:44:10,972 INFO send udp packet: 192.168.56.1,62386,27126066276200
+
+2020-07-28 18:44:10,972 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,27126066276200
+
+2020-07-28 18:44:10,972 INFO send udp packet: 192.168.56.1,59698,27126066276200
+
+2020-07-28 18:44:10,973 INFO received ack: {"type": "push-ack", "lastRefTime":"27126066276200", "data":""} from: 192.168.56.1:63415, cost: 1 ms, unacked: 2, total push: 138
+
+2020-07-28 18:44:10,973 INFO received ack: {"type": "push-ack", "lastRefTime":"27126066276200", "data":""} from: 192.168.56.1:59698, cost: 1 ms, unacked: 1, total push: 138
+
+2020-07-28 18:44:10,977 INFO received ack: {"type": "push-ack", "lastRefTime":"27126066276200", "data":""} from: 192.168.56.1:62386, cost: 5 ms, unacked: 0, total push: 138
+
+2020-07-28 18:44:14,286 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:44:14,286 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,27129379746600
+
+2020-07-28 18:44:14,286 INFO send udp packet: 192.168.56.1,63415,27129379746600
+
+2020-07-28 18:44:14,286 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:62386, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,62386,27129379746600
+
+2020-07-28 18:44:14,286 INFO send udp packet: 192.168.56.1,62386,27129379746600
+
+2020-07-28 18:44:14,286 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,27129379746600
+
+2020-07-28 18:44:14,286 INFO send udp packet: 192.168.56.1,59698,27129379746600
+
+2020-07-28 18:44:14,287 INFO received ack: {"type": "push-ack", "lastRefTime":"27129379746600", "data":""} from: 192.168.56.1:63415, cost: 1 ms, unacked: 2, total push: 141
+
+2020-07-28 18:44:14,287 INFO received ack: {"type": "push-ack", "lastRefTime":"27129379746600", "data":""} from: 192.168.56.1:59698, cost: 1 ms, unacked: 1, total push: 141
+
+2020-07-28 18:44:14,288 INFO received ack: {"type": "push-ack", "lastRefTime":"27129379746600", "data":""} from: 192.168.56.1:62386, cost: 2 ms, unacked: 0, total push: 141
+
+2020-07-28 18:46:21,420 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:46:21,420 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,27256514246400
+
+2020-07-28 18:46:21,420 INFO send udp packet: 192.168.56.1,63415,27256514246400
+
+2020-07-28 18:46:21,420 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:62092, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,62092,27256514246400
+
+2020-07-28 18:46:21,421 INFO send udp packet: 192.168.56.1,62092,27256514246400
+
+2020-07-28 18:46:21,427 INFO received ack: {"type": "push-ack", "lastRefTime":"27256514246400", "data":""} from: 192.168.56.1:63415, cost: 7 ms, unacked: 1, total push: 143
+
+2020-07-28 18:46:21,427 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,27256514246400
+
+2020-07-28 18:46:21,427 INFO send udp packet: 192.168.56.1,59698,27256514246400
+
+2020-07-28 18:46:21,437 INFO received ack: {"type": "push-ack", "lastRefTime":"27256514246400", "data":""} from: 192.168.56.1:59698, cost: 10 ms, unacked: 1, total push: 144
+
+2020-07-28 18:46:21,439 INFO received ack: {"type": "push-ack", "lastRefTime":"27256514246400", "data":""} from: 192.168.56.1:62092, cost: 18 ms, unacked: 0, total push: 144
+
+2020-07-28 18:51:29,641 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:51:29,641 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,27564735317500
+
+2020-07-28 18:51:29,641 INFO send udp packet: 192.168.56.1,63415,27564735317500
+
+2020-07-28 18:51:29,641 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:62092, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,62092,27564735317500
+
+2020-07-28 18:51:29,641 INFO send udp packet: 192.168.56.1,62092,27564735317500
+
+2020-07-28 18:51:29,641 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,27564735317500
+
+2020-07-28 18:51:29,641 INFO send udp packet: 192.168.56.1,59698,27564735317500
+
+2020-07-28 18:51:29,649 INFO received ack: {"type": "push-ack", "lastRefTime":"27564735317500", "data":""} from: 192.168.56.1:62092, cost: 8 ms, unacked: 2, total push: 147
+
+2020-07-28 18:51:29,649 INFO received ack: {"type": "push-ack", "lastRefTime":"27564735317500", "data":""} from: 192.168.56.1:59698, cost: 8 ms, unacked: 1, total push: 147
+
+2020-07-28 18:51:29,659 INFO received ack: {"type": "push-ack", "lastRefTime":"27564735317500", "data":""} from: 192.168.56.1:63415, cost: 18 ms, unacked: 0, total push: 147
+
+2020-07-28 18:51:36,087 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:51:36,087 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59996, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59996,27571180857600
+
+2020-07-28 18:51:36,087 INFO send udp packet: 192.168.56.1,59996,27571180857600
+
+2020-07-28 18:51:36,087 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,27571180857600
+
+2020-07-28 18:51:36,087 INFO send udp packet: 192.168.56.1,63415,27571180857600
+
+2020-07-28 18:51:36,087 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:62092, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,62092,27571180857600
+
+2020-07-28 18:51:36,087 INFO send udp packet: 192.168.56.1,62092,27571180857600
+
+2020-07-28 18:51:36,088 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,27571180857600
+
+2020-07-28 18:51:36,088 INFO send udp packet: 192.168.56.1,59698,27571180857600
+
+2020-07-28 18:51:36,088 INFO received ack: {"type": "push-ack", "lastRefTime":"27571180857600", "data":""} from: 192.168.56.1:59996, cost: 1 ms, unacked: 3, total push: 151
+
+2020-07-28 18:51:36,094 INFO received ack: {"type": "push-ack", "lastRefTime":"27571180857600", "data":""} from: 192.168.56.1:63415, cost: 7 ms, unacked: 2, total push: 151
+
+2020-07-28 18:51:36,094 INFO received ack: {"type": "push-ack", "lastRefTime":"27571180857600", "data":""} from: 192.168.56.1:62092, cost: 7 ms, unacked: 1, total push: 151
+
+2020-07-28 18:51:36,104 INFO received ack: {"type": "push-ack", "lastRefTime":"27571180857600", "data":""} from: 192.168.56.1:59698, cost: 16 ms, unacked: 0, total push: 151
+
+2020-07-28 18:57:01,248 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:57:01,248 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:55840, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,55840,27896341476600
+
+2020-07-28 18:57:01,248 INFO send udp packet: 192.168.56.1,55840,27896341476600
+
+2020-07-28 18:57:01,248 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,27896341476600
+
+2020-07-28 18:57:01,248 INFO send udp packet: 192.168.56.1,63415,27896341476600
+
+2020-07-28 18:57:01,249 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,27896341476600
+
+2020-07-28 18:57:01,249 INFO send udp packet: 192.168.56.1,59698,27896341476600
+
+2020-07-28 18:57:01,249 INFO received ack: {"type": "push-ack", "lastRefTime":"27896341476600", "data":""} from: 192.168.56.1:63415, cost: 1 ms, unacked: 2, total push: 154
+
+2020-07-28 18:57:01,250 INFO received ack: {"type": "push-ack", "lastRefTime":"27896341476600", "data":""} from: 192.168.56.1:59698, cost: 1 ms, unacked: 1, total push: 154
+
+2020-07-28 18:57:01,252 INFO received ack: {"type": "push-ack", "lastRefTime":"27896341476600", "data":""} from: 192.168.56.1:55840, cost: 4 ms, unacked: 0, total push: 154
+
+2020-07-28 18:59:17,294 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:59:17,294 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:55840, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,55840,28032387950800
+
+2020-07-28 18:59:17,294 INFO send udp packet: 192.168.56.1,55840,28032387950800
+
+2020-07-28 18:59:17,294 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,28032387950800
+
+2020-07-28 18:59:17,294 INFO send udp packet: 192.168.56.1,63415,28032387950800
+
+2020-07-28 18:59:17,294 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,28032387950800
+
+2020-07-28 18:59:17,294 INFO send udp packet: 192.168.56.1,59698,28032387950800
+
+2020-07-28 18:59:17,301 INFO received ack: {"type": "push-ack", "lastRefTime":"28032387950800", "data":""} from: 192.168.56.1:59698, cost: 7 ms, unacked: 2, total push: 157
+
+2020-07-28 18:59:17,301 INFO received ack: {"type": "push-ack", "lastRefTime":"28032387950800", "data":""} from: 192.168.56.1:55840, cost: 7 ms, unacked: 1, total push: 157
+
+2020-07-28 18:59:17,311 INFO received ack: {"type": "push-ack", "lastRefTime":"28032387950800", "data":""} from: 192.168.56.1:63415, cost: 17 ms, unacked: 0, total push: 157
+
+2020-07-28 18:59:23,766 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:59:23,766 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:55840, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,55840,28038859437600
+
+2020-07-28 18:59:23,766 INFO send udp packet: 192.168.56.1,55840,28038859437600
+
+2020-07-28 18:59:23,766 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:51883, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,51883,28038859437600
+
+2020-07-28 18:59:23,766 INFO send udp packet: 192.168.56.1,51883,28038859437600
+
+2020-07-28 18:59:23,766 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,28038859437600
+
+2020-07-28 18:59:23,766 INFO send udp packet: 192.168.56.1,63415,28038859437600
+
+2020-07-28 18:59:23,767 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,28038859437600
+
+2020-07-28 18:59:23,767 INFO send udp packet: 192.168.56.1,59698,28038859437600
+
+2020-07-28 18:59:23,767 INFO received ack: {"type": "push-ack", "lastRefTime":"28038859437600", "data":""} from: 192.168.56.1:51883, cost: 1 ms, unacked: 3, total push: 161
+
+2020-07-28 18:59:23,774 INFO received ack: {"type": "push-ack", "lastRefTime":"28038859437600", "data":""} from: 192.168.56.1:63415, cost: 8 ms, unacked: 2, total push: 161
+
+2020-07-28 18:59:23,775 INFO received ack: {"type": "push-ack", "lastRefTime":"28038859437600", "data":""} from: 192.168.56.1:55840, cost: 9 ms, unacked: 1, total push: 161
+
+2020-07-28 18:59:23,785 INFO received ack: {"type": "push-ack", "lastRefTime":"28038859437600", "data":""} from: 192.168.56.1:59698, cost: 18 ms, unacked: 0, total push: 161
+
+2020-07-28 18:59:49,112 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:59:49,112 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,28064206210700
+
+2020-07-28 18:59:49,112 INFO send udp packet: 192.168.56.1,63415,28064206210700
+
+2020-07-28 18:59:49,112 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,28064206210700
+
+2020-07-28 18:59:49,112 INFO send udp packet: 192.168.56.1,59698,28064206210700
+
+2020-07-28 18:59:49,113 INFO received ack: {"type": "push-ack", "lastRefTime":"28064206210700", "data":""} from: 192.168.56.1:63415, cost: 1 ms, unacked: 1, total push: 163
+
+2020-07-28 18:59:49,113 INFO received ack: {"type": "push-ack", "lastRefTime":"28064206210700", "data":""} from: 192.168.56.1:59698, cost: 1 ms, unacked: 0, total push: 163
+
+2020-07-28 18:59:50,504 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:59:50,504 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:61233, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,61233,28065598250800
+
+2020-07-28 18:59:50,504 INFO send udp packet: 192.168.56.1,61233,28065598250800
+
+2020-07-28 18:59:50,504 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,28065598250800
+
+2020-07-28 18:59:50,504 INFO send udp packet: 192.168.56.1,63415,28065598250800
+
+2020-07-28 18:59:50,505 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,28065598250800
+
+2020-07-28 18:59:50,505 INFO send udp packet: 192.168.56.1,59698,28065598250800
+
+2020-07-28 18:59:50,505 INFO received ack: {"type": "push-ack", "lastRefTime":"28065598250800", "data":""} from: 192.168.56.1:63415, cost: 1 ms, unacked: 2, total push: 166
+
+2020-07-28 18:59:50,505 INFO received ack: {"type": "push-ack", "lastRefTime":"28065598250800", "data":""} from: 192.168.56.1:59698, cost: 0 ms, unacked: 1, total push: 166
+
+2020-07-28 18:59:50,508 INFO received ack: {"type": "push-ack", "lastRefTime":"28065598250800", "data":""} from: 192.168.56.1:61233, cost: 4 ms, unacked: 0, total push: 166
+
+2020-07-28 18:59:53,795 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 18:59:53,795 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:61233, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,61233,28068889290300
+
+2020-07-28 18:59:53,795 INFO send udp packet: 192.168.56.1,61233,28068889290300
+
+2020-07-28 18:59:53,795 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,28068889290300
+
+2020-07-28 18:59:53,795 INFO send udp packet: 192.168.56.1,63415,28068889290300
+
+2020-07-28 18:59:53,796 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,28068889290300
+
+2020-07-28 18:59:53,796 INFO send udp packet: 192.168.56.1,59698,28068889290300
+
+2020-07-28 18:59:53,796 INFO received ack: {"type": "push-ack", "lastRefTime":"28068889290300", "data":""} from: 192.168.56.1:63415, cost: 1 ms, unacked: 2, total push: 169
+
+2020-07-28 18:59:53,797 INFO received ack: {"type": "push-ack", "lastRefTime":"28068889290300", "data":""} from: 192.168.56.1:59698, cost: 1 ms, unacked: 1, total push: 169
+
+2020-07-28 18:59:53,797 INFO received ack: {"type": "push-ack", "lastRefTime":"28068889290300", "data":""} from: 192.168.56.1:61233, cost: 2 ms, unacked: 0, total push: 169
+
+2020-07-28 19:01:04,125 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 19:01:04,125 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,28139218711500
+
+2020-07-28 19:01:04,125 INFO send udp packet: 192.168.56.1,63415,28139218711500
+
+2020-07-28 19:01:04,125 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,28139218711500
+
+2020-07-28 19:01:04,125 INFO send udp packet: 192.168.56.1,59698,28139218711500
+
+2020-07-28 19:01:04,126 INFO received ack: {"type": "push-ack", "lastRefTime":"28139218711500", "data":""} from: 192.168.56.1:63415, cost: 1 ms, unacked: 1, total push: 171
+
+2020-07-28 19:01:04,126 INFO received ack: {"type": "push-ack", "lastRefTime":"28139218711500", "data":""} from: 192.168.56.1:59698, cost: 1 ms, unacked: 0, total push: 171
+
+2020-07-28 19:01:07,499 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 19:01:07,499 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,28142592463900
+
+2020-07-28 19:01:07,499 INFO send udp packet: 192.168.56.1,63415,28142592463900
+
+2020-07-28 19:01:07,499 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:51349, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,51349,28142592463900
+
+2020-07-28 19:01:07,499 INFO send udp packet: 192.168.56.1,51349,28142592463900
+
+2020-07-28 19:01:07,499 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,28142592463900
+
+2020-07-28 19:01:07,499 INFO send udp packet: 192.168.56.1,59698,28142592463900
+
+2020-07-28 19:01:07,500 INFO received ack: {"type": "push-ack", "lastRefTime":"28142592463900", "data":""} from: 192.168.56.1:63415, cost: 1 ms, unacked: 2, total push: 174
+
+2020-07-28 19:01:07,500 INFO received ack: {"type": "push-ack", "lastRefTime":"28142592463900", "data":""} from: 192.168.56.1:59698, cost: 1 ms, unacked: 1, total push: 174
+
+2020-07-28 19:01:07,504 INFO received ack: {"type": "push-ack", "lastRefTime":"28142592463900", "data":""} from: 192.168.56.1:51349, cost: 5 ms, unacked: 0, total push: 174
+
+2020-07-28 19:01:10,791 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 19:01:10,791 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,28145884471300
+
+2020-07-28 19:01:10,791 INFO send udp packet: 192.168.56.1,63415,28145884471300
+
+2020-07-28 19:01:10,791 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:51349, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,51349,28145884471300
+
+2020-07-28 19:01:10,791 INFO send udp packet: 192.168.56.1,51349,28145884471300
+
+2020-07-28 19:01:10,792 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,28145884471300
+
+2020-07-28 19:01:10,792 INFO send udp packet: 192.168.56.1,59698,28145884471300
+
+2020-07-28 19:01:10,792 INFO received ack: {"type": "push-ack", "lastRefTime":"28145884471300", "data":""} from: 192.168.56.1:63415, cost: 1 ms, unacked: 2, total push: 177
+
+2020-07-28 19:01:10,792 INFO received ack: {"type": "push-ack", "lastRefTime":"28145884471300", "data":""} from: 192.168.56.1:59698, cost: 0 ms, unacked: 1, total push: 177
+
+2020-07-28 19:01:10,792 INFO received ack: {"type": "push-ack", "lastRefTime":"28145884471300", "data":""} from: 192.168.56.1:51349, cost: 1 ms, unacked: 0, total push: 177
+
+2020-07-28 19:09:29,194 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 19:09:29,194 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,28644287520400
+
+2020-07-28 19:09:29,194 INFO send udp packet: 192.168.56.1,63415,28644287520400
+
+2020-07-28 19:09:29,194 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:51349, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,51349,28644287520400
+
+2020-07-28 19:09:29,194 INFO send udp packet: 192.168.56.1,51349,28644287520400
+
+2020-07-28 19:09:29,194 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,28644287520400
+
+2020-07-28 19:09:29,194 INFO send udp packet: 192.168.56.1,59698,28644287520400
+
+2020-07-28 19:09:29,201 INFO received ack: {"type": "push-ack", "lastRefTime":"28644287520400", "data":""} from: 192.168.56.1:59698, cost: 7 ms, unacked: 2, total push: 180
+
+2020-07-28 19:09:29,201 INFO received ack: {"type": "push-ack", "lastRefTime":"28644287520400", "data":""} from: 192.168.56.1:51349, cost: 7 ms, unacked: 1, total push: 180
+
+2020-07-28 19:09:29,211 INFO received ack: {"type": "push-ack", "lastRefTime":"28644287520400", "data":""} from: 192.168.56.1:63415, cost: 17 ms, unacked: 0, total push: 180
+
+2020-07-28 19:09:35,595 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 19:09:35,595 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:53463, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,53463,28650689289600
+
+2020-07-28 19:09:35,595 INFO send udp packet: 192.168.56.1,53463,28650689289600
+
+2020-07-28 19:09:35,595 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,28650689289600
+
+2020-07-28 19:09:35,595 INFO send udp packet: 192.168.56.1,63415,28650689289600
+
+2020-07-28 19:09:35,595 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:51349, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,51349,28650689289600
+
+2020-07-28 19:09:35,595 INFO send udp packet: 192.168.56.1,51349,28650689289600
+
+2020-07-28 19:09:35,595 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,28650689289600
+
+2020-07-28 19:09:35,595 INFO send udp packet: 192.168.56.1,59698,28650689289600
+
+2020-07-28 19:09:35,596 INFO received ack: {"type": "push-ack", "lastRefTime":"28650689289600", "data":""} from: 192.168.56.1:53463, cost: 1 ms, unacked: 3, total push: 184
+
+2020-07-28 19:09:35,602 INFO received ack: {"type": "push-ack", "lastRefTime":"28650689289600", "data":""} from: 192.168.56.1:63415, cost: 7 ms, unacked: 2, total push: 184
+
+2020-07-28 19:09:35,602 INFO received ack: {"type": "push-ack", "lastRefTime":"28650689289600", "data":""} from: 192.168.56.1:51349, cost: 7 ms, unacked: 1, total push: 184
+
+2020-07-28 19:09:35,613 INFO received ack: {"type": "push-ack", "lastRefTime":"28650689289600", "data":""} from: 192.168.56.1:59698, cost: 18 ms, unacked: 0, total push: 184
+
+2020-07-28 19:11:02,708 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 19:11:02,708 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60508, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60508,28737802208300
+
+2020-07-28 19:11:02,708 INFO send udp packet: 192.168.56.1,60508,28737802208300
+
+2020-07-28 19:11:02,708 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,28737802208300
+
+2020-07-28 19:11:02,708 INFO send udp packet: 192.168.56.1,63415,28737802208300
+
+2020-07-28 19:11:02,708 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,28737802208300
+
+2020-07-28 19:11:02,708 INFO send udp packet: 192.168.56.1,59698,28737802208300
+
+2020-07-28 19:11:02,709 INFO received ack: {"type": "push-ack", "lastRefTime":"28737802208300", "data":""} from: 192.168.56.1:63415, cost: 1 ms, unacked: 2, total push: 187
+
+2020-07-28 19:11:02,710 INFO received ack: {"type": "push-ack", "lastRefTime":"28737802208300", "data":""} from: 192.168.56.1:59698, cost: 2 ms, unacked: 1, total push: 187
+
+2020-07-28 19:11:02,712 INFO received ack: {"type": "push-ack", "lastRefTime":"28737802208300", "data":""} from: 192.168.56.1:60508, cost: 4 ms, unacked: 0, total push: 187
+
+2020-07-28 19:11:42,121 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 19:11:42,121 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60508, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60508,28777215214900
+
+2020-07-28 19:11:42,121 INFO send udp packet: 192.168.56.1,60508,28777215214900
+
+2020-07-28 19:11:42,121 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,28777215214900
+
+2020-07-28 19:11:42,121 INFO send udp packet: 192.168.56.1,63415,28777215214900
+
+2020-07-28 19:11:42,121 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,28777215214900
+
+2020-07-28 19:11:42,121 INFO send udp packet: 192.168.56.1,59698,28777215214900
+
+2020-07-28 19:11:42,123 INFO received ack: {"type": "push-ack", "lastRefTime":"28777215214900", "data":""} from: 192.168.56.1:59698, cost: 2 ms, unacked: 2, total push: 190
+
+2020-07-28 19:11:42,130 INFO received ack: {"type": "push-ack", "lastRefTime":"28777215214900", "data":""} from: 192.168.56.1:63415, cost: 9 ms, unacked: 1, total push: 190
+
+2020-07-28 19:11:42,130 INFO received ack: {"type": "push-ack", "lastRefTime":"28777215214900", "data":""} from: 192.168.56.1:60508, cost: 9 ms, unacked: 0, total push: 190
+
+2020-07-28 19:11:50,049 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 19:11:50,049 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60508, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60508,28785143061500
+
+2020-07-28 19:11:50,049 INFO send udp packet: 192.168.56.1,60508,28785143061500
+
+2020-07-28 19:11:50,049 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,28785143061500
+
+2020-07-28 19:11:50,049 INFO send udp packet: 192.168.56.1,63415,28785143061500
+
+2020-07-28 19:11:50,049 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60463, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60463,28785143061500
+
+2020-07-28 19:11:50,050 INFO send udp packet: 192.168.56.1,60463,28785143061500
+
+2020-07-28 19:11:50,050 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,28785143061500
+
+2020-07-28 19:11:50,050 INFO send udp packet: 192.168.56.1,59698,28785143061500
+
+2020-07-28 19:11:50,054 INFO received ack: {"type": "push-ack", "lastRefTime":"28785143061500", "data":""} from: 192.168.56.1:60463, cost: 5 ms, unacked: 3, total push: 194
+
+2020-07-28 19:11:50,057 INFO received ack: {"type": "push-ack", "lastRefTime":"28785143061500", "data":""} from: 192.168.56.1:59698, cost: 7 ms, unacked: 2, total push: 194
+
+2020-07-28 19:11:50,057 INFO received ack: {"type": "push-ack", "lastRefTime":"28785143061500", "data":""} from: 192.168.56.1:60508, cost: 8 ms, unacked: 1, total push: 194
+
+2020-07-28 19:11:50,068 INFO received ack: {"type": "push-ack", "lastRefTime":"28785143061500", "data":""} from: 192.168.56.1:63415, cost: 19 ms, unacked: 0, total push: 194
+
+2020-07-28 19:12:33,238 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 19:12:33,238 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60508, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60508,28828332120400
+
+2020-07-28 19:12:33,238 INFO send udp packet: 192.168.56.1,60508,28828332120400
+
+2020-07-28 19:12:33,238 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,28828332120400
+
+2020-07-28 19:12:33,238 INFO send udp packet: 192.168.56.1,63415,28828332120400
+
+2020-07-28 19:12:33,238 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60463, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60463,28828332120400
+
+2020-07-28 19:12:33,238 INFO send udp packet: 192.168.56.1,60463,28828332120400
+
+2020-07-28 19:12:33,239 INFO received ack: {"type": "push-ack", "lastRefTime":"28828332120400", "data":""} from: 192.168.56.1:60508, cost: 1 ms, unacked: 2, total push: 197
+
+2020-07-28 19:12:33,239 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,28828332120400
+
+2020-07-28 19:12:33,239 INFO send udp packet: 192.168.56.1,59698,28828332120400
+
+2020-07-28 19:12:33,247 INFO received ack: {"type": "push-ack", "lastRefTime":"28828332120400", "data":""} from: 192.168.56.1:59698, cost: 8 ms, unacked: 2, total push: 198
+
+2020-07-28 19:12:33,247 INFO received ack: {"type": "push-ack", "lastRefTime":"28828332120400", "data":""} from: 192.168.56.1:60463, cost: 9 ms, unacked: 1, total push: 198
+
+2020-07-28 19:12:33,257 INFO received ack: {"type": "push-ack", "lastRefTime":"28828332120400", "data":""} from: 192.168.56.1:63415, cost: 19 ms, unacked: 0, total push: 198
+
+2020-07-28 19:12:39,962 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 19:12:39,962 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:62983, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,62983,28835055789100
+
+2020-07-28 19:12:39,962 INFO send udp packet: 192.168.56.1,62983,28835055789100
+
+2020-07-28 19:12:39,962 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60508, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60508,28835055789100
+
+2020-07-28 19:12:39,962 INFO send udp packet: 192.168.56.1,60508,28835055789100
+
+2020-07-28 19:12:39,962 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:63415, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,63415,28835055789100
+
+2020-07-28 19:12:39,962 INFO send udp packet: 192.168.56.1,63415,28835055789100
+
+2020-07-28 19:12:39,962 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:60463, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,60463,28835055789100
+
+2020-07-28 19:12:39,962 INFO send udp packet: 192.168.56.1,60463,28835055789100
+
+2020-07-28 19:12:39,963 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:59698, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,59698,28835055789100
+
+2020-07-28 19:12:39,963 INFO send udp packet: 192.168.56.1,59698,28835055789100
+
+2020-07-28 19:12:39,963 INFO received ack: {"type": "push-ack", "lastRefTime":"28835055789100", "data":""} from: 192.168.56.1:62983, cost: 1 ms, unacked: 4, total push: 203
+
+2020-07-28 19:12:39,969 INFO received ack: {"type": "push-ack", "lastRefTime":"28835055789100", "data":""} from: 192.168.56.1:59698, cost: 6 ms, unacked: 3, total push: 203
+
+2020-07-28 19:12:39,970 INFO received ack: {"type": "push-ack", "lastRefTime":"28835055789100", "data":""} from: 192.168.56.1:60508, cost: 8 ms, unacked: 2, total push: 203
+
+2020-07-28 19:12:39,979 INFO received ack: {"type": "push-ack", "lastRefTime":"28835055789100", "data":""} from: 192.168.56.1:63415, cost: 17 ms, unacked: 1, total push: 203
+
+2020-07-28 19:12:39,981 INFO received ack: {"type": "push-ack", "lastRefTime":"28835055789100", "data":""} from: 192.168.56.1:60463, cost: 19 ms, unacked: 0, total push: 203
+
+2020-07-28 19:13:49,239 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 19:13:54,174 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 19:14:04,246 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 19:14:09,178 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 19:46:55,403 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 19:49:33,749 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 19:49:33,749 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:53973, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,53973,31048892897800
+
+2020-07-28 19:49:33,750 INFO send udp packet: 192.168.56.1,53973,31048892897800
+
+2020-07-28 19:49:33,767 INFO received ack: {"type": "push-ack", "lastRefTime":"31048892897800", "data":""} from: 192.168.56.1:53973, cost: 17 ms, unacked: 0, total push: 204
+
+2020-07-28 20:02:41,052 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 20:34:03,701 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 21:01:34,623 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 21:01:34,623 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:54414, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,54414,35369422965600
+
+2020-07-28 21:01:34,623 INFO send udp packet: 192.168.56.1,54414,35369422965600
+
+2020-07-28 21:01:34,626 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:52196, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,52196,35369422965600
+
+2020-07-28 21:01:34,626 INFO send udp packet: 192.168.56.1,52196,35369422965600
+
+2020-07-28 21:01:34,629 INFO received ack: {"type": "push-ack", "lastRefTime":"35369422965600", "data":""} from: 192.168.56.1:54414, cost: 6 ms, unacked: 1, total push: 206
+
+2020-07-28 21:01:34,839 INFO received ack: {"type": "push-ack", "lastRefTime":"35369422965600", "data":""} from: 192.168.56.1:52196, cost: 213 ms, unacked: 0, total push: 206
+
+2020-07-28 21:01:41,821 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 21:01:41,821 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:52154, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,52154,35376619253300
+
+2020-07-28 21:01:41,821 INFO send udp packet: 192.168.56.1,52154,35376619253300
+
+2020-07-28 21:01:41,821 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:54414, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,54414,35376619253300
+
+2020-07-28 21:01:41,821 INFO send udp packet: 192.168.56.1,54414,35376619253300
+
+2020-07-28 21:01:41,821 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:52196, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,52196,35376619253300
+
+2020-07-28 21:01:41,821 INFO send udp packet: 192.168.56.1,52196,35376619253300
+
+2020-07-28 21:01:41,822 INFO received ack: {"type": "push-ack", "lastRefTime":"35376619253300", "data":""} from: 192.168.56.1:52154, cost: 1 ms, unacked: 2, total push: 209
+
+2020-07-28 21:01:41,830 INFO received ack: {"type": "push-ack", "lastRefTime":"35376619253300", "data":""} from: 192.168.56.1:52196, cost: 9 ms, unacked: 1, total push: 209
+
+2020-07-28 21:01:41,830 INFO received ack: {"type": "push-ack", "lastRefTime":"35376619253300", "data":""} from: 192.168.56.1:54414, cost: 9 ms, unacked: 0, total push: 209
+
+2020-07-28 21:07:20,921 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 21:07:20,921 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:52154, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,52154,35715659395400
+
+2020-07-28 21:07:20,921 INFO send udp packet: 192.168.56.1,52154,35715659395400
+
+2020-07-28 21:07:20,921 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:54414, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,54414,35715659395400
+
+2020-07-28 21:07:20,921 INFO send udp packet: 192.168.56.1,54414,35715659395400
+
+2020-07-28 21:07:20,922 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:52196, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,52196,35715659395400
+
+2020-07-28 21:07:20,922 INFO send udp packet: 192.168.56.1,52196,35715659395400
+
+2020-07-28 21:07:20,928 INFO received ack: {"type": "push-ack", "lastRefTime":"35715659395400", "data":""} from: 192.168.56.1:54414, cost: 7 ms, unacked: 2, total push: 212
+
+2020-07-28 21:07:21,245 INFO received ack: {"type": "push-ack", "lastRefTime":"35715659395400", "data":""} from: 192.168.56.1:52196, cost: 323 ms, unacked: 1, total push: 212
+
+2020-07-28 21:07:21,252 INFO received ack: {"type": "push-ack", "lastRefTime":"35715659395400", "data":""} from: 192.168.56.1:52154, cost: 331 ms, unacked: 0, total push: 212
+
+2020-07-28 21:07:28,761 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 21:07:28,761 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:52154, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,52154,35723498455400
+
+2020-07-28 21:07:28,761 INFO send udp packet: 192.168.56.1,52154,35723498455400
+
+2020-07-28 21:07:28,761 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:54414, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,54414,35723498455400
+
+2020-07-28 21:07:28,761 INFO send udp packet: 192.168.56.1,54414,35723498455400
+
+2020-07-28 21:07:28,761 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:52196, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,52196,35723498455400
+
+2020-07-28 21:07:28,761 INFO send udp packet: 192.168.56.1,52196,35723498455400
+
+2020-07-28 21:07:28,761 INFO serviceName: DEFAULT_GROUP@@service-edu changed, schedule push for: 192.168.56.1:55238, agent: Nacos-Java-Client:v1.0.0, key: 192.168.56.1,55238,35723498455400
+
+2020-07-28 21:07:28,761 INFO send udp packet: 192.168.56.1,55238,35723498455400
+
+2020-07-28 21:07:28,762 INFO received ack: {"type": "push-ack", "lastRefTime":"35723498455400", "data":""} from: 192.168.56.1:55238, cost: 1 ms, unacked: 3, total push: 216
+
+2020-07-28 21:07:28,768 INFO received ack: {"type": "push-ack", "lastRefTime":"35723498455400", "data":""} from: 192.168.56.1:54414, cost: 7 ms, unacked: 2, total push: 216
+
+2020-07-28 21:07:28,769 INFO received ack: {"type": "push-ack", "lastRefTime":"35723498455400", "data":""} from: 192.168.56.1:52196, cost: 8 ms, unacked: 1, total push: 216
+
+2020-07-28 21:07:28,780 INFO received ack: {"type": "push-ack", "lastRefTime":"35723498455400", "data":""} from: 192.168.56.1:52154, cost: 19 ms, unacked: 0, total push: 216
+
+2020-07-28 21:19:27,423 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 21:19:29,667 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 21:19:42,431 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 21:19:44,674 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 21:31:46,707 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 21:31:49,488 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 22:59:35,643 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 22:59:37,892 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+
+2020-07-28 22:59:50,651 INFO DEFAULT_GROUP@@service-ucenter is changed, add it to push queue.
+
+2020-07-28 22:59:52,897 INFO DEFAULT_GROUP@@service-edu is changed, add it to push queue.
+

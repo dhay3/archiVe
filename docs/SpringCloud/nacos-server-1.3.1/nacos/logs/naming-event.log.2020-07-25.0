@@ -1,0 +1,222 @@
+2020-07-25 00:00:25,898 INFO {POS} {IP-DISABLED} valid: 192.168.1.1:8006@DEFAULT@DEFAULT_GROUP@@service-ucenter, region: unknown, msg: client timeout after 15000, last beat: 1595606406709
+
+2020-07-25 00:00:26,752 INFO service: DEFAULT_GROUP@@service-ucenter {POS} {IP-ENABLED} valid: 192.168.1.1:8006@DEFAULT, region: unknown, msg: client beat ok
+
+2020-07-25 00:01:15,906 INFO {POS} {IP-DISABLED} valid: 192.168.1.1:8006@DEFAULT@DEFAULT_GROUP@@service-ucenter, region: unknown, msg: client timeout after 15000, last beat: 1595606456517
+
+2020-07-25 00:01:30,910 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_false_false_DEFAULT]
+
+2020-07-25 00:01:30,910 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 00:02:44,654 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 00:02:44,654 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8006_true,
+
+2020-07-25 00:02:44,694 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 00:02:44,694 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 00:03:01,183 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 00:03:01,183 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8006_true,
+
+2020-07-25 00:03:50,936 INFO {POS} {IP-DISABLED} valid: 192.168.1.1:8006@DEFAULT@DEFAULT_GROUP@@service-ucenter, region: unknown, msg: client timeout after 15000, last beat: 1595606615619
+
+2020-07-25 00:04:05,941 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_false_false_DEFAULT]
+
+2020-07-25 00:04:05,941 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 00:04:28,192 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 00:04:28,192 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8006_true,
+
+2020-07-25 00:04:45,942 INFO {POS} {IP-DISABLED} valid: 192.168.1.1:8006@DEFAULT@DEFAULT_GROUP@@service-ucenter, region: unknown, msg: client timeout after 15000, last beat: 1595606668192
+
+2020-07-25 00:05:00,946 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_false_false_DEFAULT]
+
+2020-07-25 00:05:00,946 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 00:05:05,830 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 00:05:05,831 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8006_true,
+
+2020-07-25 00:05:20,948 INFO {POS} {IP-DISABLED} valid: 192.168.1.1:8006@DEFAULT@DEFAULT_GROUP@@service-ucenter, region: unknown, msg: client timeout after 15000, last beat: 1595606705831
+
+2020-07-25 00:05:25,014 INFO service: DEFAULT_GROUP@@service-ucenter {POS} {IP-ENABLED} valid: 192.168.1.1:8006@DEFAULT, region: unknown, msg: client beat ok
+
+2020-07-25 00:05:55,955 INFO {POS} {IP-DISABLED} valid: 192.168.1.1:8006@DEFAULT@DEFAULT_GROUP@@service-ucenter, region: unknown, msg: client timeout after 15000, last beat: 1595606738787
+
+2020-07-25 00:06:10,960 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_false_false_DEFAULT]
+
+2020-07-25 00:06:10,960 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 00:07:38,355 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 00:07:38,355 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8006_true,
+
+2020-07-25 00:07:38,440 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 00:07:38,440 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 00:07:53,614 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 00:07:53,614 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8006_true,
+
+2020-07-25 00:08:25,981 INFO {POS} {IP-DISABLED} valid: 192.168.1.1:8006@DEFAULT@DEFAULT_GROUP@@service-ucenter, region: unknown, msg: client timeout after 15000, last beat: 1595606886714
+
+2020-07-25 00:08:40,985 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_false_false_DEFAULT]
+
+2020-07-25 00:08:40,985 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 00:08:50,812 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 00:08:50,812 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8006_true,
+
+2020-07-25 00:09:05,986 INFO {POS} {IP-DISABLED} valid: 192.168.1.1:8006@DEFAULT@DEFAULT_GROUP@@service-ucenter, region: unknown, msg: client timeout after 15000, last beat: 1595606930813
+
+2020-07-25 00:09:20,992 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_false_false_DEFAULT]
+
+2020-07-25 00:09:20,992 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 00:09:33,463 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 00:09:33,463 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8006_true,
+
+2020-07-25 00:09:50,997 INFO {POS} {IP-DISABLED} valid: 192.168.1.1:8006@DEFAULT@DEFAULT_GROUP@@service-ucenter, region: unknown, msg: client timeout after 15000, last beat: 1595606973463
+
+2020-07-25 00:09:54,028 INFO service: DEFAULT_GROUP@@service-ucenter {POS} {IP-ENABLED} valid: 192.168.1.1:8006@DEFAULT, region: unknown, msg: client beat ok
+
+2020-07-25 00:11:51,021 INFO {POS} {IP-DISABLED} valid: 192.168.1.1:8006@DEFAULT@DEFAULT_GROUP@@service-ucenter, region: unknown, msg: client timeout after 15000, last beat: 1595607091622
+
+2020-07-25 00:12:06,025 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_false_false_DEFAULT]
+
+2020-07-25 00:12:06,025 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 00:12:34,936 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 00:12:34,936 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8006_true,
+
+2020-07-25 00:12:34,979 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 00:12:34,979 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 12:44:06,791 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 12:44:06,794 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8006_true,
+
+2020-07-25 13:13:37,070 INFO {POS} {IP-DISABLED} valid: 192.168.1.1:8006@DEFAULT@DEFAULT_GROUP@@service-ucenter, region: unknown, msg: client timeout after 15000, last beat: 1595654000353
+
+2020-07-25 13:13:39,467 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8006_false,
+
+2020-07-25 13:13:42,838 INFO service: DEFAULT_GROUP@@service-ucenter {POS} {IP-ENABLED} valid: 192.168.1.1:8006@DEFAULT, region: unknown, msg: client beat ok
+
+2020-07-25 13:17:32,339 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 13:17:32,339 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 13:17:37,954 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 13:17:37,954 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8006_true,
+
+2020-07-25 13:27:22,201 INFO {POS} {IP-DISABLED} valid: 192.168.1.1:8006@DEFAULT@DEFAULT_GROUP@@service-ucenter, region: unknown, msg: client timeout after 15000, last beat: 1595654826820
+
+2020-07-25 13:27:37,336 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_false_false_DEFAULT]
+
+2020-07-25 13:27:37,336 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 13:31:54,193 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 13:31:54,193 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8006_true,
+
+2020-07-25 13:41:27,105 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8006:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 13:41:27,105 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 13:41:33,400 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8150:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 13:41:33,400 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8150_true,
+
+2020-07-25 13:42:04,296 INFO {POS} {IP-DISABLED} valid: 192.168.1.1:8150@DEFAULT@DEFAULT_GROUP@@service-ucenter, region: unknown, msg: client timeout after 15000, last beat: 1595655706867
+
+2020-07-25 13:42:19,309 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8150:unknown:DEFAULT_1.0_false_false_DEFAULT]
+
+2020-07-25 13:42:19,309 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 13:48:03,350 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8150:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 13:48:03,350 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8150_true,
+
+2020-07-25 13:49:23,267 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8150_true,
+
+2020-07-25 13:50:53,478 INFO DEFAULT_GROUP@@service-edu {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8001:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 13:50:53,478 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-edu, ips: 192.168.1.1:8001_true,
+
+2020-07-25 13:51:54,866 INFO DEFAULT_GROUP@@service-edu {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8001:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 13:51:54,866 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-edu, ips: 
+
+2020-07-25 13:52:01,988 INFO DEFAULT_GROUP@@service-edu {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8001:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 13:52:01,988 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-edu, ips: 192.168.1.1:8001_true,
+
+2020-07-25 13:52:28,404 INFO {POS} {IP-DISABLED} valid: 192.168.1.1:8150@DEFAULT@DEFAULT_GROUP@@service-ucenter, region: unknown, msg: client timeout after 15000, last beat: 1595656331526
+
+2020-07-25 13:52:33,492 INFO {POS} {IP-DISABLED} valid: 192.168.1.1:8001@DEFAULT@DEFAULT_GROUP@@service-edu, region: unknown, msg: client timeout after 15000, last beat: 1595656335470
+
+2020-07-25 13:52:34,986 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8150_false,
+
+2020-07-25 13:52:38,393 INFO service: DEFAULT_GROUP@@service-ucenter {POS} {IP-ENABLED} valid: 192.168.1.1:8150@DEFAULT, region: unknown, msg: client beat ok
+
+2020-07-25 13:52:48,503 INFO DEFAULT_GROUP@@service-edu {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8001:unknown:DEFAULT_1.0_false_false_DEFAULT]
+
+2020-07-25 13:52:48,503 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-edu, ips: 
+
+2020-07-25 13:54:27,596 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8150:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 13:54:27,596 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 13:54:33,512 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8150:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 13:54:33,513 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8150_true,
+
+2020-07-25 13:56:23,308 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8150:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 13:56:23,309 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 13:56:30,150 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8150:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 13:56:30,150 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8150_true,
+
+2020-07-25 13:58:18,748 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8150:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 13:58:18,750 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 13:58:25,108 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8150:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 13:58:25,108 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8150_true,
+
+2020-07-25 13:59:10,622 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8150:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 13:59:10,622 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 13:59:15,740 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8150:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 13:59:15,740 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8150_true,
+
+2020-07-25 14:00:00,527 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8150:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 14:00:00,527 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 14:00:08,178 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8150:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 14:00:08,178 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8150_true,
+
+2020-07-25 14:00:40,121 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.1.1:8150:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 14:00:40,121 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 
+
+2020-07-25 14:00:46,099 INFO DEFAULT_GROUP@@service-ucenter {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.1.1:8150:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-07-25 14:00:46,099 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@service-ucenter, ips: 192.168.1.1:8150_true,
+

@@ -1,0 +1,188 @@
+2020-07-25 00:01:30,907 INFO [AUTO-DELETE-IP] service: DEFAULT_GROUP@@service-ucenter, ip: {"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":false,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595606456517,"marked":false,"app":"DEFAULT","ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}
+
+2020-07-25 00:01:30,910 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 00:02:44,651 WARN [CLIENT-BEAT] The instance has been removed for health mechanism, perform data compensation operations, beat: {"load":0.0,"cpu":0.0,"rt":0.0,"qps":0.0,"mem":0.0,"port":8006,"ip":"192.168.1.1","serviceName":"DEFAULT_GROUP@@service-ucenter","cluster":"DEFAULT","weight":1.0,"ephemeral":true,"metadata":{"preserved.register.source":"SPRING_CLOUD"}}, serviceName: DEFAULT_GROUP@@service-ucenter
+
+2020-07-25 00:02:44,654 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595606564652,"marked":false,"ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 00:02:44,694 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 00:03:01,183 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595606581183,"marked":false,"app":"DEFAULT","ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 00:04:05,938 INFO [AUTO-DELETE-IP] service: DEFAULT_GROUP@@service-ucenter, ip: {"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":false,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595606615619,"marked":false,"app":"DEFAULT","ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}
+
+2020-07-25 00:04:05,941 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 00:04:28,192 WARN [CLIENT-BEAT] The instance has been removed for health mechanism, perform data compensation operations, beat: {"load":0.0,"cpu":0.0,"rt":0.0,"qps":0.0,"mem":0.0,"port":8006,"ip":"192.168.1.1","serviceName":"DEFAULT_GROUP@@service-ucenter","cluster":"DEFAULT","weight":1.0,"ephemeral":true,"metadata":{"preserved.register.source":"SPRING_CLOUD"}}, serviceName: DEFAULT_GROUP@@service-ucenter
+
+2020-07-25 00:04:28,192 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595606668192,"marked":false,"ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 00:05:00,944 INFO [AUTO-DELETE-IP] service: DEFAULT_GROUP@@service-ucenter, ip: {"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":false,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595606668192,"marked":false,"ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}
+
+2020-07-25 00:05:00,946 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 00:05:05,830 WARN [CLIENT-BEAT] The instance has been removed for health mechanism, perform data compensation operations, beat: {"load":0.0,"cpu":0.0,"rt":0.0,"qps":0.0,"mem":0.0,"port":8006,"ip":"192.168.1.1","serviceName":"DEFAULT_GROUP@@service-ucenter","cluster":"DEFAULT","weight":1.0,"ephemeral":true,"metadata":{"preserved.register.source":"SPRING_CLOUD"}}, serviceName: DEFAULT_GROUP@@service-ucenter
+
+2020-07-25 00:05:05,830 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595606705830,"marked":false,"ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 00:06:10,957 INFO [AUTO-DELETE-IP] service: DEFAULT_GROUP@@service-ucenter, ip: {"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":false,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595606738787,"marked":false,"ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}
+
+2020-07-25 00:06:10,960 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 00:07:38,355 WARN [CLIENT-BEAT] The instance has been removed for health mechanism, perform data compensation operations, beat: {"load":0.0,"cpu":0.0,"rt":0.0,"qps":0.0,"mem":0.0,"port":8006,"ip":"192.168.1.1","serviceName":"DEFAULT_GROUP@@service-ucenter","cluster":"DEFAULT","weight":1.0,"ephemeral":true,"metadata":{"preserved.register.source":"SPRING_CLOUD"}}, serviceName: DEFAULT_GROUP@@service-ucenter
+
+2020-07-25 00:07:38,355 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595606858355,"marked":false,"ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 00:07:38,440 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 00:07:53,614 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595606873614,"marked":false,"app":"DEFAULT","ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 00:08:40,982 INFO [AUTO-DELETE-IP] service: DEFAULT_GROUP@@service-ucenter, ip: {"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":false,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595606886714,"marked":false,"app":"DEFAULT","ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}
+
+2020-07-25 00:08:40,985 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 00:08:50,812 WARN [CLIENT-BEAT] The instance has been removed for health mechanism, perform data compensation operations, beat: {"load":0.0,"cpu":0.0,"rt":0.0,"qps":0.0,"mem":0.0,"port":8006,"ip":"192.168.1.1","serviceName":"DEFAULT_GROUP@@service-ucenter","cluster":"DEFAULT","weight":1.0,"ephemeral":true,"metadata":{"preserved.register.source":"SPRING_CLOUD"}}, serviceName: DEFAULT_GROUP@@service-ucenter
+
+2020-07-25 00:08:50,812 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595606930812,"marked":false,"ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 00:09:20,991 INFO [AUTO-DELETE-IP] service: DEFAULT_GROUP@@service-ucenter, ip: {"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":false,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595606930813,"marked":false,"ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}
+
+2020-07-25 00:09:20,992 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 00:09:33,463 WARN [CLIENT-BEAT] The instance has been removed for health mechanism, perform data compensation operations, beat: {"load":0.0,"cpu":0.0,"rt":0.0,"qps":0.0,"mem":0.0,"port":8006,"ip":"192.168.1.1","serviceName":"DEFAULT_GROUP@@service-ucenter","cluster":"DEFAULT","weight":1.0,"ephemeral":true,"metadata":{"preserved.register.source":"SPRING_CLOUD"}}, serviceName: DEFAULT_GROUP@@service-ucenter
+
+2020-07-25 00:09:33,463 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595606973463,"marked":false,"ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 00:12:06,022 INFO [AUTO-DELETE-IP] service: DEFAULT_GROUP@@service-ucenter, ip: {"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":false,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595607091622,"marked":false,"ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}
+
+2020-07-25 00:12:06,025 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 00:12:34,936 WARN [CLIENT-BEAT] The instance has been removed for health mechanism, perform data compensation operations, beat: {"load":0.0,"cpu":0.0,"rt":0.0,"qps":0.0,"mem":0.0,"port":8006,"ip":"192.168.1.1","serviceName":"DEFAULT_GROUP@@service-ucenter","cluster":"DEFAULT","weight":1.0,"ephemeral":true,"metadata":{"preserved.register.source":"SPRING_CLOUD"}}, serviceName: DEFAULT_GROUP@@service-ucenter
+
+2020-07-25 00:12:34,936 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595607154936,"marked":false,"ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 00:12:34,979 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 12:44:02,693 INFO open empty service auto clean job, initialDelay : 50000 ms, period : 30000 ms
+
+2020-07-25 12:44:02,694 INFO listen for service meta change
+
+2020-07-25 12:44:06,720 WARN [CLIENT-BEAT] The instance has been removed for health mechanism, perform data compensation operations, beat: {"load":0.0,"cpu":0.0,"rt":0.0,"qps":0.0,"mem":0.0,"port":8006,"ip":"192.168.1.1","serviceName":"DEFAULT_GROUP@@service-ucenter","cluster":"DEFAULT","weight":1.0,"ephemeral":true,"metadata":{"preserved.register.source":"SPRING_CLOUD"}}, serviceName: DEFAULT_GROUP@@service-ucenter
+
+2020-07-25 12:44:06,726 INFO creating empty service public:DEFAULT_GROUP@@service-ucenter
+
+2020-07-25 12:44:06,772 INFO [NEW-SERVICE] {"name":"DEFAULT_GROUP@@service-ucenter","protectThreshold":0.0,"groupName":"DEFAULT_GROUP","metadata":{},"finalizeCount":0,"owners":[],"resetWeight":false,"enabled":true,"selector":{"type":"none"},"namespaceId":"public","ipDeleteTimeout":30000,"lastModifiedMillis":1595652246729,"checksum":"a166b1ce8895ade3a1e4f099982d4f7c","clusterMap":{},"empty":true}
+
+2020-07-25 12:44:06,778 WARN cluster: DEFAULT not found, ip: {"ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595652246726,"marked":false,"instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}, will create new cluster with default configuration.
+
+2020-07-25 12:44:06,790 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595652246726,"marked":false,"instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 13:13:39,337 WARN protect threshold reached, return all ips, service: DEFAULT_GROUP@@service-ucenter
+
+2020-07-25 13:13:39,466 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595654019466,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 13:13:40,368 WARN protect threshold reached, return all ips, service: DEFAULT_GROUP@@service-ucenter
+
+2020-07-25 13:13:40,469 WARN protect threshold reached, return all ips, service: DEFAULT_GROUP@@service-ucenter
+
+2020-07-25 13:17:32,339 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 13:17:37,954 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595654257954,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 13:27:37,202 INFO [AUTO-DELETE-IP] service: DEFAULT_GROUP@@service-ucenter, ip: {"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":false,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595654826820,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}
+
+2020-07-25 13:27:37,336 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 13:29:52,694 WARN namespace : public, [DEFAULT_GROUP@@service-ucenter] services are automatically cleaned
+
+2020-07-25 13:29:52,698 INFO [DEAD-SERVICE] {"name":"DEFAULT_GROUP@@service-ucenter","protectThreshold":0.0,"groupName":"DEFAULT_GROUP","metadata":{},"finalizeCount":5,"owners":[],"resetWeight":false,"enabled":true,"selector":{"type":"none"},"namespaceId":"public","ipDeleteTimeout":30000,"lastModifiedMillis":1595654857336,"checksum":"d5a8eef8fded781637a5dc455d726112","clusterMap":{"DEFAULT":{"serviceName":"DEFAULT_GROUP@@service-ucenter","name":"DEFAULT","healthChecker":{"type":"TCP"},"defaultPort":80,"defaultCheckPort":80,"useIPPort4Check":true,"metadata":{},"sitegroup":"","defCkport":80,"empty":true,"defIPPort":80}},"empty":true}
+
+2020-07-25 13:31:54,191 INFO creating empty service public:DEFAULT_GROUP@@service-ucenter
+
+2020-07-25 13:31:54,191 INFO [NEW-SERVICE] {"name":"DEFAULT_GROUP@@service-ucenter","protectThreshold":0.0,"groupName":"DEFAULT_GROUP","metadata":{},"finalizeCount":0,"owners":[],"resetWeight":false,"enabled":true,"selector":{"type":"none"},"namespaceId":"public","ipDeleteTimeout":30000,"lastModifiedMillis":1595655114191,"checksum":"a166b1ce8895ade3a1e4f099982d4f7c","clusterMap":{},"empty":true}
+
+2020-07-25 13:31:54,192 WARN cluster: DEFAULT not found, ip: {"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595655114191,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}, will create new cluster with default configuration.
+
+2020-07-25 13:31:54,192 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8006#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8006,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595655114191,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 13:41:27,105 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 13:41:33,400 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8150#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8150,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595655693400,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 13:42:19,305 INFO [AUTO-DELETE-IP] service: DEFAULT_GROUP@@service-ucenter, ip: {"instanceId":"192.168.1.1#8150#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8150,"weight":1.0,"healthy":false,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595655706867,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}
+
+2020-07-25 13:42:19,308 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 13:44:22,696 WARN namespace : public, [DEFAULT_GROUP@@service-ucenter] services are automatically cleaned
+
+2020-07-25 13:44:22,697 INFO [DEAD-SERVICE] {"name":"DEFAULT_GROUP@@service-ucenter","protectThreshold":0.0,"groupName":"DEFAULT_GROUP","metadata":{},"finalizeCount":5,"owners":[],"resetWeight":false,"enabled":true,"selector":{"type":"none"},"namespaceId":"public","ipDeleteTimeout":30000,"lastModifiedMillis":1595655739309,"checksum":"d5a8eef8fded781637a5dc455d726112","clusterMap":{"DEFAULT":{"serviceName":"DEFAULT_GROUP@@service-ucenter","name":"DEFAULT","healthChecker":{"type":"TCP"},"defaultPort":80,"defaultCheckPort":80,"useIPPort4Check":true,"metadata":{},"sitegroup":"","defCkport":80,"empty":true,"defIPPort":80}},"empty":true}
+
+2020-07-25 13:48:03,349 INFO creating empty service public:DEFAULT_GROUP@@service-ucenter
+
+2020-07-25 13:48:03,350 INFO [NEW-SERVICE] {"name":"DEFAULT_GROUP@@service-ucenter","protectThreshold":0.0,"groupName":"DEFAULT_GROUP","metadata":{},"finalizeCount":0,"owners":[],"resetWeight":false,"enabled":true,"selector":{"type":"none"},"namespaceId":"public","ipDeleteTimeout":30000,"lastModifiedMillis":1595656083349,"checksum":"a166b1ce8895ade3a1e4f099982d4f7c","clusterMap":{},"empty":true}
+
+2020-07-25 13:48:03,350 WARN cluster: DEFAULT not found, ip: {"instanceId":"192.168.1.1#8150#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8150,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595656083349,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}, will create new cluster with default configuration.
+
+2020-07-25 13:48:03,350 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8150#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8150,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595656083349,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 13:49:23,267 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8150#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8150,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595656163267,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 13:50:53,477 INFO creating empty service public:DEFAULT_GROUP@@service-edu
+
+2020-07-25 13:50:53,478 INFO [NEW-SERVICE] {"name":"DEFAULT_GROUP@@service-edu","protectThreshold":0.0,"groupName":"DEFAULT_GROUP","metadata":{},"finalizeCount":0,"owners":[],"resetWeight":false,"enabled":true,"selector":{"type":"none"},"namespaceId":"public","ipDeleteTimeout":30000,"lastModifiedMillis":1595656253477,"checksum":"381ea878afd4fdfd962c0e42189d0720","clusterMap":{},"empty":true}
+
+2020-07-25 13:50:53,478 WARN cluster: DEFAULT not found, ip: {"instanceId":"192.168.1.1#8001#DEFAULT#DEFAULT_GROUP@@service-edu","ip":"192.168.1.1","port":8001,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-edu","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595656253477,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}, will create new cluster with default configuration.
+
+2020-07-25 13:50:53,478 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-edu, value: {"instanceList":[{"instanceId":"192.168.1.1#8001#DEFAULT#DEFAULT_GROUP@@service-edu","ip":"192.168.1.1","port":8001,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-edu","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595656253477,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 13:51:54,866 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-edu, value: {"instanceList":[]}
+
+2020-07-25 13:52:01,988 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-edu, value: {"instanceList":[{"instanceId":"192.168.1.1#8001#DEFAULT#DEFAULT_GROUP@@service-edu","ip":"192.168.1.1","port":8001,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-edu","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595656321987,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 13:52:34,847 WARN protect threshold reached, return all ips, service: DEFAULT_GROUP@@service-edu
+
+2020-07-25 13:52:34,883 WARN protect threshold reached, return all ips, service: DEFAULT_GROUP@@service-ucenter
+
+2020-07-25 13:52:34,982 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8150#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8150,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595656354981,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 13:52:35,883 WARN protect threshold reached, return all ips, service: DEFAULT_GROUP@@service-edu
+
+2020-07-25 13:52:35,893 WARN protect threshold reached, return all ips, service: DEFAULT_GROUP@@service-ucenter
+
+2020-07-25 13:52:35,987 WARN protect threshold reached, return all ips, service: DEFAULT_GROUP@@service-ucenter
+
+2020-07-25 13:52:45,888 WARN protect threshold reached, return all ips, service: DEFAULT_GROUP@@service-edu
+
+2020-07-25 13:52:48,496 INFO [AUTO-DELETE-IP] service: DEFAULT_GROUP@@service-edu, ip: {"instanceId":"192.168.1.1#8001#DEFAULT#DEFAULT_GROUP@@service-edu","ip":"192.168.1.1","port":8001,"weight":1.0,"healthy":false,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-edu","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595656335470,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}
+
+2020-07-25 13:52:48,502 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-edu, value: {"instanceList":[]}
+
+2020-07-25 13:54:27,595 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 13:54:33,512 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8150#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8150,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595656473512,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 13:54:52,696 WARN namespace : public, [DEFAULT_GROUP@@service-edu] services are automatically cleaned
+
+2020-07-25 13:54:52,697 INFO [DEAD-SERVICE] {"name":"DEFAULT_GROUP@@service-edu","protectThreshold":0.0,"groupName":"DEFAULT_GROUP","metadata":{},"finalizeCount":5,"owners":[],"resetWeight":false,"enabled":true,"selector":{"type":"none"},"namespaceId":"public","ipDeleteTimeout":30000,"lastModifiedMillis":1595656368503,"checksum":"5de89877ea2d2b96e39bbad94afc8dc0","clusterMap":{"DEFAULT":{"serviceName":"DEFAULT_GROUP@@service-edu","name":"DEFAULT","healthChecker":{"type":"TCP"},"defaultPort":80,"defaultCheckPort":80,"useIPPort4Check":true,"metadata":{},"sitegroup":"","defCkport":80,"empty":true,"defIPPort":80}},"empty":true}
+
+2020-07-25 13:56:23,308 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 13:56:30,150 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8150#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8150,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595656590150,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 13:58:18,748 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 13:58:25,107 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8150#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8150,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595656705107,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 13:59:10,622 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 13:59:15,739 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8150#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8150,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595656755739,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 14:00:00,527 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 14:00:08,177 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8150#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8150,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595656808177,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}]}
+
+2020-07-25 14:00:40,121 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[]}
+
+2020-07-25 14:00:46,098 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@service-ucenter, value: {"instanceList":[{"instanceId":"192.168.1.1#8150#DEFAULT#DEFAULT_GROUP@@service-ucenter","ip":"192.168.1.1","port":8150,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@service-ucenter","metadata":{"preserved.register.source":"SPRING_CLOUD"},"lastBeat":1595656846098,"marked":false,"app":"DEFAULT","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}]}
+

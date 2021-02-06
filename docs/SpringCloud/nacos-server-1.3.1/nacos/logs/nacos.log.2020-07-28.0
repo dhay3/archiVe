@@ -1,0 +1,354 @@
+2020-07-28 00:09:44,055 INFO [capacityManagement] start correct usage
+
+2020-07-28 00:09:44,057 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 00:09:44,535 WARN clearConfigHistory start
+
+2020-07-28 00:19:44,058 INFO [capacityManagement] start correct usage
+
+2020-07-28 00:19:44,059 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 00:19:44,538 WARN clearConfigHistory start
+
+2020-07-28 00:29:44,060 INFO [capacityManagement] start correct usage
+
+2020-07-28 00:29:44,060 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 00:29:44,538 WARN clearConfigHistory start
+
+2020-07-28 00:39:44,061 INFO [capacityManagement] start correct usage
+
+2020-07-28 00:39:44,061 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 00:39:44,541 WARN clearConfigHistory start
+
+2020-07-28 00:49:44,062 INFO [capacityManagement] start correct usage
+
+2020-07-28 00:49:44,062 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 00:49:44,542 WARN clearConfigHistory start
+
+2020-07-28 00:59:44,063 INFO [capacityManagement] start correct usage
+
+2020-07-28 00:59:44,063 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 00:59:44,543 WARN clearConfigHistory start
+
+2020-07-28 01:09:44,065 INFO [capacityManagement] start correct usage
+
+2020-07-28 01:09:44,065 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 01:09:44,544 WARN clearConfigHistory start
+
+2020-07-28 01:19:44,068 INFO [capacityManagement] start correct usage
+
+2020-07-28 01:19:44,068 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 01:19:44,546 WARN clearConfigHistory start
+
+2020-07-28 01:29:44,069 INFO [capacityManagement] start correct usage
+
+2020-07-28 01:29:44,069 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 01:29:44,547 WARN clearConfigHistory start
+
+2020-07-28 17:42:53,235 INFO Starting Nacos v1.3.1 on DESKTOP-I2J9OJP with PID 2416 (D:\java资料\项目\谷粒学院\我的资料\nacos-server-1.3.1\nacos\target\nacos-server.jar started by 82341 in D:\java资料\项目\谷粒学院\我的资料\nacos-server-1.3.1\nacos\bin)
+
+2020-07-28 17:42:53,243 INFO The following profiles are active: standalone
+
+2020-07-28 17:42:59,977 INFO Bean 'org.springframework.security.config.annotation.configuration.ObjectPostProcessorConfiguration' of type [org.springframework.security.config.annotation.configuration.ObjectPostProcessorConfiguration$$EnhancerBySpringCGLIB$$a20f53ea] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+
+2020-07-28 17:43:00,168 INFO Bean 'objectPostProcessor' of type [org.springframework.security.config.annotation.configuration.AutowireBeanFactoryObjectPostProcessor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+
+2020-07-28 17:43:00,174 INFO Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@68f4865' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+
+2020-07-28 17:43:00,179 INFO Bean 'org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration' of type [org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration$$EnhancerBySpringCGLIB$$c6e3f69c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+
+2020-07-28 17:43:00,185 INFO Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+
+2020-07-28 17:43:01,465 INFO Tomcat initialized with port(s): 8848 (http)
+
+2020-07-28 17:43:01,560 INFO Starting service [Tomcat]
+
+2020-07-28 17:43:01,560 INFO Starting Servlet Engine: Apache Tomcat/9.0.13
+
+2020-07-28 17:43:01,653 INFO The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [D:\jdk\jdk1.8.0_211\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;D:\Xshell\;D:\Xftp\;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Common Files\Autodesk Shared\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;D:\jdk\jdk1.8.0_211\bin;D:\mysql\mysql-8.0.17-winx64\bin;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;D:\maven\apache-maven-3.6.1\bin;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\ProgramData\chocolatey\bin;D:\nodejs\;D:\gradle\gradle-6.4\bin;E:\c++\Tools\WinNT;E:\c++\MSDev98\Bin;E:\c++\Tools;E:\VC98\bin;C:\Users\82341\AppData\Local\Microsoft\WindowsApps;C:\Users\82341\AppData\Roaming\npm;.]
+
+2020-07-28 17:43:01,850 INFO Initializing Spring embedded WebApplicationContext
+
+2020-07-28 17:43:01,851 INFO Root WebApplicationContext: initialization completed in 8442 ms
+
+2020-07-28 17:43:03,167 WARN HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+
+2020-07-28 17:43:03,167 INFO HikariPool-1 - Starting...
+
+2020-07-28 17:43:03,177 WARN Registered driver with driverClassName=org.apache.derby.jdbc.EmbeddedDriver was not found, trying direct instantiation.
+
+2020-07-28 17:43:04,581 INFO HikariPool-1 - Driver does not support get/set network timeout for connections. (Feature not implemented: No details.)
+
+2020-07-28 17:43:04,587 INFO HikariPool-1 - Start completed.
+
+2020-07-28 17:43:07,913 INFO Nacos-related cluster resource initialization
+
+2020-07-28 17:43:07,926 INFO The cluster resource is initialized
+
+2020-07-28 17:43:08,530 INFO Reflections took 67 ms to scan 1 urls, producing 6 keys and 24 values 
+
+2020-07-28 17:43:08,576 INFO Reflections took 6 ms to scan 1 urls, producing 2 keys and 12 values 
+
+2020-07-28 17:43:08,588 INFO Reflections took 8 ms to scan 1 urls, producing 3 keys and 15 values 
+
+2020-07-28 17:43:10,302 INFO Initializing ExecutorService 'applicationTaskExecutor'
+
+2020-07-28 17:43:10,535 INFO Adding welcome page: class path resource [static/index.html]
+
+2020-07-28 17:43:11,154 INFO Creating filter chain: Ant [pattern='/**'], []
+
+2020-07-28 17:43:11,224 INFO Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@72b16078, org.springframework.security.web.context.SecurityContextPersistenceFilter@c9413d8, org.springframework.security.web.header.HeaderWriterFilter@cf65451, org.springframework.security.web.csrf.CsrfFilter@47289387, org.springframework.security.web.authentication.logout.LogoutFilter@7caa550, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@46074492, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@47428937, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@22c86919, org.springframework.security.web.session.SessionManagementFilter@37eeec90, org.springframework.security.web.access.ExceptionTranslationFilter@114a85c2]
+
+2020-07-28 17:43:11,412 INFO Exposing 2 endpoint(s) beneath base path '/actuator'
+
+2020-07-28 17:43:11,445 INFO Initializing ExecutorService 'taskScheduler'
+
+2020-07-28 17:43:11,641 INFO Tomcat started on port(s): 8848 (http) with context path '/nacos'
+
+2020-07-28 17:43:11,656 INFO Started Nacos in 21.009 seconds (JVM running for 22.623)
+
+2020-07-28 17:43:11,656 INFO Nacos Log files: D:\java资料\项目\谷粒学院\我的资料\nacos-server-1.3.1\nacos\logs
+
+2020-07-28 17:43:11,660 INFO Nacos Log files: D:\java资料\项目\谷粒学院\我的资料\nacos-server-1.3.1\nacos\conf
+
+2020-07-28 17:43:11,660 INFO Nacos Log files: D:\java资料\项目\谷粒学院\我的资料\nacos-server-1.3.1\nacos\data
+
+2020-07-28 17:43:11,661 INFO Nacos started successfully in stand alone mode. use embedded storage
+
+2020-07-28 17:43:11,979 INFO Initializing Spring DispatcherServlet 'dispatcherServlet'
+
+2020-07-28 17:43:11,979 INFO Initializing Servlet 'dispatcherServlet'
+
+2020-07-28 17:43:11,991 INFO Completed initialization in 11 ms
+
+2020-07-28 17:53:08,934 INFO [capacityManagement] start correct usage
+
+2020-07-28 17:53:09,022 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 17:53:09,569 WARN clearConfigHistory start
+
+2020-07-28 18:03:09,025 INFO [capacityManagement] start correct usage
+
+2020-07-28 18:03:09,025 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 18:03:09,619 WARN clearConfigHistory start
+
+2020-07-28 18:13:09,027 INFO [capacityManagement] start correct usage
+
+2020-07-28 18:13:09,028 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 18:13:09,620 WARN clearConfigHistory start
+
+2020-07-28 18:23:09,030 INFO [capacityManagement] start correct usage
+
+2020-07-28 18:23:09,030 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 18:23:09,622 WARN clearConfigHistory start
+
+2020-07-28 18:33:09,031 INFO [capacityManagement] start correct usage
+
+2020-07-28 18:33:09,031 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 18:33:09,623 WARN clearConfigHistory start
+
+2020-07-28 18:43:09,032 INFO [capacityManagement] start correct usage
+
+2020-07-28 18:43:09,033 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 18:43:09,626 WARN clearConfigHistory start
+
+2020-07-28 18:53:09,034 INFO [capacityManagement] start correct usage
+
+2020-07-28 18:53:09,035 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 18:53:09,627 WARN clearConfigHistory start
+
+2020-07-28 19:03:09,035 INFO [capacityManagement] start correct usage
+
+2020-07-28 19:03:09,035 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 19:03:09,630 WARN clearConfigHistory start
+
+2020-07-28 19:13:09,037 INFO [capacityManagement] start correct usage
+
+2020-07-28 19:13:09,037 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 19:13:09,631 WARN clearConfigHistory start
+
+2020-07-28 19:23:09,039 INFO [capacityManagement] start correct usage
+
+2020-07-28 19:23:09,040 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 19:23:09,633 WARN clearConfigHistory start
+
+2020-07-28 19:33:09,041 INFO [capacityManagement] start correct usage
+
+2020-07-28 19:33:09,042 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 19:33:09,635 WARN clearConfigHistory start
+
+2020-07-28 19:43:10,978 WARN clearConfigHistory start
+
+2020-07-28 19:43:24,103 WARN HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=6m49s204ms839µs100ns).
+
+2020-07-28 19:49:28,198 INFO [capacityManagement] start correct usage
+
+2020-07-28 19:49:28,201 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 19:53:10,981 WARN clearConfigHistory start
+
+2020-07-28 19:59:28,202 INFO [capacityManagement] start correct usage
+
+2020-07-28 19:59:28,202 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 20:03:10,984 WARN clearConfigHistory start
+
+2020-07-28 20:09:28,204 INFO [capacityManagement] start correct usage
+
+2020-07-28 20:09:28,204 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 20:13:10,986 WARN clearConfigHistory start
+
+2020-07-28 20:19:28,205 INFO [capacityManagement] start correct usage
+
+2020-07-28 20:19:28,206 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 20:23:10,987 WARN clearConfigHistory start
+
+2020-07-28 20:29:28,207 INFO [capacityManagement] start correct usage
+
+2020-07-28 20:29:28,208 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 20:33:10,989 WARN clearConfigHistory start
+
+2020-07-28 20:39:28,266 INFO [capacityManagement] start correct usage
+
+2020-07-28 20:39:28,266 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 20:43:11,102 WARN clearConfigHistory start
+
+2020-07-28 20:49:28,414 INFO [capacityManagement] start correct usage
+
+2020-07-28 20:49:28,415 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 20:53:11,248 WARN clearConfigHistory start
+
+2020-07-28 20:59:28,535 INFO [capacityManagement] start correct usage
+
+2020-07-28 20:59:28,535 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 21:03:11,354 WARN clearConfigHistory start
+
+2020-07-28 21:09:28,641 INFO [capacityManagement] start correct usage
+
+2020-07-28 21:09:28,641 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 21:13:11,449 WARN clearConfigHistory start
+
+2020-07-28 21:19:28,718 INFO [capacityManagement] start correct usage
+
+2020-07-28 21:19:28,718 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 21:23:11,526 WARN clearConfigHistory start
+
+2020-07-28 21:29:28,795 INFO [capacityManagement] start correct usage
+
+2020-07-28 21:29:28,795 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 21:33:11,604 WARN clearConfigHistory start
+
+2020-07-28 21:39:28,871 INFO [capacityManagement] start correct usage
+
+2020-07-28 21:39:28,871 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 21:43:11,680 WARN clearConfigHistory start
+
+2020-07-28 21:49:28,923 INFO [capacityManagement] start correct usage
+
+2020-07-28 21:49:28,923 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 21:53:11,716 WARN clearConfigHistory start
+
+2020-07-28 21:59:28,958 INFO [capacityManagement] start correct usage
+
+2020-07-28 21:59:28,958 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 22:03:11,749 WARN clearConfigHistory start
+
+2020-07-28 22:09:28,993 INFO [capacityManagement] start correct usage
+
+2020-07-28 22:09:28,993 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 22:13:11,782 WARN clearConfigHistory start
+
+2020-07-28 22:19:29,024 INFO [capacityManagement] start correct usage
+
+2020-07-28 22:19:29,024 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 22:23:11,806 WARN clearConfigHistory start
+
+2020-07-28 22:29:29,039 INFO [capacityManagement] start correct usage
+
+2020-07-28 22:29:29,039 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 22:33:11,821 WARN clearConfigHistory start
+
+2020-07-28 22:39:29,055 INFO [capacityManagement] start correct usage
+
+2020-07-28 22:39:29,055 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 22:43:11,836 WARN clearConfigHistory start
+
+2020-07-28 22:49:29,070 INFO [capacityManagement] start correct usage
+
+2020-07-28 22:49:29,070 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 22:53:11,851 WARN clearConfigHistory start
+
+2020-07-28 22:59:29,080 INFO [capacityManagement] start correct usage
+
+2020-07-28 22:59:29,080 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 23:03:11,858 WARN clearConfigHistory start
+
+2020-07-28 23:09:29,087 INFO [capacityManagement] start correct usage
+
+2020-07-28 23:09:29,087 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 23:13:11,866 WARN clearConfigHistory start
+
+2020-07-28 23:19:29,095 INFO [capacityManagement] start correct usage
+
+2020-07-28 23:19:29,095 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 23:23:11,873 WARN clearConfigHistory start
+
+2020-07-28 23:29:29,101 INFO [capacityManagement] start correct usage
+
+2020-07-28 23:29:29,101 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 23:33:11,878 WARN clearConfigHistory start
+
+2020-07-28 23:39:29,106 INFO [capacityManagement] start correct usage
+
+2020-07-28 23:39:29,106 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 23:43:11,881 WARN clearConfigHistory start
+
+2020-07-28 23:49:29,110 INFO [capacityManagement] start correct usage
+
+2020-07-28 23:49:29,110 INFO [capacityManagement] end correct usage, cost: 0s
+
+2020-07-28 23:53:11,885 WARN clearConfigHistory start
+
+2020-07-28 23:59:29,113 INFO [capacityManagement] start correct usage
+
+2020-07-28 23:59:29,113 INFO [capacityManagement] end correct usage, cost: 0s
+
