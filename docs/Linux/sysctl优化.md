@@ -1,0 +1,162 @@
+# sysctl
+
+参考：
+
+https://wsgzao.github.io/post/sysctl/
+
+https://developer.aliyun.com/article/718976
+
+## 概述
+
+用于在内核运行时动态修改内核的运行参数，==重启后失效==，如果想要不失效在`/etc/sysctl.conf`中修改。==所有可以修改的参数都在`/proc/sys`文件夹下==
+
+## 使用
+
+- sysctl -a
+
+  查看所有可以配置的参数
+
+- sysctl  -p
+
+  加载内核配置文件，默认`/etc/sysctl.conf`
+
+- sysctl key=value
+
+  等于号左右两边不能有空格
+
+  ```
+  [root@chz etc]# sysctl net.ipv4.icmp_echo_ignore_all=1
+  net.ipv4.icmp_echo_ignore_all = 1
+  ```
+
+  ==这里表示屏蔽icmp echo，其他主机不能通过ping命令来检查该主机是否存活==
+
+## sysctl.conf优化文件
+
+> 要想让配置生效需要 `sysctl -p`
+
+0表示false，1表示true
+
+配置一：
+
+```shell
+# 禁用包过滤功能 
+net.ipv4.ip_forward = 0  
+# 启用源路由核查功能 
+net.ipv4.conf.default.rp_filter = 1  
+# 禁用所有 IP 源路由 
+net.ipv4.conf.default.accept_source_route = 0  
+# 使用 sysrq 组合键是了解系统目前运行情况，为安全起见设为 0 关闭 
+kernel.sysrq = 0  
+# 控制 core 文件的文件名是否添加 pid 作为扩展
+kernel.core_uses_pid = 1  
+# 开启 SYN Cookies，当出现 SYN 等待队列溢出时，启用 cookies 来处理
+net.ipv4.tcp_syncookies = 1  
+# 每个消息队列的大小（单位：字节）限制
+kernel.msgmnb = 65536  
+# 整个系统最大消息队列数量限制
+kernel.msgmax = 65536  
+# 单个共享内存段的大小（单位：字节）限制，计算公式 64G*1024*1024*1024(字节)
+kernel.shmmax = 68719476736  
+# 所有内存大小（单位：页，1 页 = 4Kb），计算公式 16G*1024*1024*1024/4KB(页)
+kernel.shmall = 4294967296  
+# 允许打开的最大进程数, 32 bit计算机最大32768, 64 bit计算机最大4194305
+kernel.pid_max = 32768
+#timewait 的数量，默认是 180000
+net.ipv4.tcp_max_tw_buckets = 6000  
+# 开启有选择的应答
+net.ipv4.tcp_sack = 1  
+# 支持更大的 TCP 窗口. 如果 TCP 窗口最大超过 65535(64K), 必须设置该数值为 1
+net.ipv4.tcp_window_scaling = 1  
+#TCP 读 buffer
+net.ipv4.tcp_rmem = 4096 131072 1048576
+#TCP 写 buffer
+net.ipv4.tcp_wmem = 4096 131072 1048576   
+# 为 TCP socket 预留用于发送缓冲的内存默认值（单位：字节）
+net.core.wmem_default = 8388608
+# 为 TCP socket 预留用于发送缓冲的内存最大值（单位：字节）
+net.core.wmem_max = 16777216  
+# 为 TCP socket 预留用于接收缓冲的内存默认值（单位：字节）  
+net.core.rmem_default = 8388608
+# 为 TCP socket 预留用于接收缓冲的内存最大值（单位：字节）
+net.core.rmem_max = 16777216
+# 每个网络接口接收数据包的速率比内核处理这些包的速率快时，允许送到队列的数据包的最大数目
+net.core.netdev_max_backlog = 262144  
+#web 应用中 listen 函数的 backlog 默认会给我们内核参数的 net.core.somaxconn 限制到 128，而 nginx 定义的 NGX_LISTEN_BACKLOG 默认为 511，所以有必要调整这个值
+net.core.somaxconn = 262144  
+# 系统中最多有多少个 TCP 套接字不被关联到任何一个用户文件句柄上。这个限制仅仅是为了防止简单的 DoS 攻击，不能过分依靠它或者人为地减小这个值，更应该增加这个值(如果增加了内存之后)
+net.ipv4.tcp_max_orphans = 3276800  
+# 记录的那些尚未收到客户端确认信息的连接请求的最大值。对于有 128M 内存的系统而言，缺省值是 1024，小内存的系统则是 128
+net.ipv4.tcp_max_syn_backlog = 262144  
+# 时间戳可以避免序列号的卷绕。一个 1Gbps 的链路肯定会遇到以前用过的序列号。时间戳能够让内核接受这种“异常” 的数据包。这里需要将其关掉
+net.ipv4.tcp_timestamps = 0  
+# 为了打开对端的连接，内核需要发送一个 SYN 并附带一个回应前面一个 SYN 的 ACK。也就是所谓三次握手中的第二次握手。这个设置决定了内核放弃连接之前发送 SYN+ACK 包的数量
+net.ipv4.tcp_synack_retries = 1  
+# 在内核放弃建立连接之前发送 SYN 包的数量
+net.ipv4.tcp_syn_retries = 1  
+# 开启 TCP 连接中 time_wait sockets 的快速回收
+net.ipv4.tcp_tw_recycle = 1  
+# 开启 TCP 连接复用功能，允许将 time_wait sockets 重新用于新的 TCP 连接（主要针对 time_wait 连接）
+net.ipv4.tcp_tw_reuse = 1  
+#1st 低于此值, TCP 没有内存压力, 2nd 进入内存压力阶段, 3rdTCP 拒绝分配 socket(单位：内存页)
+net.ipv4.tcp_mem = 94500000 915000000 927000000   
+# 如果套接字由本端要求关闭，这个参数决定了它保持在 FIN-WAIT-2 状态的时间。对端可以出错并永远不关闭连接，甚至意外当机。缺省值是 60 秒。2.2 内核的通常值是 180 秒，你可以按这个设置，但要记住的是，即使你的机器是一个轻载的 WEB 服务器，也有因为大量的死套接字而内存溢出的风险，FIN- WAIT-2 的危险性比 FIN-WAIT-1 要小，因为它最多只能吃掉 1.5K 内存，但是它们的生存期长些。
+net.ipv4.tcp_fin_timeout = 15  
+# 表示当 keepalive 起用的时候，TCP 发送 keepalive 消息的频度（单位：秒）
+net.ipv4.tcp_keepalive_time = 30  
+# 对外连接端口范围
+net.ipv4.ip_local_port_range = 2048 65000
+# 表示文件句柄的最大数量
+fs.file-max = 102400
+```
+
+配置二：
+
+```sh
+vm.dirty_writeback_centisecs=100
+vm.dirty_expire_centisecs=100
+vm.swappiness=10
+net.ipv4.ip_local_port_range=10000    65001
+net.ipv4.tcp_max_orphans=4000000
+net.ipv4.tcp_timestamps=0
+net.core.somaxconn=1024
+net.netfilter.nf_conntrack_max=121005752
+kernel.core_pattern=/var/coredump/core.%e.%p.%t
+```
+
+常用配置
+
+```shell
+net.ipv4.ip_forward = 0 
+net.ipv4.conf.default.rp_filter = 1  
+net.ipv4.conf.default.accept_source_route = 0 
+kernel.sysrq = 0  
+kernel.core_uses_pid = 1 
+net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_rmem = 4096 131072 1048576
+net.ipv4.tcp_wmem = 4096 131072 1048576  
+net.core.wmem_default = 8388608
+net.core.wmem_max = 16777216  
+net.core.rmem_default = 8388608
+net.core.rmem_max = 16777216
+net.core.netdev_max_backlog = 262144  
+net.core.somaxconn=1024
+net.ipv4.tcp_max_orphans = 4000000
+net.ipv4.tcp_max_syn_backlog = 262144  
+net.ipv4.tcp_timestamps = 0  
+net.ipv4.tcp_synack_retries = 1  
+net.ipv4.tcp_syn_retries = 1  
+net.ipv4.tcp_tw_recycle = 1  
+net.ipv4.tcp_tw_reuse = 1  
+net.ipv4.tcp_mem = 94500000 915000000 927000000   
+net.ipv4.tcp_fin_timeout = 15  
+net.ipv4.tcp_keepalive_time = 30  
+net.ipv4.ip_local_port_range = 10000    65001
+fs.file-max = 102400
+vm.dirty_writeback_centisecs=100
+vm.dirty_expire_centisecs=100
+vm.swappiness=10
+net.netfilter.nf_conntrack_max=121005752
+kernel.core_pattern=/var/coredump/core.%e.%p.%t
+```
+
