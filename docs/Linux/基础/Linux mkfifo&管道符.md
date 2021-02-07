@@ -37,8 +37,6 @@ root in /opt/test λ ll
 |rwx------ root root 0 B Thu Jan  7 07:35:53 2021  pipe2                /0.0s
 ```
 
-
-
 ## 案例
 
 使用nc创建管道符，实现reserveshell

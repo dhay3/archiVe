@@ -20,7 +20,7 @@ cat filename | command1 && >> filname.bak
 
 在POSIX系统中，每个进程都内置了三个“standard stream”(标准流)，stdin(标准输入流)，stdout(标准输出流)，stderr(标准错误输出流)
 
-<img src="..\..\imgs\_Linux\480px-Stdstreams-notitle.svg.png"/>
+<img src="..\..\..\imgs\_Linux\480px-Stdstreams-notitle.svg.png"/>
 
 当你在程序中打开某个文件，会得到一个“文件描述符”（洋文叫“[file descriptor](https://en.wikipedia.org/wiki/File_descriptor)”，简称 fd）。fd 本身是个整数，程序员可以通过 fd 对该文件进行读写。
 而进程的三个【标准流】，就相当于是三个特殊的 fd。当进程启动时，操作系统就已经把这三个 fd 准备好了。
@@ -40,7 +40,7 @@ cat filename | command1 && >> filname.bak
 
   > 注意echo 使用的并不是输入流，而是命令行参数，cat命令就是输入流，类似的还有wc
 
-<img src="..\..\imgs\_Linux\Snipaste_2020-10-11_13-49-37.png"/>
+<img src="..\..\..\imgs\_Linux\Snipaste_2020-10-11_13-49-37.png"/>
 
 - 输出流重定向
 
@@ -71,6 +71,20 @@ cat < src > dest
 
 > 某些同学可能会问了：既然能这么玩，为啥还需要用 `cp` 命令进行文件复制捏？
 > 原因在于：`cat` 的玩法，只保证内容一样，其它的不管；而 `cp` 除了复制文件内容，还会确保“目标文件”与“源文件”具有相同的属性（比如 mode）。
+
+### `>|`
+
+https://unix.stackexchange.com/questions/45201/bash-what-does-do
+
+在一些shell中有一个noclobber选项，保护文件因为重定向而被覆盖或销毁。
+
+如果noclobber设置为true，并且`/tmp/output.txt`文件存在，那么下面的命令将会失败
+
+```
+some-command > /tmp/output.txt
+```
+
+但是你能使用`>|`符号，表示强制重定向
 
 ## example
 

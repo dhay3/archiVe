@@ -84,23 +84,30 @@ $ set
 
 ## 创建变量
 
-> `$a=$b`不表示赋值，因为会被渲染为命令，所以不存在
-
-用户创建变量的时候，变量名必须遵守下面的规则。
+用户创建变量的时候，==变量名==必须遵守下面的规则。
 
 - 字母、数字和下划线字符组成。
 - 第一个字符必须是一个字母或一个下划线，不能是数字。
+- 不能有bash中的关键字
 - ==不允许出现空格和标点符号。==
 
 变量声明的语法如下。
 
 ```
-variable=value
+chz@cyberpelican:/root$ variable=value
+chz@cyberpelican:/root$ "a"=10 #变量名含有特殊字符
+bash: a=10: command not found
+chz@cyberpelican:/root$ 'a'=10
+
+chz@cyberpelican:/root$ a=10
+chz@cyberpelican:/root$ b=20
+chz@cyberpelican:/root$ $a=$b #变量名含有空格
+bash: 10=20: command not found
 ```
 
 上面命令中，等号左边是变量名，右边是变量。注意，等号两边不能有空格。
 
-如果变量的值包含空格，则必须将值放在引号中。
+如果==变量的值包含空格，则必须将值放在引号中。==
 
 ```
 myvar="hello world"
@@ -118,6 +125,41 @@ d="\t\ta string\n"      # 变量值可以使用转义字符
 e=$(ls -l foo.txt)      # 变量值可以是命令的执行结果
 f=$((5 * 7))            # 变量值可以是数学运算的结果
 ```
+
+> 如果右边是一个命令(其实是字符串)，当调用变量时，就会被解析为命令
+>
+> ```
+> root in /etc λ var=date                                                     
+> root in /etc λ $var
+> Sun 07 Feb 2021 01:19:59 PM CST    
+> ```
+>
+> bash中变量值中允许有可以也可以执行命令，但是zsh变量值中不能有空格
+>
+> ```
+> root in /etc λcat networks
+>   File: networks
+>   default     0.0.0.0
+>   loopback    127.0.0.0
+>   link-local  169.254.0.0
+> root in /etc λ var="cat networks"                                           
+> root in /etc λ $var
+> zsh: command not found: cat networks  
+> 
+> 
+> 
+> chz@cyberpelican:/etc$ a="/usr/bin/cat networks"
+> chz@cyberpelican:/etc$ $a
+> default		0.0.0.0
+> loopback	127.0.0.0
+> link-local	169.254.0.0
+> 
+> chz@cyberpelican:/etc$ b="ls -l"
+> chz@cyberpelican:/etc$ $b
+> total 1332
+> -rw-r--r--  1 root     root      2981 Aug 31 20:53 adduser.conf
+> -rw-r--r--  1 root     root        44 Aug 31 21:06 adjtime
+> ```
 
 变量可以重复赋值，后面的赋值会覆盖前面的赋值。
 
@@ -180,12 +222,18 @@ foo_file
 
 事实上，读取变量的语法`$foo`，可以看作是`${foo}`的简写形式。
 
+> 不是所有的shell，都支持
+
 如果变量的值本身也是变量，可以使用`${!varname}`的语法，读取最终的值。
 
 ```
 $ myvar=USER
 $ echo ${!myvar}
 ruanyf
+
+root in ~ λ var=USER    #zsh不支持                                                 
+root in ~ λ echo ${!var}
+root in ~ λ echo ${var=USER}
 ```
 
 上面的例子中，变量`myvar`的值是`USER`，`${!myvar}`的写法将其展开成最终的值。

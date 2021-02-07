@@ -2,6 +2,13 @@
 
 参考：https://gist.github.com/laispace/666dd7b27e9116faece6
 
+> 注意每次使用时先做如下步骤，否则会导致无法上传
+>
+> ```
+> eval `ssh-agent -s`
+> ssh-add ~/.ssh/srectkey
+> ```
+
 ## 设置http，https协议
 
 使用socks5
@@ -36,41 +43,32 @@ ProxyCommand nc -X 5 -x 127.0.0.1:1080 %h %p #linux
 Host github.com
 Username git
 Hostname github.com
-ProxyCommand "D:/git/Git/mingw64/connect.exe" -S 127.0.0.1:10808  %h %p
+ProxyCommand "D:/git/Git/mingw64/bin/connect.exe" -S 127.0.0.1:10808  %h %p
 ```
 
 可能出现问题
 
-参考: https://www.idzd.top/archives/2536/
+参考:
 
-```
-$ git push origin master
-/usr/bin/bash: line 0: exec: nc: not found
-kex_exchange_identification: Connection closed by remote host
-fatal: Could not read from remote repository.
+ https://www.idzd.top/archives/2536/
 
-Please make sure you have the correct access rights
-and the repository exists.
-```
-
-解决
-
-```
-Host github.com
-#-S参数表示使用Socks5代理, 如果是HTTP代理则为-H
-ProxyCommand "D:/git/Git/mingw64/connect.exe" -S 127.0.0.1:10808  %h %p
-```
+https://zhuanlan.zhihu.com/p/126117538
 
 ## 参考配置文件
 
 ```
+Host *
+	TCPKeepAlive yes
+	ServerAliveInterval 120
+	
 Host github.com 
-User git
-Hostname github.com
-Port 22
-IdentityFile ‪~/.ssh/id_ed25519
-ProxyCommand "D:/git/Git/mingw64/connect.exe" -S 127.0.0.1:10808  %h %p
-ServerAliveInterval 120
+	User git
+	Hostname github.com
+	Port 22
+	IdentityFile "‪C:/Users/82341/.ssh/id_ed25519"
+	#-S参数表示使用Socks5代理, 如果是HTTP代理则为-H
+	ProxyCommand "D:/git/Git/mingw64/bin/connect.exe" -S 127.0.0.1:1080  %h %p
+
 ```
 
 
