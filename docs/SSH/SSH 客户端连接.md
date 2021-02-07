@@ -4,7 +4,7 @@
 >
 > 如果切换了用户，就不能使用X11 forward。
 >
-> 可以使用`ssh -vvv localhost`来debug
+> 可以使用`ssh -vvv hostname`来debug
 
 ## 远程连接
 
@@ -90,7 +90,7 @@ TLS_RSA_WITH_AES_128_CBC_SHA
 
 - `-Q`
 
-  查询ssh指定选项
+  查询ssh支持的加密参宿集
 
   ```
   [root@cyberpelican ~]# ssh -Q cipher
@@ -112,11 +112,11 @@ TLS_RSA_WITH_AES_128_CBC_SHA
   chacha20-poly1305@openssh.com
   ```
 
-  查询支持的加密算法
+  查询支持的加密参数集
 
 - `-c`
 
-  指定加密算法
+  指定加密集数
 
   ```
    ┌─────( root)─────(~/.ssh) 
@@ -142,3 +142,9 @@ TLS_RSA_WITH_AES_128_CBC_SHA
 - `-T`
 
   认证成功后，不分配终端，用于校验ssh是否连接正常
+
+- `-W host:port`
+
+  将数据通过加密通道转发到指定主机的端口，用作代理
+
+  

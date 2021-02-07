@@ -25,14 +25,18 @@ git config --global --unset http.https://github.com.proxy
 
 ==git协议使用ssh==
 
-在`~/.ssh/config` 文件后面添加几行，没有可以新建一个。==注意这里需要使用netcat==
+在`~/.ssh/config` 文件后面添加几行，没有可以新建一个。==注意这里不要使用ncat，可能会导致宿主机与虚拟机无法通信==
 
 ```
 Host github.com
-ProxyCommand nc -X 5 -x 127.0.0.1:1080 %h %p
+Username git
+Hostname github.com
+ProxyCommand nc -X 5 -x 127.0.0.1:1080 %h %p #linux
 
-#这里也可以使用ncat
-ProxyCommand ncat --proxy-type socks5 --proxy 127.0.0.1:1080 %h %p
+Host github.com
+Username git
+Hostname github.com
+ProxyCommand "D:/git/Git/mingw64/connect.exe" -S 127.0.0.1:10808  %h %p
 ```
 
 可能出现问题
@@ -54,7 +58,19 @@ and the repository exists.
 ```
 Host github.com
 #-S参数表示使用Socks5代理, 如果是HTTP代理则为-H
-ProxyCommand connect -S 127.0.0.1:1080 %h %p
+ProxyCommand "D:/git/Git/mingw64/connect.exe" -S 127.0.0.1:10808  %h %p
+```
+
+## 参考配置文件
+
+```
+Host github.com 
+User git
+Hostname github.com
+Port 22
+IdentityFile ‪~/.ssh/id_ed25519
+ProxyCommand "D:/git/Git/mingw64/connect.exe" -S 127.0.0.1:10808  %h %p
+ServerAliveInterval 120
 ```
 
 

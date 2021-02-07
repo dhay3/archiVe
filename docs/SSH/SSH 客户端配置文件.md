@@ -158,7 +158,7 @@ option = value
 
 - ==ProxyCommand==
 
-  指定连接时的命令，通常与netcat一起使用
+  默认情况下ssh直接与目标主机的22号端口连接，使用该参数后将通过指定命令来建立连接。通常与netcat一起使用
 
   ```
   ProxyCommand /usr/bin/nc -X 5 -x 127.0.0.1 %h %p
