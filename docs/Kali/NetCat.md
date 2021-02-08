@@ -8,7 +8,7 @@ https://program-think.blogspot.com/2019/09/Netcat-Tricks.html
 
 ## 概述
 
-nc (Netcat)，是一款网络工具
+nc (Netcat)，是一款网络工具，用于主动与套接字建立连接
 
  Common uses include:
 

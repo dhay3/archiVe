@@ -20,7 +20,7 @@ option = value
 
 ## tokens
 
-一些关键字，可以在运行时扩展
+一些关键字，可以在运行时扩展，类似于占位符。
 
 ```
            %%    A literal ‘%’.
@@ -160,6 +160,8 @@ option = value
 
   默认情况下ssh直接与目标主机的22号端口连接，使用该参数后将通过指定命令来建立连接。通常与netcat一起使用
 
+  这里的%h表示的是当前指令块中的主机名，%p表示的是当前指令快中的端口
+
   ```
   ProxyCommand /usr/bin/nc -X 5 -x 127.0.0.1 %h %p
   ```
@@ -216,9 +218,48 @@ option = value
 
   将服务器的公钥指纹以图形化的形式显示，默认no。==常用于校验服务器的公钥指纹是否有改变==
 
+## ProxyCommand
+
+如果使用的是公钥认证，使用的还是被代理的主机公钥，而不是代理主机的公钥。
+
+如果是虚拟机于公网主机交互，默认会使用宿主机的username和host做为comment
+
+```
+Include /etc/ssh/ssh_config.d/*.conf
+
+Host proxy
+	Hostname 192.168.80.139
+	Port 22
+	User root
+
+Host target
+	Hostname 8.135.0.171
+	Port 22
+	User cpl
+	#这里表示的是通过proxy转发到%h:%p
+	ProxyCommand ssh -q -W %h:%p proxy
+	
+----
+
+root in /etc/ssh λ ssh cpl@target
+root@192.168.80.139's password: 
+cpl@8.135.0.179's password: 
+Welcome to Ubuntu 18.04.5 LTS (GNU/Linux 4.15.0-132-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+root in ~ λ cat .ssh/authorized_keys
+ssh-rsa q7NaaGey2F+qp1rwWPhE96WsH65YcwhwjtuAWeWqD1oUkWdwo363pYgtLxZUa5epF9G8prkipPQpPig4hjlgLnfOq3coH/v55vGFJyYURNQkSZghMNT2h+KWCbE1Z8fAuzbDKdc/Skbx5ZlkIfxGUkPyoUuUshk= 82341@bash
+ssh-rsa 0SVZmXnnTKl6LOXfEbScA5XsBz9+5ELTGKaOnz2H7Vpo9XKuDX7yBfFYk/4v5MhBPN9C5A7ZJ7s40mYigh2bdNt46+QYpZIu1mC095v+ty0mfW85EaYDTewL9Vrmm5fPf9dUU3FkU9UyPUZKY49P/OxJ5bMZbJiiFs= 82341@bash      
+```
+
 ## example
 
 ```
+#可以设置全局变量，对所有指令快生效
+Compresssion yes
 Host *
      Port 2222
 
@@ -229,3 +270,8 @@ Host remoteserver
 ```
 
 Host remoteserver 设置的port 会覆盖
+
+```
+ssh neo@remoteserver
+```
+

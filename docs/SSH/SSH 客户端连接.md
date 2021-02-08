@@ -114,6 +114,15 @@ TLS_RSA_WITH_AES_128_CBC_SHA
 
   查询支持的加密参数集
 
+- `-q`
+
+  quiet mode，不会输出报警和诊断信息
+
+  ```
+  root in /etc/ssh λ ssh -vvv -q localhost
+  root in /etc/ssh λ 
+  ```
+  
 - `-c`
 
   指定加密集数
@@ -125,11 +134,13 @@ TLS_RSA_WITH_AES_128_CBC_SHA
   Last login: Wed Dec 16 21:58:13 2020 from 192.168.80.200
   ```
 
-## 其他常用参数
-
 - `-C`
 
   压缩数据
+
+- `-o`
+
+  指定参数，用于覆盖ssh客户端的配置文件
 
 - `-p`
 
@@ -147,4 +158,8 @@ TLS_RSA_WITH_AES_128_CBC_SHA
 
   将数据通过加密通道转发到指定主机的端口，用作代理
 
+  ```
+  ssh -q -W target_host:target_port proxy_host
+  ```
+  
   

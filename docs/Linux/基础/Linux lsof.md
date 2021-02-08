@@ -121,8 +121,16 @@ systemd      1                root  mem       REG              252,1   121016   
   apache2    713        www-data    4u  IPv6  18438      0t0  TCP *:http (LISTEN)
   apache2    713        www-data    6u  IPv6  18442      0t0  TCP *:https (LISTEN)
   ```
-
-
+  
+  使用`lsof -i TCP:port`可以有效查看指定端口被占用的当前进程
+  
+  ```
+  root in ~ λ lsof -i TCP:10086
+  COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+  sshd    13848  cpl    9u  IPv4 888473      0t0  TCP localhost:10086 (LISTEN)  
+  ```
+  
+  
 
 
 
