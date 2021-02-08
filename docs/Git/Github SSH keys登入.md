@@ -41,7 +41,7 @@ https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/
 2. 确保ssh-agent运行
 
    ```
-   eval "ssh-agent s"
+   eval "ssh-agent"
    ```
 
 3. 将密钥添加到ssh-agent中，==否则不会成功==
@@ -63,3 +63,45 @@ https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/
    ```
 
    <img src="..\..\imgs\_Git\Snipaste_2020-09-25_09-56-48.png"/>
+
+## ssh-agent
+
+https://docs.github.com/en/github/authenticating-to-github/working-with-ssh-key-passphrases#auto-launching-ssh-agent-on-git-for-windows
+
+在windows git上ssh-agent不会自动启动，所以每次使用git时都需要手动输入。我们可以使用脚本让它自动启动。在`~/.profile`或者`~/.bashrc`中添加如下代码段
+
+```
+env=~/.ssh/agent.env
+#如果之前存在文件,先将之前的文件执行
+agent_load_env(){
+  test -f "$env" && source "$env" >| /dev/null
+}
+#文件600,目录700
+agent_start(){
+  umask 077
+  ssh-agent >| "$env"
+  source "$env"
+}
+agent_load_env
+
+#0:agent running has keys, 1:agent running has 0 key, 2:agent is not running
+ssh_run_state=$(ssh-add -l >| /dev/null 2>&1;echo $?)
+
+if [ ! "$SSH_AUTH_SOCK" ] || [ $ssh_run_state = 2 ]; then
+    agent_start
+    #通过source将变量赋值,而不是通过eval
+    ssh-add
+elif [  "$SSH_AUTH_SOCK" ] || [ $ssh_run_state = 1 ]; then
+  ssh-add
+fi
+#取消变量
+unset env
+
+```
+
+
+
+
+
+
+

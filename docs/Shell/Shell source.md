@@ -35,4 +35,4 @@ source
 ## source filname VS bash filename
 
 1. shell脚本需要执行权限，而使用source不需要执行权限
-2. bash 会建立一个新的子shell，但是source不会
+2. bash 会建立一个新的子shell，但是source不会。==所以如果在shell脚本中是创建变量的话，就等于在当前shell中创建变量。==
