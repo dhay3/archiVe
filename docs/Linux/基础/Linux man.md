@@ -1,6 +1,11 @@
 # Linux man 
 
 > 如果想要精准匹配，使用正则表达式
+>
+> 无法查看内建命令，如果想要查看内建命令
+>
+> 1. 非bash使用`bash -c "help command"`
+> 2. bash使用`help command`
 
 具体的command manual page 在Linux上按章节存储，一般在`man command`后显示在左上角，例如`sudo(8)`表似第8章
 

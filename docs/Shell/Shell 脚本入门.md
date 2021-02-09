@@ -1,5 +1,7 @@
 # Shell 脚本入门
 
+https://www.gnu.org/software/bash/manual/bash.html
+
 ## Shebang
 
 > ==Shebang 行不是必需的，但是建议加上这行(如果赋予脚本`x`的权限Shebang必须填写正确)。==如果缺少该行，就需要手动将脚本传给解释器。举例来说，脚本是`script.sh`，有 Shebang 行的时候，可以直接调用执行（`./script.sh`）。
@@ -20,7 +22,7 @@
 
 ## 执行权限和路径
 
-如果想通过`./script.sh`方式执行脚本，需要给予`x`权限，且在正确的目录下
+如果想通过`./script.sh`方式执行脚本，需要给予`x`权限，且在正确的目录下。日通过`sh script.sh`方式无需有`x`权限
 
 - 权限
 

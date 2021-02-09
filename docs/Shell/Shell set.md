@@ -1,8 +1,17 @@
 # Shell set
 
+https://www.gnu.org/software/bash/manual/bash.html#The-Set-Builtin
+
+set用于设定shell该怎么执。
+
 > 所有参数都可以使用`+`来重新开启
 >
 > 通常使用`set -euo pipefail`，也可以使用`bash -euo pipefail script.sh`
+>
+> 如果想要查看具体的内建命令如何使用
+>
+> 1. 非bash使用`bash -c "help command"`
+> 2. bash使用`help command`
 
 ## set -u
 

@@ -1,5 +1,7 @@
 # Shell 启动环境
 
+> **<font color="red">!!!注意，如果shell_script是windows上完成编写的于linux上的crlf不同且一定不能使用`cd`命令，会导致shell出现问题</font>**
+>
 > ==所有Shell共享env变量==
 >
 > 使用`echo $0`判断当前的shell是不是 login shell
@@ -40,7 +42,7 @@ Linux 发行版更新的时候，会更新`/etc`里面的文件，比如`/etc/pr
 
 ```
 # .bash_profile
-
+# 这里对~/.bashrc也做了载入,所以会用户的个人配置会生效
 # Get the aliases and functions
 if [ -f ~/.bashrc ]; then
         . ~/.bashrc

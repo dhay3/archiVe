@@ -65,6 +65,10 @@ https://www.howtogeek.com/669835/how-to-change-your-default-shell-on-linux-with-
 
 ## 配置文件
 
+http://zsh.sourceforge.net/Doc/Release/Files.html#Files
+
+所有的个人文件在全局配置之后加载
+
 - `/etc/zsh/zshenv`
 
   优先从该配置文件中读取，内容不能被覆盖
@@ -75,11 +79,13 @@ https://www.howtogeek.com/669835/how-to-change-your-default-shell-on-linux-with-
 
 - `/etc/zsh/zshrc`
 
-  如果是交互的shell(nologin-shell)，从该文件读取
+  如果是交互的shell(==不是指nologin-shell==)，从该文件读取
 
 - `/etc/zsh/zlogout`
 
   如果退出login-shell，从该文件中读取
+
+
 
 ## 常用插件
 
