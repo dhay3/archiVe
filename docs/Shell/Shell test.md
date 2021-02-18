@@ -8,13 +8,18 @@
 >
 > 支持逻辑运算符，`&&`，`||`，`!` 
 >
-> `if [] && [];then`
 
 `if`结构的判断条件，一般使用`test`命令，有三种形式。
 
 1. `test expression`
+
 2. `[ expression ]`
+
+   不支持复杂逻辑判断，复杂逻辑需要分开使用`if [ condition ] && [ condition ];then`
+
 3. `[[ expression ]]`
+
+   支持复杂逻辑判断，`if [[ codition && condition ]];then`
 
 获取变量(字符串)长度
 

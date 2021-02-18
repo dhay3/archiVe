@@ -66,6 +66,20 @@ pattern：`grep [options] pattern [file]`
 
   不以行显示内容，只显示匹配的内容
 
+  ```
+  [root@cyberpelican \]# cat testfile 
+    File: testfile
+    a111
+    22
+    a111
+    22
+    2
+    1
+  [root@cyberpelican \]# grep -o 11 testfile 
+  11
+  11
+  ```
+
 - -An,-Bn,-Cn
 
   > 用于想要匹配的内容单独成行，且有不同的匹配。内容之间以`---`分隔
@@ -91,7 +105,17 @@ pattern：`grep [options] pattern [file]`
   ...输出的内容不包含root
   ```
 
+- -w
 
+  全词匹配
+
+  ```
+  [root@cyberpelican bin]# ll | grep -w ls
+  lrwxrwxrwx root root        6 B  Tue Mar 31 07:06:41 2020 hwloc-ls ⇒ lstopo
+  .rwxr-xr-x root root    135.6 KB Wed Aug  7 02:45:27 2019 ls
+  ```
+
+  
 
 
 

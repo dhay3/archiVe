@@ -12,13 +12,13 @@ https://www.ruanyifeng.com/blog/2018/11/awk.html
 
 文本处理工具，==每次处理一行==
 
-#**pattern**
+**pattern**
 
 `awk '{[pattern]action}' {filname}`, pattern采用regex，和正则不同的是如果当前处理的行包含regex就会返回当前行
 
 > 和shell脚本中的`$0,$1...`不同，awk中`$0`表示当前行，`$1`表示以制表符或是换行符（CR或是FL）分隔的第一个字段，例如：this is a test，`$0`表示this is a test，`$1`表示 this。通过`echo 'this is a test'|awk '{print $1}'`来校验
 
-#**常用参数**
+**常用参数**
 
 - `-F`
 
@@ -28,7 +28,7 @@ https://www.ruanyifeng.com/blog/2018/11/awk.html
 
   `awk -F: '{print $1} /etc/passwd'`
 
-#**内建变量/built-in variables**
+**内建变量/built-in variables**
 
 - NF
 
@@ -53,7 +53,7 @@ https://www.ruanyifeng.com/blog/2018/11/awk.html
   ...
   ```
 
-#**Regex**
+**Regex**
 
 > 正则表达式需要在`//`之间，使用`~//`表示非运算
 >
@@ -66,7 +66,7 @@ chz:x:1000:1000:chz:/home/chz:/bin/bash
 
 这里会匹配`/etc/passwd`包含chz的行，并打印出第一个字段
 
-#**BEGIN/END**
+**BEGIN/END**
 
 BEGIN block 会在action之前处理，END block会在action之后处理
 
@@ -75,6 +75,14 @@ BEGIN block 会在action之前处理，END block会在action之后处理
 begin block
 chz:x:1000:1000:chz:/home/chz:/bin/bash
 end block
+```
+
+**printf**
+
+如果要在awk中使用printf需要将参数分割
+
+```
+ps auxf | grep -v ps |awk '{printf "%s %s \n",$2,$8}' | grep Z | awk '{print $1}' | xargs kill -SIGCHLD
 ```
 
 ## cut
