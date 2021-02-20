@@ -26,7 +26,7 @@ file1  minikube  v2ray-linux-64  xargs
 
 ```
 
-#**参数**
+## 参数
 
 - `-p`
 
@@ -58,3 +58,44 @@ file1  minikube  v2ray-linux-64  xargs
   [root@test05 ab]# ls ../n/
   mini.txt  nii.txt  ni.txt
   ```
+
+- `-0`
+
+  以null为结尾，转义和引号变成字面意义
+
+  ```
+  [root@cyberpelican opt]# ls | xargs -0 ls
+  ls: cannot access '1.txt'$'\n''a'$'\n''bak.xml'$'\n''Blasting_dictionary-master'$'\n''burpsuite pro'$'\n''containerd'$'\n''jdk-14.0.2'$'\n''jdk-14.0.2_linux-x64_bin.tar.gz'$'\n''lsd_0.18.0_amd64.deb.gz'$'\n''t1'$'\n': No such file or directory
+  ```
+
+- `-t`
+
+  运行时将实际的命令输出
+
+- `-n`
+
+  表示将多少个参数为一组传给命令，如下表示一次传一个给traceroute。默认会将所有的输出传给xargs
+
+  ```
+  chz@cyberpelican:/opt$ { echo baidu.com; echo sohu.com; } | xargs  -n 1 traceroute
+  
+  ls *.js | xargs -t -n2 ls -al
+  ```
+
+- `-P`
+
+  指定xargs使用的最大进程数，默认为1。如果为0表示调用可以使用的最大进程数
+
+  ```
+  chz@cyberpelican:/opt$ { echo baidu.com; echo sohu.com; } | xargs -n 1 -P 20 traceroute
+  traceroute to sohu.com (211.159.191.77), 30 hops max, 60 byte packets
+  traceroute to baidu.com (220.181.38.148), 30 hops max, 60 byte packets
+   1  192.168.80.2 (192.168.80.2)  1.125 ms  1.029 ms  0.922 ms 1  192.168.80.2 (192.168.80.2)  0.093 ms  0.151 ms  0.154 ms
+   2  * * *
+   3  * * *
+   4  * *
+   * 2  *
+  
+  ```
+
+  

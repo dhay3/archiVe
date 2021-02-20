@@ -258,12 +258,12 @@ sub   2048R/8A08D086 2020-12-09
   
   ```
 
-- `--recv <fingerprint>`
+- `--recv-keys <fingerprint>`
 
   如果没有公钥，可以通过fingerprint导入到本地数据库
 
   ```
-  
+  gpg --keyserver pgpkeys.mit.edu --recv-key DE885DD3
   ```
 
 ## 上传密匙

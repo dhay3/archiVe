@@ -79,7 +79,7 @@
    13
    ```
 
-2. 读取所有成员
+2. `[@]`读取所有成员
 
    ```
    [root@cyberpelican ~]# foo=(a b c d e f)
@@ -136,7 +136,7 @@
    
    ```
 
-## 拷贝数组
+## ==拷贝数组==
 
 ```
 [root@cyberpelican ~]# hobbies=( "${activities[@]}" )

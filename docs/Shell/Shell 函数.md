@@ -4,6 +4,27 @@
 
 ## 概述
 
+与javascript类似shell也会进行变量提升，==同样也有闭包，可以将函数定义在函数中==
+
+```
+func1()
+{
+    func2
+}
+
+func2()
+{
+    echo "In func2, var = $var"
+}
+
+var=global
+func1
+
+----
+
+echo In func2, var = global
+```
+
 pattern：
 
 1. ```

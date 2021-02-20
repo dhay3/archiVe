@@ -110,6 +110,10 @@ https://blog.csdn.net/huangjuegeek/article/details/21713809
 
    将stoud和stderr都重定向到file1
 
+5. `|&`
+
+   等价于`2>&1 |`
+
 
 
 

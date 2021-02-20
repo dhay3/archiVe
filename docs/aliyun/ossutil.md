@@ -721,3 +721,112 @@ https://help.aliyun.com/document_detail/120068.html?spm=a2c4g.11186623.6.876.375
 
 获取指定bucket中上传成功的multipart(会占用bucket空间)
 
+## 补全脚本
+
+参考：
+
+https://github.com/scop/bash-completion/blob/master/completions/_svn#L74
+
+```shell
+#oss completion
+_oss() {
+  local cur pre words cword
+  # shellcheck disable=SC2206
+  words=(${COMP_WORDS[@]})
+  cword="${COMP_CWORD}"
+  cur="$2"
+  pre="${words[cword - 1]}"
+  local commands
+  [[ "$commands" ]] || commands="appendfromfile bucket-encryption bucket-policy bucket-tagging bucket-version \
+  cat config cors cors-options cp create-symlink du getallpartsize hash help inventory \
+  lifecycle listpart logging ls mb mkdir object-tagging probe read-symlink referer restore request-payment \
+  revert-versioning rm set-acl set-meta sign stat sync update website worm help "
+
+  local common
+  [[ "$common" ]] || common="-c --config-file -e --endpoint -i --access-key-id -k --access-key-secret -t --sts-token \
+    --proxy-host --proxy-user --proxy-pwd --retry-times --loglevel "
+
+  if (($cword == 1)); then
+    # shellcheck disable=SC2207
+    COMPREPLY=($(compgen -W "$commands" -- "$cur"))
+    return
+  else
+    local options
+    case "$pre" in
+    --loglevel)
+      options="info debug"
+      ;;
+    --acl)
+      options="private public-read public-read-write"
+      ;;
+    --storage-class)
+      options="Standard IA Archive ColdArchive"
+      ;;
+    -L | --language)
+      options="CH EN"
+      ;;
+    --redundancy-type)
+      options="LRS ZRS"
+      ;;
+    --encoding-type)
+      options="url"
+      ;;
+    --payer)
+      options="requester"
+      ;;
+
+    esac
+    # shellcheck disable=SC2207
+    COMPREPLY=($(compgen -W "$options" -- "$cur"))
+
+    local command=${words[1]}
+    if [[ "$cur" == -* ]]; then
+      local options
+      options="$common"
+      case "$command" in
+      cp)
+        options+="-r --recursive -f --force -u --update --output-dir --bigfile-threshold --part-size --checkpoint-dir \
+        --range --encoding-type --include --exclude --meta --acl -j --jobs --parallel --snapshot-path --disable-crc64 --payer \
+        --maxupspeed --partition-download --version-id --local-host --enable-symlink-dir --only-current-dir --disable-dir-object \
+        --disable-all-symlink --disable-ignore-error --tagging "
+        # shellcheck disable=SC2207
+        COMPREPLY=($(compgen -W "$options" -- "$cur"))
+        return
+        ;;
+      ls)
+        options+="--payer -s --short-format -d --directory -m --multipart -a --all-type --limited-num --marker \
+                --upload-id-marker --encoding-type --include --exclude --all-version --version-id-marker"
+        ;;
+      mb)
+        options+="--proxy-host --proxy-user -L --language --acl --storage-class --redundancy-type"
+        ;;
+      rm)
+        options+="-r --recursive -b --bucket -f --force -m --multipart -a --all-type --encoding-type --include \
+                --exclude --version-di --all-versions --payer"
+        ;;
+      set-meta)
+        options+="-r --recursive -u --update --delete -f --force --encoding-type --include --exclude -j --jobs -L \
+        --language --output-dir --version-id"
+        ;;
+      esac
+      # shellcheck disable=SC2207
+      COMPREPLY=($(compgen -W "$options" -- "$cur"))
+    else
+      if [[ "$command" == @(help|[h?]) ]]; then
+        # shellcheck disable=SC2207
+        COMPREPLY=($(compgen -W "$commands" -- "$cur"))
+      elif [[ "$command" == "set-meta" ]]; then
+        metadata="Expires X-Oss-Object-Acl Origin X-Oss-Storage-Class Content-Encoding Cache-Control Content-Disposition Accept-Encoding X-Oss-Server-Side-Encryption Content-Type"
+        # shellcheck disable=SC2207
+        COMPREPLY=($(compgen -W "$metadata" -- "$cur"))
+      else
+        # shellcheck disable=SC2207
+        COMPREPLY=($(compgen -f -d -- "$cur"))
+      fi
+    fi
+  fi
+}
+complete -o filenames -o nospace -o bashdefault -F _oss oss
+
+```
+

@@ -27,6 +27,22 @@ https://www.ruanyifeng.com/blog/2018/11/awk.html
   `echo 'this is a test'|awk -F: '{print $1}'`输出this is a test，因为没有以`:`为分隔符
 
   `awk -F: '{print $1} /etc/passwd'`
+  
+  如果需要表明多个分隔符使用`[]`
+  
+  https://stackoverflow.com/questions/12204192/using-multiple-delimiters-in-awk
+  
+  ```
+  /logs/tc0001/tomcat/tomcat7.1/conf/catalina.properties:app.env.server.name = demo.example.com
+  /logs/tc0001/tomcat/tomcat7.2/conf/catalina.properties:app.env.server.name = quest.example.com
+  /logs/tc0001/tomcat/tomcat7.5/conf/catalina.properties:app.env.server.name = www.example.com
+  
+  awk -F'[/=]' '{print $3 "\t" $5 "\t" $8}' file
+  
+  tc0001   tomcat7.1    demo.example.com  
+  tc0001   tomcat7.2    quest.example.com  
+  tc0001   tomcat7.5    www.example.com
+  ```
 
 **内建变量/built-in variables**
 
@@ -84,6 +100,10 @@ end block
 ```
 ps auxf | grep -v ps |awk '{printf "%s %s \n",$2,$8}' | grep Z | awk '{print $1}' | xargs kill -SIGCHLD
 ```
+
+### 求和
+
+https://blog.csdn.net/csCrazybing/article/details/52594989
 
 ## cut
 

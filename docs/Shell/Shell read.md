@@ -86,7 +86,7 @@ lastname =
 
 > read读取文件每次读取一行
 
-read还可以用于读取文件
+read还可以用于读取文件。==使用管道符可以读变量==
 
 ```
 [root@cyberpelican opt]# cat test.sh 
@@ -98,9 +98,14 @@ done
 [root@cyberpelican opt]# ./test.sh 
 127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1 localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+
+root in /usr/local/\ λ echo $a | while read line;do echo num=$line;done
+num=4
+num=76 
 ```
 
-同样可以使用重定向符
+同样可以使用重定向符，==这里重定向的只能是文件，不能是变量。==
 
 ```
 [root@cyberpelican opt]# cat test.sh 
@@ -213,4 +218,6 @@ ZHANG 20 NV
   password
   ```
 
-  
+- `-r`
+
+  不转义字符

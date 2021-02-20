@@ -1,5 +1,7 @@
 # linux ls
 
+> 实际上调用`printf  '%s\n' *`
+
 参考：
 
 https://blog.csdn.net/JenMinZhang/article/details/9816853

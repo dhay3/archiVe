@@ -4,7 +4,7 @@ https://www.gnu.org/software/bash/manual/bash.html#The-Set-Builtin
 
 set用于设定shell该怎么执。
 
-> 所有参数都可以使用`+`恢复
+> 所有参数都可以使用`+`来关闭功能选项
 >
 > 通常使用`set -euo pipefail`，也可以使用`bash -euo pipefail script.sh`
 >
@@ -160,4 +160,14 @@ echo bar
 a
 ```
 
-## 
+### errorexit
+
+等价`set -e`，命令出错后退出
+
+### noclobber
+
+等价`set -C`，禁止文件重定向后覆盖
+
+### verbose
+
+等价`set -v`

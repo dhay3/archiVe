@@ -1,8 +1,18 @@
 # Shell 模式扩展
 
+> 命令组
+>
+> https://blog.csdn.net/tttyd/article/details/11742241
+>
+> 在命令行中`{ command；}`可以将一组命令表示为一个整体，不会开shell执行，分号必不可缺。括号中的变量可以被脚本余下的部分使用
+>
+> `(  )`表示开一个子shell执行命令，括号中的变量不能被脚本余下的部分使用
+
 参考：
 
 https://wangdoc.com/bash/expansion.html
+
+https://www.gnu.org/software/bash/manual/bash.html#Pattern-Matching
 
 ## 概述
 
@@ -407,6 +417,34 @@ $ echo {a..c}{1..3}
 a1 a2 a3 b1 b2 b3 c1 c2 c3
 ```
 
+## 子扩展
+
+可以使用逻辑或分隔，常用于test中。例如
+
+```
+if [[ -z "${CDPATH:-}" ]] || [[ "$cur" == @(./*|../*|/*) ]];
+```
+
+1. `?(pattern-list)`
+
+   Matches zero or one occurrence of the given patterns.
+
+2. `*(pattern-list)`
+
+   Matches zero or more occurrences of the given patterns.
+
+3. `+(pattern-list)`
+
+   Matches one or more occurrences of the given patterns.
+
+4. `@(pattern-list)`
+
+   Matches one of the given patterns.
+
+5. `!(pattern-list)`
+
+   Matches anything except one of the given patterns.
+
 ## $变量扩展
 
 Bash 将美元符号`$`开头的词元视为变量，将其扩展成变量值，详见《Bash 变量》一章。
@@ -431,6 +469,17 @@ SECONDS SHELL SHELLOPTS SHLVL SSH_AGENT_PID SSH_AUTH_SOCK
 ```
 
 上面例子中，`${!S*}`扩展成所有以`S`开头的变量名。
+
+==在`${}`中会自动获取所有的变量==
+
+```
+[root@cyberpelican \]# a=(1 2 3)
+[root@cyberpelican \]# b=2
+[root@cyberpelican \]# echo ${a[b]}
+3
+```
+
+
 
 ## $(...)/ ``子命令扩展
 
