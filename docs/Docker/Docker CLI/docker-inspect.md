@@ -226,7 +226,7 @@ root in ~ λ docker inspect test11
 
 - `--format`
 
-  以go template的形式打印指定的模块
+  以go template的形式打印指定的模块。这里的json是调用函数，Mounts是参数。
 
   ```
   root in ~ λ docker inspect t1 --format="{{json .Mounts}}"

@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6e28b1cc-4f85-4826-9d67-df0f0e92353a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Shell set.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Shell set.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Shell 启动环境.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Shell 启动环境.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Shell 脚本入门.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Shell 脚本入门.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Zsh.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Zsh.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Sundries/^正则表达式$.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../Sundries/^正则表达式$.md" afterDir="false" />
-    </list>
+    <list default="true" id="6e28b1cc-4f85-4826-9d67-df0f0e92353a" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -60,7 +54,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Shell Script" />
     <property name="last.edited.regexp" value="*/" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../../workspace_for_idea/springboot/07.springboot-mybatis-redis" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -77,21 +71,6 @@
   <component name="RebelAgentSelection">
     <selection>jr</selection>
   </component>
-  <component name="RunManager">
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -105,6 +84,7 @@
       <workItem from="1612535242035" duration="643000" />
       <workItem from="1612747177558" duration="3346000" />
       <workItem from="1612782636485" duration="1336000" />
+      <workItem from="1613810801357" duration="49000" />
     </task>
     <servers />
   </component>
@@ -116,5 +96,9 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="249" y="0" key="#Project_Structure/0.0.1536.824@0.0.1536.824" timestamp="1612520405484" />
+    <state x="910" y="334" key="FileChooserDialogImpl" timestamp="1613810848869">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="910" y="334" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1613810848869" />
   </component>
 </project>

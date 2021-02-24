@@ -56,7 +56,11 @@ root in /etc/docker λ docker run  --name t3 -p 80:80  nginx
 
 ## Network settings
 
-docker使用`--network`来指定生成的容器该怎么创建容器。可以使用的value有如下四个
+https://www.qikqiak.com/k8s-book/docs/7.Docker%E7%9A%84%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%BC%8F.html
+
+docker使用`--network`来指定生成的容器该怎么创建容器。可以使用的value有如下四个。
+
+==在新版本中的docker不只有4个值，可以是自定义的。参考docker network。==
 
 1. none
 
@@ -64,15 +68,73 @@ docker使用`--network`来指定生成的容器该怎么创建容器。可以使
 
 2. host
 
-   生成的容器和宿主机的iface配置相同，==如果对网络要求较高推荐采用这种方法，但是由于容器可以访问宿主的网络信息，所以不安全。==
+   生成的容器和宿主机的iface配置相同(使用宿主机的 IP 和端口。但是，容器的其他方面，如文件系统、进程列表等还是和宿主机隔离的)，==如果对网络要求较高推荐采用这种方法，但是由于容器可以访问宿主的网络信息，所以不安全。==
+
+   <img src="D:\asset\note\imgs\_docker\Snipaste_2021-02-23_10-06-14.png" style="zoom:80%;" />
+
+   ```
+   root in ~ λ docker run --network=host -itd --name t4 busybox
+   61c0db02f00fc529bee34e3f886b736c8008bef8315737a5f88910516958bd03
+   root in ~ λ docker exec -it t4 sh
+   / # ip a
+   1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue qlen 1000
+       link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+       inet 127.0.0.1/8 scope host lo
+          valid_lft forever preferred_lft forever
+       inet6 ::1/128 scope host
+          valid_lft forever preferred_lft forever
+   2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel qlen 1000
+       link/ether 00:16:3e:0a:be:8b brd ff:ff:ff:ff:ff:ff
+       inet 172.19.124.44/20 brd 172.19.127.255 scope global dynamic eth0
+          valid_lft 315292524sec preferred_lft 315292524sec
+       inet6 fe80::216:3eff:fe0a:be8b/64 scope link
+          valid_lft forever preferred_lft forever
+   3: docker0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue
+       link/ether 02:42:2e:49:7b:39 brd ff:ff:ff:ff:ff:ff
+       inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
+          valid_lft forever preferred_lft forever
+       inet6 fe80::42:2eff:fe49:7b39/64 scope link
+          valid_lft forever preferred_lft forever
+   15: veth03c6e13@if14: <BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN> mtu 1500 qdisc noqueue master docker0
+       link/ether b6:21:2d:4a:28:16 brd ff:ff:ff:ff:ff:ff
+       inet6 fe80::b421:2dff:fe4a:2816/64 scope link
+          valid_lft forever preferred_lft forever
+   17: vethc1b39cc@if16: <BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN> mtu 1500 qdisc noqueue master docker0
+       link/ether ee:2c:d2:0f:a0:d6 brd ff:ff:ff:ff:ff:ff
+       inet6 fe80::ec2c:d2ff:fe0f:a0d6/64 scope link
+          valid_lft forever preferred_lft forever
+   
+   ```
 
 3. container
 
-   与指定的容器共享网络
+   与指定的容器共享网络(NIC)。在宿主机上只会生成一个vethxxx。t1与t2的网络信息相同。
+
+   <img src="D:\asset\note\imgs\_docker\Snipaste_2021-02-23_10-11-21.png" style="zoom:80%;" />
 
    ```
-   docker run -d --name redis example/redis --bind 127.0.0.1
-   docker run --rm -it --network container:redis example/redis-cli -h 127.0.0.1
+   root in /opt/t λ docker run -itd --name t1 busybox
+   e3abf7c34e4e709dbb21fe032eb7a24394a3250a2fcfe523a7e7202d780899d5
+   
+   root in /opt/t λ docker run -itd --name t2 --network=container:t1 busybox
+   e5c7d27d5bf29d0972cec073a1745d4f17e0e13e8e43173dd8f3e12cacfad121
+   
+   root in /opt/t λ docker ps
+   CONTAINER ID   IMAGE     COMMAND   CREATED          STATUS          PORTS     NAMES
+   e5c7d27d5bf2   busybox   "sh"      3 seconds ago    Up 2 seconds              t2
+   e3abf7c34e4e   busybox   "sh"      53 seconds ago   Up 52 seconds             t1
+   
+   root in ~ λ docker inspect -f '{{json .NetworkSettings.Networks}}' t1
+   {"bridge":{"IPAMConfig":null,"Links":null,"Aliases":null,"NetworkID":"80b9b205cd4c1518c43d2cd74a975440dd78e5766b89c3d3eaf404f4c11bafc3","EndpointID":"f815bde6d256ec4eeb2602212dfd9db8a236369bffa9087d2031642aed865fd5","Gateway":"172.17.0.1","IPAddress":"172.17.0.2","IPPrefixLen":16,"IPv6Gateway":"","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"MacAddress":"02:42:ac:11:00:02","DriverOpts":null}}
+   root in ~ λ docker ps
+   CONTAINER ID   IMAGE     COMMAND   CREATED              STATUS              PORTS     NAMES
+   9f42296d6adf   busybox   "sh"      About a minute ago   Up About a minute             t3
+   7a1e7cb41549   busybox   "sh"      2 minutes ago        Up 2 minutes                  t2
+   2f2fb0f72cfa   busybox   "sh"      3 minutes ago        Up 3 minutes                  t1
+   root in ~ λ docker inspect -f '{{json .NetworkSettings.Networks}}' t2
+   {}
+   #在NetworkMode中显示网络模式
+    "NetworkMode": "container:2f2fb0f72cfaa3af75283012aec060e01f0348882356f2db1f419e5a91692890",
    ```
 
 4. bridge 缺省值

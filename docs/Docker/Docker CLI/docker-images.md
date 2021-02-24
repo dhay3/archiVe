@@ -1,5 +1,9 @@
 # docker-images
 
+> 复合组件`docker image`
+>
+> 参考：https://docs.docker.com/engine/reference/commandline/image/
+
 ## 概述
 
 用于镜像，默认支持container name模糊查询
