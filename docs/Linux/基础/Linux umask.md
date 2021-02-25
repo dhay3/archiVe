@@ -14,7 +14,7 @@ https://blog.csdn.net/stpeace/article/details/45509425
 
 https://unix.stackexchange.com/questions/337182/different-umask-for-directories-and-files
 
-可以通过`umask [new_mask]`指定mask，四位对于目录默认从0777中减去，对于文件默认从0666中减去权限。
+可以通过`umask [new_mask]`指定mask，四位对于目录默认从0777中减去指定的值，对于文件默认从0666中减去指定的值。
 
 ```
 root in /usr/local/\ λumask 

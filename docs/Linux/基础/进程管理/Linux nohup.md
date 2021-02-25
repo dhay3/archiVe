@@ -2,7 +2,7 @@
 
 参考：https://www.cnblogs.com/jinxiao-pu/p/9131057.html
 
-使用`nohup`会忽略挂起进程的信号(不会因为终端的退出而退出)，保证进程一直运行。会将输出的内容生成一个`nohup.out`文件。
+使用`nohup`会忽略挂起和非强制的POSIX信号(==不会因为父进程的退出而退出，由于Linux的进程机制会被父进程的父进程过继，但是由于父进程打开的sockets会关闭所以被过继的进程的内容产生异常==)，保证进程一直运行。会将输出的内容生成一个`nohup.out`文件。
 
 ```
 nohup: ignoring input and appending output to 'nohup.out'                                          /0.3s
@@ -24,3 +24,9 @@ root in ~ λ nohup firefox &
 nohup: ignoring input and appending output to 'nohup.out'     
 ```
 
+可以通过jobs来查看通过nohup方式启动的进程
+
+```
+root in ~/Desktop λ jobs
+[1]  + running    nohup firefox
+```

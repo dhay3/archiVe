@@ -4,7 +4,7 @@
 >
 > 如果切换了用户，就不能使用X11 forward。
 >
-> 可以使用`ssh -vvv hostname`来debug
+> 可以使用`ssh -vvvT hostname`来debug
 
 ## 远程连接
 

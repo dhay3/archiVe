@@ -6,6 +6,10 @@
 
 pattern：`chattr [option] [mode] files...`
 
+```
+chattr -i /etc/resolv.conf
+```
+
 **属性**
 
 1. `a`：文件只能做append，不能做其他修改和清空操作；如果是文件只能新建和修改，但是不能删除。只有root或有CAP_LINUX_IMMUTABLE属性的进程才能设置和清除
