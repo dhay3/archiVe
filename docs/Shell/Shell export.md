@@ -44,3 +44,25 @@ bar
 ```
 
 上面例子中，子 Shell 修改了继承的变量`$foo`，==对父 Shell 没有影响。==
+
+## 分号
+
+https://stackoverflow.com/questions/27962161/what-does-the-operator-colon-in-the-satement-export-variable-lib-dev-input-eve
+
+导出变量时检查的路径
+
+```
+root in /opt/go λ echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+export PATH+$JAVA_HOME/bin:$PATH
+```
+
+这里获取默认shell中的`$PATH`值，并组合`$JAVA_HOME`做为新的`$PATH`
+
+PATH是执行二进制文件是的路径
+
+
+
+
+

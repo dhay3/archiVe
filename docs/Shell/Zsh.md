@@ -71,7 +71,16 @@ http://zsh.sourceforge.net/Doc/Release/Files.html#Files
 
 - `/etc/zsh/zshenv`
 
-  优先从该配置文件中读取，内容不能被覆盖
+  优先从该配置文件中读取，内容不能被覆盖。一般用于设置环境变量
+
+  ```
+    export JAVA_HOME=/opt/jdk-14.0.2
+    export CLASSPATH=.
+    export PATH=$JAVA_HOME/bin:$PATH
+    
+    export GO_HOME=/opt/go
+    export PATH=$GO_HOME/bin:$PATH
+  ```
 
 - `/etc/zsh/zprofile`
 
