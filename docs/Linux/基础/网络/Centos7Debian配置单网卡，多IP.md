@@ -12,7 +12,7 @@ ifconfig ens33:0 192.168.80.101 netmask 255.255.255.0 up
 
 复制一份原有的网卡配置文件，以 `identifier:number`来表示网卡
 
-<img src="..\..\..\imgs\_Linux\Snipaste_2020-09-18_14-01-45.png"/>
+<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-09-18_14-01-45.png"/>
 
 修改内容如下，注意NAME和DEVICE
 

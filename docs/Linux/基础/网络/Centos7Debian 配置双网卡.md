@@ -2,7 +2,7 @@
 
 1. 添加一块虚拟网卡
 
-<img src="..\..\..\imgs\_Linux\Snipaste_2020-09-18_16-41-43.png"/>
+<img src="..\..\..\..\imgs\_Linux\Snipaste_2020-09-18_16-41-43.png"/>
 
 2. `ifconfig`查看网卡device name，新建一个对应的配置文件`vim /etc/sysconfig/network-script/ifcfg-name`
 
@@ -46,7 +46,8 @@ netmask 255.255.255.0
 broadcast 192.168.80.255
 network 192.168.80.0
 gateway 192.168.80.2
-
+#与centos不同
+dns-nameserver 8.8.8.8 
 
 auto eth1
 iface eth1 inet static

@@ -18,3 +18,9 @@ root in /opt λ cat /dev/null > test                                            
 root in /opt λ cat test            
 ```
 
+可以将配置文件使用链接指向`/dev/null`来让系统忽略配置
+
+```
+ln /etc/systemd/resolved.conf /dev/null
+```
+

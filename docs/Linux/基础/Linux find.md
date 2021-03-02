@@ -2,9 +2,9 @@
 
 ## 概述
 
-pattern：`find [path] [option] [action]`
+pattern：`find [starting-point] [option] [action]`
 
-find命令直接搜索硬盘速度较慢
+find命令直接搜索硬盘速度较慢，如果没有指定starting-point默认使用`.`，默认使用递归查询
 
 ## 基础条件
 

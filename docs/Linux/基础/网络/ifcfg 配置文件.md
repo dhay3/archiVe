@@ -15,6 +15,8 @@ https://blog.csdn.net/u011857683/article/details/80950466
 ##  配置参数
 
 > 这些参数值不区分大小写，不区分单引号和双引号，甚至可以不用引号。
+>
+> ==dns指令块只有在BOOTPROTO是dhcp时才会生效==
 
 | 参数                | 值                                                           | 说明                                                         |
 | ------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -34,9 +36,9 @@ https://blog.csdn.net/u011857683/article/details/80950466
 | MASTER              | bond0                                                        | 指定主的名字，绑定网口会用到。                               |
 | SLAVE               | (a) yes：是主的组件。(b) no：非主的组件。                    | 指定该网口是主的组件，绑定网口会用到。。                     |
 | ARPCHECK            | (a) yes：网卡启动需要检测。(b) no：网卡启动不需要检测。      | 如果服务启动时显示ip is already in use for device eth0, 这个不是ip地址冲突,因为有的linux默认开启ARPCHECK此时在配置网卡的文件中添加 ARPCHECK=no 。 |
-| PEERDNS             | (a) yes：如果DNS设置，修改/etc/resolv.conf中的DNS. (b) 不修改/etc/resolv.conf中的DNS. | 是否允许DHCP获得的DNS覆盖本地的DNS。如果使用DHCP协议，默认为yes。 |
+| PEERDNS             | (a) yes：如果DNS设置，修改/etc/resolv.conf中的DNS. (b) 不修改/etc/resolv.conf中的DNS. | ==是否允许DHCP获得的DNS覆盖本地的DNS(resolv.conf)。如果使用DHCP协议，默认为yes。只有BOOTPROTO是dhcp才会生效== |
 | PEERROUTES          | (a) yes：从DHCP服务器获取路由。(b) no：不从DHCP服务器获取路由。 | 是否从DHCP服务器获取用于定义接口的默认网关的信息的路由表条目。 |
-| DNS{1, 2}           | (a) 8.8.8.8(b) 9.9.9.9(c) ......                             | DNS地址。当PEERDNS为yes时会被写入/etc/resolv.conf中。        |
+| DNS{1, 2}           | (a) 8.8.8.8(b) 9.9.9.9(c) ......                             | ==DNS地址。当PEERDNS为yes时会被写入/etc/resolv.conf中。==    |
 | NM_CONTROLLED       | (a) yes: 由Network Manager控制。(b) no: 不由Network Manager控制。 | 是否由Network Manager控制该网络接口。修改保存后立即生效，无需重启。被其坑过几次，建议一般设为no。 |
 | USERCTL             | (a) yes：非root用户允许控制该网络接口。(b) no：非root用户不允许控制该网络接口。 | 用户权限控制。                                               |
 | IPV6INIT            | (a) yes：支持IPv6。(b) no：不支持IPv6。                      | 是否执行IPv6。                                               |
@@ -62,6 +64,11 @@ https://blog.csdn.net/u011857683/article/details/80950466
 
 ### 静态地址
 
+> DNS1=8.8.8.8
+> DNS2=8.8.4.4
+>
+> 只有在BOOTPROTO为dhcp时才会生效
+
 ```shell
 
 [root@omp120 ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0 
@@ -75,8 +82,6 @@ DEFROUTE=yes   // 启动该网卡时，自动生成默认路由
 IPADDR=192.168.254.109
 NETMASK=255.255.255.0
 GATEWAY=
-DNS1=
-DNS2=
 HWADDR=00:90:27:50:5B:30
 ARPCHECK=no
 ```
