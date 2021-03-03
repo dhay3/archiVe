@@ -1,75 +1,10 @@
-# openssl cmdline
+# openssl 加密解密
 
-## 概述
-
-openssl是一个调用openssl libcrypto api的命令行工具，有主要如下几个功能
-
-- Creation and management of private keys, public keys and parameters
-- Public key cryptographic operations
-- Creation of X.509 certificates, CSRs and CRLs
-- Calculation of Message Digests and Message Authentication Codes
-- Encryption and Decryption with Ciphers
-- SSL/TLS Client and Server Tests
-- Handling of S/MIME signed or encrypted mail
-- Timestamp requests, generation and verification
-
-默认的配置文件在`/etc/ssl/openssl.cnf`
-
-## passphrase-options
-
-用于指定私钥的passpharse才会被用到
-
-- `pass:password`
-
-  私钥的密码。不安全因为是密文的，所以可以被`ps`查看到
-
-- `env:var`
-
-  私钥的密码是环境变量
-
-- `file:pathname`
-
-  文件中的第一行是密码
-
-- `fd:number`
-
-  指定私钥的密钥是文件句柄
-
-- `stdin`
-
-  从stdin中输入密码
-
-## subCommands
-
-> 使用`openssl list`可以查看openssl中自带的命令，所有的subCommands都自带`-help`
-
-- `ca`
-
-  Certificate Authority (CA) Management.
-
-- `ciphers`
-
-- `cms`
-
-- `genpkey`
-
-  生成私钥
-
-- `rsa`
-
-  rsa密钥管理中心
-
-- `md5`
-
-  md5相关模块
-
-- `sha1 | sha224 | sha256 | sha512`
-
-### genrsa
+#### genrsa
 
 syntax：`openssl genrsa [options] [numberbit]`
 
-用于生成rsa私钥。没有任何参数，默认将生成的私钥输出到stdout。numberbit表示生成密钥的长度默认2048不能小于512
+用于生成rsa私钥。没有任何参数，默认将生成的私钥输出到stdout。numberbit表示生成密钥的长度默认2048不能小于512。==可以统一通过genpkey==
 
 - `-out <outfile>`
 
@@ -99,7 +34,7 @@ syntax：`openssl genrsa [options] [numberbit]`
   root in /usr/local/\/ssl λ openssl genrsa -des 
   ```
 
-### rsa
+#### rsa
 
 用于对私钥的格式化和生成公钥
 
@@ -108,6 +43,27 @@ syntax：`openssl rsa [options]`
 - `-in <filename>`
 
   输出密钥，如果密钥有passpharse会询问passpharse。如果没有指定会从stdin中读入
+
+- `outform DER | PEM`
+
+  将输出的密钥格式化成DER或PEM，如果输出格式为PEM有要求
+
+  ```
+  root in /usr/local/\/ssl λopenssl rsa -outform DER -in rsa 
+  writing RSA key
+  0�:A�?c�s�&���C����e׫��)W&s>p0�XeP�E�k�[b����d����7�i(0@7�ciE9�\�.�4GY�t'=������Z���u
+                                                                                                                                 �*L]��/���y�Hx���U���JZ��!��^QU��}��X˔����ƙ;z�u^u1!�����V�v5`/���9�E��)cz����[{s /p��\�E�!��0�	x7��vmXD$<_�g��Q!�g���sg�bc�t�G�g�����S�5Q3n�by rr#�*n��A�_�ͤO,`P���n��4B����#                                                                                                                                   root in /usr/local/\/ssl λ openssl rsa -outform PEM -in rsa 
+  writing RSA key
+  -----BEGIN RSA PRIVATE KEY-----
+  MIIBOgIBAAJBAKs/Y4dz2ya4H6EAEY9Dva/mx2XXq+jAKR5XJhJzPnAwkxZYZVCb
+  Re6ls49r+ltikamp9GS1mPwT+DeYDmkoMAMCAwEAAQJAN7V/Y2lFOetcHrwu+jRH
+  WRnydCcdPbKFreEb+ZSUE1qxwft1C+sqTF3f+y8crKv4ebFIeP/9wlWHxs9KWozz
+  AQIhANPOXlEWVYoUHfB9sfpYy5TH5cn6A8aZOwZ6rAF1XnUxAiEAzvqV/wF/lVbU
+  djVgL4OvzjmLRaugKWN6+OPvA7Vbe3MCIC9wvrFc1kX6IYaXMMEJGHg3meF2bVgT
+  RCQ8X8Bn4INRAiEAyWeV5dpzZ8JiY9R0kEe4HxhnqZfj9eJTmzVRM26aYnkCIHJy
+  I+MQKm6ci0HtX93NpE8sYFC/uuNuqL80Qs352Rfp
+  -----END RSA PRIVATE KEY-----
+  ```
 
 - `-pubin`
 
@@ -211,7 +167,7 @@ syntax：`openssl rsa [options]`
     -----END PUBLIC KEY-----
   ```
 
-### rsautl
+#### rsautl
 
 rsa utility，可以对数据通过rsa的方式加密和解密
 
@@ -245,11 +201,48 @@ sytanx：`openssl rsautl [options]`
 
   对输入的文件签名，然后输出签名，需要私钥
 
+  ```
+  root in /usr/local/\/ssl λ openssl rsautl -inkey rsa -in 1.src -sign
+  _)��<�\��������	#�7�O�k�-A���ye]�~���r�B8zb�Ę:��� /����S�m�#  
+  ```
+
+- `-verify`
+
+  使用私钥校验文件
+
+  ```
+  root in /usr/local/\/ssl λ openssl rsautl -inkey rsa -verify -in 1.sign
+  sdsfsf
+  
+  ```
+
 - `-encrypt`
 
-  对输入的
+  对内容使用rsa  密钥
 
-### enc
+  ```
+   /usr/local/\/ssl λ openssl rsautl -inkey rsa -encrypt -in 1       
+  q
+   �_�
+        ­��*����<�dD����_����v��)8��*T�Lѫ�������#���b7f��'Bt�#  
+  ```
+
+- `-decrypt`
+
+  对内容使用rsa密钥解密，如果用公钥加密可以通过私钥(非对称解密)和公钥解密(对称解密)。反之相同
+
+  ```
+  root in /usr/local/\/ssl λ openssl rsautl  -inkey rsa -decrypt -in 1.e  
+  sdsfsf
+  root in /usr/local/\/ssl λ openssl rsautl  -inkey rsa -decrypt -in 1.pe
+  sdsfsf
+  ----
+   5091  openssl rsautl -pubin -inkey rsa.pub -encrypt -in 1.src -out 1.pe
+   5092  cat 1.pe
+   5093  openssl rsautl -inkey rsa -encrypt -in 1.src -out 1.e
+  ```
+
+#### enc
 
 通过指定的cipher对输入的内容加密和解密(==对称加密==)
 
@@ -368,21 +361,44 @@ nameserver 8.8.8.8
   Salted__t6����gٻ�Ncc\��}ߵ�r,���.�A�®�v̺�]���,YJLԄ�<_�z��,�B=N'�EF�b�����Q]�f:�[�E4q�ny�^m#  
   ```
 
-  
+#### passwd
 
+用于生成加密的密码
 
+- `-crypt`
 
+  使用crypt加密算法，缺省值
 
+- `-1`
 
+  使用md5加密算法
 
+- `-5 | -6`
 
+  使用sha256或sha12加密
 
+- `-salt <string>`
 
+  指定加密的salt
 
+  ```
+  root in /usr/local/\/ssl λ openssl passwd -stdin -6
+  111
+  $6$PuPYSfq7gn8YfQiW$ff6rL5fjZyMH3Vr5Ah/S6CZ6QSMh3KHYOLyZkM1Jx/DUgrt3PQHr/lTu2qJxs.fg7efKXz3widZ0Bc8LvsAFP0
+  ```
 
+- `-in <file>`
 
+  从文件中读入密码
 
+- `-stdin`
 
+  从stdin中读入密码
 
+  ```
+  root in /usr/local/\/ssl λ openssl passwd -stdin
+  111
+  9ZLZm7Ll.FTi2
+  ```
 
-
+### 

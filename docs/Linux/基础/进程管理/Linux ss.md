@@ -6,7 +6,7 @@ https://einverne.github.io/post/2013/01/ss-command-socket-statistics.html
 
 ## 概述
 
-用来获取unix上的socket，==如果主机上不方便安装netstat可以使用该命令==。如果没有带有参数默认只展示ESTABLISHED的socket
+用来获取unix上的socket，==如果主机上不方便安装netstat可以使用该命令==。==如果没有带有参数默认只展示ESTABLISHED的socket==
 
 ```
 Netid State  Recv-Q Send-Q                     Local Address:Port      Peer Address:Port  Process
@@ -60,15 +60,32 @@ u_str ESTAB  0      0                     @/tmp/.X11-unix/X0 30784              
   u_str ESTAB  0      0                     @/tmp/.X11-unix/X0 86772                * 88006 users:(("Xorg",pid=1011,fd=59))                                                                                                                                                                            
   ```
 
-- `-k`
 
-  关闭指定socket
+- `-n`
+
+  展示端口，而不是协议
 
   ```
-  
+  root in /usr/local/\ λ ss -ltpn
+  State            Recv-Q            Send-Q                        Local Address:Port                       Peer Address:Port            
+  LISTEN           0                 128                               127.0.0.1:6010                            0.0.0.0:*                users:(("sshd",pid=5995,fd=8))
+  LISTEN           0                 128                           127.0.0.53%lo:53                              0.0.0.0:*                users:(("systemd-resolve",pid=2002,fd=13))
+  LISTEN           0                 128                                 0.0.0.0:22                              0.0.0.0:*                users:(("sshd",pid=673,fd=3))
+  LISTEN           0                 128                                       *:443                                   *:*                users:(("apache2",pid=5210,fd=6),("apache2",pid=5209,fd=6),("apache2",pid=855,fd=6))
+  LISTEN           0                 128                                       *:80                                    *:*                users:(("apache2",pid=5210,fd=4),("apache2",pid=5209,fd=4),("apache2",pid=855,fd=4))
   ```
 
-  
+- `-state`
+
+  指定sockets的状态过滤
+
+  ```
+  ss -o state established '( dport = :ssh or sport = :ssh )'
+  ```
+
+- `-K`
+
+  关闭所有的sockets，该参数极其危险
 
 ## Example
 

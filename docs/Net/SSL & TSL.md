@@ -64,7 +64,7 @@ Handshake phase(握手阶段)
 
 3. Certificate
 
-   服务端发送验证证书（包含验证服务器身份的公钥）
+   服务端发送验证证书（证书中包含验证申请证书时的公钥）
 
    ![](D:\asset\note\imgs\_Net\计算机网络\Snipaste_2021-02-24_11-20-48.png)
 
