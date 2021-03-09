@@ -4,6 +4,13 @@
 
 https://www.ruanyifeng.com/blog/2019/11/hash-sum.html
 
+> 常用可以不用将hash值存储在文件中直接通过stdin就行
+>
+> ```
+> root in /opt λ md5sum kubectl | md5sum -c 
+> kubectl: OK
+> ```
+
 ## 概述
 
 <img src="..\..\..\imgs\_Linux\Snipaste_2020-12-16_19-09-18.png"/>
@@ -25,7 +32,7 @@ md5sum inputrc.md
 233bcf56e62879e4429ad7cd2770ffa3  inputrc.md
 ```
 
-如果想要校验文件的Hash文件，使用`-c`参数
+如果想要校验文件的Hash文件，使用`-c`参数，==默认会检查当前目录下是否有文件的hash值与校验文件中的相同==
 
 ```
  ┌─────(root)─────(/opt) 
@@ -39,6 +46,12 @@ inputrc.md: OK
  └> $md5sum -c inputrc.md.md5 
 inputrc.md: FAILED
 md5sum: WARNING: 1 computed checksum did NOT match
+
+root in / λmd5sum -c /opt/k.md5 
+md5sum: kubectl: No such file or directory
+kubectl: FAILED open or read
+md5sum: WARNING: 1 listed file could not be read
+
 ```
 
 ## 签名验证

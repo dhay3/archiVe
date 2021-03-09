@@ -17,9 +17,7 @@
 
 2. `PS C:\Users\82341\.ssh> cat .\id_rsa.pub |  ssh root@192.168.80.143 "cd ~/.ssh  && cat >> ~/.ssh/authorized_keys "`
 
-3. 设置文件权限`chmod 644 authorized_keys`，注意这里的权限必须是644，否则服务器会拒绝读取该文件
-
-   ==会导致除了root用户之外的用户都不能登入==
+3. 设置文件权限`chmod 644 authorized_keys`，==注意这里的权限必须是必须限制其他用户的写权限==，否则服务器会拒绝读取该文件
 
 4. 登入校验，这里没有设置私钥的passpharse，如果设置了passpharse需要passpharse才能登入
 

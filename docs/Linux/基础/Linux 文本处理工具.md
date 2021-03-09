@@ -99,6 +99,23 @@ end block
 
 ```
 ps auxf | grep -v ps |awk '{printf "%s %s \n",$2,$8}' | grep Z | awk '{print $1}' | xargs kill -SIGCHLD
+
+---
+
+[root@chz opt]# blkid /dev/vg1/lv01 | awk -F '[= ]' '{printf "UUID=%s \t %s /opt\t defaults \t 0 \t 0\n",$3,$5 }' >> /etc/fstab
+[root@chz opt]# cat /etc/fstab
+
+#
+# /etc/fstab
+# Created by anaconda on Mon Aug 24 07:49:09 2020
+#
+# Accessible filesystems, by reference, are maintained under '/dev/disk'
+# See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info
+#
+/dev/mapper/centos-root /                       xfs     defaults        0 0
+UUID=52ff1027-e9d7-427d-9f43-3a98ba708796 /boot                   xfs     defaults        0 0
+/dev/mapper/centos-swap swap                    swap    defaults        0 0
+UUID="95a68178-1d5b-46aa-93fe-230c5664e1c3" 	 "ext4" 	 defualts 	 0 	 0
 ```
 
 ### 求和

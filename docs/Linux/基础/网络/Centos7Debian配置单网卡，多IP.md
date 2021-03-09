@@ -1,6 +1,8 @@
 # Centos7/Debain配置单网卡，多IP
 
 > 可以配置不同net-id的IP，用于局域网通信
+>
+> ==按照虚拟机网卡的MAC地址来匹配iface==
 
 ## 暂时配置
 
@@ -12,7 +14,7 @@ ifconfig ens33:0 192.168.80.101 netmask 255.255.255.0 up
 
 复制一份原有的网卡配置文件，以 `identifier:number`来表示网卡
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-09-18_14-01-45.png"/>
+<img src="..\..\..\..\imgs\_Linux\Snipaste_2020-09-18_14-01-45.png"/>
 
 修改内容如下，注意NAME和DEVICE
 
@@ -49,6 +51,10 @@ GATEWAY=192.168.80.2
 `ifconfig ens33:0 hw class address`
 
 ## Debian配置
+
+allow-hotplug  和 auto的区别
+
+https://blog.starryvoid.com/archives/299.html
 
 ```
 # This file describes the network interfaces available on your system

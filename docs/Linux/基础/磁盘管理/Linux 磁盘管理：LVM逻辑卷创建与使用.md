@@ -221,6 +221,8 @@ Logincal Volume
 
 1. 挂载==（不会永久挂载）==
 
+   需要修改`/etc/fstab`
+
    ```
    [root@chz Desktop]# mount /dev/vg1/lv01  /root/Desktop/test
    ```

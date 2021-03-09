@@ -5,6 +5,8 @@
 > 如果切换了用户，就不能使用X11 forward。
 >
 > 可以使用`ssh -vvvT hostname`来debug
+>
+> 建立连接后会在客户端创建一个known_host文件
 
 ## 远程连接
 

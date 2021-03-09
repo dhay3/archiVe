@@ -4,8 +4,6 @@
 
 https://docs.docker.com/compose/
 
-## 概述
-
 docker compse是一个定义和启动容器的工具(便于微服务的管理)，通过yaml配置。
 
 使用docker compse需要以下三个步骤：
@@ -142,50 +140,6 @@ fontend 只会在frontend profile激活的情况下运行，phpmyadmin只会在d
 $ docker-compose --profile frontend --profile debug up
 $ COMPOSE_PROFILES=frontend,debug docker-compose up
 ```
-
-## docker-compose cli
-
-> 查看具体command的用法使用`docker-compose help <command>`
-
-### 通用参数
-
-- `-f | --file <compose file>`
-
-  指定读取的docker-compose.yml文件
-
-- `--profile <profile name>`
-
-  指定docker compose运行的profile
-
-- `--env-file <filepath>`
-
-  指定在docker-compose.yml中使用的环境变量的文件
-
-### up
-
-==Builds==, (re)creates, ==starts==, and attaches to containers for a service.
-
-pattern：`docker-compose up [options] [service]`
-
-如果没有指定service，默认构建和运行docker-compose.yml中所有的service
-
-- `-d`
-
-  以detach mode 运行容器
-
-- `--quiet-pull`
-
-  不会打印拉取镜像的进度
-
-- `--no-deps`
-
-  不会启动和有依赖(depens_on属性)的服务
-
-- `--no-start`
-
-  构建完容器后不会自动启动
-
-- 
 
 ## Network
 

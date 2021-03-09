@@ -211,7 +211,7 @@ Help for module ssh:
 ============================================================================
 The Module ssh does not need or support optional parameters
 
-root in /opt λ hydra  -l cpt -P Blasting_dictionary-master/3389爆破字典.txt 8.147.0.181 ssh
+root in /opt λ hydra  -l cpt -P Blasting_dictionary-master/3389爆破字典.txt  ssh://8.147.0.181:40002
 Hydra v9.0 (c) 2019 by van Hauser/THC - Please do not use in military or secret service organizations, or for illegal purposes.
 
 Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2021-02-23 19:15:58

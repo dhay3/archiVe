@@ -16,15 +16,38 @@ pattern：`grep [options] pattern [file]`
 
 - -E
 
-  使用正则表达式匹配，等价于egrep
+  使用extended regular，等价于egrep，对一些特殊的字符无需添加转义符
 
   ```
-  [root@chz Desktop]# ls | egrep 'test*'
-  test1
-  test2
-  [root@chz Desktop]# ls | grep  '^test*'
-  test1
-  test2
+  root in /opt λ ls | grep -E "backup-[[:digit:]]{4}_[[:digit:]]{2}_[[:digit:]]{2}"
+  backup-2021_03_01.zip
+  backup-2021_03_010.zip
+  backup-2021_03_02.zip
+  backup-2021_03_03.zip
+  backup-2021_03_04.zip
+  backup-2021_03_05.zip
+  backup-2021_03_06.zip
+  backup-2021_03_07.zip
+  backup-2021_03_08.zip
+  backup-2021_03_09.zip
+  ```
+
+- -e
+
+  使用basic regular
+
+  ```
+  root in /opt λ ls | grep -e "backup-[[:digit:]]\{4\}_[[:digit:]]\{2\}"
+  backup-2021_03_01.zip
+  backup-2021_03_010.zip
+  backup-2021_03_02.zip
+  backup-2021_03_03.zip
+  backup-2021_03_04.zip
+  backup-2021_03_05.zip
+  backup-2021_03_06.zip
+  backup-2021_03_07.zip
+  backup-2021_03_08.zip
+  backup-2021_03_09.zip
   ```
 
 - -i
@@ -46,6 +69,8 @@ pattern：`grep [options] pattern [file]`
   [root@chz etc]# grep post passwd
   postfix:x:89:89::/var/spool/postfix:/sbin/nologin
   ```
+
+- -F 匹配固定
 
 - -n
 
@@ -115,11 +140,23 @@ pattern：`grep [options] pattern [file]`
   .rwxr-xr-x root root    135.6 KB Wed Aug  7 02:45:27 2019 ls
   ```
 
-  
+## Regular Expressions
 
+> man grep -> /regural expressions
+>
+> 没有`\s`和`\d`
 
+grep能识别三种不能的正则语法：Basic(BRE)，extended(ERE)，perl(PCRE)
 
+在GUN grep中Basic和extended没有什么区别。如果是其他的grep
 
+```
+Basic vs Extended Regular Expressions
+       In basic regular expressions the meta-characters ?, +, {, |, (, and ) lose their special
+       meaning; instead use the backslashed versions \?, \+, \{, \|, \(, and \).
+```
 
+如果是extended不需要添加
 
+`\<`表示匹配前置的空格，`\>`表示匹配后置的空格
 

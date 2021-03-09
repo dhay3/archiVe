@@ -22,6 +22,8 @@ https://zhuanlan.zhihu.com/p/26098509
 
 科普到这里，我们可以试图去理解MBR分区了。现在我们来看看MBR分区的技术原理。
 
+> ==这里知识分区表，而不是分区。==分区表与磁盘挂钩。
+
 ## MBR原理
 
 MBR：==Master Boot Record，主分区引导记录。==最早在1983年在IBM PC DOS 2.0中提出。前面说过，每个扇区/区块都被分配了一个逻辑块地址，即LBA，而引导扇区则是每个分区的第一扇区，而主引导扇区则是整个硬盘的第一扇区（主分区的第一个扇区）。MBR就保存在主引导扇区中。另外，这个扇区里还包含了硬盘分区表DPT（Disk Partition Table），和结束标志字（Magic number）。扇区总计512字节，MBR占446字节（0000H - 01BDH），DPT占据64个字节（01BEH - 01FDH），最后的magic number占2字节（01FEH – 01FFH）。

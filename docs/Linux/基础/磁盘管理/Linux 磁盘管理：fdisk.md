@@ -17,6 +17,8 @@ graph LR
 
 
 
+> 对于fdisk不熟的朋友还可以使用cfdisk来分区
+>
 > ==同一个目录下只能挂载一个分区==
 
 ## 概念
@@ -47,9 +49,13 @@ sr0              11:0    1  4.4G  0 rom  /run/media/root/CentOS 7 x86_64
 
 ## fdisk
 
+> 如果自建分区系统，指定主引导分区需要使用`-t`参数来改变分区的类型
+
 - `fdisk -l`
 
   查看所有磁盘和分区，==`system`指的是分区类型==
+
+  disklabel 指的是磁盘的分区表类型。dos代表mbr，gpt代表gpt
 
   ```bash
   $ sudo fdisk -l

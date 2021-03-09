@@ -310,6 +310,10 @@ func main() {
 
 ...
 
+## ``
+
+表示字符常量
+
 ## func
 
 go template中支持自定义函数

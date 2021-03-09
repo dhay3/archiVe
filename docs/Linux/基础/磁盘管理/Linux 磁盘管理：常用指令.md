@@ -146,7 +146,7 @@
 
 - resize2fs
 
-  重新生成文件系统，到分区的最大容量
+  重新生成ext*文件系统，到分区的最大容量
 
   ```
   [root@chz ~]# resize2fs /dev/sdb1

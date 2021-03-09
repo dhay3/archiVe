@@ -334,16 +334,42 @@ https://developer.aliyun.com/article/238048
 
 - `-digest`
 
-  以指定摘要算法显示信息，可以通过`opensll list -digest-algorithms`来查看
+  以指定摘要算法显示信息，可以通过`openssl list -digest-algorithms`来查看
 
   ```
   root in /usr/local/\/ssl λ openssl x509 -sha1 -in crt -noout -fingerprint  
   SHA1 Fingerprint=F9:8F:E3:B4:33:09:19:72:CF:46:89:04:47:39:30:E5:92:EC:90:1B
   ```
 
-- `-req`
+- `-req` 
 
-  `-in`输入的是一个csr文件
+  `-in <csr>`输入的是一个csr文件
+
+  `-signkey <key>`指定签名的私钥
+
+  这三个参数一起使用表示使用key对csr生成证书
+
+  ```
+  root in /usr/local/\/ssl λ openssl x509 -req -days 30 -in tmp.csr -out tmp.new -signkey etter.ssl.crt
+  Signature ok
+  subject=C = AU, ST = Some-State, O = Internet Widgits Pty Ltd
+  Getting Private key
+  root in /usr/local/\/ssl λ ls
+   etter.ssl.crt   tmp.csr   tmp.new
+  root in /usr/local/\/ssl λ cat tmp.new
+    File: tmp.new
+    -----BEGIN CERTIFICATE-----
+    MIIBhzCCATECFCPCOcTel51a9hyPylZQMxVAqra5MA0GCSqGSIb3DQEBCwUAMEUx
+    CzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRl
+    cm5ldCBXaWRnaXRzIFB0eSBMdGQwHhcNMjEwMzA0MDIxOTEyWhcNMjEwNDAzMDIx
+    OTEyWjBFMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UE
+    CgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMFwwDQYJKoZIhvcNAQEBBQADSwAw
+    SAJBAMY8ozUVsAO6Z6qjnu19VsticVO+fdMBzw+wUqbO1KqJ4ByE0Lmw4OdxoqrJ
+    zfJKUcIkXwerraO/a3CsELI5eGsCAwEAATANBgkqhkiG9w0BAQsFAANBALeeozIL
+    QiN2ZS05olbVgRB1xWHKp15WLsq1JcgxmkoCURX+WFyc8lBq7tqEn8mUSot4uBrr
+    mTbEo0FRzcLSlgA=
+    -----END CERTIFICATE-----
+  ```
 
 - `-CA <filename>`
 
