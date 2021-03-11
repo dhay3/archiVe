@@ -1,28 +1,12 @@
-# NetworkManager
-
-参考：
-
-https://wiki.archlinux.org/index.php/NetworkManager_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E9%85%8D%E7%BD%AE
-
-## 概述
-
-NetworkManager是Unix上检测网络(多数distro上都有，少数使用其他的管理工具，如Ubuntu 18使用netplan)，自动连接的程序。
-
-重启NetworkManager后生效
-
-```
-systemctl restart NetworkManager
-```
-
-## 配置文件
+# NetworkManager 配置文件
 
 配置文件可以出现在如下几个地方，按照如下顺序读取，后者会覆盖前者
 
 -  /etc/NetworkManager/NetworkManager.conf,
-- /etc/NetworkManager/conf.d/name.conf,
-- /run/NetworkManager/conf.d/name.conf,
-- /usr/lib/NetworkManager/conf.d/name.conf,
-- /var/lib/NetworkManager/NetworkManager-intern.conf
+-  /etc/NetworkManager/conf.d/name.conf,
+-  /run/NetworkManager/conf.d/name.conf,
+-  /usr/lib/NetworkManager/conf.d/name.conf,
+-  /var/lib/NetworkManager/NetworkManager-intern.conf
 
 尽量不要修改全局配置文件`/etc/NetworkManager/NetworkManager.conf`，应该讲其他的配置文件写入到`/etc/NetworkManager/conf.d`下。
 

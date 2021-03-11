@@ -36,7 +36,7 @@ deb-src [ option1=value1 option2=value2 ] uri suite [component1] [component2] [.
 
 - deb表示binary packages的来源，deb-src表示source packages的来源
 - suite通常对应发行版本
-- component 表示安装包来的repo通常为 main，contrib，non-free ...
+- component 表示安装包来自的repo通常为 main，contrib，non-free ...
 
 ### deb822-style format
 

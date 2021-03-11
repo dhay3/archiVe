@@ -210,7 +210,6 @@ declare -- COMP_WORDBREAKS="
 
   可以提供额外的补全信息
 
-  > 常用
 >
   > 与`-W`使用会冲突
 >
@@ -253,6 +252,8 @@ complete -F _foo foot
 ```
 
 ## lnstall
+
+> 注意查看login shell 和 non login shell，加载配置文件文通
 
 同时需要注意一下安装目录，bash-completion会从三个地方加载自动补全脚本：
 

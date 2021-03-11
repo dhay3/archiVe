@@ -423,7 +423,9 @@ a1 a2 a3 b1 b2 b3 c1 c2 c3
 
 ## 子扩展
 
-可以使用逻辑或分隔，常用于test中。例如
+https://stackoverflow.com/questions/35812293/what-is-syntax-in-bash
+
+使用正则匹配，常用于test中。例如
 
 ```
 if [[ -z "${CDPATH:-}" ]] || [[ "$cur" == @(./*|../*|/*) ]];

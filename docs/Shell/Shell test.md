@@ -22,7 +22,11 @@
 
 2. `[ expression ]`
 
-   不支持复杂逻辑判断，复杂逻辑需要分开使用`if [ condition ] && [ condition ];then`
+   不支持复杂逻辑判断，复杂逻辑需要分开使用`if [ condition ] && [ condition ];then` 或者使用`-a`或`-o`
+
+   ```
+   if [ -n "${BASH_VERSION-}" -a -n "${PS1-}" -a -z "${BASH_COMPLETION_VERSINFO-}" ];
+   ```
 
 3. `[[ expression ]]`
 

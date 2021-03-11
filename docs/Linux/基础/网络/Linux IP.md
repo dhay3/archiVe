@@ -32,7 +32,7 @@ pattern：`ip [options] OBJECT {COMMAND|help}`
       link/ether 02:42:58:78:34:6a brd ff:ff:ff:ff:ff:ff
   ```
 
-- ip link set 
+- ==ip link set==
 
   ```
   ip l set ens33 up | down #开启或关闭指定接口
