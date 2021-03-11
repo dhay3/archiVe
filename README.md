@@ -2,9 +2,9 @@
 
 # Table of content
 
-![Github All Releases](https://img.shields.io/github/downloads/<-- dhay3-->/<-- archive -->/total.svg)
+![](https://img.shields.io/github/last-commit/dhay3/archive)
 
-![JavaScript Style Guide: Good Parts](https://img.shields.io/badge/code%20style-goodparts-brightgreen.svg?style=flat)
+![](https://img.shields.io/github/repo-size/dhay3/archive)
 
 ##  Dvops
 
