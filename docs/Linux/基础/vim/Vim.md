@@ -160,6 +160,15 @@ Huge version without GUI.  Features included (+) or not (-):
 | `:1,$s/word1/word2/g` 或 `:%s/word1/word2/g`   | 从第一行到最后一行寻找 word1 字符串，并将该字符串取代为 word2 ！(常用) |
 | `:1,$s/word1/word2/gc` 或 `:%s/word1/word2/gc` | 从第一行到最后一行寻找 word1 字符串，并将该字符串取代为 word2 ！且在取代前显示提示字符给用户确认 (confirm) 是否需要取代！(常用) |
 
+## exclamation
+
+!在getting out表示强制，如果选中了内容，表示将内容(==缓冲区==，会改变文件的内容)写进管道中
+
+```
+:1,$!cat > /opt/a
+:1,$!xxd
+```
+
 ## Getting out
 
 1. `wq`

@@ -66,9 +66,6 @@
 
 - [V2ray](docs/V2ray)
 
-
-
 - [Hardware](docs/Hardware)
-
-  [Hexo](docs/Hexo)
+- [Hexo](docs/Hexo)
 

@@ -733,20 +733,20 @@ _oss() {
     local cur pre words cword
     # shellcheck disable=SC2206
     words=(${COMP_WORDS[@]})
-    cword="${COMP_CWORD-}"
+    cword="${COMP_CWORD}"
     cur="$2"
     pre="${words[cword - 1]}"
     local commands
-    [[ "${commands-}" ]] || commands="appendfromfile bucket-encryption bucket-policy bucket-tagging bucket-version \
+    [[ "${commands}" ]] || commands="appendfromfile bucket-encryption bucket-policy bucket-tagging bucket-version \
   cat config cors cors-options cp create-symlink du getallpartsize hash help inventory \
   lifecycle listpart logging ls mb mkdir object-tagging probe read-symlink referer restore request-payment \
   revert-versioning rm set-acl set-meta sign stat sync update website worm help "
 
     local common
-    [[ "${common-}" ]] || common="-c --config-file -e --endpoint -i --access-key-id -k --access-key-secret -t --sts-token \
+    [[ "${common}" ]] || common="-c --config-file -e --endpoint -i --access-key-id -k --access-key-secret -t --sts-token \
     --proxy-host --proxy-user --proxy-pwd --retry-times --loglevel "
 
-    if (($cword == 1)); then
+    if ((${cword-} == 1)); then
         # shellcheck disable=SC2207
         COMPREPLY=($(compgen -W "$commands" -- "$cur"))
         return
@@ -798,7 +798,7 @@ _oss() {
         esac
 
         local command=${words[1]}
-        if [[ "$cur" == -* ]]; then
+        if [[ "${cur-}" == -* ]]; then
             local options
             options="$common"
             case "$command" in
@@ -827,10 +827,10 @@ _oss() {
             # shellcheck disable=SC2207
             COMPREPLY=($(compgen -W "$options" -- "$cur"))
         else
-            if [[ "$command" == @(help|[h?]) ]]; then
+            if [[ "${command-}" == @(help|[h?]) ]]; then
                 # shellcheck disable=SC2207
                 COMPREPLY=($(compgen -W "$commands" -- "$cur"))
-            elif [[ "$command" == "set-meta" ]]; then
+            elif [[ "${command-}" == "set-meta" ]]; then
                 metadata="Expires X-Oss-Object-Acl Origin X-Oss-Storage-Class Content-Encoding Cache-Control Content-Disposition Accept-Encoding X-Oss-Server-Side-Encryption Content-Type"
                 # shellcheck disable=SC2207
                 COMPREPLY=($(compgen -W "$metadata" -- "$cur"))

@@ -345,6 +345,17 @@ root in ~ λ ss -ltp | grep 10086
 LISTEN   0         1                   0.0.0.0:10086             0.0.0.0:*       users:(("nc",pid=10880,fd=3))
 ```
 
+使用`w`同样也可
+
+```
+root in ~ λ w
+ 16:19:15 up 22:19,  3 users,  load average: 0.00, 0.01, 0.00
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+root     pts/0    115.233.222.34   15:57    3:44   0.33s  0.00s nc -lk -p 10086
+root     pts/1    115.233.222.34   16:16    0.00s  0.10s  0.00s w
+cpl      pts/3    115.233.222.34   14:45    1:30m  0.07s  0.07s -zsh
+```
+
 **passive / attacker被动建立连接**
 
 attacker和target可以互换，让attacker充当nc服务端。这种方式的优点是，target无需显示的开启监听，==不受防火墙和NAT的影响。==

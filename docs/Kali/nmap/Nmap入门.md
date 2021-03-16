@@ -186,8 +186,25 @@ https://www.cnblogs.com/st-leslie/p/5115280.html
 - `-sV` (版本探测)
 
   打开版本探测。 您也可以用`-A`同时打开操作系统探测和版本探测。
+  
+  ```
+  root in ~ λ nmap -p 22 localhost -sV
+  
+  Starting Nmap 7.60 ( https://nmap.org ) at 2021-03-12 19:49 HKT
+  Nmap scan report for localhost (127.0.0.1)
+  Host is up (0.000074s latency).
+  Other addresses for localhost (not scanned): ::1
+  
+  PORT   STATE SERVICE VERSION
+  22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+  Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+  
+  Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+  Nmap done: 1 IP address (1 host up) scanned in 0.64 seconds
+  
+  ```
 
-<img src="..\..\imgs\_Kali\Snipaste_2020-09-08_20-25-16.png"/>
+<img src="..\..\..\imgs\_Kali\Snipaste_2020-09-08_20-25-16.png"/>
 
 ## 操作系统探测
 

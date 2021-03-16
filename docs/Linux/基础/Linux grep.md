@@ -139,6 +139,19 @@ pattern：`grep [options] pattern [file]`
   lrwxrwxrwx root root        6 B  Tue Mar 31 07:06:41 2020 hwloc-ls ⇒ lstopo
   .rwxr-xr-x root root    135.6 KB Wed Aug  7 02:45:27 2019 ls
   ```
+  
+- -q
+
+  用于检查是否有匹配项，如果有匹配项返回0
+
+  ```
+  root in /etc λ ll | grep -q host 
+  root in /etc λ echo $?
+  0
+  root in /etc λ ll | grep -q aaaaaaaa
+  root in /etc λ echo $?
+  1
+  ```
 
 ## Regular Expressions
 

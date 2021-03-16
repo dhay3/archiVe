@@ -28,7 +28,7 @@ cat filename | command1 && >> filname.bak
 
 ## 标准流的重定向
 
-> 如果流A被重定向到B流，但是B流被重定向到文件C，那么，A和B都会被保存到文件C中
+> 如果流A被重定向到B流，但是B流被重定向到文件C，那么，A和B都会被保存到文件C中。
 
 - 输入流重定向
 
@@ -53,6 +53,8 @@ cat filename | command1 && >> filname.bak
 echo hello >> redirect
   ```
   
+  > ==如果是整合流不能有空格==
+  >
   > 2>&1 表示将stderr(2)==合并==到stdout(1)，错误信息将会显示在屏幕
   >
   > ```
@@ -86,6 +88,14 @@ some-command > /tmp/output.txt
 
 但是你能使用`>|`符号，表示强制重定向
 
+## <>
+
+双向重定向，会导致阻塞，可以通过`timeout`命令来终止
+
+```
+[root@8d3d229c-4aab-4812-96b9-37c8bc47a1d8 opt]# timeout 2s  cat <> /dev/zero
+```
+
 ## example
 
 参考：
@@ -104,11 +114,13 @@ https://blog.csdn.net/huangjuegeek/article/details/21713809
 
 3. `>&2`
 
-   等价于`1 >&2`，将stdout重定向到stderr
+   等价于`1>&2`，将stdout重定向到stderr
 
-4. `&>file1`
+4. `>&file1`
 
-   将stoud和stderr都重定向到file1
+将stoud和stderr都重定向到file1
+
+
 
 5. `|&`
 

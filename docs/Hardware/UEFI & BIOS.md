@@ -95,7 +95,8 @@ UEFI的所有信息存储在以`.efi`文件中(binary)，而不是存储在固�
   查找`/sys/firmware/efi`文件。如果使用BIOS就没有该文件
 
   ![img](https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/W9DqKgFsc6ibHJT2OmUdcfSvXr2icU8tDrx7jHhAkM18ib0RAkicxpTIiaURU4X5hpMs330vbbYlgsNhcRRrSvSK46Q/640?wx_fmt=png)
-
+  
+  `fw_platform_size`是efi使用的系统位数
 
 ## 引导分区
 

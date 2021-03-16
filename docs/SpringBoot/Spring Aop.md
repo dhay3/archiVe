@@ -40,7 +40,7 @@
 
 ---
 
-<img src="..\..\..\..\java资料\我的笔记\springboot\img\29.png"/>
+<img src="D:\asset\note\imgs\_SpringBoot\29.png"/>
 
 ---
 

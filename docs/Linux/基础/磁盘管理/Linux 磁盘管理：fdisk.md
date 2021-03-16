@@ -6,6 +6,8 @@ https://www.cnblogs.com/itech/archive/2010/12/24/1916255.html
 
 https://www.jianshu.com/p/bf939474d69b
 
+https://www.thegeekdiary.com/understanding-linux-fdisk-utility/
+
 gdisk使用参考
 
 https://www.cnblogs.com/Sunzz/p/6908329.html
@@ -53,9 +55,14 @@ sr0              11:0    1  4.4G  0 rom  /run/media/root/CentOS 7 x86_64
 
 - `fdisk -l`
 
-  查看所有磁盘和分区，==`system`指的是分区类型==
+  查看所有磁盘和分区
 
-  disklabel 指的是磁盘的分区表类型。dos代表mbr，gpt代表gpt
+  1. Disk：磁盘容量，和逻辑扇区总数
+  2. Units：簇，一个簇包含一个逻辑扇区大小为512bytes
+  3. Sector size：逻辑扇区和物理扇区大小
+  4. I/O size：磁盘每次IO的最小和最佳大小
+  5. Disklable：磁盘的分区表类型。dos代表mbr，gpt代表gpt
+  6. Disk identifier：磁盘的标识符
 
   ```bash
   $ sudo fdisk -l
@@ -92,11 +99,15 @@ sr0              11:0    1  4.4G  0 rom  /run/media/root/CentOS 7 x86_64
 
   这里可以发现，5块硬盘，sda有两个主分区；sda1做为主引导分区。Unites和Sector分别表示柱面单元大小和扇区大小
 
-  |                                        | 时否是主引导分区 （*表示是） | 起始柱面 | 结束柱面  | 分区大小  | 分区类型 | 对分区类型的解析 |       |
-  | -------------------------------------- | ---------------------------- | -------- | --------- | --------- | -------- | ---------------- | ----- |
-  | Device Boot Start End Blocks Id System | Boot                         | Start    | End       | Blocks    | Id       | System           |       |
-  | /dev/vda1                              | *                            | 2048     | 1026047   | 512000    | 83       | Linux            | 500M  |
-  | /dev/vda2                              |                              | 1026048  | 209715199 | 104344576 | 8e       | Linux LVM        | 99.5G |
+  Sectors = End - Start + 1
+
+  Size = Sectors * logical sector size / 1024 ^ 3
+
+  |                                        | 时否是主引导分区 （*表示是） | 起始柱面(开始扇区) | 结束柱面(结束扇区) | 分区总扇区 | 分区类型 | 对分区类型的解析 |       |
+  | -------------------------------------- | ---------------------------- | ------------------ | ------------------ | ---------- | -------- | ---------------- | ----- |
+  | Device Boot Start End Blocks Id System | Boot                         | Start              | End                | Sectors    | Id       | Type             | Size  |
+  | /dev/vda1                              | *                            | 2048               | 1026047            | 41940992   | 83       | Linux            | 500M  |
+  | /dev/vda2                              |                              | 1026048            | 209715199          | 104344576  | 8e       | Linux LVM        | 99.5G |
 
 - `fdisk /dev/sda`
 

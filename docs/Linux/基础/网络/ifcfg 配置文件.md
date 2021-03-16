@@ -36,7 +36,7 @@ https://blog.csdn.net/u011857683/article/details/80950466
 | MASTER              | bond0                                                        | 指定主的名字，绑定网口会用到。                               |
 | SLAVE               | (a) yes：是主的组件。(b) no：非主的组件。                    | 指定该网口是主的组件，绑定网口会用到。。                     |
 | ARPCHECK            | (a) yes：网卡启动需要检测。(b) no：网卡启动不需要检测。      | 如果服务启动时显示ip is already in use for device eth0, 这个不是ip地址冲突,因为有的linux默认开启ARPCHECK此时在配置网卡的文件中添加 ARPCHECK=no 。 |
-| PEERDNS             | (a) yes：如果DNS设置，修改/etc/resolv.conf中的DNS. (b) 不修改/etc/resolv.conf中的DNS. | ==是否允许DHCP获得的DNS覆盖本地的DNS(resolv.conf)。如果使用DHCP协议，默认为yes。只有BOOTPROTO是dhcp才会生效== |
+| PEERDNS             | (a) yes：如果DNS设置，修改/etc/resolv.conf中的DNS. (b) 不修改/etc/resolv.conf中的DNS. | ==是否允许以DHCP方式的网络获得的DNS覆盖本地的DNS(resolv.conf)。如果使用DHCP协议，默认为yes。只有BOOTPROTO是dhcp才会生效== |
 | PEERROUTES          | (a) yes：从DHCP服务器获取路由。(b) no：不从DHCP服务器获取路由。 | 是否从DHCP服务器获取用于定义接口的默认网关的信息的路由表条目。 |
 | DNS{1, 2}           | (a) 8.8.8.8(b) 9.9.9.9(c) ......                             | ==DNS地址。当PEERDNS为yes时会被写入/etc/resolv.conf中。==    |
 | NM_CONTROLLED       | (a) yes: 由Network Manager控制。(b) no: 不由Network Manager控制。 | 是否由Network Manager控制该网络接口。修改保存后立即生效，无需重启。被其坑过几次，建议一般设为no。 |

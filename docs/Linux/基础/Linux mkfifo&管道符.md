@@ -1,5 +1,7 @@
 # Linux mkfifo管道符
 
+> 也可以使用mknod来生成
+
 ## 概述
 
 `mkfifo`命令用于创建FIFO(命名管道符)。

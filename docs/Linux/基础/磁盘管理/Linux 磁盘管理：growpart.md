@@ -4,7 +4,7 @@
 
 https://help.aliyun.com/document_detail/111738.htm?spm=a2c4g.11186623.2.30.37e84eb7XegIi3#section-vxq-3tw-dhb
 
-是一个分区扩展工具，近最大容量进行扩容
+是一个同磁盘分区扩展工具，近最大容量进行扩容
 
 ```
 [root@chz ~]# yum search growpart
