@@ -161,15 +161,19 @@ pattern：`grep [options] pattern [file]`
 
 grep能识别三种不能的正则语法：Basic(BRE)，extended(ERE)，perl(PCRE)
 
-在GUN grep中Basic和extended没有什么区别。如果是其他的grep
-
 ```
 Basic vs Extended Regular Expressions
        In basic regular expressions the meta-characters ?, +, {, |, (, and ) lose their special
        meaning; instead use the backslashed versions \?, \+, \{, \|, \(, and \).
 ```
 
-如果是extended不需要添加
+==如果是extended不需要添加转义符==
 
-`\<`表示匹配前置的空格，`\>`表示匹配后置的空格
+- `^`和`$`等同regex
+
+- 空格
+
+  `\<`表示匹配前置的空串，`\>`表示匹配后置的空串
+
+  `\b`匹配单词之间的空格
 

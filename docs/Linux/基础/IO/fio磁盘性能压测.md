@@ -66,7 +66,7 @@ https://github.com/axboe/fio/tree/master/examples
 
 job name 定义在`[]`中，注释以`;`或`#`开头
 
-`[global]`表示全局变量，可以在当都的job中继承或重写全局变量
+`[global]`表示全局变量，可以在当都的job中继承或重写全局变量。==必须要定义job==
 
 ```
 [root@chz opt]# cat jobfile 
@@ -190,7 +190,7 @@ file3.0.0
 
   I/O模式，支持如下几个值
 
-  1. read：顺序读，缺省值
+  1. read：顺序读，==缺省值==
   2. write：顺序写
   3. trim：顺序删除，只有linux block支持
   4. randread：随机读

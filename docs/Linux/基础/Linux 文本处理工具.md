@@ -2,6 +2,22 @@
 
 [TOC]
 
+## tr
+
+替换
+
+```
+root in /sys/block/vda/mq/0 λ echo "123" | tr 2 4
+143
+```
+
+删除
+
+```
+root in /sys/block/vda/mq/0 λ echo "123" | tr -d 2
+13
+```
+
 ## awk
 
 参考：
