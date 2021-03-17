@@ -39,7 +39,7 @@ https://www.cnblogs.com/kerrycode/p/5246383.html
 
 - swapoff
 
-  关闭交换功能
+  关闭交换功能。如果需要永久替换修改`/etc/fstab`
 
   ```
   [root@chz Desktop]# swapoff -a

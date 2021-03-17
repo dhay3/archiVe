@@ -50,7 +50,7 @@ nginx        latest    f6d0b4767a6c   5 weeks ago    133MB
 centos       latest    300e315adb2f   2 months ago   209MB           
 ```
 
-imageId相同的镜像使用repository+tag来删除
+==imageId相同的镜像使用repository+tag来删除==
 
 ```
 root in ~ λ docker rmi byb                                                                         

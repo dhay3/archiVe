@@ -18,7 +18,7 @@ filter负责过滤功能，比如允许哪些IP地址访问，拒绝哪些IP地�
 
 怎样查看filter表中的规则呢？使用如下命令即可查看。
 
-<img src="..\..\..\..\..\imgs\_VirtualMachine\_Linux\Snipaste_2020-10-14_08-54-19.png"/>
+<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_08-54-19.png"/>
 
 上例中，我们使用-t选项，指定要操作的表，使用-L选项，查看-t选项对应的表的规则，-L选项的意思是，列出规则，所以，上述命令的含义为列出filter表的所有规则，注意，上图中显示的规则（绿色标注的部分为规则）是Centos6启动iptables以后默认设置的规则，我们暂且不用在意它们，上图中，显示出了3条链（蓝色标注部分为链），INPUT链、FORWARD链、OUTPUT链，每条链中都有自己的规则，前文中，我们打过一个比方，把"链"比作"关卡"，不同的"关卡"拥有不同的能力，所以，从上图中可以看出，INPUT链、FORWARD链、OUTPUT链都拥有"过滤"的能力，所以，当我们要定义某条"过滤"的规则时，我们会在filter表中定义，但是具体在哪条"链"上定义规则呢？这取决于我们的工作场景。比如，我们需要禁止某个IP地址访问我们的主机，我们则需要在INPUT链上定义规则。因为，我们在理论总结中已经提到过，报文发往本机时，会经过PREROUTING链与INPUT链（如果你没有明白，请回顾前文），所以，如果我们想要禁止某些报文发往本机，我们只能在PREROUTING链和INPUT链中定义规则，但是PREROUTING链并不存在于filter表中，换句话说就是，==PREROUTING关卡天生就没有过滤的能力==，所以，我们只能在INPUT链中定义，当然，如果是其他工作场景，可能需要在FORWARD链或者OUTPUT链中定义过滤规则。
 
@@ -38,13 +38,13 @@ iptables -t nat -L
 
 我们还可以只查看指定表中的指定链的规则，比如，我们只查看filter表中INPUT链的规则，示例如下（注意大小写）。
 
-<img src="..\..\..\..\..\imgs\_VirtualMachine\_Linux\Snipaste_2020-10-14_08-57-08.png"/>
+<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_08-57-08.png"/>
 
 上图中只显示了filter表中INPUT链中的规则（省略-t选项默认为filter表），当然，你也可以指定只查看其他链，其实，我们查看到的信息还不是最详细的信息，我们可以使用-v选项，查看出更多的、更详细的信息，示例如下。
 
 > -L参数必须是最后一个参数
 
-<img src="..\..\..\..\..\imgs\_VirtualMachine\_Linux\Snipaste_2020-10-14_08-58-09.png"/>
+<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_08-58-09.png"/>
 
 可以看到，使用-v选项后，iptables为我们展示的信息更多了，那么，这些字段都是什么意思呢？我们来总结一下，看不懂没关系，等到实际使用的时候，自然会明白，此处大概了解一下即可。
 
@@ -72,7 +72,7 @@ iptables -t nat -L
 
 > 取消自动反向解析PTR
 
-<img src="..\..\..\..\..\imgs\_VirtualMachine\_Linux\Snipaste_2020-10-14_09-03-35.png"/>
+<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_09-03-35.png"/>
 
 如上图所示，规则中的源地址与目标地址已经显示为IP，而非转换后的名称。
 
@@ -82,7 +82,7 @@ iptables -t nat -L
 
 如果你习惯了查看有序号的列表，你在查看iptables表中的规则时肯定会很不爽，没有关系，满足你，使用--line-numbers即可显示规则的编号，示例如下。
 
-<img src="..\..\..\..\..\imgs\_VirtualMachine\_Linux\Snipaste_2020-10-14_09-05-01.png"/>
+<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_09-05-01.png"/>
 
 上图中INPUT链后面的括号中包含policy ACCEPT ，0 packets，0bytes 三部分。
 
@@ -94,11 +94,11 @@ iptables -t nat -L
 
 其实，我们可以把packets与bytes称作"计数器"，上图中的计数器记录了默认策略匹配到的报文数量与总大小，"计数器"只会在使用-v选项时，才会显示出来。当被匹配到的包达到一定数量时，计数器会自动将匹配到的包的大小转换为可读性较高的单位，如下图所示。
 
-<img src="..\..\..\..\..\imgs\_VirtualMachine\_Linux\Snipaste_2020-10-14_09-08-53.png"/>
+<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_09-08-53.png"/>
 
 如果你想要查看精确的计数值，而不是经过可读性优化过的计数值，那么你可以使用-x选项，表示显示精确的计数值，示例如下。
 
-<img src="..\..\..\..\..\imgs\_VirtualMachine\_Linux\Snipaste_2020-10-14_09-09-11.png"/>
+<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_09-09-11.png"/>
 
 每张表中的每条链都有自己的计数器，链中的每个规则也都有自己的计数器，没错，就是每条规则对应的pkts字段与bytes字段的信息。
 

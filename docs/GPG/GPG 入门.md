@@ -254,10 +254,6 @@ sub   2048R/8A08D086 2020-12-09
 
   将公钥导入到本地的数据库，导入后可以用作校验签名
 
-  ```
-  
-  ```
-
 - `--recv-keys <fingerprint>`
 
   如果没有公钥，可以通过fingerprint导入到本地数据库
@@ -353,7 +349,7 @@ sub   2048R/8A08D086 2020-12-09
   [root@chz Desktop]# gpg -u E7BDD87346B4D623FB203FC6DFCFDF52F1627354 -r 52A645FB16733E1A3875EEC92ED4A52162256625 --encrypt  gpg.test
   ```
 
-## 签名
+## 签名与校验
 
 > 如果没有指定`-u`发送者，默认使用`--default-key`，采用`--list-keys`显示的第一用户的私钥
 
@@ -401,7 +397,7 @@ sub   2048R/8A08D086 2020-12-09
 
 - `--verify <signature>`
 
-  校验签名是否正确，不会将文件内容输出
+  校验签名是否正确(文件需要包含签名和数据)，不会将文件内容输出
 
   ```
   [root@chz Desktop]# gpg --verify gpg.test.asc
@@ -413,7 +409,23 @@ sub   2048R/8A08D086 2020-12-09
 
 - `--verify <detach-signature> <sign-data>`
 
-  注意是单独的签名文件
+  如果是单独的签名文件，需要给出源数据。这里以校验k8s的签名文件为例
+  
+  ```
+  C:\Users\82341\Downloads>gpg --verify repomd.xml.asc  repomd.xml
+  gpg: Signature made 2021/3/16 19:17:04 中国标准时间
+  gpg:                using RSA key 6A030B21BA07F4FB
+  gpg: Good signature from "Google Cloud Packages Automatic Signing Key <gc-team@google.com>" [unknown]
+  gpg: WARNING: This key is not certified with a trusted signature!
+  gpg:          There is no indication that the signature belongs to the owner.
+  Primary key fingerprint: 54A6 47F9 048D 5688 D7DA  2ABE 6A03 0B21 BA07 F4FB
+  gpg: Signature made 2021/3/16 19:17:04 中国标准时间
+  gpg:                using RSA key 8B57C5C2836F4BEB
+  gpg: Good signature from "gLinux Rapture Automatic Signing Key (//depot/google3/production/borg/cloud-rapture/keys/cloud-rapture-pubkeys/cloud-rapture-signing-key-2020-12-03-16_08_05.pub) <glinux-team@google.com>" [unknown]
+  gpg: WARNING: This key is not certified with a trusted signature!
+  gpg:          There is no indication that the signature belongs to the owner.
+  Primary key fingerprint: 59FE 0256 8272 69DC 8157  8F92 8B57 C5C2 836F 4BEB
+  ```
 
 ## 撤销证书
 
