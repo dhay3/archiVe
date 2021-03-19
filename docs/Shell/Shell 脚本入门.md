@@ -2,27 +2,11 @@
 
 https://www.gnu.org/software/bash/manual/bash.html
 
-## Shebang
-
-> ==Shebang 行不是必需的，但是建议加上这行(如果赋予脚本`x`的权限Shebang必须填写正确)。==如果缺少该行，就需要手动将脚本传给解释器。举例来说，脚本是`script.sh`，有 Shebang 行的时候，可以直接调用执行（`./script.sh`）。
->
-> 如果没有 Shebang 行，就只能手动将脚本传给解释器来执行。
->
-> `/bin/sh ./script.sh`或者`bash ./script.sh`，==注意如果是以`bash "echo 123"`会报错，使用command string必须添加`-c`参数==
-
-脚本的第一行通常是指定解释器，即这个脚本必须通过什么解释器执行。以`#!`开头，这个字符称为Shebang，这一行就叫做Shebang行
-
-`#!`后面就是脚本解释器的位置，Bash 脚本的解释器一般是`/bin/sh`或`/bin/bash`。
-
-`#!/bin/sh`或者`#!/bin/bash`
-
-==为了保险起见使用`#! /usr/bin/env bash`(env后面跟的必须小写)替代==
-
-> 上面命令使用`env`命令（这个命令总是在`/usr/bin`目录），返回 Bash 可执行文件的位置。
-
 ## 执行权限和路径
 
-如果想通过`./script.sh`方式执行脚本，需要给予`x`权限，且在正确的目录下。日通过`sh script.sh`方式无需有`x`权限
+> 如果想通过`./script.sh`方式执行脚本使用shebang解释，需要给予`x`权限，且在正确的目录下。
+>
+> 但通过`sh script.sh`方式无需有`x`权限，且用sh做为解释器
 
 - 权限
 

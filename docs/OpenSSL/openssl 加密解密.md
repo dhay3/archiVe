@@ -324,6 +324,13 @@ nameserver 8.8.8.8
   
   ```
 
+  ```
+  [root@k8smaster kubernetes]# awk '/^\s+client-certificate-data:/,/^\s+client-key-data:/ {print $0}' admin.conf  | grep client-key-data | cut -d : -f 2 > t
+  [root@k8smaster kubernetes]# openssl enc -d -a -in t
+  ŭ͑դЙEŭ=%ŕ-͵\¼!¹׵ёڕ̡͡1ס½¹.ɡMi
+      㖕!Ɯ񲨴´´´µ9IMAI%YQ-d´´´´´(
+  ```
+
 - `-in`
 
   指定输入的文件，如果没有指定会从stdin中读入
@@ -342,6 +349,10 @@ nameserver 8.8.8.8
 - `-out`
 
   指定输出的文件，如果没有会输出到stdout
+
+- `-nosalt`
+
+  不使用salt
 
 - `-salt`
 

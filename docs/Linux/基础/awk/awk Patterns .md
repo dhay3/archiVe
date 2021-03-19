@@ -32,6 +32,23 @@ Size
 ===done===
 ```
 
+==BEGIN不能获取到内置的变量`$0`-`$..`，但是END可以==
+
+```
+root in /usr/local/\ λ df -hT | awk 'BEGIN{print "begin",$0,"\n"}{print $0}END{print "end",$0,"\n"}'
+begin
+
+Filesystem     Type      Size  Used Avail Use% Mounted on
+udev           devtmpfs  2.0G     0  2.0G   0% /dev
+tmpfs          tmpfs     395M  6.0M  389M   2% /run
+/dev/vda1      ext4       40G  5.9G   32G  16% /
+tmpfs          tmpfs     2.0G     0  2.0G   0% /dev/shm
+tmpfs          tmpfs     5.0M     0  5.0M   0% /run/lock
+tmpfs          tmpfs     2.0G     0  2.0G   0% /sys/fs/cgroup
+tmpfs          tmpfs     395M     0  395M   0% /run/user/0
+end tmpfs          tmpfs     395M     0  395M   0% /run/user/0
+```
+
 ### BEGINFILE & ENDFILE
 
 
@@ -113,5 +130,13 @@ tmpfs                   tmpfs     487M     0  487M   0% /dev/shm
 tmpfs                   tmpfs     487M  8.6M  478M   2% /run
 tmpfs                   tmpfs     487M     0  487M   0% /sys/fs/cgroup
 /dev/mapper/centos-root xfs        17G  4.7G   13G  28% /
+```
+
+注意awk是以CR LF来标识，所以这里会输入两段
+
+```
+[root@k8smaster kubernetes]# awk '/^\s+client-certificate-data:/,/^\s+client-key-data:/ {print $0}' admin.conf 
+    client-certificate-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURFekNDQWZ1Z0F3SUJBZ0lJY3lDVG41emJZaXN3RFFZSktvWklodmNOQVFFT...
+    client-key-data: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBemVOMlZ3RVVkMG5DYkJEY3JOSVg4Zmw2WXJaeE9tT3g2T1R2UW5xU2Y5TzJjaHBvCiszRGI4ZG5xeVNVc0pML3VLRkp3Q28reXRiR1Z2bnF4MzdiVnFobUgzck9ZUlVXZHZUWjVJc2...
 ```
 

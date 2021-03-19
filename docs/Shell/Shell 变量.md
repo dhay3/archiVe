@@ -283,7 +283,7 @@ Bash 提供一些特殊变量。这些变量的值由 Shell 提供，用户不�
 
 2. `$$`
 
-   `$$`为当前 Shell 的进程 ID。
+   `$$`为当前 Shell 的PID。==如果在子shell中扩展为父shell的PID==
 
    ```
    $ echo $$

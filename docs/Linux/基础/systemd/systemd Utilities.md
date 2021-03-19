@@ -209,7 +209,7 @@ https://www.cnblogs.com/sparkdev/p/8795141.html
   
   ```
 
-- `journalctl -u <unit>`
+- ==`journalctl -u <unit>`==
 
   指定显示某一个unit，使用`--since`和`--until`参数查看指定时间段内的日志
 

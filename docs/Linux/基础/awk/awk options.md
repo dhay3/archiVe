@@ -1,5 +1,42 @@
 # awk options
 
+- -f
+
+  指定awk脚本从文件中来，而不是命令行。
+
+  ```
+  root in /usr/local/\ λ cat t.awk
+  {print $0}
+  
+  root in /usr/local/\ λ df -hT | awk -f t.awk
+  Filesystem     Type      Size  Used Avail Use% Mounted on
+  udev           devtmpfs  2.0G     0  2.0G   0% /dev
+  tmpfs          tmpfs     395M  6.0M  389M   2% /run
+  /dev/vda1      ext4       40G  5.9G   32G  16% /
+  tmpfs          tmpfs     2.0G     0  2.0G   0% /dev/shm
+  tmpfs          tmpfs     5.0M     0  5.0M   0% /run/lock
+  tmpfs          tmpfs     2.0G     0  2.0G   0% /sys/fs/cgroup
+  tmpfs          tmpfs     395M     0  395M   0% /run/user/0
+  ```
+
+  ==常用在shebang中使用==
+
+  ```
+  root in /usr/local/\ λ cat t.awk
+  #!/usr/bin/mawk -f
+  {print $0}
+  
+  root in /usr/local/\ λ df -hT | ./t.awk
+  Filesystem     Type      Size  Used Avail Use% Mounted on
+  udev           devtmpfs  2.0G     0  2.0G   0% /dev
+  tmpfs          tmpfs     395M  6.0M  389M   2% /run
+  /dev/vda1      ext4       40G  5.9G   32G  16% /
+  tmpfs          tmpfs     2.0G     0  2.0G   0% /dev/shm
+  tmpfs          tmpfs     5.0M     0  5.0M   0% /run/lock
+  tmpfs          tmpfs     2.0G     0  2.0G   0% /sys/fs/cgroup
+  tmpfs          tmpfs     395M     0  395M   0% /run/user/0
+  ```
+
 - -F
 
   指定分隔符
