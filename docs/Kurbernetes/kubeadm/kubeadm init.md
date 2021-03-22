@@ -2,7 +2,15 @@
 
 init a k8s control plane.
 
-before read check the [ execute follow][https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/]
+syntax：`kubeadm init [flags] [command]`
+
+## 流程
+
+ [ detail of execute follow][https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/]
+
+- 生成自签用的CA root certificate
+- 用CA root certificate
+- 生成为token签名的公钥和私钥
 
 ## init flags
 

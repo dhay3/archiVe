@@ -2,6 +2,10 @@
 
 > 使用`openssl list`可以查看openssl中自带的命令，所有的subCommands都自带`-help`
 
+bash completion 
+
+https://github.com/scop/bash-completion/blob/master/completions/openssl
+
 ## 概述
 
 openssl是一个调用openssl libcrypto api的命令行工具，有主要如下几个功能

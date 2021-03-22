@@ -1,6 +1,15 @@
 # openssl 配置文件
 
-openssl配置文件`/etc/ssl/openssl.conf`，主要看几个地方
+## 注意点
+
+- 默认存储在`/etc/ssl/openssl.conf`
+
+- 可以使用`${var}`或是`$var`来获取配置中变量的值
+- 可以使用`${section::var}`来获取指定section中var的值
+- 可以使用`${ENV::var}`来获取shell的环境变量
+- 可以使用`\`转义符，`\n`等
+
+## 例子
 
 **ca**
 
