@@ -12,6 +12,10 @@ api-server-endpoint 标识apiserver的套接字
 
  [detail of execute follow](https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-join/)
 
+1. kubeadm 从api server  上下载集群的信息。使用bootstrap token 和 CA key hash 校验信息。
+2. 信息校验成功后，kubelet启用TLS bootstrapping process。通过token获得api server的授权并向control plane提交csr
+3. kubeadm配置kubelet并于api server连接
+
 ## options
 
 
@@ -26,15 +30,25 @@ api-server-endpoint 标识apiserver的套接字
 
   file-base discovery 可以是URL或file。如果是URL，schema必须是HTTPS
 
-- discovery-token string
+- --discovery-token string
 
-  token-based discovery。用于从apiserver上拉取用于校验cluster的信息。
+  token-based discovery。用token去api server拉取信息校验集群。
 
-- --token
+- tls-bootstrap-token string
 
-- --discovery-token-ca-cert-hash
+  与control plane 约定好用于握手的token
 
-  token-based discovery。校验根证书的hash
+- ==--discovery-token-ca-cert-hash==
+
+  token-based discovery。校验根证书公钥的hash
+
+- ==--token string==
+
+  使用指定的token做discovery-token 和 tls-bootstrap-token，如果这两个参数都没有指定。
+
+- --node-name string
+
+  指定加入到集群后节点的名字
 
 
 

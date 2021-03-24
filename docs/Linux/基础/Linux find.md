@@ -22,7 +22,16 @@ find命令直接搜索硬盘速度较慢，如果没有指定starting-point默�
   匹配有指定权限的文件
 
   ```
-  find . -perm 755 
+  [root@VM-0-4-centos opt]# find . -perm -751
+  .
+  ./rh
+  ./mellanox
+  ./mellanox/iproute2
+  ./mellanox/iproute2/etc
+  ./mellanox/iproute2/share
+  ./mellanox/iproute2/share/man
+  ./mellanox/iproute2/share/man/man7
+  ./mellanox/iproute2/share/man/man3
   ```
 
 - `-user username`
@@ -47,7 +56,6 @@ find命令直接搜索硬盘速度较慢，如果没有指定starting-point默�
   6. l：链接文件
   7. s：socket文件
 
-  
 
 ## 时间条件
 

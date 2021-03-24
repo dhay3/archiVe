@@ -19,7 +19,7 @@
 - [LVS](docs/LVS)
 - [Net](docs/Net)
 - [Nginx](docs/Nginx)
-- [OpenSSL](docs/Openssl)
+- [OpenSSL](docs/OpenSSL)
 - [Shell](docs/Shell)
 - [SSH](docs/SSH)
 - [Vagrant](docs/Vagrant)
@@ -28,7 +28,8 @@
 
 ## Devoplement
 
-- [Database](docs/Database)[DataStruct](docs/DataStruct)
+- [Database](docs/Database)
+- [DataStruct](docs/DataStruct)
 - [Dubbo](docs/Dubbo)
 - [EffectiveJava](docs/EffectiveJava)
 - [Go](docs/Go)

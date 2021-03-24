@@ -9,8 +9,8 @@ syntax：`kubeadm init [flags] [command]`
  [ detail of execute follow][https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/]
 
 - 生成自签用的CA root certificate
-- 用CA root certificate
-- 生成为token签名的公钥和私钥
+- 用CA root certificate为其他证书签名
+- 为token生成公钥和私钥
 
 ## init flags
 

@@ -218,7 +218,7 @@ root in /etc/docker λ docker run --rm --name net3 centos
 
 ## Volume
 
-使用`-v`参数将容器上的卷挂载到宿主机上，host-dest指定的文件会自动创建。
+使用`-v`参数将==宿主机上的文件文件映射到容器(会覆盖)==，host-dest指定的文件会自动创建。
 
 pattern：`docker run -v=[host-src:]container-dest`
 

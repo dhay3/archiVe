@@ -2,11 +2,11 @@
 
 参考：
 
-https://www.runoob.com/linux/linux-shell-io-redirections.html
-
 https://program-think.blogspot.com/2019/11/POSIX-TUI-from-TTY-to-Shell-Programming.html?q=bash&scope=all
 
-[TOC]
+https://xz.aliyun.com/t/2548
+
+
 
 > pipeline(管道符)，==将前一个命令的stdout做为后一个命令的stdin==，采用FIFO
 
@@ -16,15 +16,33 @@ cat filename | command1 && >> filname.bak
 
 会先执行command1 然后将filename中的内容写入到filename.bak中
 
-## 概述
+## 文件描述符
 
-在POSIX系统中，每个进程都内置了三个“standard stream”(标准流)，stdin(标准输入流)，stdout(标准输出流)，stderr(标准错误输出流)
+POSIX 操作系统会分配一个数字用于跟踪打开的文件，这个数字就叫做文件描述符。Linux 启动时会默认打开三个文件描述符：
+
+1. 标准输入stdin 0 `/dev/stdin`
+2. 标准输出 stdout 1 `/dev/stdout`
+3. 错误输出 stderr 2 `/dev/stderr`
+
+
 
 <img src="..\..\..\imgs\_Linux\480px-Stdstreams-notitle.svg.png"/>
 
-当你在程序中打开某个文件，会得到一个“文件描述符”（洋文叫“[file descriptor](https://en.wikipedia.org/wiki/File_descriptor)”，简称 fd）。fd 本身是个整数，程序员可以通过 fd 对该文件进行读写。
-而进程的三个【标准流】，就相当于是三个特殊的 fd。当进程启动时，操作系统就已经把这三个 fd 准备好了。
-由于这三个玩意儿是预先备好滴，所以它们的数值分别是：0、1、2（参见上图中 # 后面的数字）。
+一条shell命令，都会继承其父进程的文件描述符，因此所有的shell命令，都会默认有三个文件描述符。
+
+## 重定向
+
+命令执行的结果默认会在stdout上显示，如果想要输出到其他文件中就需要使用重定向。
+
+- `>`
+
+  等价于 `1 > `
+
+- `<`
+
+  等价于 `< 0`
+
+- ``
 
 ## 标准流的重定向
 
@@ -119,8 +137,6 @@ https://blog.csdn.net/huangjuegeek/article/details/21713809
 4. `>&file1`
 
 将stoud和stderr都重定向到file1
-
-
 
 5. `|&`
 
