@@ -34,15 +34,40 @@ root in /opt λ
 
 ```
 
-==还有另外一种如果没有指定命令，就是重定向==
+==如果没有指定命令，就表示指定的重定向都对当前shell的subshell生效==。
 
 ```
-root in /opt λ exec < /dev/random
+#shell 1 这里对stdout重定向到file，接下来的subshell都会生效所以不会显示在stdout
+root in /opt λ exec >file
+root in /opt λ ls
+root in /opt λ pwd
+
+#shell 2
+root in /opt λ cat file
+alibabacloud
+Blasting_dictionary-master
+containerd
+DNSLog-master
+DNSLog-master.zip
+Dockerfile
+Dockerfile.hex
+etc
+file
+jobfile.fio
+lsd-0.18.0-x86_64-unknown-linux-gnu
+main.go
+ossman
+shebang.sh
+ssl
+t
+/opt
 ```
 
-默认重定向到stdout(忽略了1)，shell会当成命令来执行，我们可以重定向到0，1，2以外的流，就会输出内容
 
-```
-root in /opt λ exec 3 < /dev/random
-```
+
+
+
+
+
+
 
