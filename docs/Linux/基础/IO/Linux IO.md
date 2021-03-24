@@ -10,7 +10,7 @@ https://zhuanlan.zhihu.com/p/96391501
 
 https://www.junmajinlong.com/os/kernelBuffer_ioBuffer/
 
-![](D:\asset\note\imgs\_Linux\Snipaste_2021-03-15_14-02-13.png)
+<img src="..\..\..\..\imgs\_Linux\Snipaste_2021-03-15_14-02-13.png"/>
 
 ## bufferd I/O
 

@@ -6,7 +6,7 @@ https://www.redhat.com/zh/topics/containers/kubernetes-architecture
 
 https://kubernetes.io/docs/concepts/overview/components/
 
-![](D:\asset\note\imgs\_Kubernetes\Snipaste_2021-03-17_10-26-44.png)
+<img src="..\..\imgs\_Kubernetes\Snipaste_2021-03-17_10-26-44.png"/>
 
 ### control plane
 

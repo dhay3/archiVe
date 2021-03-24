@@ -10,7 +10,7 @@ https://blog.csdn.net/stpeace/article/details/45509425
 
 一共有九种权限，用16位表示
 
-![img](https://img-blog.csdn.net/20180413202810248)
+<img src="https://img-blog.csdn.net/20180413202810248"/>
 
 https://unix.stackexchange.com/questions/337182/different-umask-for-directories-and-files
 

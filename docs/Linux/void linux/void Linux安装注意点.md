@@ -12,7 +12,7 @@ https://docs.voidlinux.org/installation/live-images/partitions.html#bios-system-
 
    efi引导，需要格式化引导第一个分区为vfat(fat32)，并挂载到`/boot/efi`
 
-   ![](D:\asset\note\imgs\_Linux\Snipaste_2021-03-09_15-47-20.png)
+<img src="..\..\..\imgs\_Linux\Snipaste_2021-03-09_15-47-20.png"/>
 
 3. 如果安装vmtools，需要移动到其他目录解压，然后运行`./vmtools-install.pl`
 
