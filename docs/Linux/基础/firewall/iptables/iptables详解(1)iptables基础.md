@@ -1,6 +1,10 @@
 # iptables基础
 
-参考：https://www.zsythink.net/archives/1199
+参考：
+
+https://www.zsythink.net/archives/1199
+
+https://arthurchiao.art/blog/deep-dive-into-iptables-and-netfilter-arch-zh/
 
 [TOC]
 
@@ -76,8 +80,6 @@ PREROUTING、FORWARD、POSTROUTING
 
 iptables为我们提供了如下规则的分类，或者说，iptables为我们提供了如下"表"
 
- 
-
 - filter表：负责过滤功能，防火墙；内核模块：iptables_filter
 
 - nat表：network address translation，网络地址转换功能；内核模块：iptable_nat
@@ -117,6 +119,22 @@ FORWARD     的规则可以存在于：mangle表，filter表。
 OUTPUT     的规则可以存在于：raw表mangle表，nat表，filter表。
 
 POSTROUTING    的规则可以存在于：mangle表，nat表。
+
+
+
+| Tables/Chains  | PREROUTING | INPUT | FORWARD | OUTPUT | POSTROUTING |
+| :------------- | :--------- | :---- | :------ | :----- | :---------- |
+| (路由判断)     |            |       |         | Y      |             |
+| **raw**        | Y          |       |         | Y      |             |
+| (连接跟踪）    | Y          |       |         | Y      |             |
+| **mangle**     | Y          | Y     | Y       | Y      | Y           |
+| **nat (DNAT)** | Y          |       |         | Y      |             |
+| (路由判断)     | Y          |       |         | Y      |             |
+| **filter**     |            | Y     | Y       | Y      |             |
+| **security**   |            | Y     | Y       | Y      |             |
+| **nat (SNAT)** |            | Y     |         | Y      | Y           |
+
+
 
 但是，**我们在实际的使用过程中，往往是通过"表"作为操作入口，对规则进行定义的**，之所以按照上述过程介绍iptables，是因为从"关卡"的角度更容易从入门的角度理解，但是为了以便在实际使用的时候，更加顺畅的理解它们，此处我们还要将各"表"与"链"的关系罗列出来，
 

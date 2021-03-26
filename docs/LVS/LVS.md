@@ -16,28 +16,24 @@ LVS，全称Linux Virtual Server，是一个虚拟的服务器集群系统。通
 
 **角色**
 
-- Director：调度器，用于接受用户请求，又称Balancer，Scheduler
+- Director：调度器(LVS服务器有一个公网IP和内网IP)，用于接受用户请求，又称Balancer，Scheduler
 - Real Server：简称RS，用于正真处理用户请求的服务器
 - Client：客户端
-- Virtual IP；简称VIP，LVS服务器的公网IP，与客户端通信
+- Virtual IP；简称VIP，==LVS服务器的公网IP==，与客户端通信
 - Director IP：简称DIP，与RS通信的IP
 - Real Server IP：简称RIP
 - Client IP：简称CIP
 
 <img src="..\..\imgs\_LVS\Snipaste_2020-11-22_13-40-23.png"/>
 
+LVS由两部分组成，ipvs和ipvsadm
+
+- ipvs：LVS的具体实现。与netfilter结合在一起
+- ipvsadm：LVS管理工具
+
 ## 原理
 
 借助iptables的INPUT链，如果符合规则，则将报文转发到POSTROUTING链，最终到达RS
 
 <img src="..\..\imgs\_LVS\Snipaste_2020-11-22_17-47-05.png"/>
-
-## LVS 调度模式
-
-### LVS-NAT
-
-<img src="..\..\imgs\_LVS\Snipaste_2020-11-22_13-50-25.png"/>
-
-- 请求：源地址CIP，目标地址VIP，LVS将目标地址转换为RIP，具体请求那一台主机更具配置的算法
-- 响应：源地址RIP，目标地址CIP，LVS将源地址转为换为VIP
 

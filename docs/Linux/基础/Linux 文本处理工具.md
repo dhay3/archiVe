@@ -251,6 +251,10 @@ d
   hello 
   hey
   hi 
+  
+  #删除最后一行
+  root@VM-0-4-centos rc.d]# sed -i $\d  ~/.bashrc
+  
   ```
 
 - `c\`replace

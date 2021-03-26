@@ -12,6 +12,10 @@ OpenSSH 以C/S模式，ssh做为客户端，sshd做为服务器(统一由systemd
 
 ## 配置文件
 
+- TCPKeepAlive
+
+  保持长连接，服务端不会与客户端断开。
+
 - AllowUsers
 
   使用白名单机制，使用Pattern形式，支持CIDR地址，同理DenyUsers

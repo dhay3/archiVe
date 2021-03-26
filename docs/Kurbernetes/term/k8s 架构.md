@@ -6,11 +6,13 @@ https://www.redhat.com/zh/topics/containers/kubernetes-architecture
 
 https://kubernetes.io/docs/concepts/overview/components/
 
-<img src="..\..\imgs\_Kubernetes\Snipaste_2021-03-17_10-26-44.png"/>
+<img src="..\..\..\imgs\_Kubernetes\Snipaste_2021-03-17_10-26-44.png"/>
 
 ### control plane
 
-control plane为k8s集群做全局控制，包含api-server，cloud controller，controller manager，etcd，scheduler
+control plane为k8s集群做全局控制，包含api-server，cloud controller，controller manager，etcd，scheduler。
+
+也被称为Master Node。
 
 ```mermaid
 classDiagram
@@ -72,6 +74,8 @@ class Node{
 - **kube proxy**
 
   kube-proxy is a network proxy that runs on each node in your cluster
+
+  通常为service提供虚拟的IP，可以通过这个虚拟的IP访问service
 
 - **container runtime**
 

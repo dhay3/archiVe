@@ -36,7 +36,7 @@ syntax：`kubeadm init [flags] [command]`
 
 - --kubernetes-version string
 
-  指定k8s(docker 上下载下来的镜像)的版本，默认stable-1
+  ==指定k8s(docker 上下载下来的镜像)的版本==，默认stable-1
 
   ==如果出现找不到镜像有可能是国内的镜像同步组件慢了导致找不到镜像，指定特定版本即可==
 
@@ -64,6 +64,10 @@ syntax：`kubeadm init [flags] [command]`
 
   跳过指定phases
 
+- control-plane
+
+  在当前节点创建一个新的control plane
+
 ## 无网络初始化
 
 没有网络运行kubeamd，需要提前下载镜像。
@@ -87,3 +91,6 @@ registry.aliyuncs.com/google_containers/coredns:1.7.0
 [root@k8smaster manifests]# kubeadm config images pull --image-repository registry.aliyuncs.com/google_containers --kubernetes-version 1.20.4
 ```
 
+
+
+[https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/]: 
