@@ -12,9 +12,9 @@ OpenSSH 以C/S模式，ssh做为客户端，sshd做为服务器(统一由systemd
 
 ## 配置文件
 
-- TCPKeepAlive
+- ==TCPKeepAlive==
 
-  保持长连接，服务端不会与客户端断开。
+  保持长连接，服务端不会与客户端断开。需要在客户端同样设置才会有效。
 
 - AllowUsers
 
@@ -48,11 +48,11 @@ OpenSSH 以C/S模式，ssh做为客户端，sshd做为服务器(统一由systemd
 
   指定加密参数集
 
-- ClientAliveCountMax
+- ==ClientAliveCountMax==
 
   服务器发送keepalive信号到达指定次数后，服务器主动断开连接，默认为3
 
-- ClientAliveInterval
+- ==ClientAliveInterval==
 
   服务器发送keepalive的时间间隔，默认为0
 

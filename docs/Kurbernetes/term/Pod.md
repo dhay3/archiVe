@@ -55,6 +55,8 @@ spec:
     # The pod template ends here
 ```
 
+修改pod template对已经创建好的pods不会生效。但是如果是workload创建的pod template，会被替换成新的。
+
 ## networking
 
 ![](D:\asset\note\imgs\_Kubernetes\Snipaste_2021-03-25_15-36-38.png)
@@ -63,6 +65,8 @@ spec:
 2. 同一Pod中的container通过localhost通信
 
 3. 同一pod中的container共享namespace和port space
+
+## 生命周期
 
 
 

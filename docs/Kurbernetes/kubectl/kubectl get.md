@@ -30,7 +30,7 @@ syntax：`kubectl get [type] [flags]`
   coredns-7f89b7bc75-sg49w       1/1     Running   0          5d23h   k8s-app=kube-dns,pod-template-hash=7f89b7bc75
   ```
 
-- --selector | -l
+- ==--selector | -l==
 
   根据lable去过滤。支持`==`，`=`，`!=`
 

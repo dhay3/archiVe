@@ -139,6 +139,14 @@ drwxr-xr-x          4,096 2021/02/25 10:32:16 t
 
   不会讲传输的信息输出，如果是以cron启动这个参数非常有用
 
+- `--bwllimit`
+
+  最大的IOPS,可以使用单位，如果没有指定单位默认1024bytes
+
+  ```
+   rsync -avz   -e 'ssh -p 41456' --exclude='html/bridd.pub/application/config' --bwlimit=1.5m
+  ```
+
 - `-a, --archive`
 
   将源地址中的内容同步到目的地址，==同时会将隐藏文件同步==。等价于`-rlptgoD`参数，同步文件的同时会同步文件的metadata（修改时间，权限等）。

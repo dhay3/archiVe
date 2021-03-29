@@ -14,7 +14,7 @@ Pod并不是持久的资源，假设有一个 front-end pod想要调用 back-end
 
 现在有1个front-end node，1个无状态的back-end node和3个replicas。当back-end node改变时(Pod 的IP 同时也在改变 )，front-end node无需关注Pod 的 IP，只要将请求发送给service 提供的IP。kubernetes会自动将请求发送给Pod。
 
-## 创建
+## service创建配置
 
 1. 假设有一组label为app=Myapp的pods并且监听TCP 9376端口
 
@@ -43,7 +43,9 @@ Pod并不是持久的资源，假设有一个 front-end pod想要调用 back-end
    - kubernetes会根据`spec`下的属性，创建一个对外开放80端口名字为my-service的service
    - kubernetes为这个serivce分配一个IP(Cluster-IP)，用于service proxies
 
-## virtual IPs and service proxies
+## 代理模式
+
+> 如果无需load balance 可以使用[headless service](https://kubernetes.io/docs/concepts/services-networking/service/#headless-services)
 
 每一个node中都有一个kube-proxy为service提供虚拟IP。kubernetes提供三种proxy mode
 
@@ -76,6 +78,158 @@ Pod并不是持久的资源，假设有一个 front-end pod想要调用 back-end
    ![](D:\asset\note\imgs\_Kubernetes\Snipaste_2021-03-25_17-48-09.png)
 
 ### IPVS proxy mode
+
+IPVS模式基于netfilter使用LVS规则，需要保证IPVS module可用
+
+1. 比iptbales proxy mode延迟更加低。
+2. 比其他的proxy mode 有更高的网络吞吐量
+3. 支持多种负载算法
+   - `rr`: round-robin
+   - `lc`: least connection (smallest number of open connections)
+   - `dh`: destination hashing
+   - `sh`: source hashing
+   - `sed`: shortest expected delay
+   - `nq`: never queue
+
+![](D:\asset\note\imgs\_Kubernetes\Snipaste_2021-03-26_17-58-07.png)
+
+​	==virtual server 和 real server是LVS中的术语==
+
+## 服务发现
+
+kubernetes支持两种发现方式：enviroment  varibales 和 DNS
+
+### Enviroment variables
+
+将端口和IP通过环境变量的方式导出，必须先创建service，调用service的pod才能发现
+
+### DNS
+
+使用dns add-on(CoreDNS)，例如：
+
+有一个namespace为my-ns的service叫my-service。control plane 和 DNS server就会生成一条为my-service-my-ns 的DNS记录。在my-ns的命名空间中的pods，就可以通过my-service或my-service.my-ns来找到这个service。其他命名空间中的pods可以通过my-service.my-ns来找到这个service。
+
+## 服务暴露
+
+> 也可以通过[Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)来暴露服务
+
+kubernetes允许你修改`ServiceType`属性(默认为ClusterIP)来修改kubernetes service的type，支持如下几种：
+
+### ClusterIP
+
+暴露一个cluster-internal IP，这个service只能在cluster中使用，缺省值。
+
+### NodePort
+
+通过暴露pod的port做为一个service，==同时也会创建ClusterIP==。更加个性化的负载均衡方案。
+
+==集群外可以通过`<NodeIP>:<NodePort>`来访问，集群内部可以通过`<ClusterIP>:<Port>`来访问。==
+
+可以通过`--nodeport-addresses`来指定kube-proxy只代理指定CIDR的IP。
+
+control plane可以通过`--service-node-port-range`来指定分配的端口(默认30000-32767)。可以通过`.spec.ports[*].nodePort`属性来查看分配的端口。如果想要指定特定的端口，可以设置`nodePort`属性，需要辨别端口是否冲突。
+
+可以通过`<NodeIP>:spec.ports[*].nodePort`和`.spec.clusterIP:spec.ports[*].port`来查看。
+
+例如：
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  type: NodePort
+  selector:
+    app: MyApp
+  ports:
+    - port: 8080
+      targetPort: 80
+      nodePort: 30007
+```
+
+port表示service暴露的port，targetPort表示pod监听的端口，nodePort表示可以通过`nodeIP:nodePort`访问到targetPort中的服务。
+
+例如，service中有一个Pod A,Nginx监听了80端口。集群内部可以通过`ClusterIP:8080`端口访问到Pod A中的Nginx，集群外部可以通过`nodeIP:nodePort`访问到Nginx。
+
+### LoadBalancer
+
+参考:
+
+https://help.aliyun.com/document_detail/182217.html?spm=5176.11065259.1996646101.searchclickresult.35784ec2aDl3Rp
+
+通过云服务商的load balancer将service暴露。NodePort和ClusterIP负载均衡规则都是自动生成的，但是云服务商的负载均衡需要手动创建。
+
+例如：
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: MyApp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376
+  clusterIP: 10.0.171.239
+  type: LoadBalancer
+status:
+  loadBalancer:
+    ingress:
+    - ip: 192.0.2.127
+```
+
+默认如果暴露了多个端口，所有的端口的protocol必须相同。可以设置kube-apiserver的`MixedProtocolLBService`
+
+如果需要创建[内网负载均衡](https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer)
+
+### ExternalName
+
+将service映射到externalName对应的值，例如：externalName的值为`foo.bar.example.com`，就生成一条CNAME的记录对应这个值。
+
+使用这种方式会导致，HTTP和HTTPS的host值错误，不推荐使用。
+
+### 多端口暴露
+
+如果service需要暴露多个端口，需要通过name属性来区别端口，必须是小写。
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: MyApp
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 9376
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 9377
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

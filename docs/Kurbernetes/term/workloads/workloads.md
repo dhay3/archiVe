@@ -17,3 +17,5 @@ kubernetes 提供一组内置的workload resources：
    管理用于node-local的pod
 
 4. Job 和 CronJob
+
+   Job是一次性的任务，CronJobs定时任务。

@@ -6,7 +6,7 @@ http://www.zsythink.net/archives/2134
 
 ## 概述
 
-LVS，全称Linux Virtual Server，是一个虚拟的服务器集群系统。通过LVS实现负载均衡集群的方案属于“软件方案”。实现负载均衡的软件不知LVS一种，同样的可以通过nginx，haproxy等软件实现
+LVS，全称Linux Virtual Server，是一个虚拟的服务器集群系统（已经被加入到了linux的内核中）。通过LVS实现负载均衡集群的方案属于“软件方案”。实现负载均衡的软件不知LVS一种，同样的可以通过nginx，haproxy等软件实现
 
 **三层结构**
 
@@ -36,4 +36,6 @@ LVS由两部分组成，ipvs和ipvsadm
 借助iptables的INPUT链，如果符合规则，则将报文转发到POSTROUTING链，最终到达RS
 
 <img src="..\..\imgs\_LVS\Snipaste_2020-11-22_17-47-05.png"/>
+
+## 预防DDos
 
