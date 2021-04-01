@@ -111,5 +111,20 @@ https://tldp.org/LDP/abs/html/sha-bang.html
   file1
   ```
 
+- 结合sed
+
+  ```
+  [root@k8snode01 opt]# cat script.sed
+  #!/bin/sed -f
+  
+  #this is a comment
+  /^label/a 3
+  [root@k8snode01 opt]# cat Dockerfile |  ./script.sed
+  FROM busybox
+  label:hello world
+  3
+  pwd
+  ```
+
   
 

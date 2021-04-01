@@ -130,6 +130,25 @@ systemd      1                root  mem       REG              252,1   121016   
   sshd    13848  cpl    9u  IPv4 888473      0t0  TCP localhost:10086 (LISTEN)  
   ```
   
+  指定使用IPV4
+  
+  ```
+  [root@k8snode01 ~]# lsof -i4
+  COMMAND      PID    USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+  systemd        1    root  108u  IPv4  20290      0t0  TCP *:sunrpc (LISTEN)
+  systemd        1    root  109u  IPv4  20291      0t0  UDP *:sunrpc
+  avahi-dae   1153   avahi   12u  IPv4  23793      0t0  UDP *:mdns
+  avahi-dae   1153   avahi   13u  IPv4  23794      0t0  UDP *:46965
+  rpcbind     1173     rpc    4u  IPv4  20290      0t0  TCP *:sunrpc (LISTEN)
+  rpcbind     1173     rpc    5u  IPv4  20291      0t0  UDP *:sunrpc
+  rpcbind     1173     rpc   10u  IPv4  22125      0t0  UDP *:ideafarm-door
+  cupsd       1648    root   12u  IPv4  29509      0t0  TCP localhost:ipp (LISTEN)
+  sshd        1650    root    3u  IPv4  29275      0t0  TCP *:ssh (LISTEN)
+  master      1838    root   13u  IPv4  28105      0t0  TCP localhost:smtp (LISTEN)
+  sshd        3034    root    3u  IPv4 476384      0t0  TCP k8snode01:ssh->192.168.80.1:14606 (ESTABLISHED)
+  sshd        3034    root    9u  IPv4 476513      0t0  TCP localhost:6011 (LISTEN)
+  ```
+  
   
 
 

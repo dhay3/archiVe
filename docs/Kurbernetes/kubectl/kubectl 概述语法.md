@@ -1,4 +1,4 @@
-# kubectl 概述语法
+# kubectl 概述
 
 参考：
 
@@ -61,6 +61,10 @@ syntax：`kubectl [command] [type] [names] [flags]`
   ```
 
 ## 命令
+
+==cheatsheet==
+
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 
 https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands
 

@@ -32,3 +32,21 @@ users:
 
 ```
 
+## 设置多个配置文件
+
+通过环KUBECONFIG环境变量，可以添加额外的kubeconfig配置文件（linux上以分号隔开），然后可以使用`kubectl config view`查看
+
+```
+KUBECONFIG=~/.kube/config:~/.kube/kubconfig2 
+```
+
+
+
+
+
+
+
+
+
+
+

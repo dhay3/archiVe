@@ -94,8 +94,6 @@ http://zsh.sourceforge.net/Doc/Release/Files.html#Files
 
   如果退出login-shell，从该文件中读取
 
-
-
 ## 常用插件
 
 使用插件需要安装`oh-my-zsh`

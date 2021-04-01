@@ -16,7 +16,7 @@ location /i/ {
 
 ```
 location /i/ {
-    root /data/w3;
+    root /data/w3/;
 }
 ```
 

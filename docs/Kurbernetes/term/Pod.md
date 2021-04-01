@@ -6,7 +6,7 @@ https://kubernetes.io/docs/concepts/workloads/pods/
 
 ## 概述
 
-pod是kubernetes中最小的管理和调度单位，由一组container组成。不是持久的资源，可以使用workload动态创建和销毁pod。
+pod是kubernetes中最小的管理和调度单位，由一组container组成。不是持久的资源，且不能对pod进行更新，可以使用workload动态创建和销毁pod，以及更新。
 
 ==container共享storage，network and a specification for how to run the containers.==
 
@@ -36,7 +36,7 @@ kubernetes可以使用controller来自动管理pod，也被称为==workload==。
 
 ## pod template
 
-workload使用pod template来创建和管理pods。例如：
+使用pod template(==也被称为PodSpec==)来创建和管理pods。例如：
 
 ```
 apiVersion: batch/v1
@@ -50,6 +50,7 @@ spec:
       containers:
       - name: hello
         image: busybox
+        #busybox没有bash
         command: ['sh', '-c', 'echo "Hello, Kubernetes!" && sleep 3600']
       restartPolicy: OnFailure
     # The pod template ends here
@@ -68,13 +69,57 @@ spec:
 
 ## 生命周期
 
+pod有5个生命周期，通过STATUS字段表示
+
+| Value       | Description                                                  |
+| :---------- | :----------------------------------------------------------- |
+| `Pending`   | The Pod has been accepted by the Kubernetes cluster, but one or more of the containers has not been set up and made ready to run. This includes time a Pod spends waiting to be scheduled as well as the time spent downloading container images over the network. |
+| `Running`   | The Pod has been bound to a node, and all of the containers have been created. At least one container is still running, or is in the process of starting or restarting. |
+| `Succeeded` | All containers in the Pod have terminated in success, and will not be restarted. |
+| `Failed`    | All containers in the Pod have terminated, and at least one container has terminated in failure. That is, the container either exited with non-zero status or was terminated by the system. |
+| `Unknown`   | For some reason the state of the Pod could not be obtained. This phase typically occurs due to an error in communicating with the node where the Pod should be running. |
+
+## 安全策略
 
 
 
+## 0x01 例子
 
+1. 创建pod，==注意buxybox没有bash==
 
+   ```
+   [root@k8smaster opt]# cat pod.yaml
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: pod-example
+   spec:
+     containers:
+     - name: busybox #镜像的名字
+       image: busybox #对应仓库中的镜像名
+       command: ["echo"] #相当于Dockerfile中的CMD
+       args: ["Hello World"]
+       
+   [root@k8smaster opt]# kubectl apply -f pod.yaml
+   pod/pod-example configured
+   ```
 
+2. 查看状态，这里由于容器会退出，所以状态是CrashLoopBackoff
 
+   ```
+   [root@k8smaster opt]# kubectl get pods
+   NAME          READY   STATUS             RESTARTS   AGE
+   pod-example   0/1     CrashLoopBackOff   4          3m26s
+   ```
 
+3. 使用`kubectl logs`查看
 
+   ```
+   [root@k8smaster opt]# kubectl logs pod/pod-example
+   Hello World
+   ```
+
+## 0x02 例子
+
+1. 
 

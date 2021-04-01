@@ -29,9 +29,32 @@ login shell 是用户登入系统以后，系统为用户开启的原始session�
 启动的初始化脚本依次如下。
 
 1. `/etc/profile`：所有用户的全局配置脚本。
+
 2. `/etc/profile.d`目录里面所有`.sh`文件
+
 3. `~/.bash_profile`：用户的个人配置脚本。如果该脚本存在，则执行完就不再往下执行。
+
+   ==centos中在loginshell中也会调用nologinshell启动的脚本==
+
+   ```
+   [root@k8smaster profile.d]# cat ~/.bash_profile
+   # .bash_profile
+   
+   # Get the aliases and functions
+   if [ -f ~/.bashrc ]; then
+           . ~/.bashrc
+   fi
+   
+   # User specific environment and startup programs
+   
+   PATH=$PATH:$HOME/bin
+   
+   export PATH
+   
+   ```
+
 4. `~/.bash_login`：如果`~/.bash_profile`没找到，则尝试执行这个脚本（C shell 的初始化脚本）。如果该脚本存在，则执行完就不再往下执行。
+
 5. `~/.profile`：如果`~/.bash_profile`和`~/.bash_login`都没找到，则尝试读取这个脚本（Bourne shell 和 Korn shell 的初始化脚本）。
 
 Linux 发行版更新的时候，会更新`/etc`里面的文件，比如`/etc/profile`，因此不要直接修改这个文件。如果想修改所有用户的登陆环境，就在`/etc/profile.d`目录里面新建`.sh`脚本。

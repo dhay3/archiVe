@@ -27,9 +27,11 @@ https://docs.docker.com/engine/reference/run/#exit-status
 $ docker run --foo busybox; echo $?
 ```
 
+具体启动失败原因使用`docker logs`来查看
+
 ## Detached vs foreground
 
-`docker run`默认使用foreground，如果想要以守护线程的形式运行容器使用`-d`参数，如果想要以交互模式启动docker使用`-it`参数（==docker启动的容器必须要有一个前台运行的进程，否则就会退出==）
+`docker run`默认使用foreground，如果想要以守护线程的形式运行容器使用`-d`参数，如果想要以交互模式启动docker使用`-it`参数（==分配一个tty，docker启动的容器必须要有一个前台运行的进程，否则就会退出==）
 
 > 这里使用docker pull nginx的镜像，无需启动镜像后再启动nginx
 
@@ -218,11 +220,25 @@ root in /etc/docker λ docker run --rm --name net3 centos
 
 ## Volume
 
-使用`-v`参数将==宿主机上的文件文件映射到容器(会覆盖)==，host-dest指定的文件会自动创建。
+https://docs.docker.com/engine/reference/commandline/run/#mount-volume--v---read-only
 
-pattern：`docker run -v=[host-src:]container-dest`
+使用`-v`参数将==宿主机上的文件映射到容器(会覆盖)==，可以是目录也可以是文件
+
+pattern：`docker run -v [host-src:]container-dest`
 
 如果没有指定host-src，docker自动生成相应的挂载卷(通过`root in ~ λ docker inspect t1 --format="{{json .Mounts}}"`可以查看)。默认挂载的卷使用rw权限，可以添加后缀`:ro`或`:rw`指定权限
+
+```
+$ sudo docker run \
+  --volume=/:/rootfs:ro \
+  --volume=/var/run:/var/run:rw \
+  --volume=/sys:/sys:ro \
+  --volume=/var/lib/docker/:/var/lib/docker:ro \
+  --publish=8080:8080 \
+  --detach=true \
+  --name=cadvisor \
+  google/cadvisor:latest
+```
 
 ## Workdir
 

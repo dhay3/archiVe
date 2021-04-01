@@ -10,7 +10,7 @@ http://c.biancheng.net/view/3162.html
 
 ## 概述
 
-`docker build`通过Dockerfile创建镜像
+`docker build`通过Dockerfile创建镜像，默认以文件Dockerfile来构建
 
 **dockerfile**
 
@@ -114,7 +114,7 @@ PS C:\John>
 
 <img src="D:/asset/note/imgs/_docker/450977-20190512115951746-136143052.png"/>
 
-==指令不区别大小写，但是为了方便便是使用 大写==
+==指令不区别大小写，但是为了方便便是使用 大写，并且严格区分单双引号(只能使用双引号)==
 
 > ENV于ARG的区别与使用
 >
@@ -259,7 +259,7 @@ pattern：
 
 3. `CMD command param1 param2` (*shell* form)
 
-   与exec form不同的是，启动容器后的一号进程是sh。
+   与exec form不同的是，==启动容器后的1号进程是sh==。
 
    如果以交互模式进入容器，那么运行的就是CMD指定命令，==会顶替`docker run -it`创建的shell==
 

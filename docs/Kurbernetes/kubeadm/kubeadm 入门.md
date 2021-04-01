@@ -29,7 +29,7 @@ a --> c(worker node...)
 `kubeadm init`会从指定的镜像仓库下载control plane components
 
 ```
-[root@k8smaster etc]# kubeadm init --v--image-repository registry.aliyuncs.com/google_containers --pod-network-cidr 192.168.0.0/16 
+[root@k8smaster opt]#  kubeadm init --kubernetes-version 1.20.4 --image-repository registry.aliyuncs.com/google_containers --pod-network-cidr 192.168.0.0/16
 [init] Using Kubernetes version: v1.20.4
 [preflight] Running pre-flight checks
 	[WARNING Firewalld]: firewalld is active, please ensure ports [6443 10250] are open or your cluster may not function correctly
@@ -120,6 +120,10 @@ kubeadm join 192.168.80.201:6443 --token iz8l89.3mnfq86pmsyay567 \
   Specify range of IP addresses for the pod network. If set, the control plane will automatically allocate CIDRs for every node.
   
   这里为了使用calio指定默认IP为`192.168.0.0/16`
+
+> ==注意如果是root，必须执行`export KUBECONFIG=/etc/kubernetes/admin.conf`==，否则无法调用kubectl
+>
+> 可以将其配置进loginshell或nologinshell中
 
 安装后可以通过docker查看
 
@@ -354,9 +358,16 @@ node/k8snode01 evicted
 NAME        STATUS                     ROLES                  AGE     VERSION
 k8smaster   Ready                      control-plane,master   22m     v1.20.4
 k8snode01   Ready,SchedulingDisabled   <none>                 9m51s   v1.20.4
+
+[root@k8smaster ~]# kubectl delete node k8snode01
+node "k8snode01" deleted
 ```
 
+在node操作
 
+```
+[root@k8snode01 opt]# kubeadm reset -f
+```
 
 
 

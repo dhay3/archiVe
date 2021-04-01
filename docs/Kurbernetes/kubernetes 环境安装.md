@@ -78,6 +78,29 @@ https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-ku
      icmp-blocks: 
      rich rules: 
    ```
+   
+   考虑到后面需要对外开放端口，为了方便我直接使用truested zone，实际不可采用这种策略
+   
+   ```
+   [root@k8smaster opt]# firewall-cmd --set-default-zone=trusted
+   success
+   [root@k8smaster opt]# firewall-cmd --reload
+   success
+   [root@k8smaster opt]# firewall-cmd --list-all
+   trusted (active)
+     target: ACCEPT
+     icmp-block-inversion: no
+     interfaces: ens33
+     sources:
+     services:
+     ports:
+     protocols:
+     masquerade: no
+     forward-ports:
+     source-ports:
+     icmp-blocks:
+     rich rules:
+   ```
 
 ### 安装
 

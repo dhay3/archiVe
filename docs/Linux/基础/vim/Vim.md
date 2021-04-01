@@ -104,6 +104,8 @@ Huge version without GUI.  Features included (+) or not (-):
 
 ### 精确匹配
 
+==只匹配开头或结尾一个空格的单词==
+
 - `/the\>`
 
   表示匹配只有以the结尾的单词，不会匹配there，但是会匹配athe

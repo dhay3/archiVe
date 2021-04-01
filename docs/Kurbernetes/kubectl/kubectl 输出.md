@@ -21,7 +21,7 @@ syntax：`kubectl [command] [type] [name] -o <output_format>`
 
 - json
 
-  以json的格式输出
+  以json的格式输出详细的信息
 
   ```
   [root@k8smaster .kube]# kubectl get nodes -o json | less

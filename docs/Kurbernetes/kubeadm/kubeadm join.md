@@ -2,8 +2,6 @@
 
 initializes a Kubernetes worker node and joins it to the cluster.
 
-
-
 syntax：`kubeadm join [api-server-endpoint] [flags]`
 
 api-server-endpoint 标识apiserver的套接字
@@ -12,8 +10,8 @@ api-server-endpoint 标识apiserver的套接字
 
  [detail of execute follow](https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-join/)
 
-1. kubeadm 从api server  上下载集群的信息。使用bootstrap token 和 CA key hash 校验信息。
-2. 信息校验成功后，kubelet启用TLS bootstrapping process。==kubelet通过token获得api server的授权并向control plane提交csr并签名(新的节点也会生成证书文件)==
+1. kubeadm 从control plane 上下载集群的信息。使用bootstrap token 和 CA key hash 校验信息。
+2. 信息校验成功后，kubelet启用TLS bootstrapping process。==kubelet通过token获得api server的授权并向control plane提交csr并签名，control plane 为csr生成证书，kubelet从control plane上下载证书==
 3. kubeadm配置kubelet并于api server连接。
 
 如果是control plane需要额外的step
@@ -104,7 +102,12 @@ kubeadm join --discovery-file https://url/file.conf
    csr-cxb62   8m25s   kubernetes.io/kube-apiserver-client-kubelet   system:bootstrap:gb2qkr   Approved,Issued
    ```
 
-2. 
+## troubleshoot
+
+- User "system:anonymous" cannot create resource "nodes" in API group "" at the cluster scope
+
+  https://github.com/kelseyhightower/kubernetes-the-hard-way/issues/438
+
 
 
 

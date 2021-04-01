@@ -76,9 +76,9 @@ OpenSSH 以C/S模式，ssh做为客户端，sshd做为服务器(统一由systemd
 
   是否可以从键盘输入认证，默认与ChallengeResponseAuthentication值相同
 
-- `ListenAddress hostname:port`
+- ==ListenAddress hostname:port==
 
-  指定sshd监听的地址和端口，默认为`127.0.0.1:22`，监听本机所有IP的22端口
+  指定sshd监听的地址和端口，监听本机所有IP的22端口，包括0.0.0.0，==不安全==
 
 - LoginGraceTime
 

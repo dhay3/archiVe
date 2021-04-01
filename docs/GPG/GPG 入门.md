@@ -230,7 +230,7 @@ sub   2048R/8A08D086 2020-12-09
 
 - `--export-secrect-keys`
 
-  导出私钥，==这是一个危险的操作==
+  导出私钥，==这是一个危险的操作==。如果在windows上操作，权限会导致拒绝导出私钥。==但是可以使用git解决。==
 
   ```
   [root@cyberpelican /]# gpg --armor --export-secret-keys kikochz@163.com

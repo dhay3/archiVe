@@ -1,5 +1,7 @@
 # Service
 
+==external IP cannot access to a pod without service==
+
 ## 概述
 
 ### 为什么需要service ?
@@ -127,7 +129,7 @@ kubernetes允许你修改`ServiceType`属性(默认为ClusterIP)来修改kuberne
 
 可以通过`--nodeport-addresses`来指定kube-proxy只代理指定CIDR的IP。
 
-control plane可以通过`--service-node-port-range`来指定分配的端口(默认30000-32767)。可以通过`.spec.ports[*].nodePort`属性来查看分配的端口。如果想要指定特定的端口，可以设置`nodePort`属性，需要辨别端口是否冲突。
+control plane可以通过`--service-node-port-range`来指定分配的端口(需要30000-32767)。可以通过`.spec.ports[*].nodePort`属性来查看分配的端口。如果想要指定特定的端口，可以设置`nodePort`属性，需要辨别端口是否冲突。
 
 可以通过`<NodeIP>:spec.ports[*].nodePort`和`.spec.clusterIP:spec.ports[*].port`来查看。
 
@@ -148,9 +150,9 @@ spec:
       nodePort: 30007
 ```
 
-port表示service暴露的port，targetPort表示pod监听的端口，nodePort表示可以通过`nodeIP:nodePort`访问到targetPort中的服务。
+port表示service暴露的port，targetPort表示pod监听的端口，nodePort表示==集群外部和集群内部都==可以通过`nodeIP:nodePort`访问到targetPort中的服务。
 
-例如，service中有一个Pod A,Nginx监听了80端口。集群内部可以通过`ClusterIP:8080`端口访问到Pod A中的Nginx，集群外部可以通过`nodeIP:nodePort`访问到Nginx。
+例如，service中有一个Pod A,Nginx监听了80端口。==集群内部==可以通过`ClusterIP:8080`端口访问到Pod A中的Nginx，集群外部可以通过`nodeIP:nodePort`访问到Nginx。
 
 ### LoadBalancer
 
@@ -214,6 +216,95 @@ spec:
       port: 443
       targetPort: 9377
 ```
+
+## 例子0x001
+
+1. 手动创建pod，
+
+   ```
+   [root@k8smaster opt]# cat pod.yaml
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: kube-nginx
+     labels:
+        k1: v1
+   spec:
+     containers:
+     - name: nginx
+       image: nginx
+   [root@k8smaster opt]# kubectl get pod -o wide --show-labels
+   NAME         READY   STATUS    RESTARTS   AGE   IP               NODE        NOMINATED NODE   READINESS GATES   LABELS
+   kube-nginx   1/1     Running   0          26m   192.168.16.132   k8smaster   <none>           <none>            k1=v1
+   ```
+
+2. 创建service
+
+   ```
+   [root@k8smaster opt]# cat service.yaml
+   apiVersion: v1
+   kind: Service
+   metadata:
+     name: my-service
+   spec:
+     type: NodePort
+     selector:
+       k1: v1
+     ports:
+       - name: nginx
+         nodePort: 30001
+         protocol: TCP
+         port: 80
+         targetPort: 80
+   
+   [root@k8smaster opt]# kubectl get service
+   NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+   kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP        29m
+   my-service   NodePort    10.108.67.230   <none>        80:30001/TCP   26m
+   ```
+
+3. cluster 外部主机访问`nodeIP:nodePort`
+
+   ```
+   C:\Users\82341>curl -I 192.168.80.201:30001
+   HTTP/1.1 200 OK
+   Server: nginx/1.19.6
+   Date: Thu, 01 Apr 2021 07:52:40 GMT
+   Content-Type: text/html
+   Content-Length: 612
+   Last-Modified: Tue, 15 Dec 2020 13:59:38 GMT
+   Connection: keep-alive
+   ETag: "5fd8c14a-264"
+   Accept-Ranges: bytes
+   ```
+
+4. cluster 内部主机访问，`nodeIP:nodePort`和`clusterIP:port`都可以访问地到
+
+   ```
+   [root@k8snode01 ~]# curl -I 192.168.80.201:30001
+   HTTP/1.1 200 OK
+   Server: nginx/1.19.6
+   Date: Thu, 01 Apr 2021 07:51:06 GMT
+   Content-Type: text/html
+   Content-Length: 612
+   Last-Modified: Tue, 15 Dec 2020 13:59:38 GMT
+   Connection: keep-alive
+   ETag: "5fd8c14a-264"
+   Accept-Ranges: bytes
+   
+   [root@k8snode01 ~]# curl -I 10.108.67.230:80
+   HTTP/1.1 200 OK
+   Server: nginx/1.19.6
+   Date: Thu, 01 Apr 2021 07:55:32 GMT
+   Content-Type: text/html
+   Content-Length: 612
+   Last-Modified: Tue, 15 Dec 2020 13:59:38 GMT
+   Connection: keep-alive
+   ETag: "5fd8c14a-264"
+   Accept-Ranges: bytes
+   ```
+
+## 例子0x002
 
 
 
