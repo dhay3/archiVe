@@ -12,14 +12,14 @@
 
 - `-5 | -6`
 
-  使用sha256或sha12加密
+  使用sha256或sha512加密
 
 - `-salt <string>`
 
   指定加密的salt
 
   ```
-  root in /usr/local/\/ssl λ openssl passwd -stdin -6
+  root in /usr/local/\/ssl λ openssl passwd -stdin -6 -salt chz
   111
   $6$PuPYSfq7gn8YfQiW$ff6rL5fjZyMH3Vr5Ah/S6CZ6QSMh3KHYOLyZkM1Jx/DUgrt3PQHr/lTu2qJxs.fg7efKXz3widZ0Bc8LvsAFP0
   ```
@@ -37,5 +37,3 @@
   111
   9ZLZm7Ll.FTi2
   ```
-
-### 

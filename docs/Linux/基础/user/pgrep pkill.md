@@ -100,11 +100,5 @@ syntax：`pgrep|pkill [options] pattern`
   ```
   root in ~ λ pkill -9 -t tty7 -u root
   root in ~ λ pkill -9 -t pts/3
-```
-  
-  
-
-
-
-
+  ```
 

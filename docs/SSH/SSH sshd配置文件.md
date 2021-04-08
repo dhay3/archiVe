@@ -1,4 +1,4 @@
-# SSH ssh服务器
+# SSH sshd配置文件
 
 > `man sshd_config`
 >
@@ -10,7 +10,33 @@
 
 OpenSSH 以C/S模式，ssh做为客户端，sshd做为服务器(统一由systemd管理)。
 
+## time formats
+
+sshd配置文件如果没有时间单位默认为秒，不区分时间单位的大小写
+
+## tokens
+
+一些关键字，可以在运行时扩展，类似于占位符。
+
+```
+           %%    A literal ‘%’.
+           %C    Hash of %l%h%p%r.
+           %d    Local user's home directory.
+           %h    The remote hostname.
+           %i    The local user ID.
+           %L    The local hostname.
+           %l    The local hostname, including the domain name.
+           %n    The original remote hostname, as given on the command line.
+           %p    The remote port.
+           %r    The remote username.
+           %T    The local tun(4) or tap(4) network interface assigned if tunnel forwarding was requested, or "NONE" otherwise.
+           %u    The local username.
+
+```
+
 ## 配置文件
+
+> 可以通过Match指令块对原有的指令继承或重写
 
 - ==TCPKeepAlive==
 
@@ -30,7 +56,7 @@ OpenSSH 以C/S模式，ssh做为客户端，sshd做为服务器(统一由systemd
 
 - AuthenticationMethods
 
-  指定认证的方式顺序，多种认证方式之间用空格隔开
+  指定认证的方式顺序，例如：publickey,password。==会先校验公钥然后校验密码==
 
 - AuthorizedKeysFile
 

@@ -24,6 +24,14 @@ https://www.gnu.org/software/bash/manual/bash.html#Pattern-Matching
 
 ## ~扩展
 
+> 还有另外一种表示使用正则，通常与test一起使用
+>
+> ```
+> [[ $line =~ $pattern ]]
+> ```
+>
+> 表示使用正则
+
 波浪线`~`会自动扩展成当前用户的主目录。
 
 ```
@@ -485,9 +493,7 @@ SECONDS SHELL SHELLOPTS SHLVL SSH_AGENT_PID SSH_AUTH_SOCK
 3
 ```
 
-
-
-## $(...)/ ``子命令扩展
+## $(...)| ``子命令扩展
 
 > 子命令扩张中的命令添加双引号和不添加双引号没有区别。只会扫描一遍（所以如果想要对返回的值在做一次解析就会报错），如果想要扫描两边使用eval
 >

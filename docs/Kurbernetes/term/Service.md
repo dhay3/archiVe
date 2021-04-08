@@ -1,7 +1,5 @@
 # Service
 
-==external IP cannot access to a pod without service==
-
 ## 概述
 
 ### 为什么需要service ?

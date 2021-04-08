@@ -79,6 +79,17 @@ Press <enter> to keep the current choice[*], or type selection number:
 
 > 推荐统一使用 `--query`来查询
 
+- `--install <link><name><path><priority>`
+
+  安装一组alternatives，指定`/usr/bin/python3`
+  
+  ```
+  root in /usr/bin λ update-alternatives --install /usr/bin/python3  python3 /usr/bin/python3.6 1
+  update-alternatives: using /usr/bin/python3.6 to provide /usr/bin/python3 (python3) in auto mode
+  root in /usr/bin λ update-alternatives --install /usr/bin/python3  python3 /usr/bin/python3.7 2
+  update-alternatives: using /usr/bin/python3.7 to provide /usr/bin/python3 (python3) in auto mode
+  ```
+  
 - `--display <alternative name>`
 
   ```

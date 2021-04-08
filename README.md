@@ -20,6 +20,7 @@
 - [Net](docs/Net)
 - [Nginx](docs/Nginx)
 - [OpenSSL](docs/OpenSSL)
+- [PowerShell][doc/Powershell]
 - [Shell](docs/Shell)
 - [SSH](docs/SSH)
 - [Vagrant](docs/Vagrant)
@@ -50,6 +51,7 @@
 
 - [Kali](docs/Kali)
 - [CTF](docs/CTF)
+- [Cowrie](docs/Cowrie)
 - [CVE](docs/CVE)
 - [Postman](docs/Postman)
 

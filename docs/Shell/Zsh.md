@@ -116,3 +116,6 @@ https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins
 
   https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/systemadmin
 
+## 补全
+
+https://github.com/zsh-users/zsh-completions

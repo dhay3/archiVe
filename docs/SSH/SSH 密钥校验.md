@@ -13,6 +13,8 @@
 
 ## 方法一：手动上传密钥
 
+> 也可以手动将公钥赋值到sshd服务器上
+
 1. 生成密钥`ssh-keygen`
 
 2. `PS C:\Users\82341\.ssh> cat .\id_rsa.pub |  ssh root@192.168.80.143 "cd ~/.ssh  && cat >> ~/.ssh/authorized_keys "`
