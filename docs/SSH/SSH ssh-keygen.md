@@ -1,6 +1,6 @@
 # SSH ssh-keygen
 
-> ssh-keygen生成的key会更网络有关，如果网卡的MAC地址改变了，就会失效。所以git使用代理时，最好指定一个算法
+> ssh-keygen生成的key会更网络有关，==如果网卡的MAC地址改变了，就会失效。==所以git使用代理时，最好指定一个算法
 
 ## 概述
 
@@ -114,7 +114,7 @@ ssh-ed25519  AAAAC3NzaC1lZDI1NTE5AAAAIHo5M7e4p+lx7Krb3cS+ov9Ub1UEdMgCHyfhYCo7825
 
 - `-f filename`
 
-  指定密钥生成的文件名
+  指定查看的文件
 
 - `-l`
 
