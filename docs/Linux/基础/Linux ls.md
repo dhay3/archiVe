@@ -93,5 +93,11 @@ https://blog.csdn.net/JenMinZhang/article/details/9816853
   lrwxrwxrwx. root root system_u:object_r:bin_t:s0       ifdown -> ../../../usr/sbin/ifdown
   ```
 
-  
+- -t
+
+  按照文件修改的时间排序，最新修改的放在前面
+
+- -r
+
+  对排序后的文件逆序
 

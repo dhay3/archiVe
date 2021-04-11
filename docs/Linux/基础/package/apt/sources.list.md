@@ -36,10 +36,12 @@ deb-src [ option1=value1 option2=value2 ] uri suite [component1] [component2] [.
 
 - deb表示binary packages的来源，deb-src表示source packages的来源
 - uri：==跟换源url时需要到发行版这一层级url，无需进入dist==
-- suite通常对应发行版本：即dist
+- suite通常对应发行版本：即dist，一般在pool文件下
 - component 表示安装包来自的repo通常为 main，contrib，non-free ...
 
 ### deb822-style format
+
+> 这个格式可能存在兼容问题，无法更新apt源
 
 文件需要以`.sources`结尾，并不是通用的(atp 1.1后支持)。注意中间有一个空格。如果一个属性有多个值，通过空格隔开。
 
@@ -64,14 +66,46 @@ option2: value2
 
 ## kali apt source
 
+deb822-style
+
 ```
   Types: deb deb-src
   URIs: https://mirrors.aliyun.com/kali https://mirrors.tuna.tsinghua.edu.cn/kali https://mirrors.cloud.tencent.com/kali/
-  Suites: kali-rolling
+  Suites: kali-rolling kali-dev kali-debian-picks
   Components:  main non-free contrib
 ```
 
+one-line format
 
+```
+#中科大
+deb http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib
+deb-src http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib
+
+#阿里云
+deb http://mirrors.aliyun.com/kali kali-rolling main non-free contrib
+deb-src http://mirrors.aliyun.com/kali kali-rolling main non-free contrib
+
+#清华大学
+#deb http://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
+#deb-src https://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
+
+#浙大
+#deb http://mirrors.zju.edu.cn/kali kali-rolling main contrib non-free
+#deb-src http://mirrors.zju.edu.cn/kali kali-rolling main contrib non-free
+
+#东软大学
+#deb http://mirrors.neusoft.edu.cn/kali kali-rolling/main non-free contrib
+#deb-src http://mirrors.neusoft.edu.cn/kali kali-rolling/main non-free contrib
+
+#官方源
+#deb http://http.kali.org/kali kali-rolling main non-free contrib
+#deb-src http://http.kali.org/kali kali-rolling main non-free contrib
+
+#重庆大学
+#deb http://http.kali.org/kali kali-rolling main non-free contrib
+#deb-src http://http.kali.org/kali kali-rolling main non-free contrib
+```
 
 
 

@@ -1,13 +1,8 @@
 # Git 设置代理
 
-参考：https://gist.github.com/laispace/666dd7b27e9116faece6
+参考：
 
-> 注意每次使用时先做如下步骤，否则会导致无法上传
->
-> ```
-> eval `ssh-agent -s`
-> ssh-add ~/.ssh/srectkey
-> ```
+https://gist.github.com/laispace/666dd7b27e9116faece6
 
 ## 设置http，https协议
 
@@ -53,6 +48,19 @@ ProxyCommand "D:/git/Git/mingw64/bin/connect.exe" -S 127.0.0.1:10808  %h %p
  https://www.idzd.top/archives/2536/
 
 https://zhuanlan.zhihu.com/p/126117538
+
+## windows 自动启动ssh-agent
+
+==git中ssh-agent无法自动启动，使用ssh前需要执行如下命令==
+
+```
+eval `ssh-agent -s`
+ssh-add ~/.ssh/srectkey
+```
+
+可以通过如下方式配置ssh-agent自动启动
+
+https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 
 ## 参考配置文件
 

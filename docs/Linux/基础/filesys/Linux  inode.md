@@ -33,8 +33,8 @@ Change: 2020-09-09 00:12:37.989966656 -0400
 - Links：链接数，即有多少文件名指向这个inode
 - Access：文件的读写权限，创建文件的用户ID和组ID
 - Access-time：文件上一次打开的时间
-- Modify-time：文件内容上一次变动的时间
-- Change-time：inode上一次变动的时间
+- Modify-time：==文件内容上一次变动的时间==
+- Change-time：==inode上一次变动的时间==
 
 我们可以使用`df -i`来查看各磁盘上的inode情况
 
