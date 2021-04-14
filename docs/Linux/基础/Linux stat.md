@@ -25,4 +25,4 @@ Change: 2020-09-09 00:12:37.989966656 -0400
 > https://askubuntu.com/questions/600837/what-is-the-difference-between-modify-and-change-in-stat-output
 
 - Modify-time：==文件内容上一次变动的时间==
-- Change-time：==inode上一次变动的时间==
+- Change-time：==metadata上一次变动的时间==

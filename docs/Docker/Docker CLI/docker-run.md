@@ -222,7 +222,7 @@ root in /etc/docker λ docker run --rm --name net3 centos
 
 https://docs.docker.com/engine/reference/commandline/run/#mount-volume--v---read-only
 
-使用`-v`参数将==宿主机上的文件映射到容器(会覆盖)==，可以是目录也可以是文件
+使用`-v`参数将==宿主机上的文件映射到容器(会覆盖容器中的文件)==，可以是目录也可以是文件。==如果是自动生成的就不会覆盖==
 
 pattern：`docker run -v [host-src:]container-dest`
 

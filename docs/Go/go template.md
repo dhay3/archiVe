@@ -1,5 +1,9 @@
 # go template
 
+> 换行
+>
+> {{range .Mounts}}{{ printf "%s\n" .Source}}{{end}}
+
 ## dot
 
 通过`{{}}`获取传入Action的值
@@ -119,6 +123,11 @@ Action之外的内容原样输出，空值为0，false，nil，interface
 4. `{{range pipeline}} T1 {{end}}`
 
    遍历+T，pipeline的数据类型为array，slice，map or channel，否则不输出
+
+   ```
+   #循环Mounts中的.Source属性
+   {{range .Mounts}}{{.Source}}{{end}}
+   ```
 
 5. `{{range pipeline}} T1 {{else}} T0 {{end}}`
 

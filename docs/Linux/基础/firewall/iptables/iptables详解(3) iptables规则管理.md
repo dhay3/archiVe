@@ -399,10 +399,14 @@ COMMIT
 [root@VM-0-4-centos ~]# iptables-save > /etc/sysconfig/iptables
 ```
 
-修改login shell或nologin shell
+修改login shell或nologin shell，==如果登入的是非root用户需要sudo==
 
 ```
+#nologin shell
 echo 'iptables-restore < /etc/sysconfig/iptables' >> ~/.bashrc
+
+#login shell
+sudo iptables-restore < /usr/local/etc/iptables.conf
 ```
 
 ### 方法二

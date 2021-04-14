@@ -125,8 +125,6 @@ bash: a: cannot overwrite existing file
 bash: !519: command not found
 ```
 
-
-
 ## set -o 
 
 通过`set -o option`可以设置一些选项

@@ -45,6 +45,10 @@ https://juejin.im/post/6844904084168769549
 
   单个n取消DNS解析，两个n取消DNS解析和端口解析
 
+- -t
+
+  修改时间的显示，具体查看manule page
+
 - -r
 
   读取用-w生成的文件
@@ -95,6 +99,8 @@ https://juejin.im/post/6844904084168769549
   7 packets received by filter
   0 packets dropped by kernel
   ```
+
+
 
 ## 过滤器
 

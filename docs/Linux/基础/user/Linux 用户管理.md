@@ -2,6 +2,8 @@
 
 ## useradd
 
+> 默认uid，gid都从1000开始
+
 - `-e`
 
   指定账户失效的日期，使用`YYYY-MM-DD`格式
