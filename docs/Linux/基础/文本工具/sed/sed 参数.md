@@ -47,7 +47,7 @@ syntax：`sed [options] [script] [input-file] `
 
 - -i [suffix]
 
-  修改文件，如果有指定suffix就会生成备份文件。`-i`后不能带有空格
+  修改文件，如果有指定suffix就会生成备份文件。`-i`后不能带有空格.。==如果和`-n`一起使用回导致原来的文件内容为空==
 
   ```
   [root@k8snode01 opt]# sed  -i.bak 'i\3' Dockerfile

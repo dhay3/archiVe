@@ -10,7 +10,7 @@ https://zhuanlan.zhihu.com/p/26098509
 
 继续讲原理：假设磁头不动，硬盘旋转，那么磁头就会在磁盘表面画出一个==圆形轨迹并将之磁化，数据就保存在这些磁化区中，称之为磁道==，将每个磁道分段，==一个弧段就是一个扇区==。一个硬盘可以包含多个扇面，扇面同轴重叠放置，每个盘面磁道数相同，==具有相同周长的磁道所形成的圆柱称之为柱面==，柱面数与磁道数相等。如下图
 
-<img src="..\..\..\..\imgs\_Hardware\v2-ae88b94d2f8d90176f0a10e8b35a180e_r.jpg" style="zoom:80%;" />
+<img src="...\..\..\..\imgs\_Hardware\v2-ae88b94d2f8d90176f0a10e8b35a180e_r.jpg" style="zoom:80%;" />
 
 了解了这些，我们就可以对最初的硬盘地址管理方式作一个原理层面的了解：
 
@@ -28,7 +28,7 @@ https://zhuanlan.zhihu.com/p/26098509
 
 MBR：==Master Boot Record，主分区引导记录。==最早在1983年在IBM PC DOS 2.0中提出。前面说过，每个扇区/区块都被分配了一个逻辑块地址，即LBA，而引导扇区则是每个分区的第一扇区，==而主引导扇区则是整个硬盘的第一扇区（主分区的第一个扇区）==。MBR就保存在主引导扇区中。另外，这个扇区里还包含了硬盘分区表DPT（Disk Partition Table），和结束标志字（Magic number）。扇区总计512字节，MBR占446字节（0000H - 01BDH），DPT占据64个字节（01BEH - 01FDH），最后的magic number占2字节（01FEH – 01FFH）。
 
-<img src="..\..\..\..\imgs\_Hardware\v2-039771e933fc23590ca888821fd6903f_720w.png"/>
+<img src="...\..\..\..\imgs\_Hardware\v2-039771e933fc23590ca888821fd6903f_720w.png"/>
 
 
 

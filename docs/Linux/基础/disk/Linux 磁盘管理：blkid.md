@@ -1,6 +1,6 @@
 # blkid
 
-展示块设备的属性
+展示块设备的属性，可以使用`lsblk --fs`替代
 
 ```
 [root@chz opt]# blkid

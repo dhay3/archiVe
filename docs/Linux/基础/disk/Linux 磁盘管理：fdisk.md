@@ -27,7 +27,7 @@ graph LR
 
 优于一般linux分配硬盘空间不会超过2T，所以也就无需使用GPT分区表，所以使用MBR分区工具`fdisk`即可（**GPT分区表使用gpart 或是 gdisk**）
 
-1. 在linux下SCSI接口设备以sd命名，第一个是sda，第二个sdb，依次类推。IDE接口设备用hd命名，第一个是hda，第二个是hdb，依次类推。==sr0表示是是SCSI的磁盘驱动==
+1. 在linux下SCSI接口设备以sd命名，第一个是sda，第二个sdb，依次类推。IDE接口设备用hd(hard disk)命名，第一个是hda，第二个是hdb，依次类推。==sr0表示是是SCSI的磁盘驱动==。软盘以fd(floppy disk)开头
 2. 分区是用设备名称加数字命名。例如sda1代表sda这个硬盘设备上的第一个分区。
 3. MBR分区、表最多有四个主分区（windows对应C,D,E,F 盘），一个扩展分区，扩张分区可以在分为多个逻辑分区。
 

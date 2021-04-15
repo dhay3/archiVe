@@ -29,7 +29,7 @@ make <target> 运行makefile
 
 ### target
 
-> 如果make命令运行时没有指定target，默认执行Makefile的第一个target
+> 如果make命令运行时没有指定target，==默认执行Makefile的第一个target==
 
 **0x001**
 
