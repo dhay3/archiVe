@@ -26,6 +26,9 @@ $environments = @{
     QA   = 'SrvQA02'
     Dev  = 'SrvDev12'
 }
+
+#或则在一行中定义
+$person = @{ name = 'kevin'; age = 36; }
 ```
 
 ## 取值
@@ -142,3 +145,4 @@ $person = @{}
 $person.clear()
 ```
 
+将hashtable转为cmdlet

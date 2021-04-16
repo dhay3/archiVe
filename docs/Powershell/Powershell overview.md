@@ -69,7 +69,7 @@ Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
 
 ## get-member
 
-可以获取cmdlet中的成员变量
+可以获取cmdlet==对应数据类型==的成员变量
 
 ```
 PS C:\Users\82341> get-process|get-member

@@ -69,7 +69,7 @@ keyboard-interactive,password
 
 - Public key authentication
 
-  > 如果需要使用公钥认证，需要将公钥写入`~/.ssh/authorized_keys`中，
+  > 如果需要使用公钥认证，需要将连接者的公钥写入`~/.ssh/authorized_keys`中，
 
   ==使用这种方式可以免密登入，且安全==
 
