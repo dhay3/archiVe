@@ -54,6 +54,24 @@ SrvQA02
 SrvDev12
 ```
 
+## 组合
+
+hashtable支持累加的操作
+
+```
+PS D:\asset> $h1=@{
+>> k1='v1'}
+PS D:\asset> $h2=@{
+>> k2='v2'}
+PS D:\asset> $h1+=$h2
+PS D:\asset> $h1
+
+Name                           Value
+----                           -----
+k2                             v2
+k1                             v1
+```
+
 ## 获取长度
 
 ```
@@ -145,4 +163,61 @@ $person = @{}
 $person.clear()
 ```
 
-将hashtable转为cmdlet
+## 将hashtable转为cmdlet param
+
+```
+PS C:\Users\82341> $param = @{
+>> Name='*shell*'
+>> computername='bash'
+>> }
+PS C:\Users\82341> Get-Process @param
+
+Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
+-------  ------    -----      -----     ------     --  -- -----------
+    809      39   179564     201436       3.72   4528   1 powershell
+    586      26    14104      57900       0.34  15188   1 ShellExperienceHost
+    
+#等价于
+PS C:\Users\82341> Get-Process -Name *shell* -ComputerName bash
+
+Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
+-------  ------    -----      -----     ------     --  -- -----------
+    847      38   173524     196184       3.13   4528   1 powershell
+    586      26    14104      57900       0.34  15188   1 ShellExperienceHost
+```
+
+还可以通过组合的方式
+
+```
+$Common = @{
+    SubnetMask  = '255.255.255.0'
+    LeaseDuration = (New-TimeSpan -Days 8)
+    Type = "Both"
+}
+
+$DHCPScope = @{
+    Name        = 'TestNetwork'
+    StartRange  = '10.0.0.2'
+    EndRange    = '10.0.0.254'
+    Description = 'Network for testlab A'
+}
+
+Add-DhcpServerv4Scope @DHCPScope @Common
+```
+
+## ==将hashtable转为Json==
+
+```
+PS D:\asset> $h1 | ConvertTo-Json
+{
+    "k2":  "v2",
+    "k1":  "v1"
+}
+```
+
+## 键可以是任何值
+
+
+
+
+
