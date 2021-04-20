@@ -76,7 +76,7 @@ alice: in wonderland
 
 ## return
 
-`return`命令用于从函数返回一个值。函数执行到这条命令，就不再往下执行了，直接返回了。
+`return`命令用于从函数返回一个==数值==。函数执行到这条命令，就不再往下执行了，直接返回了。==不能返回数组或字符串，否则就会numeric argument required，可以设置一个全局变量来接受==
 
 ```
 [root@cyberpelican ~]# cat test.sh 

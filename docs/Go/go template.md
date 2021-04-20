@@ -3,6 +3,10 @@
 > 换行
 >
 > {{range .Mounts}}{{ printf "%s\n" .Source}}{{end}}
+>
+> 等价
+>
+> {{range .Mounts}}{{  .Source}}{{"\n"}}{{end}}
 
 ## dot
 
@@ -155,8 +159,6 @@ Action之外的内容原样输出，空值为0，false，nil，interface
 7. `{{with pipeline}} T1 {{else}} T0 {{end}}`
 
    如果pipeline的值不为空，dot设置为pipeline的值，执行T1。否则执行T0
-
-
 
 ## pipeline
 
@@ -319,9 +321,16 @@ func main() {
 
 ...
 
-## ``
+## 字符串
 
-表示字符常量
+双引号标识符内表示字符串，原样输出，如果是特殊的字符会转义
+
+```
+[root@k8smaster opt]# kubectl get -l pod=v1 pod  -o go-template='{{range .items}}{{- .status.podIP -}}{{"\n"}}{{end}}' -A
+192.168.16.138
+192.168.16.139
+
+```
 
 ## func
 

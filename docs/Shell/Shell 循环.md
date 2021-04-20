@@ -80,7 +80,7 @@ done
 
 ## for ... in 
 
-> 可以使用wildcard expasion
+> 可以使用wildcard expasion，==list不能用双引号，否则不会遍历元素==
 
 pattern：
 
@@ -150,6 +150,14 @@ for filename in $files
 do
    echo $filename >> filename.txt
 done
+```
+
+==被遍历的变量不能用双引号==
+
+```
+        for file in ${files}; do
+            rm -f "${file}"
+        done
 ```
 
 ## break/continue

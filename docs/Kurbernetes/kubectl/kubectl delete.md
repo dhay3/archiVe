@@ -1,6 +1,6 @@
 # kubectl delete
 
-删除kubernetes resources
+删除kubernetes resources，resources是node，pod，services等
 
 syntax：`kubectl delete ([-f filename] | [-k direcotory] | [type])`
 

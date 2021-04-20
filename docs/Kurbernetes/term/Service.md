@@ -10,7 +10,7 @@ Pod并不是持久的资源，假设有一个 front-end pod想要调用 back-end
 
 ### 概念
 
-将一组Pods逻辑上抽象成一个service。通常由selector过滤pods，通过workload将这些pods划分为一个service。==kubernetes会为service提供一个虚拟的IP和DNS name==。
+将一组Pods逻辑上抽象成一个service。通常==由selector过滤pods==，通过workload将这些pods划分为一个service。==kubernetes会为service提供一个虚拟的IP和DNS name==。
 
 现在有1个front-end node，1个无状态的back-end node和3个replicas。当back-end node改变时(Pod 的IP 同时也在改变 )，front-end node无需关注Pod 的 IP，只要将请求发送给service 提供的IP。kubernetes会自动将请求发送给Pod。
 
@@ -123,7 +123,7 @@ kubernetes允许你修改`ServiceType`属性(默认为ClusterIP)来修改kuberne
 
 通过暴露pod的port做为一个service，==同时也会创建ClusterIP==。更加个性化的负载均衡方案。
 
-==集群外可以通过`<NodeIP>:<NodePort>`来访问，集群内部可以通过`<ClusterIP>:<Port>`来访问。==
+==集群外和集群内都可以通过`<NodeIP>:<NodePort>`来访问，集群内部可以通过`<ClusterIP>:<Port>`来访问。==
 
 可以通过`--nodeport-addresses`来指定kube-proxy只代理指定CIDR的IP。
 
@@ -214,6 +214,60 @@ spec:
       port: 443
       targetPort: 9377
 ```
+
+## troubleshoot
+
+https://kubernetes.io/docs/tasks/debug-application-cluster/debug-service/
+
+当前有一个Deployment
+
+```
+[root@k8smaster opt]# cat deployment.yaml 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy
+  labels:
+    deploy: v1
+spec:
+    selector:
+        matchLabels:
+            pod: v1
+    template:
+        metadata:
+            labels:
+                pod: v1
+        spec:
+            containers:
+                - name: nginx
+                  image: nginx
+                  ports:
+                    - containerPort: 80
+                    - containerPort: 10086
+```
+
+缩放Deployment规格
+
+```
+[root@k8smaster opt]# kubectl scale deployment deploy --replicas=2
+deployment.apps/deploy scaled
+[root@k8smaster opt]# kubectl get pod -o wide
+NAME                      READY   STATUS        RESTARTS   AGE   IP               NODE        NOMINATED NODE   READINESS GATES
+deploy-78cfbdd995-9k9fn   1/1     Running       0          13m   192.168.16.138   k8smaster   <none>           <none>
+deploy-78cfbdd995-c4mkg   1/1     Running       0          10m   192.168.16.139   k8smaster   <none>           <none>
+deploy-78cfbdd995-jrb6r   0/1     Terminating   0          10m   <none>           k8smaster   <none>           <none>
+kube-nginx                1/1     Running       0          17d   192.168.16.132   k8smaster   <none> 
+```
+
+按照label获取deployment中所有的Pod IP
+
+```
+[root@k8smaster opt]# kubectl get -l pod=v1 pod  -o go-template='{{range .items}}{{printf "%s\n" .status.podIP }}{{end}}' -A
+192.168.16.138
+192.168.16.139
+```
+
+
 
 ## 例子0x001
 

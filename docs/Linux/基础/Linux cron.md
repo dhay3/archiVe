@@ -143,3 +143,73 @@ MAILTO=""HOME=/
 - `/`
 
   可以用正斜线指定时间的间隔频率，例如`* */2 * * *`”表示每两小时执行一次。
+
+## 日志
+
+centos7之前的系统可以通过如下文件查看cron日志
+
+```
+/var/log/corn
+#会将对应的cron执行结果发送给用户
+/var/spool/mail/user
+```
+
+ubuntu可以查看
+
+```
+/var/log/syslog
+```
+
+## troubelshoot
+
+1. No MTA installed, discarding output
+
+   ```
+   sudo apt-get install postfix
+   ```
+
+   然后可以在`/var/spool/mail`中看到信息
+
+2. 正常脚本可以执行，但是crontab 不能执，可能是环境变量的问题。直接指定使用bash
+
+   ```
+   From root@win2k  Mon Apr 19 21:59:01 2021
+   Return-Path: <root@win2k>
+   X-Original-To: root
+   Delivered-To: root@win2k
+   Received: by win2k (Postfix, from userid 0)
+           id 918FF1215D6; Mon, 19 Apr 2021 21:59:01 +0800 (CST)
+   From: root@win2k (Cron Daemon)
+   To: root@win2k
+   Subject: Cron <root@win2k> ( cd /opt/t/ >& /dev/null || exit 1 ) && ( find . -regextype posix-egrep -regex "\./[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}-[[:digit:]]{2}.log.*" -mtime -1 | sudo xargs rm -f {}  || exit 1 )
+   MIME-Version: 1.0
+   Content-Type: text/plain; charset=UTF-8
+   Content-Transfer-Encoding: 8bit
+   X-Cron-Env: <SHELL=/bin/sh>
+   X-Cron-Env: <HOME=/root>
+   X-Cron-Env: <PATH=/usr/bin:/bin>
+   X-Cron-Env: <LOGNAME=root>
+   Message-Id: <20210419135901.918FF1215D6@win2k>
+   Date: Mon, 19 Apr 2021 21:59:01 +0800 (CST)
+   
+   /bin/sh: 1: Syntax error: Bad fd number
+   ```
+
+   例如这里使用dash无法识别`/dev/null`，如果使用`bash -c`需要注意引号
+
+   ```
+   * * * * * /bin/bash -c  '{ cd /app/easyv-nico/log/error/ >& /dev/null || exit 1  &&  find . -regextype posix-egrep -regex "\./[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}-[[:digit:]]{2}.log.*" -mtime -1 | sudo xargs rm -f {}  || exit 1; }'
+   ```
+
+   也可通过hashbag解决
+
+3. 无法正常运作也有可能是权限的问题，使用`sudo`
+
+4. `（）`==subshell不共享路径==
+
+   ```
+   root in /opt/t λ /bin/bash -c '(cd /etc || exit 1) && (cat ./resolv.conf || exit 1)'
+   cat: ./resolv.conf: No such file or directory
+   ```
+
+   

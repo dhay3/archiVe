@@ -82,7 +82,7 @@ selector:
     component: redis
 ```
 
-通过matchLabels来匹配
+通过matchLabels来匹配pod，将pod加入到service中
 
 ```
 selector:

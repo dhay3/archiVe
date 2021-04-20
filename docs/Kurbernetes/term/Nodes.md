@@ -56,7 +56,7 @@ kubelet代理node主动注册到control plane，==这是默认的方式==。主�
 
 ## status
 
-可以通过kubectl describe node/nodename来查看node 状态，有4个属性：Address，Conditions，Capacity And Allocate，info
+可以通过`kubectl describe node/nodename`来查看node 状态，有4个属性：Address，Conditions，Capacity And Allocate，info
 
 ### Address
 

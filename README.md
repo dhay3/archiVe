@@ -20,7 +20,7 @@
 - [Net](docs/Net)
 - [Nginx](docs/Nginx)
 - [OpenSSL](docs/OpenSSL)
-- [PowerShell](doc/Powershell)
+- [PowerShell](docs/Powershell)
 - [Shell](docs/Shell)
 - [SSH](docs/SSH)
 - [Vagrant](docs/Vagrant)

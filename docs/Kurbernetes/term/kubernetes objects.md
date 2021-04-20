@@ -43,6 +43,24 @@ spec:
         - containerPort: 80
 ```
 
+## spec
+
+spec在多种obejects中都有，用来描述这个objects的动作和属性
+
+https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#deploymentspec-v1-apps
+
+- selector 
+
+  匹配pod的label，被用于该object
+
+- strategy
+
+- template
+
+  pod该如何生成的模板
+
+  
+
 ## container block
 
 - containers slice[map]
@@ -61,7 +79,7 @@ spec:
 
 - ports  slice[map]
 
-  ==只做提示用和docker expose相同==，会在`kubectl get pod -o json`显示
+  ==只做提示用和docker expose相同==，会在`kubectl get pod -o json`显示，只能时ContainerPort(数组)
 
   ```
   [root@k8smaster opt]# kubectl get pod/kube-nginx-80 -o custom-columns=port:.metadata.annotations.*

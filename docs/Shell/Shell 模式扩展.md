@@ -7,6 +7,13 @@
 > 在命令行中`{ command；}`可以将一组命令表示为一个整体，不会开新shell执行，分号必不可缺。括号中的变量可以被脚本余下的部分使用
 >
 > `(  )`表示开一个子shell执行命令两边需要空格，括号中的变量不能被脚本余下的部分使用，执行后将内容返回到stdout
+>
+> ==两个不同的subshell不共享路径==
+>
+> ```
+> root in /opt/t λ /bin/bash -c '(cd /etc) && (cat ./resolv.conf)'
+> cat: ./resolv.conf: No such file or directory
+> ```
 
 参考：
 

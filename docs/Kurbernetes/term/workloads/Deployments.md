@@ -21,18 +21,20 @@ kind: Deployment
 metadata:
 #deployment的名字
   name: nginx-deployment
+  #创建dedeployment的标签
   labels:
     app: nginx
 spec:
-	#创建template replica的数量
+	#创建template replica的数量，默认为1
   replicas: 3
+  #选中含有特定标签的pod，必须于template中的label相同
   selector:
     matchLabels:
       app: nginx
   #创建pod的模板
   template:
     metadata:
-    #标签
+    #创建pod的标签
       labels:
         app: nginx
     spec:
@@ -42,6 +44,7 @@ spec:
         image: nginx:1.14.2
         ports:
         - containerPort: 80
+        - containerPort: 10086
 ```
 
 ## 创建
@@ -101,7 +104,6 @@ spec:
    kubectl edit deployment nginx-deployment --record
    ```
 
-   
 
 ## 回滚
 
@@ -117,7 +119,6 @@ spec:
    [root@k8smaster ~]# kubectl rollout undo deployment nginx-deployment --to-revision=1
    ```
 
-   
 
 ## 查看回滚历史
 

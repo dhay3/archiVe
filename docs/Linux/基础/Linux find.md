@@ -44,7 +44,22 @@ find命令直接搜索硬盘速度较慢，如果没有指定starting-point默�
 
 - `-regex pattern`
 
-  使用正则表达式来匹配文件，如果使用了regex
+  使用正则表达式来匹配文件，如果使用了regex，默认使用EMac regex，如果想要使用posix regex需要使用`-regextyep`指定
+
+  ```
+  root in /opt λ find . -regextype posix-egrep  -regex "\./[[:digit:]]{4}-[[:digit:]]{2}.log"
+  ./2020-04.log
+  ./2021-01.log
+  ./2020-02.log
+  ./2021-08.log
+  ./2021-04.log
+  ./2020-05.log
+  ./2020-03.log
+  ./2021-07.log
+  ./2021-10.log
+  ./2020-09.log
+  ./2021-06.log
+  ```
 
 - `-type c`
 
@@ -56,8 +71,9 @@ find命令直接搜索硬盘速度较慢，如果没有指定starting-point默�
   6. l：链接文件
   7. s：socket文件
 
-
 ## 时间条件
+
+> `+`表示之前，`-`表示之内
 
 - `-amin n `
 
