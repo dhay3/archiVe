@@ -55,6 +55,8 @@ pwd
 
 **linenumber,linumber**
 
+==左闭右闭==
+
 ```
 [root@k8snode01 opt]# sed '1,3i3' Dockerfile
 3
@@ -63,6 +65,8 @@ FROM busybox
 label:hello world
 3
 pwd
+
+root in /opt/4 λ docker container ls -a | grep -v cowrie | sed -n '2,$p' | awk '{print $1}' | xargs docker rm -f
 ```
 
 **regex,linenumber**

@@ -222,11 +222,13 @@ root in /etc/docker λ docker run --rm --name net3 centos
 
 https://docs.docker.com/engine/reference/commandline/run/#mount-volume--v---read-only
 
+https://www.cnblogs.com/sparkdev/p/8504050.html
+
+https://www.jianshu.com/p/e605de64e9f9
+
 使用`-v`参数将==宿主机上的文件映射到容器(会覆盖容器中的文件)==，可以是目录也可以是文件。==如果是自动生成的就不会覆盖==
 
-pattern：`docker run -v [host-src:]container-dest`
-
-如果没有指定host-src，docker自动生成相应的挂载卷(通过`root in ~ λ docker inspect t1 --format="{{json .Mounts}}"`可以查看)。默认挂载的卷使用rw权限，可以添加后缀`:ro`或`:rw`指定权限
+如果没有指定host-src，docker自动生成相应的挂载卷(通过`root in ~ λ docker inspect t1 --format="{{json .Mounts}}"`可以查看)。默认挂载的卷(容器中)使用rw权限，可以添加后缀`:ro`或`:rw`指定权限
 
 ```
 $ sudo docker run \
@@ -239,6 +241,94 @@ $ sudo docker run \
   --name=cadvisor \
   google/cadvisor:latest
 ```
+
+pattern：`docker run -v [host-src:]container-dest`
+
+1. 本地不存在文件挂载到容器存在文件，容器无法启动
+
+   ```
+   docker run -itd --name n2 -v /opt/a:/etc/hostname nginx
+   6b27c11d2765b2a70ff77db71182b6417d3a66f17bb6a0281266b39c5f0458a5
+   docker: Error response from daemon: OCI runtime create failed: container_linux.go:367: starting container process caused: process_linux.go:495: container init caused: rootfs_linux.go:60: mounting "/opt/a" to rootfs at "/var/lib/docker/overlay2/f0cc78b3f69d993b50b025489b0d6cab105da122b5ba41f3130abe041d699691/merged/etc/hostname" caused: not a directory: unknown: Are you trying to mount a directory onto a file (or vice-versa)? Check if the specified host path exists and is the expected type.
+   ```
+
+2. 本地不存在文件夹(会被docker创建)挂载到容器存在的文件夹，==容器文件夹中的内容被本地文件夹中内容覆盖为空)==
+
+   ```
+   root in /opt/a λ docker run -itd --name n2 --rm -v /opt/a:/var nginx  sh
+   8984866e1bdf93e490050e36221c0583e48fd98b4447af605ccd50f1ea5b5614
+   root in /opt/a λ ls
+   root in /opt/a λ docker exec -it n2 bash
+   root@8984866e1bdf:/# cd var/
+   root@8984866e1bdf:/var# ls
+   root@8984866e1bdf:/var#
+   ```
+
+3. 本地不存在文件(会被docker创建)挂载到容器不存文件(会被docker创建)，都为空
+
+   ```
+   root in /opt/a λ docker run -itd --name n2 --rm -v /opt/b:/varss nginx  sh
+   169e121775ccab22f2ff6b850e4629e22965b138905f8a1a4691e3c9b02d29b0
+   root in /opt/a λ cd ../b
+   root in /opt/b λ ls
+   root@169e121775cc:/# cd varss/
+   root@169e121775cc:/varss# ls
+   ```
+
+4. 本地存在文件挂载到容器不存在文件，容器中创建一个本地文件
+
+   ```
+   root in /opt/b λ docker run -itd --name n3 --rm -v /etc/resolv.conf:/file nginx  sh
+   90448b9d3013b947548ae090d3e8b621576173cdbef33e737d38f4da82d193a9
+   root in /opt/b λ docker exec -it n3 bash
+   root@90448b9d3013:/# ls
+   bin   dev                  docker-entrypoint.sh  file  lib    media  opt   root  sbin  sys  usr
+   boot  docker-entrypoint.d  etc                   home  lib64  mnt    proc  run   srv   tmp  var
+   root@90448b9d3013:/# cat file
+   # This file is managed by man:systemd-resolved(8). Do not edit.
+   ```
+
+5. 本地存在文件挂载到容器不存在文件夹，容器中创建本地文件夹
+
+   ```
+   root in /opt/b λ docker run -itd --name n4 --rm -v /opt:/files nginx  sh
+   c8f3aa9191a7cd36524382df90d9da1ce005005938307b993f7edfc0225643e7
+   root in /opt/b λ docker exec -it n4 bash
+   root@c8f3aa9191a7:/# ls files
+   a  b  chkrootkit.tar.gz  containerd  hello-world_29.assert  hello-world_29.snap  t
+   ```
+
+6. 本地存在文件挂载到容器存在文件，容器文件被替换
+
+   ```
+   root in /opt/b λ docker run -itd --name n2 --rm -v /etc/resolv.conf:/etc/hostname nginx  sh
+   64f720d38ccf4f72732e46fa03a0766b9b6408873f16a15373ac8b9527bef443
+   root in /opt/b λ docker exec -it n2 bash
+   root@64f720d38ccf:/# cat etc/hostname
+   # This file is managed by man:systemd-resolved(8). 
+   ```
+
+7. 本地存在文件挂载到容器存在文件夹，失败
+
+   ```
+   root in /opt/b λ docker run -itd --name n2 --rm -v /etc/resolv.conf:/etc/ nginx  sh
+   83772e461000ae328bde350aec7dddec7aa342f632cca77d71f826357dd72312
+   docker: Error response from daemon: OCI runtime create failed: container_linux.go:367: starting container process caused: process_linux.go:495: container init caused: rootfs_linux.go:60: mounting "/etc/resolv.conf" to rootfs at "/var/lib/docker/overlay2/ddc26e2277a1184b05ba52a10d9189ec3df1aa0643ad44a65556bbda5996306c/merged/etc" caused: not a directory: unknown: Are you trying to mount a directory onto a file (or vice-versa)? Check if the specified host path exists and is the expected type.
+   ```
+
+8. 本地存在文件夹挂载到容器存在文件夹，本地文件夹内容负载容器文件夹中内容
+
+   ```
+   root in /opt/b λ docker run -itd --name n3 --rm -v /opt:/etc nginx  sh
+   38ae4dc2e4669f1149d921ac1cdae9b8dc8d705e4942d0f64978726851f65040
+   root in /opt λ ls
+   a  b  chkrootkit.tar.gz  containerd  hello-world_29.assert  hello-world_29.snap  hostname  hosts  resolv.conf  t
+   root in /opt λ docker exec -it n3 bash
+   bash-5.0# cd etc/
+   bash-5.0# ls
+   a  b  chkrootkit.tar.gz  containerd  hello-world_29.assert  hello-world_29.snap  hostname  hosts  resolv.conf  t
+   
+   ```
 
 ## Workdir
 
