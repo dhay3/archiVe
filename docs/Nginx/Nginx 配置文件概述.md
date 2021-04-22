@@ -51,7 +51,7 @@ Context:	http, server, location
     include /etc/nginx/conf.d/*.conf;
 ```
 
-例如默认配置文件中，使用模式扩展将`/etc/nginx/conf.d`所有的配置文件引入
+例如默认配置文件中，使用模式扩展将`/etc/nginx/conf.d`所有的配置文件引入。如果给出的不是绝对路径，默认表示在`/etc/nginx`下的文件
 
 ## Context
 
@@ -200,6 +200,8 @@ http {
 	types_hash_max_size 2048;
 	#是否在错误页面显示nginx的版本
 	server_tokens on;
+	#是否将404错误记录到log中
+	log_not_found off;
 	#存储服务器名字的hashtable最大容量
 	# server_names_hash_bucket_size 64;
 	# server_name_in_redirect off;
