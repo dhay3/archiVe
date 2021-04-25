@@ -35,29 +35,22 @@ docker run -p 3306:3306 --name mysql \
 ```
 
 - -p：主机（这里指的是虚拟机）与容器端口的映射关系，":"前为主机目录，之后为容器目录
-- -v：主机和容器的目录映射关系，":"前为主机目录，之后为容器目录
+
+- -v：主机和容器的目录映射关系，":"前为主机目录，之后为容器目录(主机目录挂载到容器)
+
+  var/log/mysql(mysql的日志)文件夹和var/lib/mysql(存储物理上的表)
+
 - -e ：启动参数
+
 - --name： 指定容器名
+
 - -d ：静默运行容器
 
 修改主机的指定位置就会影响容器对应的位置，==需要重启容器==
 
-> 注意mysql 8 以后没有var/log/mysql文件夹和var/lib/mysql，所以不会正常启动
-
-```
-docker run -p 3306:3306 --name mysql \
--v /mydata/mysql/conf:/etc/mysql \
--e MYSQL_ROOT_PASSWORD=root \
--d mysql:latest
-```
-
-如果还是无法解决请参考
-
-
+如果还是无法解决请参考，==可能是之前挂载的volumes没有删除干净==
 
 https://blog.csdn.net/qq_41999034/article/details/106162366
-
-
 
 https://blog.csdn.net/wzyaiwl/article/details/90293453?utm_medium=distribute.pc_relevant.none-task-blog-title-6&spm=1001.2101.3001.4242
 

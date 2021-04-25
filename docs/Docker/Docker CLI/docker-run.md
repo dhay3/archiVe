@@ -2,9 +2,10 @@
 
 > 1. 使用`--rm`参数，在容器退出后会自动删除创建的容器。
 > 2. ==如果在启动启动容器时没有添加`-it`参数，容器停止后重新启动同样还是会退出。==可以将`docker start container`理解为一个指向`docker run container`的一个指针。
-> 3. 想要检查`docker run`为什么不能启动在命令行后面使用`;echo $?`
-> 4. 如果容器以`-it`参数运行，可以使用`ctrl+p+q` detach container
-> 5. 当docker运行的容器中没有在运行的前台程序，容器就会退出
+> 3. 想要检查`docker run`为什么不能启动在命令行后面使用`;echo $?`或是`docker logs containerID`
+> 4. 容器不能启动，有可能是之前宿主机的容器卷没有删除干净。导致宿主机挂载到容器后的文件不正确
+> 5. 如果容器以`-it`参数运行，可以使用`ctrl+p+q` detach container
+> 6. 当docker运行的容器中没有在运行的前台程序，容器就会退出
 
 ## 概述
 
@@ -218,6 +219,8 @@ $ docker run --restart=on-failure:10 redis
 root in /etc/docker λ docker run --rm --name net3 centos
 ```
 
+如果是具名挂载文件，使用`docker volume prume | rm`删除
+
 ## Volume
 
 https://docs.docker.com/engine/reference/commandline/run/#mount-volume--v---read-only
@@ -226,7 +229,7 @@ https://www.cnblogs.com/sparkdev/p/8504050.html
 
 https://www.jianshu.com/p/e605de64e9f9
 
-使用`-v`参数将==宿主机上的文件映射到容器(会覆盖容器中的文件)==，可以是目录也可以是文件。==如果是自动生成的就不会覆盖==
+使用`-v`参数将==宿主机上的文件映射到容器(会覆盖容器中的文件)==，可以是目录也可以是文件。==如果没有指定路径就会将容器中的内容拷贝到宿主机上==，容器删除后宿主机上的文件还是存在的，可以通过`docker volume`来删除
 
 如果没有指定host-src，docker自动生成相应的挂载卷(通过`root in ~ λ docker inspect t1 --format="{{json .Mounts}}"`可以查看)。默认挂载的卷(容器中)使用rw权限，可以添加后缀`:ro`或`:rw`指定权限
 
@@ -316,7 +319,7 @@ pattern：`docker run -v [host-src:]container-dest`
    docker: Error response from daemon: OCI runtime create failed: container_linux.go:367: starting container process caused: process_linux.go:495: container init caused: rootfs_linux.go:60: mounting "/etc/resolv.conf" to rootfs at "/var/lib/docker/overlay2/ddc26e2277a1184b05ba52a10d9189ec3df1aa0643ad44a65556bbda5996306c/merged/etc" caused: not a directory: unknown: Are you trying to mount a directory onto a file (or vice-versa)? Check if the specified host path exists and is the expected type.
    ```
 
-8. 本地存在文件夹挂载到容器存在文件夹，本地文件夹内容负载容器文件夹中内容
+8. 本地存在文件夹挂载到容器存在文件夹，本地文件夹内容覆盖容器文件夹中内容
 
    ```
    root in /opt/b λ docker run -itd --name n3 --rm -v /opt:/etc nginx  sh
@@ -329,6 +332,29 @@ pattern：`docker run -v [host-src:]container-dest`
    a  b  chkrootkit.tar.gz  containerd  hello-world_29.assert  hello-world_29.snap  hostname  hosts  resolv.conf  t
    
    ```
+
+9. 没有指定具体的路径，容器中的内容挂载(其实是`docker cp`)到宿主机
+
+   ```
+   root in /usr/local/etc/nginx λ docker run -itd --name n3 --rm -v /etc nginx sh
+   116467317ca23ba2e688c43d29e70515de40fe00c75fe6b299a3294b536bcad8
+   root in /usr/local/etc/nginx λ docker inspect -f='{{json .Mounts}}' n3
+   [{"Type":"volume","Name":"0329b94f185e70f02ea90ddde24afc21b80ac7d6a8ad816dfaf3043f83b0ba6f","Source":"/var/lib/docker/volumes/0329b94f185e70f02ea90ddde24afc21b80ac7d6a8ad816dfaf3043f83b0ba6f/_data","Destination":"/etc","Driver":"local","Mode":"","RW":true,"Propagation":""}]
+   
+   root in /usr/local/etc/nginx λ cd "/var/lib/docker/volumes/0329b94f185e70f02ea90ddde24afc21b80ac7d6a8ad816dfaf3043f83b0ba6f/_data"
+   
+   root in /var/lib/docker/volumes/0329b94f185e70f02ea90ddde24afc21b80ac7d6a8ad816dfaf3043f83b0ba6f/_data λ ls
+   adduser.conf            debconf.conf    gai.conf   hosts        ld.so.conf     motd           passwd     rc4.d        selinux  systemd
+   alternatives            debian_version  group      init.d       ld.so.conf.d   mtab           passwd-    rc5.d        shadow   terminfo
+   apt                     default         group-     inputrc      libaudit.conf  nginx          profile    rc6.d        shadow-  timezone
+   bash.bashrc             deluser.conf    gshadow    issue        localtime      nsswitch.conf  profile.d  rcS.d        shells   ucf.conf
+   bindresvport.blacklist  dpkg            gshadow-   issue.net    login.defs     opt            rc0.d      resolv.conf  skel     update-motd.d
+   ca-certificates         environment     gss        kernel       logrotate.d    os-release     rc1.d      rmt          ssl      xattr.conf
+   ca-certificates.conf    fonts           host.conf  ldap         machine-id     pam.conf       rc2.d      securetty    subgid
+   cron.daily              fstab           hostname   ld.so.cache  mke2fs.conf    pam.d          rc3.d      security     subuid
+   ```
+
+   
 
 ## Workdir
 
