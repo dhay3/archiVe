@@ -144,22 +144,45 @@ Defaults        env_reset
 该类别没有值
 
 - always_set_home：设置HOME环境变量
+
 - authenticate：每次调用命令前需要输入密码认证，但是可以被PASSWD和NOPASSWD覆写
+
 - compress_io：使用zlib对I/O日志压缩
+
 - env_editor：visudo使用的编译器
+
 - env_reset：sudo使用最小范围的环境变量
+
 - fast_glob：快速模式扩展
 
 - mail_always：使用sudo命令时，发送邮件
+
 - mail_badpass：使用sudo密码校验错误时，发送邮件
+
 - mail_no_host：用户在非允许的host上运行sudo，发送邮件
+
 - path_info：如果没有PATH环境变量，使用这个指定的
+
 - pwfeedback：输入密码时显示`*`，而不是空白
+
 - requiretty：sudo只能在login session被使用
+
 - rootpw：密码校验时，通过root的密码校验而不是当前用户的密码
+
 - runas_default：sudo默认调用的用户
+
 - shell_noargs：如果设置了该值，使用sudo时必须使用`-s`指定使用的shell
+
 - targetpw：如果要求输入的密码是当前的用户，可以不输入密码；如果是通过`-u`指定的用户，需要输入密码
+
+  ```
+  #在ubuntu调用sudo时需要输入root的密码而不是自己的密码
+  ubuntu  ALL=(root)  /bin/su
+  #在cowrie调用sudo时不需要输入密码, 因为ALL中包含cowrie用户
+  cowrie ALL=(ALL:ALL) ALL
+  ```
+
+  
 
 ### integers
 

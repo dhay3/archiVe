@@ -118,13 +118,29 @@ snap通过channel来区分包，可以选择edge，beta，candidate，stable等
 
   将按照格式编写的snapfile打包成snap
 
+### 版本控制
+
+- version
+
+  查看当前OS和snap的系统
+
+  ```
+  root in /etc/sudoers.d λ snap version
+  snap    2.49.2
+  snapd   2.49.2
+  series  16
+  ubuntu  18.04
+  kernel  4.15.0-118-generic
+  ```
+
 - refresh
 
-  更新snap，如果没有指定snap默认更新所有的snaps
+  根据Tacking列来更新snap，如果没有指定snap默认更新所有的snaps。
 
   ```
   root in /home/ubuntu λ snap refresh hello-world
   snap "hello-world" has no updates available
+  #可以指定channel
   ```
 
 - revert
@@ -144,11 +160,44 @@ snap通过channel来区分包，可以选择edge，beta，candidate，stable等
   hello-world removed
   ```
 
+### 快照
+
+- forget
+
+  删除一个snapshot
+
+- retore
+
+  回退snap到指定snap
+
 - save
 
   对当前状态snap保存snapshot
 
+  ```
+  root in /etc/sudoers.d λ snap save hello-world
+  Set  Snap         Age    Version  Rev  Size    Notes
+  2    hello-world  103ms  6.4      29     123B  -
+  ```
+
+- saved
+
+  展示当前存储的快照
+
+  ```
+  root in /etc/sudoers.d λ snap saved
+  Set  Snap         Age    Version  Rev  Size    Notes
+  1    hello-world  3d22h  6.4      29     125B  auto
+  ```
+
+### 运行
+
+- run
+
+  ```
+  root in /etc/sudoers.d λ snap run hello-world
+  Hello World!
+  ```
+
   
-
-
 

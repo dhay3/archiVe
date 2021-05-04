@@ -92,32 +92,36 @@ https://www.cnblogs.com/st-leslie/p/5115280.html
 
 - `nmap <HOSTID>`
 
-  返回时延和开放的端口，以及运输层的协议
+  默认nmap进行heavy probing，例如port scan，version detection，OS dectection
+  
+  <img src="..\..\..\imgs\_Dos\Snipaste_2020-08-31_11-20-44.png" style="zoom:80%;" />
+  
+- `-sL`
 
-<img src="..\..\imgs\_Dos\Snipaste_2020-08-31_11-20-44.png" style="zoom:80%;" />
+  list scan，不发送任何数据包只对域名做解析。所以也不会探测主机是否存活
+
+  ```
+  root in /home/ubuntu λ nmap -sL baidu.com
+  
+  Starting Nmap 7.60 ( https://nmap.org ) at 2021-04-28 13:43 CST
+  Nmap scan report for baidu.com (220.181.38.148)
+  Other addresses for baidu.com (not scanned): 39.156.69.79
+  Nmap done: 1 IP address (0 hosts up) scanned in 0.09 seconds
+  ```
 
 - `-sn`
 
-  该选项告诉Nmap仅仅 进行ping扫描 (主机发现)，然后打印出对扫描做出响应的那些主机。没有进一步的测试 (如端口扫描或者操作系统探测)。==Ping扫描的优点是不会返回太多的信息，只显示在线的主机，且是一种非常高效的扫描方式。==
+  no port scan，该选项告诉Nmap仅仅 进行ping扫描 (发送ICMP数据包进行主机发现)，然后打印出对扫描做出响应的那些主机。没有进一步的测试 (如端口扫描或者操作系统探测)。==Ping扫描的优点是不会返回太多的信息，只显示在线的主机，且是一种非常高效的扫描方式。==
 
-<img src="..\..\imgs\_Dos\Snipaste_2020-08-31_11-23-32.png"/>
+  <img src="..\..\..\imgs\_Dos\Snipaste_2020-08-31_11-23-32.png"/>
 
 - `-Pn`Treat all hosts as online -- skip host discovery
 
   ==只扫描常见端口，如果某些服务改变了端口将扫描不到==
-  
+
   默认情况下，Nmap只对正在运行的主机进行高强度的探测如 端口扫描，版本探测，或者操作系统探测。用`-Pn`==禁止主机发现==会使Nmap对*每一个*指定的目标IP地址 进行所要求的扫描。它可以得到些许目标网络的信息而不被特别注意到。==这可以穿透防火墙，也可以避免被防火墙发现。==
 
-<img src="..\..\imgs\_Dos\Snipaste_2020-08-31_11-33-32.png" style="zoom:80%;" />
-
-
-
-> sn和Pn的区别
->
-> sn无法扫描到被防火墙拦截下来的主机，但是速度快
->
-> Pn可以扫描到有防火墙的主机，但是速度慢
->
+  <img src="..\..\..\imgs\_Dos\Snipaste_2020-08-31_11-33-32.png" style="zoom:80%;" />
 
 - `-PS[portlist]` TCP SYN ping
 
@@ -137,7 +141,7 @@ https://www.cnblogs.com/st-leslie/p/5115280.html
 
 - `-PR`(ARP Ping)
 
-   当Nmap试图发送一个原始IP报文如ICMP回声请求时， 操作系统必须确定对应于目标IP的MAC地址(ARP)
+  当Nmap试图发送一个原始IP报文如ICMP回声请求时， 操作系统必须确定对应于目标IP的MAC地址(ARP)
 
   当进行ARP扫描时，Nmap用它优化的算法管理ARP请求。 当它收到响应时， Nmap甚至不需要担心基于IP的ping报文，==既然它已经知道该主机正在运行了。 这使得ARP扫描比基于IP的扫描更快更可靠。 所以默认情况下，如果Nmap发现目标主机就在它所在的局域网上，它会进行ARP扫描。== 即使指定了不同的ping类型(如 `-PI`或者 `-PS`) ，Nmap也会对任何相同局域网上的目标机使用ARP。
 
@@ -163,7 +167,7 @@ https://www.cnblogs.com/st-leslie/p/5115280.html
 
   对目标进行盲扫描（意味着没有报文从您的真实IP地址发送到目标，而是使用一台肉鸡）
 
-  <img src="..\..\imgs\_Dos\Snipaste_2020-08-31_13-08-09.png" style="zoom:80%;" />
+  <img src="..\..\..\imgs\_Dos\Snipaste_2020-08-31_13-08-09.png" style="zoom:80%;" />
 
 - `-b <ftp relay host>` (FTP弹跳扫描)
 
@@ -254,7 +258,7 @@ https://www.cnblogs.com/st-leslie/p/5118112.html
 
 -f选项要求扫描时(包括ping扫描)使用 小的IP包分段。其思路是将TCP头分段在几个包中，使得包过滤器、 IDS以及其它工具的检测更加困难。必须小心使用这个选项，有些系 统在处理这些小包时存在问题，例如旧的网络嗅探器Sniffit在接收 到第一个分段时会立刻出现分段错误。该选项使用一次，Nmap在IP 头后将包分成8个字节或更小。因此，一个20字节的TCP头会被分成3个 包，其中2个包分别有TCP头的8个字节，另1个包有TCP头的剩下4个字 节。当然，每个包都有一个IP头。再次使用-f可使用 16字节的分段(减少分段数量)。使用==--mtu选项可 以自定义偏移的大小，使用时不需要-f，偏移量必须 是8的倍数。==包过滤器和防火墙对所有的IP分段排队，如Linux核心中的 CONFIG-IP-ALWAYS-DEFRAG配置项，分段包不会直接使用。一些网络无法 承受这样所带来的性能冲击，会将这个配置禁止。其它禁止的原因有分段 包会通过不同的路由进入网络。一些源系统在内核中对发送的报文进行 分段，使用iptables连接跟踪模块的Linux就是一个例子。当使用类似Ethereal 的嗅探器时，扫描必须保证发送的报文要分段。如果主机操作系统会产 生问题，尝试使用--send-eth选项以避开IP层而直接 发送原始的以太网帧。
 
-<img src="..\..\imgs\_Dos\Snipaste_2020-08-31_13-35-59.png" style="zoom:80%;" />
+<img src="..\..\..\imgs\_Dos\Snipaste_2020-08-31_13-35-59.png" style="zoom:80%;" />
 
 - `-D <decoy1, decoy2, me>`使用诱饵隐藏扫描
 
@@ -262,7 +266,7 @@ https://www.cnblogs.com/st-leslie/p/5118112.html
 
   使用逗号分隔每个诱饵主机，==也可用自己的真实IP作为诱饵，这时可使用 ME选项说明。==如果在第6个位置或 更后的位置使用ME选项，一些常用 端口扫描检测器(如Solar Designer's excellent scanlogd)就不会报告 这个真实IP。如果不使用ME选项，Nmap 将真实IP放在一个随机的位置
 
-  <img src="..\..\imgs\_Dos\Snipaste_2020-08-31_13-57-18.png" style="zoom:80%;" />
+  <img src="..\..\..\imgs\_Dos\Snipaste_2020-08-31_13-57-18.png" style="zoom:80%;" />
 
   注意，作为诱饵的主机须在工作状态，否则会导致目标主机的SYN洪水攻击。 如果在网络中只有一个主机在工作，那就很容易确定哪个主机在扫描。也可 使用IP地址代替主机名(被诱骗的网络就不可能在名字服务器日志中发现)。
 
@@ -270,7 +274,7 @@ https://www.cnblogs.com/st-leslie/p/5118112.html
 
   使用过多的诱饵没有任何价值，反而导致扫描变慢并且结果不准确。 此外，一些ISP会过滤哄骗的报文，但很多对欺骗IP包没有任何限制。
 
-<img src="..\..\imgs\_Dos\Snipaste_2020-08-31_13-51-25.png"/>
+<img src="..\..\..\imgs\_Dos\Snipaste_2020-08-31_13-51-25.png"/>
 
 > 要找到开启的目标主机理论上是没有什么要求的，但是为了节约时间，我建议是直接使用某个网站的IP地址
 >
@@ -283,7 +287,7 @@ https://www.cnblogs.com/st-leslie/p/5118112.html
 
   这个标志的另一个用处是哄骗性的扫描，使得目标认为是*另 一个地址*在进行扫描。可以想象某一个竞争对手在不断扫描某个公司！ `-e`选项常在这种情况下使用，也可采用`-Pn`选项。
 
-<img src="..\..\imgs\_Dos\Snipaste_2020-08-31_14-50-21.png"/>
+<img src="..\..\..\imgs\_Dos\Snipaste_2020-08-31_14-50-21.png"/>
 
 - `-e <interface>` (使用指定的接口)
 
@@ -312,11 +316,11 @@ https://www.cnblogs.com/st-leslie/p/5118112.html
 
   要求将`标准输出`直接写入指定 的文件
 
-  <img src="..\..\imgs\_Dos\Snipaste_2020-08-31_14-29-38.png" style="zoom:80%;" />
+  <img src="..\..\..\imgs\_Dos\Snipaste_2020-08-31_14-29-38.png" style="zoom:80%;" />
 
   使用`--apend-output`追加输出内容到指定文件,默认覆盖原文件
 
-<img src="..\..\imgs\_Dos\Snipaste_2020-08-31_14-36-02.png"/>
+<img src="..\..\..\imgs\_Dos\Snipaste_2020-08-31_14-36-02.png"/>
 
   > 也可以使用 > 或>>写入
 
@@ -332,7 +336,7 @@ https://www.cnblogs.com/st-leslie/p/5118112.html
 
   输出Nmap检测到的接口列表和系统路由, ==后面带有网关的是当前使用的网卡==
 
-  <img src="..\..\imgs\_Dos\Snipaste_2020-08-31_14-46-34.png" style="zoom:80%;" />
+  <img src="..\..\..\imgs\_Dos\Snipaste_2020-08-31_14-46-34.png" style="zoom:80%;" />
 
 - `-v` (提高输出信息的详细度)
 
@@ -348,8 +352,8 @@ https://www.cnblogs.com/st-leslie/p/5118112.html
 
 `Nmap`脚本引擎（`NSE`）是`Nmap`最强大和最灵活的特性之一，它可以将`Nmap`转为漏洞扫描器使用。`NSE`有超过600个脚本，分为好几类，有非侵入式的，也有侵入式的，比如暴力破解，漏洞利用和拒绝服务攻击。你可以在`Kali`的`/usr/share/nmap/scripts`目录中找到这些脚本。或者用`locate`搜索`*.nse`也可以找到。
 
-<img src="..\..\imgs\_Kali\metasploit\Snipaste_2020-09-08_20-55-24.png"/>
+<img src="..\..\..\imgs\_Kali\metasploit\Snipaste_2020-09-08_20-55-24.png"/>
 
 用法如下：`nmap --script<scriptname><host ip>`
 
-<img src="..\..\imgs\_Kali\metasploit\Snipaste_2020-09-08_21-00-02.png"/>
+<img src="..\..\..\imgs\_Kali\metasploit\Snipaste_2020-09-08_21-00-02.png"/>

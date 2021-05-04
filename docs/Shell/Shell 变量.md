@@ -283,15 +283,21 @@ Bash 提供一些特殊变量。这些变量的值由 Shell 提供，用户不�
 
 2. `$$`
 
-   `$$`为当前 Shell 的PID。==如果在子shell中扩展为父shell的PID==
+   `$$`为当前 Shell 的PID。==如果在（）中扩展为父shell的PID==，在shell脚本中获取的是脚本创建shell的pid
 
    ```
-   $ echo $$
-   10662
+   root in /usr/local/etc λ echo $$
+   8713
+   root in /usr/local/etc λ (echo $$)
+   8713
+   root in /usr/local/etc λ cat a.sh
+   echo $$
+   root in /usr/local/etc λ ./a.sh
+   23507
    ```
-
+   
    这个特殊变量可以用来命名临时文件。
-
+   
    ```
    LOGFILE=/tmp/output_log.$$
    ```

@@ -1,53 +1,112 @@
-# go 环境变量
+# Go 环境变量
 
-go中所有的环境变量可以使用`go env`来获取
+https://golang.org/cmd/go/#hdr-Environment_variables
 
-- GOOROOT
+- GO111MODULE
 
-  该变量的值是Go的当前安装目录
+  是否使用[module-aware mode](https://golang.org/ref/mod#mod-commands)来管理go的包。如果使用module-aware mode，go command通过go.mod文件去使用依赖。如果使用GOPATH mode，go command通过`%GOPATH%`去使用依赖。可选off，on，auto
 
-  ```
-  root in /usr/local/go_code/src λ go env | grep GOROOT
-  GOROOT="/usr/local/src/go"
-  ```
+- GOARCH
 
-- GOPATH
-
-  该变量的值为Go的工作集合(意味这可以有很多个，和`${PATH}`相似用`:`隔开)。
-
-  一般会有三个目录，src，pkg，bin
-
-  ```
-  /home/halfrost/gorepo
-  ├── bin
-  ├── pkg
-  └── src
-  ```
-
-  1. pkg用来存储通过`go install` 安装后的代码包归档文件，以`.a`结尾
-
-  2. bin用来保存编译后可执行的二进制文件
-
-  3. src用来保存Go源码文件
-
-     源码文件有分为三种
-
-     - 命令源文件
-
-       Go程序的入口，main函数所在的文件
-
-     - 库源码文件
-
-       无法被主动执行的文件，被用作库被调用
-
-     - 测试源码文件
-
-       `_test.go`为后缀的代码文件，函数名为TestXxx
-
-- GOOS和GOARCH
-
-  操作系统和架构，包中默认值。
+  编译代码的架构可选amd64，386，arm，ppc64
 
 - GOBIN
 
-  `go install`安装后存储可执行二进制文件的路径
+  `go install`安装的目录
+
+- GOCACHE
+
+  go command存储缓存信息的目录
+
+- GOENV
+
+  Go 环境变量配置文件存储的位置
+
+- GOOS
+
+  编译代码的平台，可以事linux，darwin，windows
+
+- GOPATH
+
+  GOPATH用来解析import。如果没有设置GOPATH环境变量，默认使用`~/go`。GOPATH下要包含如下三个文件
+
+  1. src：src存储源码，例如GOPATH为DIR，在DIR/src/foo/bar有源文件，那么import的将是foo/bar。==所以在src下的源文件是不能被import的==
+  2. pkg：`go install`安装的存档文件
+  3. bin：编译后可执行的二进制文件。例如GOPATH为DIR，在DIR/src/foo/bar有源文件，那么编译后是DIR/bin/bar，而不是DIR/bin/foo/bar。默认编译在GOBIN，如果设置了GOBIN需要使用绝对路径
+
+  ```
+   GOPATH=/home/user/go
+  
+      /home/user/go/
+          src/
+              foo/
+                  bar/               (go code in package bar)
+                      x.go
+                  quux/              (go code in package main)
+                      y.go
+          bin/
+              quux                   (installed command)
+          pkg/
+              linux_amd64/
+                  foo/
+                      bar.a          (installed package object)
+  ```
+
+  Go会从所有的GOPATH中找源码，==但是只会将下载的内容放在GOPATH中第一个目录中==
+
+  **moudel-aware mode VS GOPATH**
+
+  如果使用modules，GOPATH不再被用来解析imports。==但是还是被用来下载源码和编译。==
+
+  **Internal**
+
+  如果一个包名为internal，这个包中的内容只能在internal父级的包中使用(不包括父级的父级和同级)
+
+  ```
+      /home/user/go/
+          src/
+              crash/
+                  bang/              (go code in package bang)
+                      b.go
+              foo/                   (go code in package foo)
+                  f.go
+                  bar/               (go code in package bar)
+                      x.go
+                  internal/
+                      baz/           (go code in package baz)
+                          z.go
+                  quux/              (go code in package main)
+                      y.go
+  ```
+
+  例如这里的`bar/z`只能在foo的这级包中使用
+
+- GOPROXY
+
+  配置代理参考：https://goproxy.io/zh/docs/getting-started.html
+
+  module proxy(==只有在module mode下才会被使用==)，如果有多个proxy urls通过commas或pipeline隔开。
+
+  ```
+  GOPROXY=https://proxy.golang.org,direct
+  
+  off: disallows downloading modules from any source.
+  direct: download directly from version control repositories instead of using a module proxy.
+  ```
+
+- GOROOT
+
+  go的根目录(安装目录)
+
+
+
+
+
+
+
+
+
+
+
+
+

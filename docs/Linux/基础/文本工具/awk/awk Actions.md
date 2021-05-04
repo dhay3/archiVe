@@ -49,6 +49,15 @@ awk Actions 遵循如下几条规则
   
   ```
 
+- 如果没有定义Action，执行`print $0`
+
+  ```
+  root in /usr/local/etc λ awk /This/ /etc/resolv.conf
+  # This file is managed by man:systemd-resolved(8). Do not edit.
+  # This is a dynamic resolv.conf file for connecting local clients to the
+  # internal DNS stub resolver of systemd-resolved. This file lists all
+  ```
+
 ## 例子
 
 https://blog.51cto.com/lizhenliang/1764025
@@ -86,3 +95,12 @@ tmpfs
 iso9660
 ```
 
+**对不同的pattern操作**
+
+```
+root in /usr/local/etc λ awk '/This/{print $3}/Run/{print $2}' /etc/resolv.conf
+file
+is
+DNS
+Run
+```

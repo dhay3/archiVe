@@ -22,6 +22,9 @@ https://tldp.org/LDP/abs/html/sha-bang.html
 ## note
 
 - Shebang只能在第一行才能被解释
+
+- 默认用sh作为解释器
+
 - To avoid this possibility, a script may begin with a `#!/bin/env bash` *sha-bang* line. This may be useful on UNIX machines where *bash* is not located in `/bin`
 
 - 不同的shell有不同的语法和特性，例如zsh的rehash但是bash没有。所以如果想要以特定的shell执行脚本就需要指定shebang
@@ -65,7 +68,7 @@ https://tldp.org/LDP/abs/html/sha-bang.html
   tmpfs          tmpfs     395M     0  395M   0% /run/user/0
   ```
 
-  ==但都会开一个sub shell 去执行脚本==，[check the means of  bash $$](https://www.gnu.org/software/bash/manual/bash.html)
+  ==但都会开一个sub shell 去执行脚本==，[check the means of  bash $$](https://www.gnu.org/software/bash/manual/bash.html)，可以通过`ps -p <pid>`来查看你是否是父shell
 
   ```
   root in /usr/local/\ λ cat shebang.sh
@@ -76,6 +79,22 @@ https://tldp.org/LDP/abs/html/sha-bang.html
   pid=9166
   root in /usr/local/\ λ sh shebang.sh
   pid=9169
+  ```
+
+  `source`是不会创建sub shell的，所以可以获取到没有`export`的变量
+
+  ```
+  root in /usr/local/etc λ a=10
+  root in /usr/local/etc λ echo $$
+  8713
+  root in /usr/local/etc λ cat a.sh
+  echo $$
+  echo $a
+  root in /usr/local/etc λ source a.sh
+  8713
+  10
+  root in /usr/local/etc λ ./a.sh
+  22948
   ```
 
 - starting a `README` file with a `#!/bin/more`, and making it executable. The result is a self-listing documentation file
@@ -95,6 +114,17 @@ https://tldp.org/LDP/abs/html/sha-bang.html
   tmpfs          tmpfs     5.0M     0  5.0M   0% /run/lock
   tmpfs          tmpfs     2.0G     0  2.0G   0% /sys/fs/cgroup
   tmpfs          tmpfs     395M     0  395M   0% /run/user/0
+  ```
+
+  ==如果pattern和action必须在一行==
+
+  ```
+  #这里输出匹配到$0
+  /This/
+  #这里输出所有
+  {
+          print $0
+  }
   ```
 
 - 结合makefile，等价make file1
