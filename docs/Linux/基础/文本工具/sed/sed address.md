@@ -89,6 +89,8 @@ root in /opt/4 λ docker container ls -a | grep -v cowrie | sed -n '2,$p' | awk 
 
 ## regex
 
+> 如果包含特殊字符需要转义
+
 ```
 [root@k8snode01 opt]# sed -n '/bash$/P' /etc/passwd
 root:x:0:0:root:/root:/bin/bash

@@ -44,7 +44,7 @@ find命令直接搜索硬盘速度较慢，如果没有指定starting-point默�
 
 - `-regex pattern`
 
-  使用正则表达式来匹配文件，如果使用了regex，默认使用EMac regex，如果想要使用posix regex需要使用`-regextyep`指定
+  使用正则表达式来匹配文件，如果使用了regex，默认使用EMac regex，如果想要使用posix regex(basic regex)需要使用`-regextyep`指定
 
   ```
   root in /opt λ find . -regextype posix-egrep  -regex "\./[[:digit:]]{4}-[[:digit:]]{2}.log"

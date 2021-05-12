@@ -44,7 +44,7 @@ Handshake phase(握手阶段)
 
 握手阶段一共需要发送13个数据包，*代表不是必须
 
-![](D:\asset\note\imgs\_Net\计算机网络\Snipaste_2021-02-24_10-48-29.png)
+![](..\..\imgs\_Net\计算机网络\Snipaste_2021-02-24_10-48-29.png)
 
 ![](D:\asset\note\imgs\_Net\计算机网络\Snipaste_2021-02-24_10-40-39.png)
 

@@ -1,5 +1,7 @@
 # awk options
 
+> awk 默认使用extended regular，即 egrep使用的regex
+
 - -f
 
   指定awk脚本从文件中来，而不是命令行。

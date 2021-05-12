@@ -8,7 +8,11 @@
 root in /var/spool λ id zs
 uid=1001(zs) gid=1001(zs) groups=1001(zs)
 root in /var/spool λ id -Z zs #查看SELinux 规则
-id: --context (-Z) works only on an SELinux-enabled kernel         
+id: --context (-Z) works only on an SELinux-enabled kernel   
+#查看用户的uid和gid
+cpl in ~ λ id -g;id -u
+1000
+1000
 ```
 
 ## 查看所有用户名
