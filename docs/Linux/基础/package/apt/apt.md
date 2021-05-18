@@ -23,7 +23,7 @@ syntax: `apt-get [options] command`
 
 - -f  | --fix-broken
 
-  当安装时出现缺少依赖时，使用该参数可以自动下载依赖
+  ==当安装时出现缺少依赖时，使用该参数可以自动下载依赖==
 
   ```
   apt-get -f install

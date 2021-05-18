@@ -44,21 +44,21 @@ Handshake phase(握手阶段)
 
 握手阶段一共需要发送13个数据包，*代表不是必须
 
-![](D:\asset\note\imgs\_Net\计算机网络\Snipaste_2021-02-24_10-48-29.png)
+![](..\..\imgs\_Net\计算机网络\Snipaste_2021-02-24_10-48-29.png)
 
-![](D:\asset\note\imgs\_Net\计算机网络\Snipaste_2021-02-24_10-40-39.png)
+![](..\..\imgs\_Net\计算机网络\Snipaste_2021-02-24_10-40-39.png)
 
 1. ClientHello
 
    客户端发包。包含SSL版本，用于认证的随机数(Random1)，数据压缩算法，加密套件(cipher 客户端支持的加密算法)，Session id等。类似于TCP SYN
 
-   ![](D:\asset\note\imgs\_Net\计算机网络\Snipaste_2021-02-24_10-59-54.png)
+   ![](..\..\imgs\_Net\计算机网络\Snipaste_2021-02-24_10-59-54.png)
 
 2. ServerHello
 
    服务端收到ClientHello必须发送ServerHello。服务器会检查指定诸如TLS版本和算法的客户端问候的条件，如果服务器接受并支持所有条件，它将发送其证书以及其他详细信息，否则，服务器将发送握手失败消息。
 
-   ![](D:\asset\note\imgs\_Net\计算机网络\Snipaste_2021-02-24_11-07-51.png)
+   ![](..\..\imgs\_Net\计算机网络\Snipaste_2021-02-24_11-07-51.png)
 
    如果接收服务端会选择ClientHello中的一个cipher做为plian text的加密算法，同时生成一个随机数(Random2)。Random1和Random2最后会影响生成的密钥
 
@@ -66,13 +66,13 @@ Handshake phase(握手阶段)
 
    服务端发送验证证书（证书中包含验证申请证书时的公钥）
 
-   ![](D:\asset\note\imgs\_Net\计算机网络\Snipaste_2021-02-24_11-20-48.png)
+   ![](..\..\imgs\_Net\计算机网络\Snipaste_2021-02-24_11-20-48.png)
 
 4. Server key Exchange
 
    决定服务端和客户端密钥交换的算法(比如DH)
 
-   ![](D:\asset\note\imgs\_Net\计算机网络\Snipaste_2021-02-24_11-23-49.png)
+   ![](..\..\imgs\_Net\计算机网络\Snipaste_2021-02-24_11-23-49.png)
 
    这里使用Diffie-Hellman算法交换密钥，算法如下
 
@@ -93,17 +93,17 @@ Handshake phase(握手阶段)
 
 6. Client Key exchange
 
-   根据从服务端收到的随机数，按照不同的密钥交换算法。按照不同的密钥交换算法，算出一个pre-master，发送给服务器，服务器端收到pre-master算出main master。而客户端当然也能自己通过pre-master算出main master。如此以来双方就算出了对称密钥。
+   根据从服务端收到的随机数，按照不同的密钥交换算法。按照不同的密钥交换算法，算出一个pre-master，发送给服务器，服务器端收到pre-master算出main master。而客户端当然也能自己通过pre-master算出main master。如此以来双方就算出了对称密钥。这里使用了DH算法
+
+   ![](..\..\imgs\_Net\计算机网络\Snipaste_2021-02-24_19-15-26.png)
 
    如果是RSA算法，会生成一个48字节的随机数，然后用server的公钥加密后再放入报文中。如果是DH算法，这是发送的就是客户端的DH参数，之后服务器和客户端根据DH算法，各自计算出相同的pre-master secret.
-
-   ![](D:\asset\note\imgs\_Net\计算机网络\Snipaste_2021-02-24_19-15-26.png)
 
 7. Change Cipher Spec 
 
    表示随后的信息都将用双方商定的加密方法和密钥发送（ChangeCipherSpec是一个独立的协议，体现在数据包中就是一个字节的数据，用于告知服务端，客户端已经切换到之前协商好的加密套件（Cipher Suite）的状态，准备使用之前协商好的加密套件加密数据并传输了）。
 
-   ![](D:\asset\note\imgs\_Net\计算机网络\Snipaste_2021-02-24_19-19-09.png)
+   ![](..\..\imgs\_Net\计算机网络\Snipaste_2021-02-24_19-19-09.png)
 
 8. Encrypted Handshake Message
 
@@ -113,7 +113,7 @@ Handshake phase(握手阶段)
 
    高数客户端，服务端已经切换到之前协商好的加密套件（Cipher Suite）的状态，准备使用之前协商好的加密套件加密数据并传输了
 
-   ![](D:\asset\note\imgs\_Net\计算机网络\Snipaste_2021-02-24_19-22-56.png)
+   ![](..\..\imgs\_Net\计算机网络\Snipaste_2021-02-24_19-22-56.png)
 
 10. Encrypted Handshake Message
 
@@ -121,8 +121,9 @@ Handshake phase(握手阶段)
 
 11. Application Data 
 
-    客户端传输加密数据包		![](D:\asset\note\imgs\_Net\计算机网络\Snipaste_2021-02-24_19-24-41.png)
+    客户端传输加密数据包		![](..\..\imgs\_Net\计算机网络\Snipaste_2021-02-24_19-24-41.png)
 
 12. Application Data
 
     服务端传输加密数据包
+

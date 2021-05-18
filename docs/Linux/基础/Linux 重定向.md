@@ -225,5 +225,24 @@ ssl
 t
 ```
 
+## sudo与重定向
+
+当用户没有权限但是想通过重定向的方式向文件中写入，就会出现permission deny，例如：
+
+```
+sudo curl -fsSL a.b.c > file
+zsh: permission denied: file
+```
+
+虽然curl是以root来执行的，但是重定向并没有以root方式来执行。可以通过一下几种方式来解决
+
+- ```
+  sudo curl -fsSL a.b.c | sudo tee file
+  ```
+
+- ```
+  sudo bash -c "curl -fsSL a.b.c > file"
+  ```
+
 
 

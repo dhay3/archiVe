@@ -102,7 +102,7 @@ Value: /bin/nc.traditional
 
 - `-u`
 
-  使用udp协议，默认使用tcp
+  ==使用udp协议，默认使用tcp==
 
 - `-w`
 

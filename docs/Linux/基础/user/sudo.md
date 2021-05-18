@@ -1,6 +1,6 @@
 # sudo
 
-`sudo`允许用户以superuser或another user 来执行命令。sudo默认的安全策略是sudoers，通过`/etc/sudoers`或通过LDAP来配置。==sudo默认只会打开stdin，stdout，stderr三个流。==
+`sudo`允许用户以superuser或another user 来执行命令。sudo默认的安全策略是sudoers，通过`/etc/sudoers`或通过LDAP来配置。==sudo默认只会打开stdin，stdout，stderr三个流。且管道符前后命令不共享sudo==
 
 sudoers policy默认会在15mins内缓冲认证(15mins内再次调用sudo无需输入用户密码)，可以使用`-v`来直接更新缓存。
 

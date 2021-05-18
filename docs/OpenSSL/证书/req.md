@@ -54,6 +54,10 @@ https://www.trustasia.com/doc/how-to-generate-csr-file-by-using-openssl
 
   校验签名
 
+- -nodes
+
+  如果指定该参数，==私钥生成时不会加密(prompt for a password)==
+
 ## 例子
 
 生成证书请求
