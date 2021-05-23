@@ -20,6 +20,7 @@ set用于设定shell该怎么执。
 ```
 [root@cyberpelican \]# sh sc.sh 
 
+[root@cyberpelican \]# set -a
 [root@cyberpelican \]# a=20
 [root@cyberpelican \]# sh sc.sh 
 20

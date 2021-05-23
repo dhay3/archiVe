@@ -1,6 +1,11 @@
 # sudo
 
-`sudo`允许用户以superuser或another user 来执行命令。sudo默认的安全策略是sudoers，通过`/etc/sudoers`或通过LDAP来配置。==sudo默认只会打开stdin，stdout，stderr三个流。且管道符前后命令不共享sudo==
+`sudo`允许用户以superuser或another user 来执行命令。sudo默认的安全策略是sudoers，通过`/etc/sudoers`或通过LDAP来配置。==sudo默认只会打开stdin，stdout，stderr三个流。且管道符前后命令不共享sudo，subshell也不同享sudo。==如下两个命令都是错误的
+
+```
+sudo cat file1 > /root/file2
+sudo docker rm -f $(docker ps -qa)
+```
 
 sudoers policy默认会在15mins内缓冲认证(15mins内再次调用sudo无需输入用户密码)，可以使用`-v`来直接更新缓存。
 

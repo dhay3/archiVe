@@ -413,6 +413,14 @@ root in ~ λ docker run -e "deep=purple" --name t3 --rm -it centos
 purple
 ```
 
+如果没有指定值，默认将当前环境中变量对应的值传入
+
+```
+cpl in / λ sudo docker run -e SHELL --rm --name b1 -it busybox
+/ # echo $SHELL
+/usr/bin/zsh
+```
+
 ## HealthCheck
 
 - `--health-cmd`

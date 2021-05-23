@@ -31,7 +31,7 @@ GUI是我们画网络拓扑图结构的客户端工具，需要由一个服务�
 
 > 出现[No module named 'apt_pkg' error](https://askubuntu.com/questions/1069087/modulenotfounderror-no-module-named-apt-pkg-error) 
 
-这里我采用[remote GNS3 VM](https://docs.gns3.com/docs/getting-started/installation/remote-server/)方式
+这里我采用[remote GNS3 VM](https://docs.gns3.com/docs/getting-started/installation/remote-server/)方式，==这种方式project会存储在remote server opt目录以uuid为文件名==
 
 执行如下方法，会在remote server上安装并运行openVPN，作为服务端
 

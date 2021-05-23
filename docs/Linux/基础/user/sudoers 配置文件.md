@@ -87,7 +87,7 @@ https://www.huaweicloud.com/articles/31f8e1c3207c105437293e7bdb72249a.html
 user specification 表示指定用户可以在指定Host上可以通过sudo运行什么命令，由如下结构组成。如果没有`(as_whom:as_whichgroup)`默认root
 
 ```
-who where = (as_whom:as_whichgroup) what_cmd
+who which_host = (as_whom:as_whichgroup) what_cmd
 ```
 
 例如：
@@ -120,13 +120,13 @@ tz@win2k:/home/ubuntu$ sudo ls
 
 用于为command设置标签
 
-- NOPASSWD and PASSWD
+- ==NOPASSWD and PASSWD==
 
   ```
   ray     rushmore = NOPASSWD: /bin/kill, PASSWD: /bin/ls, /usr/bin/lprm
   ```
 
-  ray在rushmore上调用`kill`不需要密码，但是`ls`和`lprm`需要
+  ray在rushmore上调用`sudo kill`不需要密码，但是`ls`和`lprm`需要
 
 具体查看`tag_spec`部分
 
@@ -218,6 +218,7 @@ Defaults        passwd_timeout=5
 Defaults        editor=/usr/bin/vim.basic
 
 root    ALL=(ALL:ALL) ALL
+#tz使用命令时无需密码
 tz ALL=(ALL:ALL) NOPASSWD: ALL
 cowrie ALL=(ALL:ALL) ALL
 ubuntu  ALL=(:root) NOPASSWD: /bin/su
