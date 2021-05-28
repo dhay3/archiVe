@@ -283,7 +283,7 @@ Bash 提供一些特殊变量。这些变量的值由 Shell 提供，用户不�
 
 2. `$$`
 
-   `$$`为当前 Shell 的PID。==如果在（）中扩展为父shell的PID==，在shell脚本中获取的是脚本创建shell的pid
+   `$$`为当前 Shell 的PID。同理在subshell(shell script和`()`)中获取的是脚本创建shell的pid
 
    ```
    root in /usr/local/etc λ echo $$
@@ -291,9 +291,12 @@ Bash 提供一些特殊变量。这些变量的值由 Shell 提供，用户不�
    root in /usr/local/etc λ (echo $$)
    8713
    root in /usr/local/etc λ cat a.sh
-   echo $$
+   echo PID=$$;ps -ef | grep $$
    root in /usr/local/etc λ ./a.sh
-   23507
+   PID=15655
+   cpl        15655    3580  0 22:14 pts/0    00:00:00 bash a.sh
+   cpl        15656   15655  0 22:14 pts/0    00:00:00 ps -ef
+   cpl        15657   15655  0 22:14 pts/0    00:00:00 grep 15655
    ```
    
    这个特殊变量可以用来命名临时文件。

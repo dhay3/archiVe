@@ -220,5 +220,21 @@ network:
         metric: 100
 ```
 
+桥接配置
 
+```
+# Let NetworkManager manage all devices on this system
+network:
+  version: 2
+  renderer: NetworkManager
+  bridges:
+    br0:
+      addresses: [192.168.80.100/24]
+      gateway4: 192.168.80.1
+      mtu: 1500
+      nameservers:
+        addresses: [8.8.8.8]
+      dhcp4: no
+      dhcp6: no
+```
 

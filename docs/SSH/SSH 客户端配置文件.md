@@ -96,6 +96,10 @@ option = value
 
   显示公钥指纹时使用的算法，默认sha256
 
+- ForwardX11
+
+  允许X11
+
 - GlobalKnownHostsFile
 
   指定存储服务器公钥指纹的位置

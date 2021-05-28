@@ -143,6 +143,8 @@ done
 
 ### example5/遍历文件
 
+**方法一**
+
 ```
 path=$1
 files=$(ls $path)
@@ -152,12 +154,27 @@ do
 done
 ```
 
-==被遍历的变量不能用双引号==
+==被遍历的变量不能用双引号，否则被当成字符处理==
 
 ```
         for file in ${files}; do
             rm -f "${file}"
         done
+```
+
+**方法二**
+
+使用模式扩展
+
+```
+cpl in /tmp/t λ ls
+ 1   2   3   4   5
+cpl in /tmp/t λ for file in *;do echo $file;done
+1
+2
+3
+4
+5
 ```
 
 ## break/continue

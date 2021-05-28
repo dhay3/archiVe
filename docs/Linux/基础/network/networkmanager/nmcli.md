@@ -1,6 +1,6 @@
 # nmcli
 
-参卡：
+参考：
 
 https://wiki.archlinux.org/index.php/NetworkManager_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)
 
@@ -8,13 +8,33 @@ nmcli用于管理NetworkManager，同时也可以展示网络情况。
 
 syntax：`nmcli [options] [command]`
 
-## general command
+## options
+
+- `-f {field1,field2... | common | all}`
+
+  显示指定的列，如果忽略使用common
+
+  ```bash
+  cpl in ~ λ nmcli -f wifi general status
+  WIFI    
+  enabled
+  ```
+
+  默认使用common
+
+- -p | --pretty
+
+  格式化输出
+
+## command
+
+### general command
 
 - status
 
   如果没有command。默认使用status
 
-  ```
+  ```bash
   root in ~ λ nmcli general staus
   eth0: connected to Ifupdown (eth0)
           "Intel 82545EM"
@@ -34,7 +54,7 @@ syntax：`nmcli [options] [command]`
 
 - permissions
 
-  ```
+  ```bash
   root in ~ λ nmcli general permissions 
   PERMISSION                                                        VALUE 
   org.freedesktop.NetworkManager.checkpoint-rollback                yes   
@@ -43,7 +63,7 @@ syntax：`nmcli [options] [command]`
   org.freedesktop.NetworkManager.enable-disable-statistics          yes 
   ```
 
-## networking command
+### networking command
 
 - ==on | off==
 
@@ -74,7 +94,7 @@ syntax：`nmcli [options] [command]`
          valid_lft forever preferred_lft forever
   ```
 
-## radio command
+### radio command
 
 - wifi [on | off]
 
@@ -88,7 +108,7 @@ syntax：`nmcli [options] [command]`
   disabled
   ```
 
-## connect command
+### connect command
 
 - show
 
@@ -115,8 +135,29 @@ syntax：`nmcli [options] [command]`
   Ifupdown (eth0)     681b428f-beaf-8932-dce4-687ed5bae28e  ethernet  --     
   Wired connection 1  c3babedb-da1c-34a4-97ac-3efaa19c6e18  ethernet  --   
   ```
+  
+- add
 
-## ==device command==
+  添加一个iface，至少需要`connection.type`。具体使用查看`nm-settings`
+
+  ```bash
+  #nmcli connection add [property value...]
+  cpl in ~ λ nmcli connection add type bridge ifname br0
+  Connection 'bridge-br0' (e80f97c3-5417-4d63-be59-97693d8d354f) successfully added.
+  ```
+
+  ifname表示创建iface的name
+
+- delete
+
+  删除指定链接
+
+  ```bash
+  cpl in ~ λ nmcli connection delete bridge-br0 
+  Connection 'bridge-br0' (e80f97c3-5417-4d63-be59-97693d8d354f) successfully deleted.
+  ```
+
+### ==device command==
 
 - status
 
@@ -164,9 +205,17 @@ syntax：`nmcli [options] [command]`
 
   连接指定iface
 
-- wifi
+- disconnect
 
-- 
+  断开指定的iface
+
+- wifi list
+
+  显示所有可用的wifi，`*`表示当前连接的网络
+
+
+
+
 
 
 

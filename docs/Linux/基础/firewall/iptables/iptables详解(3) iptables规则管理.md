@@ -28,13 +28,13 @@ http://www.zsythink.net/archives/1517
 
 使用如下命令查看filter表INPUT链的规则，下图中的规则为centos6默认添加的规则。
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_09-29-44.png"/>
+![Snipaste_2020-10-14_09-29-44](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_09-29-44.1atwzyymj3k0.png)
 
 注意：在参照本文进行iptables实验时，请务必在个人的测试机上进行。
 
 为了准备一个从零开始的环境，我们将centos6默认提供的规则清空，以便我们进行实验，使用iptables -F INPUT命令清空filter表INPUT链中的规则，后面我们会单独对清除规则的相关命令进行总结，此处不用纠结此命令。
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_09-30-23.png"/>
+![Snipaste_2020-10-14_09-30-23](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_09-30-23.1r3z2thho5j4.png)
 
 清空INPUT链以后，filter表中的INPUT链已经不存在任何的规则，但是可以看出，INPUT链的默认策略是ACCEPT，也就是说，INPUT链默认"放行"所有发往本机的报文，当没有任何规则时，会接受所有报文，当报文没有被任何规则匹配到时，也会默认放行报文。
 
@@ -42,7 +42,7 @@ http://www.zsythink.net/archives/1517
 
 那么此刻，我们就在另外一台机器上，使用ping命令，向当前机器发送报文，如下图所示，ping命令可以得到回应，证明ping命令发送的报文已经正常的发送到了防火墙所在的主机，ping命令所在机器IP地址为146，当前测试防火墙主机的IP地址为156，我们就用这样的环境，对iptables进行操作演示。
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_09-30-45.png"/>
+![Snipaste_2020-10-14_09-30-45](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_09-30-45.2cywcqmsf47w.png)
 
 ## 增加规则
 
@@ -50,7 +50,7 @@ http://www.zsythink.net/archives/1517
 
 那么此处，我们就在156上配置一条规则，拒绝192.168.1.146上的所有报文访问当前机器，之前一直在说，规则由匹配条件与动作组成，那么"拒绝192.168.1.146上的所有报文访问当前机器"这条规则中，报文的"源地址为192.168.1.146"则属于匹配条件，如果报文来自"192.168.1.146"，则表示满足匹配条件，而"拒绝"这个报文，就属于对应的动作，好了，那么怎样用命令去定义这条规则呢？使用如下命令即可
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_09-31-57.png"/>
+![Snipaste_2020-10-14_09-31-57](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_09-31-57.3m3cvsbv1tm0.png)
 
 上图中，使用 -t选项指定了要操作的表，此处指定了操作filter表，与之前的查看命令一样，不使用-t选项指定表时，默认为操作filter表。
 
@@ -66,7 +66,7 @@ http://www.zsythink.net/archives/1517
 
 那么此时，我们再通过192.168.1.146去ping主机156，看看能否ping通。
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_09-32-30.png"/>
+![Snipaste_2020-10-14_09-32-30](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_09-32-30.75w6q8yrd3s0.png)
 
 如上图所示，ping 156主机时，PING命令一直没有得到回应，看来我们的iptables规则已经生效了，ping发送的报文压根没有被156主机接受，而是被丢弃了，所以更不要说什么回应了，好了，我们已经成功的配置了一条iptables规则，看来，我们已经入门了。
 
@@ -74,7 +74,7 @@ http://www.zsythink.net/archives/1517
 
 还记得我们在前文中说过的"计数器"吗？此时，我们再次查看iptables中的规则，可以看到，已经有24个包被对应的规则匹配到，总计大小2016bytes。
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_09-33-12.png"/>
+![Snipaste_2020-10-14_09-33-12](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_09-33-12.2040p6rqng68.png)
 
 上图中的命令并没有使用-t选项指定filter表，我们一直在说，不使用-t选项指定表时表示默认操作filter表。
 
@@ -84,7 +84,7 @@ http://www.zsythink.net/archives/1517
 
 执行完添加规则的命令后，再次查看INPUT链，发现规则已经成功"追加"至INPUT链的末尾，那么现在，第一条规则指明了丢弃所有来自192.168.1.146的报文，第二条规则指明了接受所有来自192.168.1.146的报文，那么结果到底是怎样的呢？实践出真知，在146主机上再次使用ping命令向156主机发送报文，发现仍然是ping不通的，看来第二条规则并没有生效。
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_09-34-44.png"/>
+![Snipaste_2020-10-14_09-34-44](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_09-34-44.5hvlaala2lo0.png)
 
 而且从上图中第二条规则的计数器可以看到，根本没有任何报文被第二条规则匹配到。
 
@@ -92,15 +92,15 @@ http://www.zsythink.net/archives/1517
 
 在添加这条规则之前，我们先把146上的ping命令强制停止了，然后使用如下命令，在filter表的INPUT链的前端添加新规则。
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_09-35-46.png"/>
+![Snipaste_2020-10-14_09-35-46](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_09-35-46.33p6qwtulgc0.png)
 
 好了，现在第一条规则就是接受所有来自192.168.1.146的报文，而且此时计数是0，此刻，我们再从146上向156发起ping请求。
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_09-36-12.png"/>
+![Snipaste_2020-10-14_09-36-12](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_09-36-12.2ambgb3znbbw.png)
 
 146上已经可以正常的收到响应报文了，那么回到156查看INPUT链的规则，第一条规则的计数器已经显示出了匹配到的报文数量。
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_09-36-25.png"/>
+![Snipaste_2020-10-14_09-36-25](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_09-36-25.4z3tzbuc5tg0.png)
 
 看来，规则的顺序很重要。
 
@@ -110,11 +110,11 @@ http://www.zsythink.net/archives/1517
 
 之前在总结查看命令时提到过，使用--line-number选项可以列出规则的序号，如下图所示
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_09-37-08.png"/>
+![Snipaste_2020-10-14_09-37-08](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_09-37-08.3h492douxle0.png)
 
 我们也可以在添加规则时，指定新增规则的编号，这样我们就能在任意位置插入规则了，我们只要把刚才的命令稍作修改即可，如下。
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_09-38-05.png"/>
+![Snipaste_2020-10-14_09-38-05](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_09-38-05.5frg2rdjb90.png)
 
 ==仍然使用-I选项进行插入规则操作，-I INPUT 2表示在INPUT链中新增规则，新增的规则的编号为2，好了，自己动手试试吧。==
 
@@ -132,11 +132,11 @@ http://www.zsythink.net/archives/1517
 
 那么我们先看看方法一，先查看一下filter表中INPUT链中的规则
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_09-50-19.png"/>
+![Snipaste_2020-10-14_09-50-19](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_09-50-19.4l11e09k6i20.png)
 
 假如我们想要删除上图中的第3条规则，则可以使用如下命令。
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_09-50-49.png"/>
+![Snipaste_2020-10-14_09-50-49](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_09-50-49.4g7cj44zhey0.png)
 
 上例中，使用了-t选项指定了要操作的表（没错，省略-t默认表示操作filter表），使用-D选项表示删除指定链中的某条规则，-D INPUT 3表示删除INPUT链中的第3条规则。
 
@@ -144,7 +144,7 @@ http://www.zsythink.net/archives/1517
 
 当然，我们也可以根据具体的匹配条件与动作去删除规则，比如，删除下图中源地址为192.168.1.146，动作为ACCEPT的规则，于是，删除规则的命令如下。
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_09-51-41.png"/>
+![Snipaste_2020-10-14_09-51-41](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_09-51-41.24mcrhya0y5.png)
 
 上图中，删除对应规则时，仍然使用-D选项，-D INPUT表示删除INPUT链中的规则，剩下的选项与我们添加规则时一毛一样，-s表示以对应的源地址作为匹配条件，-j ACCEPT表示对应的动作为接受，所以，上述命令表示删除INPUT链中源地址为192.168.1.146，动作为ACCEPT的规则。
 
@@ -170,11 +170,11 @@ iptables -t 表名 -F
 
 那么，我们怎样修改某条规则中的动作呢？比如，我想把如下规则中的动作从DROP改为REJECT，改怎么办呢？
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_10-03-30.png"/>
+![Snipaste_2020-10-14_10-03-30](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_10-03-30.60mrblpx4xw0.png)
 
 我们可以使用-R选项修改指定的链中的规则，在修改规则时指定规则对应的编号即可(有坑，慎行)，示例命令如下
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_10-03-51.png"/>
+![Snipaste_2020-10-14_10-03-51](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_10-03-51.241iftmw8vk0.png)
 
 上例中，-R选项表示修改指定的链，使用-R INPUT 1表示修改INPUT链的第1条规则，使用-j REJECT表示将INPUT链中的第一条规则的动作修改为REJECT，注意：上例中， -s选项以及对应的源地址不可省略，即使我们已经指定了规则对应的编号，但是在使用-R选项修改某个规则时，必须指定规则对应的原本的匹配条件（如果有多个匹配条件，都需要指定）。
 
@@ -188,9 +188,7 @@ iptables -t 表名 -F
 
 好了，上例中，我们已经将规则中的动作从DROP改为了REJECT，那么DROP与REJECT有什么不同呢？从字面上理解，DROP表示丢弃，REJECT表示拒绝，REJECT表达的意思好像更坚决一点，我们再次从146主机上向156主机上发起ping请求，看看与之前动作为DROP时有什么不同。
 
-
-
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_10-05-08.png"/>
+![Snipaste_2020-10-14_10-05-08](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_10-05-08.6yk0ad4dfp40.png)
 
 如上图所示，当156主机中的iptables规则对应的动作为REJECT时，从146上进行ping操作时，直接就提示"目标不可达"，并没有像之前那样卡在那里，看来，REJECT比DROP更加"干脆"。
 
@@ -198,7 +196,7 @@ iptables -t 表名 -F
 
 其实，我们还可以修改指定链的"默认策略"，没错，就是下图中标注的默认策略。
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_10-05-29.png"/>
+![Snipaste_2020-10-14_10-05-29](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_10-05-29.4s8alfa3q5m0.png)
 
 每张表的每条链中，都有自己的默认策略，我们也可以理解为默认"动作"。
 
@@ -206,7 +204,7 @@ iptables -t 表名 -F
 
 > 这里无需使用-t参数, 修改链无需指定表
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_10-06-10.png"/>
+![Snipaste_2020-10-14_10-06-10](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_10-06-10.1uypke4knh4w.png)
 
 使用-t指定要操作的表，使用-P选项指定要修改的链，上例中，-P FORWARD DROP(`-P chain target`)表示将表中FORWRD链的默认策略改为DROP。
 
@@ -222,7 +220,7 @@ centos7与centos6中的情况稍微有些不同，我们先说centos6中怎样�
 
 **centos6中**，使用"service iptables save"命令即可保存规则，规则默认保存在/etc/sysconfig/iptables文件中，如果你刚刚安装完centos6，在刚开始使用iptables时，会发现filter表中会有一些默认的规则，这些默认提供的规则其实就保存在/etc/sysconfig/iptables中，  保存规则的示例如下。
 
-<img src="..\..\..\..\..\imgs\_Linux\Snipaste_2020-10-14_10-16-08.png"/>
+![Snipaste_2020-10-14_10-16-08](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-14_10-16-08.5xtjd6wyve40.png)
 
 如上图所示，文件中保存了filter表中每条链的默认策略，以及每条链中的规则，由于其他表中并没有设置规则，也没有使用过其他表，所以文件中只保存了filter表中的规则。
 

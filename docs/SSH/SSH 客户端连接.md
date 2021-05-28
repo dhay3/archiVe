@@ -88,7 +88,27 @@ TLS_RSA_WITH_AES_128_CBC_SHA
 - CBC：加密模式
 - SHA：数字签名的 Hash 函数
 
-### 参数
+## 参数
+
+- `-i`
+
+  指定连接使用的私钥，默认会在`~/.ssh/`下私钥。
+
+- `-Y`
+
+  ==开启X11 forwarding==
+
+  ```
+  ssh -Y host
+  ```
+
+- `-f`
+
+  以后台方式运行指定的命令，通常和X11一起使用
+
+  ```
+  ssh -p 65522 -f -o "ForwardX11 yes" ubuntu@82.157.1.137 mousepad
+  ```
 
 - `-Q`
 
@@ -143,6 +163,10 @@ TLS_RSA_WITH_AES_128_CBC_SHA
 - `-o`
 
   指定参数，用于覆盖ssh客户端的配置文件
+
+  ```
+  ssh -o "ForwardX11 yes" host 
+  ```
 
 - `-p`
 

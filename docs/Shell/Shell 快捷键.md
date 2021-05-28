@@ -6,13 +6,11 @@ https://wangdoc.com/bash/readline.html
 
 ## 概述
 
-Bash 内置了 Readline 库，具有这个库提供的很多“行操作”功能(快捷键)，比如命令的自动补全(TAB)，可以大大加快操作速度。
+Bash 内置了 Readline 库，具有这个库提供的很多“行操作”功能(快捷键)，比如命令的自动补全(TAB)，可以大大加快操作速度。==默认配置参考inputrc==
 
 这个库默认采用Emacs快捷键，也可以改为Vi快捷键
 
-这个库默认采用 Emacs 快捷键，也可以改成 Vi 快捷键。
-
-```
+```bash
 $ set -o vi
 ```
 
