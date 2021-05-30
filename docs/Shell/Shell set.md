@@ -6,7 +6,7 @@ set用于设定shell该怎么执。
 
 > 所有参数都可以使用`+`来关闭功能选项
 >
-> 通常使用`set -euo pipefail`，也可以使用`bash -euo pipefail script.sh`
+> 通常使用`set -eo pipefail`，也可以使用`bash -euo pipefail script.sh`
 >
 > 如果想要查看具体的内建命令如何使用
 >

@@ -149,7 +149,7 @@ Defaults        env_reset
 
 - compress_io：使用zlib对I/O日志压缩
 
-- env_editor：visudo使用的编译器
+- env_editor：visudo使用的编译器，需要设置SUDO_EDITOR，VISUAL，EDITOR环境变量
 
 - env_reset：sudo使用最小范围的环境变量
 
@@ -197,7 +197,7 @@ Defaults        env_reset
 
 - badpass_message：登入错误后显示的错误信息
 
-- editor：visudo使用的编辑器
+- editor：sudoedit使用的编辑器，==只有在没有设置EDITOR的环境变量时才生效==，可以通过设置环境变量
 - env_keep：env_reset开启时的变量
 - env_reset：env_reset开启时需要移除的变量
 

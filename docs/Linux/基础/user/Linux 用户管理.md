@@ -55,6 +55,6 @@
 用于修改用户信息，与 useradd 参数相同，例如添加用户组
 
 ```
-usermod -gG docker $USER
+usermod -aG docker $USER
 ```
 
