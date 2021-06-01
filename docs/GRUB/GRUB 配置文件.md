@@ -6,7 +6,7 @@ https://www.gnu.org/software/grub/manual/grub/grub.html#Configuration
 
 GRUB使用`grub.cfg`配置文件由`grub-mkcofnig`，通常位于`/boot/grub`下。`/etc/default/grub`控制了`grub-mkconfig`改如何生成配置文件。它会发现可以被使用的kernel然后将它展示在引导阶段的menu entries
 
-![](D:\asset\note\imgs\_GRUB\Snipaste_2021-04-15_15-17-23.png)
+![](..\..\imgs\_GRUB\Snipaste_2021-04-15_15-17-23.png)
 
 ## /etc/default/grub
 
@@ -52,9 +52,13 @@ GRUB使用`grub.cfg`配置文件由`grub-mkcofnig`，通常位于`/boot/grub`下
 
   等价INPUT+OUTPUT
 
-- GRUB_CMDLINE_LINUX
+- ==GRUB_CMDLINE_LINUX==
 
-  将linux kernel的参数显示在menu，还有其他类似参数具体查看manual page
+  指定的GRUB cli 对所有的menu entries生效
+
+- ==GRUB_CMDLINE_LINUX_DEFAULT==
+
+  在GRUB_CMDLINE_LINUX对defulat entry(非recovery entry)额外增加GRUB cli
 
 - GRUB_DISABLE_LINUX_UUID
 
@@ -68,7 +72,7 @@ GRUB使用`grub.cfg`配置文件由`grub-mkcofnig`，通常位于`/boot/grub`下
 
   只有设置为true，否则会为每个kernel设置两条entry
 
-  ![](D:\asset\note\imgs\_GRUB\Snipaste_2021-04-15_16-21-59.png)
+  ![](..\..\imgs\_GRUB\Snipaste_2021-04-15_16-21-59.png)
 
 - GRUB_DISABLE_OS_PROBER
 

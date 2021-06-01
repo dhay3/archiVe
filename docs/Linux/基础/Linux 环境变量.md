@@ -1,10 +1,8 @@
 # Linux 环境变量
 
-参考：
 
-https://www.jianshu.com/p/ac2bc0ad3d74
 
-> 所有的变量都可以通过$来获取，==env显示所有环境变量==
+> ==env显示所有环境变量==，check bash manual page shell variables for details
 
 ## built-in
 
@@ -33,6 +31,24 @@ https://www.jianshu.com/p/ac2bc0ad3d74
 - SHELL
 
   当前的SHELL
+
+- LANG
+
+  对没有设置值的`LC_*`变量的默认值
+
+- ==LC_ALL==
+
+  对LANG和所有`LC_*`变量覆写
+
+  [LC_ALL=C](https://unix.stackexchange.com/questions/87745/what-does-lc-all-c-do)
+
+- [LANGUAGE](https://wiki.archlinux.org/title/Locale#LANGUAGE:_fallback_locales)
+
+  程序使用`gettext`时候才会考虑这个环境变量，只有当`LC_ALL`的值不是C的时候才生效。==如果fallback language有问题可以通过该变量设置==
+
+- LC_TIME
+
+  时间格式的locale catagory
 
 ## 自定义环境变量
 
