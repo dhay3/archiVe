@@ -28,29 +28,29 @@ Firefox推荐使用[FoxyProxy](https://addons.mozilla.org/zh-CN/firefox/addon/fo
 
 许多人在第一次使用BurpSuite抓取HTTPS网站报文时都会遇到『您的连接不是私密连接』（Chrome）、『此网站的安全证书存在问题』（IE）或者『您的连接不安全』（Firefox）的问题，这时候怎么办？
 
-<img src="..\..\..\imgs\_Kali\burpsuite\t01b9f7596d3aa1aa03.png" style="zoom:80%;" />
+![t01b9f7596d3aa1aa03](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t01b9f7596d3aa1aa03.5k29i6gzhwo0.png)
 
 这个问题其实很简单，安装一个证书即可解决，想知道原因的可以自行Google一下HTTPS原理就能够得到答案。
 
 首先，浏览器设置好BurpSuite代理服务器后，访问http://burp，然后点击右上角的CA Certificate，这时会自动下载一个名为cacert.der的证书文件。
 
-<img src="..\..\..\imgs\_Kali\burpsuite\t01268c22f5962b5c67.png"/>
+![t01268c22f5962b5c67](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t01268c22f5962b5c67.4078gtrg1l00.png)
 
 打开这个证书文件，根据提示安装这个证书，基本上是一路『下一步』，唯一需要注意的是，在『证书存储』这一步选择将证书存储在『受信任的根证书颁发机构』。
 
-<img src="..\..\..\imgs\_Kali\burpsuite\t01d1c8f1600971ddf6.png" style="zoom:80%;" />
+![t01d1c8f1600971ddf6](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t01d1c8f1600971ddf6.6byznzc0svc0.png)
 
 证书安装好之后，Chrome和IE就能够正常访问HTTPS网站了（由于Google一直在推全网HTTPS，Chrome对证书要求很严格，我们安装的证书不是权威机构颁发的，因此地址栏会一直提示『不安全』，但是不影响使用）。
 
 不过，如果你使用Firefox浏览器的话，还需要增加一步，即将证书导入到Firefox中。打开Firefox的『选项——高级——证书』，然后点击『查看证书』按钮打开『证书管理器』。
 
-<img src="..\..\..\imgs\_Kali\burpsuite\t0137a4698200cbc594.png" style="zoom:80%;" />
+![t0137a4698200cbc594](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t0137a4698200cbc594.33nbecl5epi0.png)
 
 在『证书管理器』中，点击下方的『导入』按钮，导入之前下载的cacert.der证书文件，并且在弹出的『下载证书』对话框中，勾选3个『信任使用此CA标识的……』复选框，最后点击『确定』即可。
 
-<img src="..\..\..\imgs\_Kali\burpsuite\t01c8b30911f1b966ee.png" style="zoom:80%;" />
+![t01c8b30911f1b966ee](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t01c8b30911f1b966ee.4r1nqlam6qo0.png)
 
-<img src="..\..\..\imgs\_Kali\burpsuite\t01222e2866941951cb.png" style="zoom:80%;" />
+![t01222e2866941951cb](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t01222e2866941951cb.6ooy32d88hc0.png)
 
 这时候，Firefox也可以正常使用了。
 
@@ -62,11 +62,11 @@ Firefox推荐使用[FoxyProxy](https://addons.mozilla.org/zh-CN/firefox/addon/fo
 
 第一步，在BurpSuite的Proxy Listeners中，选中当前在用的代理，点击左侧的Edit按钮，在弹出的对话框中，将Bind to address选项设置为All interfaces。
 
-<img src="..\..\..\imgs\_Kali\burpsuite\t013287c3983f911140.png" style="zoom:80%;" />
+![t013287c3983f911140](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t013287c3983f911140.32ze19zy75k0.png)
 
 第二步，手机和PC连接同一Wifi，打开手机Wifi设置，设置HTTP代理服务器为BurpSuite所在的PC的IP地址，端口为BurpSuite的代理端口。以iPhone为例，其设置如下图所示。
 
-<img src="..\..\..\imgs\_Kali\burpsuite\t011fa1917f6a3fb2a0.png" style="zoom:80%;" />
+![t011fa1917f6a3fb2a0](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t011fa1917f6a3fb2a0.3c77os9tzvo0.png)
 
 然，如果APP走的是HTTPS通道，仍然需要安装证书才能正常访问，方法同前，不再赘述。
 
@@ -80,7 +80,7 @@ Firefox推荐使用[FoxyProxy](https://addons.mozilla.org/zh-CN/firefox/addon/fo
 
 作为一个神器，BurpSuite是具备这个功能的。在BurpSuite的User options下的Connections页面中，有『Upstream Proxy Servers』和『SOCKS Proxy』这两个配置项，都是跟代理链相关的。接下来逐一进行说明。
 
-<img src="..\..\..\imgs\_Kali\burpsuite\t01c3fffd20acfe3bf7.png" style="zoom:80%;" />
+![t01c3fffd20acfe3bf7](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t01c3fffd20acfe3bf7.2zb1yb8gqq00.png)
 
 ### Upstream Proxy Servers
 
@@ -108,7 +108,7 @@ Domain hostname：域主机名。仅用于NTLM认证类型。
 
 设置内容如下图所示，最后点击OK即可。
 
-<img src="..\..\..\imgs\_Kali\burpsuite\t01681cad0d70ad387b.png" style="zoom:80%;" />
+![t01681cad0d70ad387b](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t01681cad0d70ad387b.6250gdbuee80.png)
 
 这时候你会发现google.com已经能够访问了，并且BurpSuite中也成功地抓取到了相应的请求报文。
 
@@ -118,7 +118,7 @@ Domain hostname：域主机名。仅用于NTLM认证类型。
 
 与Upstream Proxy Servers的作用类似，SOCKS Proxy的功能也是将请求内容发送至相应的代理服务器。不同之处在于，SOCKS Proxy作用于TCP协议层，因此如果设置了该项，那么所有的请求数据都会被发送至SOCKS代理服务器。所以，SOCKS Proxy的设置更简单。同样以google.com为例，先在下方的输入框中依次填入SOCKS代理服务器的IP、端口（如果SOCKS代理服务器需要认证，还需要填写用户名和密码），然后勾选Use SOCKS proxy即可。
 
-<img src="..\..\..\imgs\_Kali\burpsuite\t01f8ee17f4f2135e5d.png" style="zoom:80%;" />
+![t01f8ee17f4f2135e5d](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t01f8ee17f4f2135e5d.1gsjbee310b.png)
 
 需要注意的一点是，如果同时设置了Upstream Proxy Servers和SOCKS Proxy，则根据规则应该发送至上游代理的请求将会通过SOCKS Proxy发送。
 
@@ -136,7 +136,7 @@ Proxifier allows network applications that do not support working through proxy 
 
 还是通过实例进行说明。有一次，需要对某微信公众号进行渗透测试，有些微信公众号的链接复制到浏览器中可以直接打开，但是这个公众号做了限制，只能在微信中打开，即使改了UA也不行。
 
-<img src="..\..\..\imgs\_Kali\burpsuite\t01e10c73685a986fdf.png" style="zoom:80%;" />
+![t01e10c73685a986fdf](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t01e10c73685a986fdf.4lz7egt8rdi0.png)
 
 微信网页版中只能看到公众号发的文章，而不能进行交互。设置手机代理倒是可以进行测试，但是一边在手机上操作、一边在PC上抓包很不方便，而且容易给领导一种一直在玩手机的错觉……微信PC版功能倒是挺全，然而却不能设置代理！
 
@@ -144,29 +144,29 @@ Proxifier allows network applications that do not support working through proxy 
 
 Proxifier的界面很简洁，我们重点关注其中的两个功能，即Proxy Servers和Profication Rules。工具栏中最左侧的两个图标分别对应这两个功能。
 
-<img src="..\..\..\imgs\_Kali\burpsuite\t013699567df9d4cb42.png"/>
+![t013699567df9d4cb42](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t013699567df9d4cb42.4m5b68voulk0.png)
 
 首先点击工具栏第一个图标，打开Proxy Servers对话框。Proxy Servers对话框分为上下两部分，上半部分用于设置代理服务器，下半部分用于设置代理链。
 
-<img src="..\..\..\imgs\_Kali\burpsuite\t0157cb1d25ed8cae41.png" style="zoom:80%;" />
+![t0157cb1d25ed8cae41](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t0157cb1d25ed8cae41.7gwi5w94isc0.png)
 
 1. 代理服务器设置
 
    我们先讲讲代理服务器设置。点击Add按钮，增加一个代理服务器，填入相应的代理服务器地址和端口，这里填入BurpSuite的代理127.0.0.1:8080；Protocol中选择HTTPS；点击Advanced按钮，设置一个Custom Label以方便区分。
 
-   <img src="..\..\..\imgs\_Kali\burpsuite\t0128d27087717f4cfe.png" style="zoom:80%;" />
+   ![t0128d27087717f4cfe](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t0128d27087717f4cfe.4qa37z1w93c0.png)
 
    设置完成之后，可以点击下方的Check按钮测试一下代理是否设置成功。如果出现下图所示的Proxy is ready to work with Proxifier!说明代理设置成功。不过默认的用于测试的目标网站是www.google.com，很有可能出现误判，建议点击右上角的Test Settings按钮将Target host更改为不挂代理也可正常访问的网站。
 
-   <img src="..\..\..\imgs\_Kali\burpsuite\t01619dc766af130bf6.png" style="zoom:80%;" />
+   ![t01619dc766af130bf6](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t01619dc766af130bf6.5udo4n928i80.png)
 
    Proxy Server设置完成之后会提示你尚未设置当前启用的代理服务器，是否要进入规则设置，点击『是』即可进行代理规则设置。也可以点击工具栏第二个图标进入『Proxification Rules』对话框。
 
-   <img src="..\..\..\imgs\_Kali\burpsuite\t01f3e1092ee7c82751.png" style="zoom:80%;" />
+   ![t01f3e1092ee7c82751](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t01f3e1092ee7c82751.72ymt1i6yyk0.png)
 
    默认有两条直连的规则。点击左下方的Add按钮，进入具体的规则设置页面。
 
-   <img src="..\..\..\imgs\_Kali\burpsuite\t01081172b0998e5a71.png" style="zoom:80%;" />
+   ![t01081172b0998e5a71](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t01081172b0998e5a71.3t9q6qgvquw0.png)
 
    设置内容并不复杂，一共五个设置项：
 
@@ -180,15 +180,15 @@ Proxifier的界面很简洁，我们重点关注其中的两个功能，即Proxy
 
    Action：这里选择上一步设置的代理服务器即可。除了自定义的代理服务器外，这里还有Direct和Block的选项，分别是直连和阻止连接，说明Proxifier还可以有选择的屏蔽某些站点，在某些情况下还是很有用的。
 
-   <img src="..\..\..\imgs\_Kali\burpsuite\t01834d8b530bc378ee.png" style="zoom:80%;" />
+   ![t01834d8b530bc378ee](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t01834d8b530bc378ee.5cgxemixrr40.png)
 
    规则设置好之后，可点击规则列表框右侧的方向按钮，更改规则的顺序。和BurpSuite的Upstream Proxy Servers一样，这里也讲究个先来后到，所以当前在用的规则越靠前越好。如果你设置好代理及规则之后不起作用，可以到这里看看顺序是不是没有调整好。
 
-   <img src="..\..\..\imgs\_Kali\burpsuite\t015d8eb3564d509984.png" style="zoom:80%;" />
+   ![t015d8eb3564d509984](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t015d8eb3564d509984.6v99di5qut00.png)
 
    一切设置就绪，别忘了点击OK按钮保存。这时候，在PC版的微信中对目标公众号进行相应的操作与访问，BurpSuite就能够抓取到HTTP报文了。同时，在Proxifier中能够看到连接状态与日志。（PS：我发现每次使用Proxifier一开始总会出错，过几秒钟就正常了，不知道啥原因？）
 
-   <img src="..\..\..\imgs\_Kali\burpsuite\t0109d86316a2a9d634.png" style="zoom:80%;" />
+   ![t0109d86316a2a9d634](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t0109d86316a2a9d634.6tnk6fbnkwk0.png)
 
    回到本节开头的那个问题，对于那些无法设置代理的客户端程序，可以使用Proxifier为其设置代理，进而使用BurpSuite等工具抓包分析。此外，如果将Proxification Rule中的Application设置为IE浏览器，即可选择性地将目标站点的HTTP请求发送至BurpSuite，这就解决了使用IE进行渗透测试时代理设置不方便的问题。
 
@@ -196,7 +196,7 @@ Proxifier的界面很简洁，我们重点关注其中的两个功能，即Proxy
 
    接下来说一说Proxifier的代理链功能。为了实现代理链，首先需要设置多个代理（在Proxifier中，仅有一个代理服务器的代理链也是允许的，但那没什么意义）。还拿google.com的例子进行说明，我们需要两个代理：BurpSuite（127.0.0.1:8080）和SS（127.0.0.1:1080）。先在Proxy Servers中增加一个SS（127.0.0.1:1080）的SOCKS5代理服务器。然后点击下方右侧的Create按钮，新建一个代理链，名称随意，比如BurpSuite->SS。最后用鼠标依次将上方的BurpSuite和SS代理服务器拖到下方即可。注意，这里的顺序也很重要。
 
-   <img src="..\..\..\imgs\_Kali\burpsuite\t017f9b1e3d35431409.png" style="zoom:80%;" />
+   ![t017f9b1e3d35431409](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t017f9b1e3d35431409.116xgn09u5kw.png)
 
    点击Create按钮下方的Type按钮可以设置代理链的类型，一共有3种类型的代理链：
 
@@ -206,7 +206,7 @@ Proxifier的界面很简洁，我们重点关注其中的两个功能，即Proxy
 
    Load Balancing：负载均衡类型，请求数据会随机地发送到列表中的各个代理服务器。
 
-<img src="..\..\..\imgs\_Kali\burpsuite\t012e0fef3e78adc427.png"/>
+![t012e0fef3e78adc427](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/t012e0fef3e78adc427.2v9fc317i7s0.png)
 
    按照我们的需求，需要选择默认的Simple Chain。有了代理链，接下来仍然需要设置代理规则，设置方法同前，只不过在Action中选择刚才设置的代理链即可。
 
@@ -214,6 +214,6 @@ Proxifier的界面很简洁，我们重点关注其中的两个功能，即Proxy
 
 ## 0x06 虚拟机代理
 
-<img src="..\..\..\imgs\_Kali\burpsuite\Snipaste_2020-09-05_19-18-02.png" style="zoom:80%;" />
+![Snipaste_2020-09-05_19-18-02](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-09-05_19-18-02.2us3gu71d7g0.png)
 
 其余操作同0x01

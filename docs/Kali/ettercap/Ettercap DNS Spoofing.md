@@ -16,7 +16,7 @@ https://pentestmag.com/ettercap-tutorial-for-windows/
 
 1. dig 搜索taobao.com的服务器地址
 
-<img src="..\..\..\imgs\_Kali\ettercap\Snipaste_2020-09-17_21-22-56.png"/>
+![Snipaste_2020-09-17_21-22-56](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-09-17_21-22-56.73kzgd3xkag0.png)
 
    这我们选用140.205.94.189
 
@@ -28,17 +28,17 @@ https://pentestmag.com/ettercap-tutorial-for-windows/
 
    在最后将baidu.com的A记录指向140.205.94.189
 
-<img src="..\..\..\imgs\_Kali\ettercap\Snipaste_2020-09-17_21-25-43.png"/>
+![Snipaste_2020-09-17_21-25-43](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-09-17_21-25-43.btyyr1dkk40.png)
 
 3. 设置ettercap
 
    选中dns_spoof模块
 
-<img src="..\..\..\imgs\_Kali\ettercap\Snipaste_2020-09-17_20-04-14.png"/>
+![Snipaste_2020-09-17_20-04-14](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-09-17_20-04-14.3z6sxd87w6c0.png)
 
    添加目标，target1 目标机，target2 gw。因为解析dns是通过gw发送请求
 
-<img src="..\..\..\imgs\_Kali\ettercap\Snipaste_2020-09-17_21-28-45.png"/>
+![Snipaste_2020-09-17_21-28-45](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-09-17_21-28-45.1hft06ajkmao.png)
 
    all set 执行ettercap
 
@@ -48,19 +48,19 @@ https://pentestmag.com/ettercap-tutorial-for-windows/
 
    发现firefox提示有安全问题，由于baidu.com使用https协议
 
-<img src="..\..\..\imgs\_Kali\ettercap\Snipaste_2020-09-17_21-29-43.png"/>
+![Snipaste_2020-09-17_21-29-43](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-09-17_21-29-43.2xk8fjp3y080.png)
 
    但是发现其实已经将域名解析到taobao的服务器了
 
-<img src="..\..\..\imgs\_Kali\ettercap\Snipaste_2020-09-17_21-30-47.png"/>
+![Snipaste_2020-09-17_21-30-47](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-09-17_21-30-47.4s8alfu1fx20.png)
 
 5. 替换https为http，我们这里使用360doc.com
 
-<img src="..\..\..\imgs\_Kali\ettercap\Snipaste_2020-09-17_23-37-59.png"/>
+![Snipaste_2020-09-17_23-37-59](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-09-17_23-37-59.3hpm9mhcvjw0.png)
 
 6. 目标机访问360doc.com，就会访问攻击机的/var/www/html，这样也就实行了dns spoof
 
-<img src="..\..\..\imgs\_Kali\ettercap\Snipaste_2020-09-17_23-39-39.png"/>
+![Snipaste_2020-09-17_23-39-39](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-09-17_23-39-39.oao6k16z6eo.png)
 
    
 

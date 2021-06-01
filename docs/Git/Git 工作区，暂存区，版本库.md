@@ -14,7 +14,7 @@ https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-Git-%E6%98%AF%E4%BB%80%E4%B9%8
 > 2. modified(已修改)，文件已修改，但是还没保存到本地数据库
 > 3. staged(已暂存)，对一个已修改的文件标记，在下次提交的快照中
 
-<img src="..\..\imgs\_Git\Snipaste_2020-12-05_11-20-35.png"/>
+![Snipaste_2020-12-05_11-20-35](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-12-05_11-20-35.68iq8zdcro40.png)
 
 - working directory 工作区
 
@@ -28,7 +28,7 @@ https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-Git-%E6%98%AF%E4%BB%80%E4%B9%8
 
   `.git`文件，保存所有的版本信息的指针索引，用于数据的前进和回退
 
-<img src="..\..\imgs\_Git\Snipaste_2020-12-05_10-49-32.png" style="zoom:150%;" />
+![Snipaste_2020-12-05_10-49-32](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-12-05_10-49-32.5g6xqy7mx0s0.png)
 
 ==上图的objects表示Git的对象库(本地数据库与)实际位于 `.git/objects` 目录下，里面包含了创建的各种对象及内容==
 

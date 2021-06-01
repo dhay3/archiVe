@@ -64,7 +64,7 @@ ettercap -T -i eth0 -M dhcp:192.168.30.100/255.255.255.0/192.168.30.1 ///  ///
 
 目标机可以主动使用`ipconig /release && ipconfig /renew`重新生成ip。下图是在攻击中抓取的dhcp packets
 
-<img src="..\..\..\imgs\_Kali\ettercap\Snipaste_2020-09-18_10-54-31.png"/>
+![Snipaste_2020-09-18_10-54-31](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-09-18_10-54-31.5y01bfa80v40.png)
 
 - `-o --only-mitm`
 

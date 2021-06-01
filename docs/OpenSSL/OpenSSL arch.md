@@ -28,7 +28,7 @@ OpenSSL主要有4个组件构成
 
 application依赖于TLS和crypto，TLS依赖于crypto，Engine调用crypto
 
-![架构图](D:\asset\note\imgs\_openssl\Snipaste_2021-03-01_10-34-10.png)
+![Snipaste_2021-03-01_10-34-10](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2021-03-01_10-34-10.3z8kqc35vik0.png)
 
-![](D:\asset\note\imgs\_openssl\Snipaste_2021-03-01_10-37-55.png)
+![Snipaste_2021-03-01_10-37-55](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2021-03-01_10-37-55.6rtsbdotw4c0.png)
 

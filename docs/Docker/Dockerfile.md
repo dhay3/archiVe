@@ -112,7 +112,7 @@ PS C:\John>
 
 ### Instruction
 
-<img src="D:/asset/note/imgs/_docker/450977-20190512115951746-136143052.png"/>
+![450977-20190512115951746-136143052](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/450977-20190512115951746-136143052.4nhk2tsxric0.png)
 
 ==指令不区别大小写，但是为了方便便是使用 大写，并且严格区分单双引号(只能使用双引号)==
 

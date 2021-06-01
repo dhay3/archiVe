@@ -8,7 +8,7 @@ https://www.52pojie.cn/thread-1194411-1-1.html
 
 将下载好的jar包放入kali中
 
-<img src="..\..\imgs\_Kali\burpsuite\Snipaste_2020-09-10_20-54-39.png"/>
+![Snipaste_2020-09-10_20-54-39](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-09-10_20-54-39.3uofpjt3aeg0.png)
 
 这里的`keygen.sh`和`runburp.sh`是两个运行脚本, 分别用于patch和burpsuite pro
 

@@ -61,7 +61,7 @@ Pod并不是持久的资源，假设有一个 front-end pod想要调用 back-end
 
 5. 如果选择的第一个pod没有响应，会尝试其他的pod
 
-   ![](D:\asset\note\imgs\_Kubernetes\Snipaste_2021-03-25_17-32-57.png)
+   ![Snipaste_2021-03-25_17-32-57](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2021-03-25_17-32-57.5n26i0ypt180.png)
 
 ### iptables proxy mode
 
@@ -75,9 +75,9 @@ Pod并不是持久的资源，假设有一个 front-end pod想要调用 back-end
 
 4. 如果第一个选择的pod没有响应，连接直接会失败
 
-   ![](D:\asset\note\imgs\_Kubernetes\Snipaste_2021-03-25_17-48-09.png)
-
-### IPVS proxy mode
+   ![Snipaste_2021-03-25_17-48-09](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2021-03-25_17-48-09.r8bndzf52dc.png)
+   
+   IPVS proxy mode
 
 IPVS模式基于netfilter使用LVS规则，需要保证IPVS module可用
 
@@ -91,7 +91,7 @@ IPVS模式基于netfilter使用LVS规则，需要保证IPVS module可用
    - `sed`: shortest expected delay
    - `nq`: never queue
 
-![](D:\asset\note\imgs\_Kubernetes\Snipaste_2021-03-26_17-58-07.png)
+![Snipaste_2021-03-26_17-58-07](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2021-03-26_17-58-07.7emhfb2znns0.png)
 
 ​	==virtual server 和 real server是LVS中的术语==
 

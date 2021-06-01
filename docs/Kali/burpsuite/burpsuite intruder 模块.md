@@ -1,6 +1,6 @@
 # burpsuite intruder 模块
 
-<img src="..\..\..\imgs\_Kali\burpsuite\Snipaste_2020-09-06_10-02-10.png"/>
+![Snipaste_2020-09-06_10-02-10](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-09-06_10-02-10.6fqh6g2gjbo0.png)
 
 ## Sniper
 
@@ -16,7 +16,7 @@ for i:= 0; i < len(payload position); i++ {
 }
 ```
 
-<img src="..\..\..\imgs\_Kali\burpsuite\Snipaste_2020-09-06_10-03-28.png"/>
+![Snipaste_2020-09-06_10-03-28](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-09-06_10-03-28.3r76ugh7i1u0.png)
 
 以上图为例子，从第一个position开始，做1-10遍历，然后下一个position做1-10遍历。
 
@@ -34,7 +34,7 @@ for i:=0; i < len(payloads);i++{
 }
 ```
 
-<img src="..\..\..\imgs\_Kali\burpsuite\Snipaste_2020-09-06_10-15-17.png"/>
+https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-09-06_10-15-17.4gnshw3myf00.png
 
 所有的位置都被替换为同一发payload
 
@@ -50,7 +50,7 @@ for i:=0; i < len([0][]payload set); i++{
 }
 ```
 
-<img src="..\..\..\imgs\_Kali\burpsuite\Snipaste_2020-09-06_10-34-57.png"/>
+![Snipaste_2020-09-06_10-34-57](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-09-06_10-34-57.14n6vmyz84e8.png)
 
 第一列表示position，右边表示每次发送的payload
 
@@ -66,7 +66,7 @@ for(int i=k;i<=m;i++){
 }
 ```
 
-<img src="..\..\..\imgs\_Kali\burpsuite\Snipaste_2020-09-06_10-54-48.png"/>
+![Snipaste_2020-09-06_10-54-48](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-09-06_10-54-48.3mwekk69ue60.png)
 
 假设 position[0] = 1-1，position[1] = 2-3, position[2] = 3 - 5
 

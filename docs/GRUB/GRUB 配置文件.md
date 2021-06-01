@@ -6,7 +6,7 @@ https://www.gnu.org/software/grub/manual/grub/grub.html#Configuration
 
 GRUB使用`grub.cfg`配置文件由`grub-mkcofnig`，通常位于`/boot/grub`下。`/etc/default/grub`控制了`grub-mkconfig`改如何生成配置文件。它会发现可以被使用的kernel然后将它展示在引导阶段的menu entries
 
-![](..\..\imgs\_GRUB\Snipaste_2021-04-15_15-17-23.png)
+![Snipaste_2021-04-15_15-17-23](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2021-04-15_15-17-23.6tpmm7zqnh40.png)
 
 ## /etc/default/grub
 
@@ -72,7 +72,7 @@ GRUB使用`grub.cfg`配置文件由`grub-mkcofnig`，通常位于`/boot/grub`下
 
   只有设置为true，否则会为每个kernel设置两条entry
 
-  ![](..\..\imgs\_GRUB\Snipaste_2021-04-15_16-21-59.png)
+  ![Snipaste_2021-04-15_16-21-59](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2021-04-15_16-21-59.wod5lpqgto0.png)
 
 - GRUB_DISABLE_OS_PROBER
 
@@ -86,7 +86,7 @@ GRUB使用`grub.cfg`配置文件由`grub-mkcofnig`，通常位于`/boot/grub`下
 
   grub-mkcofnig通常会根据kernel的版本从高到低排序展示在menu，如果设置为false会按照子目录的形式展示
 
-  ![](D:\asset\note\imgs\_GRUB\Snipaste_2021-04-15_16-58-56.png)
+  ![Snipaste_2021-04-15_16-58-56](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2021-04-15_16-58-56.4u02fbwlbrk.png)
 
   进入Advanced options 可以选择内核。需要修改GRUB_DEFAULT，和fallback，default环境变量。
 

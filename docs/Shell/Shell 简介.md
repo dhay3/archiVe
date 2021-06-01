@@ -38,7 +38,7 @@ Shell 本身支持的命令并不多，功能也有限，但是 Shell 可以调�
 
 用户通过Shell操作进程
 
-<img src="..\..\imgs\_Shell\Snipaste_2020-11-13_10-14-18.png"/>
+![Snipaste_2020-11-13_10-14-18](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2020-11-13_10-14-18.50zkqkrj2800.png)
 
 ## Shell的类别
 

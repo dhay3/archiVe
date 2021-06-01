@@ -4,13 +4,13 @@
 
 ### #url中含有中文
 
-<img src="..\..\imgs\_Postman\10.png" style="zoom:80%;" />
+![10](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/10.19xbpaiaz074.png)
 
 postman发送中文请求时, 必须要编码, 否则会报错
 
 ### #get请求
 
-<img src="..\..\imgs\_Postman\1.png" alt="1" style="zoom:80%;" />
+![1](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/1.65ippixy5o00.png)
 
 ---
 
@@ -18,7 +18,7 @@ postman发送中文请求时, 必须要编码, 否则会报错
 
 > 同理put和delete请求
 
-<img src="..\..\imgs\_Postman\2.png" alt="2" style="zoom:80%;" />
+![2](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/2.2bw7aa40rgu8.png)
 
 ---
 
@@ -26,27 +26,27 @@ postman发送中文请求时, 必须要编码, 否则会报错
 
 这里无需再设置Headers中的Content-Type
 
-<img src="..\..\imgs\_Postman\3.png" style="zoom:80%;" />
+![3](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/3.7iyueydeot40.png)
 
 ---
 
 ### #上传文件
 
-<img src="..\..\imgs\_Postman\4.png" alt="4" style="zoom:80%;" />
+![4](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/4.385hiy4w7h40.png)
 
 ----
 
-<img src="..\..\imgs\_Postman\5.png" alt="5" style="zoom:80%;" />---
+![5](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/5.2y4808tnxu80.png)---
 
 ---
 
 ### #postman 发送post ajax
 
-<img src="..\..\imgs\_Postman\8.png" style="zoom:80%;" />
+![8](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/8.rc2cjkoczz4.png)
 
 ---
 
-<img src="..\..\imgs\_Postman\9.png" style="zoom:80%;" />
+![9](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/9.4kn21htq9la0.png)
 
 ### #postman 发送shiro权限认证
 
@@ -54,8 +54,9 @@ postman发送中文请求时, 必须要编码, 否则会报错
 
 方法二: 使用浏览器登入, 将登入后的cookie复制
 
-<img src="..\..\imgs\_Postman\6.png"/>
+![6](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/6.4a4gnjobu6y0.png)
 
 粘贴到postman中
 
-<img src="..\..\imgs\_Postman\7.png" style="zoom:80%;" />
+![7](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/7.646uzdrjnos0.png)
+

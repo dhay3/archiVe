@@ -82,7 +82,7 @@ graph LR
 用于反向域名解析，因此又称为反向域名。 
 ```
 
-<img src="..\..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-25_15-10-16.png"/>
+![Snipaste_2020-08-25_15-10-16](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2020-08-25_15-10-16.58yp3ftyc5o0.png)
 
 例如www.baidu.com.   ,注意后面有一个点，表示根，浏览器自动替我们完成
 
@@ -112,9 +112,8 @@ graph LR
 > 参考：
 >
 > https://bettywutalk.com/blog/domains/
->
 
-<img src="..\..\..\..\imgs\_Net\计算机网络\Snipaste_2020-09-08_14-52-05.png"/>
+![Snipaste_2020-09-08_14-52-05](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2020-09-08_14-52-05.emsqq3ia2w0.png)
 
 例如`www.baidu.com`是主机名，其中`baidu.com`是主域名，`com`是顶级域名，`baidu`是二级域名，==www子域名，用户可以自定义==
 
@@ -130,7 +129,7 @@ graph LR
 
 DNS 服务器的管辖范围不是以“域”为单位，而是以“区”为单位
 
-<img src="..\..\..\..\imgs\_Net\计算机网络\Snipaste_2020-09-05_22-43-44.png"/>
+![Snipaste_2020-09-05_22-43-44](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2020-09-05_22-43-44.743arpbbjxs0.png)
 
 ### 根域名服务器
 
@@ -140,7 +139,7 @@ DNS 服务器的管辖范围不是以“域”为单位，而是以“区”为�
 
 - 在互联网上共有 13 个不同 IP 地址的根域名服务器，它们的名字是用一个英文字母命名，从 a  一直到 m（前 13 个字母）。
 
-  <img src="..\..\..\..\imgs\_Net\计算机网络\Snipaste_2020-09-05_22-49-22.png" style="zoom:80%;" />
+  ![Snipaste_2020-09-05_22-49-22](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2020-09-05_22-49-22.6d1zda7yxjc0.png)
 
 ==根域名服务器共有 13 套装置，不是 13 个机器。==
 
@@ -161,7 +160,7 @@ DNS 服务器的管辖范围不是以“域”为单位，而是以“区”为�
 
 - ==本地域名服务器向根域名服务器的查询通常是采用迭代查询==。当根域名服务器收到本地域名服务器的迭代查询请求报文时，要么给出所要查询的 IP 地址，要么告诉本地域名服务器：“你下一步应当向哪一个域名服务器进行查询”。然后让本地域名服务器进行后续的查询。
 
-  <img src="..\..\..\..\imgs\_Net\计算机网络\Snipaste_2020-09-05_22-58-10.png" style="zoom:80%;" />
+  ![Snipaste_2020-09-05_22-58-10](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2020-09-05_22-58-10.58nrmsvdqr00.png)
 
 > 每个域名服务器都维护一个高速缓存，存放最近用过的名字以及从何处获得名字映射信息的记录
 
@@ -169,9 +168,7 @@ DNS 服务器的管辖范围不是以“域”为单位，而是以“区”为�
 
 代理服务器又称为万维网高速缓存，它可以代表浏览器发出HTTP请求，我们常用的VPS就是一台代理服务器
 
-<img src="..\..\..\..\imgs\_Net\计算机网络\Snipaste_2020-09-05_23-14-19.png"/>
-
-1. 浏览器访问互联网的服务器时，要先与校园网的高速缓存建立TCP连接，并向高速缓存发出HTTP请求报文。
+1. ![Snipaste_2020-09-05_23-14-19](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2020-09-05_23-14-19.7p6x0v7xlco.png)浏览器访问互联网的服务器时，要先与校园网的高速缓存建立TCP连接，并向高速缓存发出HTTP请求报文。
 2. 若高速缓存已经存放入所请求的对象，则将此对象放入HTTP响应报文中返回给浏览器
 3. 否则，高速缓存就代表发出请求的用户浏览器，与互联网上的源点服务器建立TCP连接，并发送HTTP请求报文
 4. 源点服务器将所在的对象放在HTTP响应报文中返回给校园网的高速缓存
@@ -185,7 +182,7 @@ DNS 服务器的管辖范围不是以“域”为单位，而是以“区”为�
 
 由以冒号隔开的两大部分组成，并且在 URL 中的字符对大写或小写没有要求。
 
-<img src="..\..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-25_15-36-29.png"/>
+![Snipaste_2020-08-25_15-36-29](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2020-08-25_15-36-29.65ji2efpcso0.png)
 
 - 端口：默认端口为80，通常可以省略
 - 路径：省略路径项，默认访问index.html或者是default.html，==如果是文件夹访问该文件夹下的index.html或是default.html==，如果不存在就会404

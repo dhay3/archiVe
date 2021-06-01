@@ -2,7 +2,7 @@
 
 ## VPC 2 IDC
 
-![](D:\asset\note\imgs\_aliyun\Snipaste_2021-04-21_10-54-27.png)
+![Snipaste_2021-04-21_10-54-27](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2021-04-21_10-54-27.1hq8qrkhlev4.png)
 
 1. VPC与IDC的网络地址不能冲突，ICD的VPN网关必须配置一个静态公网IP
 2. VPN网关是在VPC内的，VPC内ECS可以通过VPN网关向外通信。

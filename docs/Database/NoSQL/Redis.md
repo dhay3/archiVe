@@ -18,11 +18,11 @@ http://www.redis.cn/
 
 - 性能
 
-<img src="..\..\..\imgs\_redis\4.PNG"/>
+![4](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/4.6uyj032n94o0.PNG)
 
 - 并发
 
-<img src="..\..\..\imgs\_redis\5.PNG"/>
+![5](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/5.7dnx8fcds3s0.PNG)
 
 ## 安装
 
@@ -35,7 +35,7 @@ $ cd redis-5.0.8
 $ make  执行redis的Makefile文件
 ```
 
-<img src="..\..\..\imgs\_redis\2.PNG"/>
+![2](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/2.1gkvyu7h3cgw.PNG)
 
 - 如果出现如上所示错误,需要安装gcc(c语言编辑器)
 
@@ -43,7 +43,7 @@ $ make  执行redis的Makefile文件
   $ yum install gcc
   ```
 
-<img src="..\..\..\imgs\_redis\3.PNG"/>
+![3](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/3.5a7p0wujwus0.PNG)
 
 - 出现如上错误编译库出错, 将make 命令改为`make MALLOC=libc`或是`make distclean`
 
@@ -63,7 +63,7 @@ docker run -d redis 运行redis
 
 - `Docker`安装后的目录， 运行`Redis`最好也在该目录下
 
-<img src="..\..\..\imgs\_redis\6.PNG"/>
+![6](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/6.3682icuhxqu0.PNG)
 
 ## 开启Redis
 
@@ -77,7 +77,7 @@ docker run -d redis 运行redis
 
   复制源文件中的`redis.conf`,到自定义目录**修改redis 默认配置**, 通过修改过的`redis.conf`来启动Redis
 
-  <img src="..\..\..\imgs\_redis\7.PNG" alt="7" style="zoom:60%;" />
+  ![7](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/7.2v988v5t97g0.PNG)
 
 ### 客户端
 
@@ -172,7 +172,7 @@ http://doc.redisfans.com/
   如果键已存在，新增内容；
   如果值全移除，对应的键也就消失了。
 
-<img src="..\..\..\imgs\_redis\29.png"/>
+![29](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/29.6fst43q0ky8.png)
 
   - `lpush`(从左边压入元素)，`rpush`(从右边压入元素), `lrange`（从左往右打印）
 
@@ -206,41 +206,41 @@ http://doc.redisfans.com/
 
   - 端口
 
-<img src="..\..\..\imgs\_redis\13.PNG"/>
+![13](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/13.20u41oiok3mo.PNG)
 
   - 空闲多少时间后断开客户端连接，0表示关闭该功能
 
-<img src="..\..\..\imgs\_redis\14.PNG"/>
+![14](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/14.76n9iu2vcig0.PNG)
 
   - 每隔多长时间检查一下连接是否还有效
 
-<img src="..\..\..\imgs\_redis\15.PNG"/>
+![15](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/15.3d402p5llpy0.PNG)
 
 - **GENERAL**
 
   - 设置redis是否是以守护进程模式运行
 
-<img src="..\..\..\imgs\_redis\11.PNG"/>
+![11](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/11.32vqvqcgzju0.PNG)
 
   - 护进程模式运行就会生成一个pid文件
 
-<img src="..\..\..\imgs\_redis\10.PNG"/>
+![10](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/10.6k85kzxm12w0.PNG)
 
   - 设置日志文件的输出等级
 
-<img src="..\..\..\imgs\_redis\12.PNG"/>
+![12](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/12.6lbxn6b8bkc0.PNG)
 
   - 设置日志文件名, ==默认不会生成日志文件==
 
-<img src="..\..\..\imgs\_redis\28.PNG"/>
+![28](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/28.7cx52ole3l80.PNG)
 
   - 默认关闭系统记录日志文件，如需开启配置如下
 
-<img src="..\..\..\imgs\_redis\17.PNG"/>
+![17](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/17.4isld6mu7ii0.PNG)
 
   - 一共有16个数据库
 
-<img src="..\..\..\imgs\_redis\16.PNG"/>
+![16](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/16.49ot1nrcjcs0.PNG)
 
 ## RDB/ Redis DataBase
 
@@ -252,7 +252,7 @@ redis默认开启RDB,当redis断开连接后,数据同样存在, ==但是如果f
 
 **设置快照时间**,在客户端中通过**save** 命令可以达到立即保存的效果（adding a save directive）
 
-<img src="..\..\..\imgs\_redis\21.PNG"/>
+![21](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/21.752950ssptw0.PNG)
 
 ==RDB有可能会造成最后一次数据丢失，由于没有到达指定条件， 但是`Redis Serve`关闭==
 
@@ -260,13 +260,13 @@ redis默认开启RDB,当redis断开连接后,数据同样存在, ==但是如果f
 
 ==默认生成在开启服务器的位置==
 
-<img src="..\..\..\imgs\_redis\20.PNG"/>
+![20](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/20.3xmz2v6s0xw0.PNG)
 
 - MEMORY MANGEMENT
 
   内存满了之后redis的策略，默认noeviction（永不过期），生产环境中不能使用`noeviction`
 
-<img src="..\..\..\imgs\_redis\19.PNG"/>
+![19](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/19.6cnsxjcq2eg0.PNG)
 
 volatile-lru :用LRU算法移除key，只对设置了过期时间的键
 
@@ -286,7 +286,7 @@ noeviction: 不进行移除 **<font style='color:red'>生产环境中不可采�
 
 AOF默认关闭，需要设置成yes开启
 
-<img src="..\..\..\imgs\_redis\22.PNG"/>
+![22](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/22.4temtgkbw8s0.PNG)
 
 **<font style='color:red'>如果同时存在RDB和AOF会优先载入AOF</font>**
 
@@ -308,7 +308,7 @@ slave会将Master中的内容复制过来
 SLAEOF 主库IP 主库端口
 ```
 
-<img src="..\..\..\imgs\_redis\23.PNG"/>
+![23](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/23.50klxyejxww0.PNG)
 
 查看主从关系
 
@@ -317,19 +317,19 @@ SLAEOF 主库IP 主库端口
  info replication 
 ```
 
-<img src="..\..\..\imgs\_redis\24.PNG"/>
+![24](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/24.6o0tmrwn1t00.PNG)
 
 #### 1.一主二仆
 
 一个Master两个Slave
 
-<img src="..\..\..\imgs\_redis\25.png"/>
+![25](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/25.4ieexfrlwni0.png)
 
 #### 2.薪火相传
 
 下一个salve是上一个的slave,同样的slave还是不能写
 
-<img src="..\..\..\imgs\_redis\26.png"/>
+![26](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/26.5qdf4y5vilg0.png)
 
 #### 3.反客为主
 
@@ -369,5 +369,5 @@ redis-sentinel /myRedis/sentinel.conf
 
 
 
-<img src="..\..\..\imgs\_redis/27.PNG"/>
+![27](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/27.4dugzvd061a0.PNG)
 

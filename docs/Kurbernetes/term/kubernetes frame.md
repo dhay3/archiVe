@@ -6,7 +6,7 @@ https://www.redhat.com/zh/topics/containers/kubernetes-architecture
 
 https://kubernetes.io/docs/concepts/overview/components/
 
-<img src="..\..\..\imgs\_Kubernetes\Snipaste_2021-03-17_10-26-44.png"/>
+![Snipaste_2021-03-17_10-26-44](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2021-03-17_10-26-44.229t0l80ss00.png)
 
 ### control plane
 

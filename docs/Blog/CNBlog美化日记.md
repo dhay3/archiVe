@@ -259,7 +259,7 @@ body:after {
 <script language="javascript" type="text/javascript" src="https://blog-static.cnblogs.com/files/kikochz/matrix.js"></script>
 ```
 
-<img src="..\..\imgs\_blog\gif5.gif"/>
+![gif5](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/gif5.4agknhvfrcs0.gif)
 
 ### 彩带
 
@@ -269,7 +269,7 @@ body:after {
 
 效果图:
 
-<img src="..\..\imgs\_blog\1.gif"/>
+![1](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/1.18l2spkys5z4.gif)
 
 ### 粒子球
 
@@ -277,7 +277,7 @@ body:after {
 <script src="https://blog-static.cnblogs.com/files/kikochz/canvas.js"></script>
 ```
 
-<img src="..\..\imgs\_blog\gif2.gif"/>
+![gif2](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/gif2.2ejt6yj1ktq8.gif)
 
 ### 流星
 
@@ -286,7 +286,7 @@ body:after {
 <script src="https://blog-static.cnblogs.com/files/kikochz/borealsky.js"></script>
 ```
 
-<img src="..\..\imgs\_blog\gif3.gif"/>
+![gif3](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/gif3.1a9xfadzwzgg.gif)
 
 ## 载入条
 
@@ -416,7 +416,7 @@ https://www.cnblogs.com/sakuraph/p/5814060.html
 <script language="javascript" type="text/javascript" src="https://blog-static.cnblogs.com/files/kikochz/list.js"></script>
 ```
 
-<img src="..\..\imgs\_blog\gif4.gif"/>
+![gif4](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/gif4.4ili5b75iqe0.gif)
 
 ## Github Corner/ribbon
 
@@ -434,7 +434,7 @@ https://tholman.com/github-corners/
 <a href="https://github.com/dhay3"><img style="position: absolute; top: 76px; right: 0; border: 0" alt="Fork me on GitHub" src="https://cdn.jsdelivr.net/gh/yanglr/Beautify-cnblogs/images/github-pendant-rightCorner.svg?sanitize=true"></a>
 ```
 
-<img src="..\..\imgs\_blog\Snipaste_2020-08-27_15-12-12.png"/>
+![Snipaste_2020-08-27_15-12-12](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-08-27_15-12-12.2gwhmzzk65w0.png)
 
 ## 修改图标
 

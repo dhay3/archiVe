@@ -16,7 +16,7 @@ https://www.howtogeek.com/669835/how-to-change-your-default-shell-on-linux-with-
 
    使用双`tab`键可以，可以通过键盘上下左右来移动选择
 
-   <img src="D:\asset\note\imgs\_Shell\Snipaste_2020-12-27_14-12-36.png" style="zoom:80%;" />
+   ![Snipaste_2020-12-27_14-12-36](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2020-12-27_14-12-36.2xcjy0n8dwu0.png)
 
    ==输入部分路径同样可以补全==
 
@@ -32,7 +32,7 @@ https://www.howtogeek.com/669835/how-to-change-your-default-shell-on-linux-with-
 
    在输入错误的命令后，zsh会在下一条命令输出错误码127
 
-   <img src="D:\asset\note\imgs\_Shell\Snipaste_2020-12-27_14-17-14.png" style="zoom:80%;" />
+   ![Snipaste_2020-12-27_14-17-14](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2020-12-27_14-17-14.44psrv22j440.png)
 
 3. 支持插件
 

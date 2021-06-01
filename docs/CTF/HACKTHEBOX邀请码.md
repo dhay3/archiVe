@@ -10,7 +10,7 @@
 
 发现`inviteapi.min.js`的代码明显有语法上的问题
 
-<img src="..\..\..\imgs\_CTF\Snipaste_2020-09-12_10-12-03.png"/>
+<img src="..\..\imgs\_CTF\Snipaste_2020-09-12_10-12-03.png"/>
 
 这里以管道符拆分会得到一个函数, makeInviteCode, 让我们调用以下这个函数
 
