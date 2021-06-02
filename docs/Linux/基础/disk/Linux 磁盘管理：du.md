@@ -2,9 +2,11 @@
 
 `du`命令用于查看文件的大小，==`du`默认会遍历当前所有目录==
 
+syntax：`du [options] [file]`
+
 - -a
 
-  du默认只输目录的大小，可以使用该参数输出文件
+  ==du默认只输目录的大小以KB为单位==，可以使用该参数输出文件或是通配符`*`
 
   ```bash
   cpl in ~/.ssh λ du 
@@ -15,6 +17,29 @@
   4	./id_rsa
   4	./config
   20	.
+  
+  cpl in ~ λ du * | more
+  4       Applications/.trash
+  8       Applications
+  1345556 Desktop
+  ```
+
+- -s
+
+  统计当前目录下所有文件大小的总计
+
+  ```
+  cpl in ~/note/docs/Linux/基础/disk on master ● λ du -sh
+  132K
+  cpl in ~/note/docs/Linux/基础/disk on master ● λ du -sh *
+  4.0K    Linux 磁盘管理：blkid.md
+  4.0K    Linux 磁盘管理： dd.md
+  4.0K    Linux 磁盘管理：du.md
+  16K     Linux 磁盘管理：fdisk.md
+  4.0K    Linux 磁盘管理：fsck.md
+  4.0K    Linux 磁盘管理：gdisk.md
+  4.0K    Linux 磁盘管理：growpart.md
+  ....
   ```
 
 - -h | --human-readable
@@ -67,20 +92,5 @@
   ```
   du --exclude='*.o'
   ```
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

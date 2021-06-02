@@ -14,7 +14,7 @@ Change: 2020-09-09 00:12:37.989966656 -0400
  Birth: -                    
 ```
 
-- Size：文件字节数
+- Size：文件字节数(bytes)，比`du`精确(du默认以kb为单位)，但是没有精度转换
 - IO Block：数据块大小
 - Links：链接数，即有多少文件名指向这个inode
 - Access：文件的读写权限，创建文件的用户ID和组ID
@@ -26,3 +26,12 @@ Change: 2020-09-09 00:12:37.989966656 -0400
 
 - Modify-time：==文件内容上一次变动的时间==
 - Change-time：==metadata上一次变动的时间==
+
+可以通过`-c | --format`指定输出内容
+
+```
+#以字节输出大小
+cpl in ~/note/docs/Linux/基础/disk on master ● λ stat -c %s Linux\ 磁盘管理：blkid.md 
+1754
+```
+

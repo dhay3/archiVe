@@ -4,15 +4,23 @@
 
 https://www.linux-kvm.org/page/Main_Page
 
+https://wiki.archlinux.org/title/KVM
+
 Kernel-based Virtual Machine(KVM)，是一种针对Linux_x86架构的虚拟化方案。可以在Linux上运行Linux 或者是 Windows镜像(类似的有vmware和virtualbox)。在2.6.20之后被加入到Linux，由QEMU作为GUI。
 
 ##  前置条件
 
-1. CPU 支持虚拟化
+1. CPU 支持虚拟化，如果是intel值为VT-x，如果是AMD则为AMD-V
 
-2. 配置KVM模块
+   ```
+   pl in ~ λ lscpu| grep -i virtual
+   Address sizes:                   48 bits physical, 48 bits virtual
+   Virtualization:                  AMD-V
+   ```
 
-   查看KVM模块
+   如果不支持需要在BIOS中开启虚拟化
+
+2. kernel是否支持KVM，使用如下命令查看KVM模块
 
    ```
    lsmod | grep kvm

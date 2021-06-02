@@ -44,6 +44,10 @@ drwxr-xr-x root root     4 KB Thu Jan 21 06:42:41 2021  test
 .rw-r--r-- root root    35 B  Thu Jan 21 06:43:05 2021  test.sh   
 ```
 
+- `status=progress`
+
+  显示dd的进度
+
 ## 案例
 
 1. 使用`/dev/zero`创建空文件
