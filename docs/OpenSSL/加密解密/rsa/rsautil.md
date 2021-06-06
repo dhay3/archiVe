@@ -24,7 +24,7 @@ sign, verify, encrypt and decrypt data using the RSA algorithm
 
 - -sign
 
-  对数据签名，需要私钥
+  对数据签名，需要私钥。==默认会对in file进行hash计算==
 
 - -verify
 

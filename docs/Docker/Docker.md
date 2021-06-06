@@ -72,6 +72,8 @@
    systemctl enable docker
    ```
 
+6. [shell completion](https://docs.docker.com/compose/completion/)
+
 ### 镜像命令
 
 https://www.runoob.com/docker/docker-tutorial.html

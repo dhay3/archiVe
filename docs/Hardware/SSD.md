@@ -38,3 +38,4 @@ NGFF(Next Generation Form Factor)，也被称为M.2 SSD，使用M.2接口并且�
 NVME PCIe M.2 SSD 是目前市面上速度最快的SSD，同样使用M.2接口。读写速度大约在3500到3000MB/s，价格相对较贵。主板需要支持NVME才行
 
 ![Samsung-960-EVO-M](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Samsung-960-EVO-M.2-SSD-NVMe-2.6vdlcbexduk0.jpg)
+

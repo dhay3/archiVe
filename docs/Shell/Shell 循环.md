@@ -169,7 +169,7 @@ done
 ```
 cpl in /tmp/t λ ls
  1   2   3   4   5
-cpl in /tmp/t λ for file in *;do echo $file;done
+cpl in /tmp/t λ for file in /tmp/t/*;do echo $file;done
 1
 2
 3

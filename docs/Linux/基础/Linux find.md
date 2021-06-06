@@ -107,13 +107,25 @@ find命令直接搜索硬盘速度较慢，如果没有指定starting-point默�
 
 - `-exec`
 
-  找到文件后执行
+  https://stackoverflow.com/questions/2961673/find-missing-argument-to-exec
+
+  找到文件后执行，直到遇到第一个`;`终止(也就是说需要在exec末尾添加`\;`)。`{}`内的值会被替换成find找到的值
+
+  ```
+  find /tmp/foo -exec echo {} \;
+  ```
+
+  如果想要执行shell，可以使用如下方法
+
+  ```
+  find /tmp/foo -exec sh -c 'ffmpeg ... && rm'
+  ```
 
 - `-ok command`
 
-- `-print`
+- `-print | -print0`  
 
-  将匹配后的文件输出，默认动作
+  将匹配后的文件输出并换行，默认动作。print0不换行输出
 
 ## 案例
 

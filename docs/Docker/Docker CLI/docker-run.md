@@ -73,7 +73,7 @@ docker使用`--network`来指定生成的容器该怎么创建容器。可以使
 
    生成的容器和宿主机的iface配置相同(使用宿主机的 IP 和端口。但是，容器的其他方面，如文件系统、进程列表等还是和宿主机隔离的)，==如果对网络要求较高推荐采用这种方法，但是由于容器可以访问宿主的网络信息，所以不安全。==
 
-   <img src="D:\asset\note\imgs\_docker\Snipaste_2021-02-23_10-06-14.png" style="zoom:80%;" />
+   <img src="..\..\..\imgs\_docker\Snipaste_2021-02-23_10-06-14.png" style="zoom:80%;" />
 
    ```
    root in ~ λ docker run --network=host -itd --name t4 busybox
@@ -113,7 +113,7 @@ docker使用`--network`来指定生成的容器该怎么创建容器。可以使
 
    与指定的容器共享网络(NIC)。在宿主机上只会生成一个vethxxx。t1与t2的网络信息相同。
 
-   <img src="D:\asset\note\imgs\_docker\Snipaste_2021-02-23_10-11-21.png" style="zoom:80%;" />
+   <img src="..\..\..\imgs\_docker\Snipaste_2021-02-23_10-11-21.png" style="zoom:80%;" />
 
    ```
    root in /opt/t λ docker run -itd --name t1 busybox
@@ -319,7 +319,7 @@ pattern：`docker run -v [host-src:]container-dest`
    docker: Error response from daemon: OCI runtime create failed: container_linux.go:367: starting container process caused: process_linux.go:495: container init caused: rootfs_linux.go:60: mounting "/etc/resolv.conf" to rootfs at "/var/lib/docker/overlay2/ddc26e2277a1184b05ba52a10d9189ec3df1aa0643ad44a65556bbda5996306c/merged/etc" caused: not a directory: unknown: Are you trying to mount a directory onto a file (or vice-versa)? Check if the specified host path exists and is the expected type.
    ```
 
-8. 本地存在文件夹挂载到容器存在文件夹，本地文件夹内容覆盖容器文件夹中内容
+8. 本地存在文件夹挂载到容器存在文件夹，==本地文件夹内容覆盖容器文件夹中内容==
 
    ```
    root in /opt/b λ docker run -itd --name n3 --rm -v /opt:/etc nginx  sh
@@ -401,6 +401,16 @@ root in ~ λ docker exec -it t3 /bin/bash
 
   ```
   -p 1234-1236:1234/tcp
+  ```
+  
+  如果没有指定宿主机的端口，docker会随机分配一个端口，并同时绑定IPv4和IPv6
+  
+  ```
+  cpl in /sharing/conf λ docker run -itd -p 8888 --name b1 busybox
+  cbbdb5d5e5244aa3b011f1cc79db076f09af62f4a0006ae1a521338f53f2ee26
+  cpl in /sharing/conf λ docker ps
+  CONTAINER ID   IMAGE     COMMAND   CREATED         STATUS        PORTS                                         NAMES
+  cbbdb5d5e524   busybox   "sh"      2 seconds ago   Up 1 second   0.0.0.0:49153->8888/tcp, :::49153->8888/tcp   b1
   ```
 
 ## ENV
