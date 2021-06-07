@@ -18,7 +18,7 @@ target通常package name或是URI
 
 ### -D | --database
 
-查看和修改pacman的db
+==查看和修改pacman的db==
 
 ```bash
 cpl in ~ λ sudo pacman -Dv
@@ -97,7 +97,11 @@ sync form remote server 。和apt一样如果一个package存在于多个pkg中�
   pacman -Syu
   ```
 
+  使用`-yy`表示强制更新
   
+  ```
+  pacman -Syy
+  ```
 
 ### -R | --remove
 

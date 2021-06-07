@@ -1,6 +1,6 @@
 # Shell timeout
 
-timeout用于杀掉任务在指定时间内还在运行的命令，默认发送SIGTERM
+timeout用于杀掉任务在指定时间内还在运行的命令，==如果命令已经结束timeout就会失效==，默认发送SIGTERM
 
 syntax：`timeout [option] <duration> <command>`
 

@@ -1,5 +1,7 @@
 # Inputrc
 
+> zsh不使用`realine`所以也不使用`inputrc`，而是使用`zle`
+
 参考：
 
 https://linux.die.net/man/3/readline

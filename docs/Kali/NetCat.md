@@ -52,6 +52,22 @@ Best: /bin/nc.openbsd
 Value: /bin/nc.traditional
 ```
 
+## modes
+
+nc有三种模式分别为：connect mode，listen mode，tunnel mode
+
+- connect mode
+
+  只针对客户端，客户端通过指定端口连接服务端
+
+- listen mode
+
+  只针对服务端，服务端监听端口连接
+
+- tunnel mode
+
+  一般用在代理，通过nc tunnel建立连接。==但是netcat数据不是加密的==
+
 ## parameter
 
 - `-e`
@@ -75,6 +91,8 @@ Value: /bin/nc.traditional
   ```
 
 - `-l`
+
+  > 如果使用了`-l`参数，netcat会一直监听连接所以`-w`参数不生效
 
   nc.opensbsd
 
@@ -102,11 +120,13 @@ Value: /bin/nc.traditional
 
 - `-u`
 
-  ==使用udp协议，默认使用tcp==
+  ==使用udp协议，默认使用tcp。==openvpn默认使用udp建立连接，可以是使用该参数进行校验
 
 - `-w`
 
-  指定多少空闲时间之后端口连接
+  如果在服务端使用表示等待imcoming连接(==不算已经建立的连接==)的最长时间
+
+  如果在客户端使用表示建立socket的最长时间
 
 - `-X proxy_protocal`
 
@@ -143,12 +163,49 @@ Value: /bin/nc.traditional
 
 ### file transfer
 
+参考：
+
+https://nakkaya.com/2009/04/15/using-netcat-for-file-transfers/
+
 ```
-#server
+#receiver
 root in ~ λ nc -l -p 10086 >| ddos
 
-#client
+#sender
 root in /usr/local/\/go_ddos/DDoS on master λ nc 8.135.0.171 10086 < ddos.go
+```
+
+==客户端`-w`参数几乎没有什么意义，但是可以在客户端使用`timeout`来主动结束`nc`，不保证数据传输完毕==
+
+```
+#reciever
+root in /home/ubuntu λ nc  10 -lp 10086 > file
+
+#sender
+cpl in ~ λ timeout -k 10 10 netcat 82.157.1.137 10086 < file1
+```
+
+> 如果将数据发送给另外一个进程，就不会在stdout中输出。
+
+除次之外传输数据的时候还可以进行压缩，sender和receiver都需要有相应的压缩工具
+
+```
+#receiver
+root in /home/ubuntu λ nc -lp 10086  | gzip -dc > file
+
+#sender
+cpl in ~ λ gzip -c 1 | nc 82.157.0.137 10086
+```
+
+也可以结合`pv`在传输过程中显示progress bar
+
+```
+#sender,stdout的内容被发送到了reciever，然后输出stderr内容
+cpl in ~ λ pv file | nc 82.157.1.137 10086
+ 100 B 0:00:00 [1.67MiB/s] [==============================================================================>] 100%
+ 
+#reciever
+root in /home/ubuntu λ nc -w 10 -lp 10086 > file
 ```
 
 ### port scanning
