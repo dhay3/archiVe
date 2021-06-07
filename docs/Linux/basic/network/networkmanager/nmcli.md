@@ -63,6 +63,10 @@ syntax：`nmcli [options] [command]`
   org.freedesktop.NetworkManager.enable-disable-statistics          yes 
   ```
 
+- reload
+
+  ==重新读取NetworkManager配置==
+
 ### networking command
 
 - ==on | off==

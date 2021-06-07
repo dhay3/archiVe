@@ -61,9 +61,19 @@ plugins=a,b,c
 
   有如下几个值：
 
-  1. default：NC会更新`/etc/resolv.conf`使用现有激活的连接
+  1. default：NC会更新`/etc/resolv.conf`使用当前连接网络的DNS配置，在`/etc/NetworkManager/system-connections/xxx.connection`中配置
+
   2. dnsmasq：使用dnsmasq做为本地的caching DNS server
+
+     ```
+     [main]
+     dns=dnsmasq
+     ```
+
+     当使用`nmcli general reload`会重新读取NetworkManager配置，然后启动dnsmasq
+
   3. systemd-resolved：NC会将DNS配置推送给systemd-resolve
+
   4. none：NetworkManager不会修改`resolv.conf`配置。同时也会配置rc-manager=umanaged
 
 - rc-manager
@@ -93,4 +103,6 @@ plugins=a,b,c
 针对单独NIC的配置
 
 
+
+## 例子
 
