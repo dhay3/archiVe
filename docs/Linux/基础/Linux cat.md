@@ -4,7 +4,7 @@
 
 https://blog.csdn.net/zongshi1992/article/details/71693045
 
-concatenate，会将stdin输入到testcat中
+concatenate，会将stdin输入到testcat中，==直达读取到EOF时停止==
 
 ```
 root in /opt λ cat > testcat 

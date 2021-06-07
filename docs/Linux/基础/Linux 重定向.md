@@ -14,7 +14,7 @@ POSIX 操作系统会分配一个数字用于跟踪打开的文件，这个数�
 2. 标准输出 stdout 1 
 3. 错误输出 stderr 2 
 
-一条shell命令，都会继承其父进程的文件描述符，因此所有的shell命令，都会默认有三个文件描述符。
+一条shell命令，都会继承其父进程的文件描述符，因此==所有的shell命令，都会默认有三个文件描述符。==
 
 <img src="..\..\..\imgs\_Linux\480px-Stdstreams-notitle.svg.png"/>
 
@@ -47,7 +47,7 @@ lrwx------ root root 64 B Wed Mar 24 09:31:25 2021  2 ⇒ /dev/pts/0
 
 syntax：`[n]< file | [n]<< file`
 
-将文件描述符n重定向到word指代的文件(以只读方式打开)，如果n是0可以省略，`0< file`
+将文件描述符n重定向到file指代的文件(以只读方式打开，例如：cat对应binary的stdin)，如果n是0可以省略，`0< file`
 
 ```
 root in /opt λ cat 0< /etc/hostname
@@ -63,7 +63,7 @@ ubuntu18.04
 
 syntax：`[n]> file | [n]>> file`
 
-将文件描述符重定向到word指定的文件(以写方式打开)，如果n是1可以省略，`1> file`
+将文件描述符重定向到file指定的文件(以写方式打开)，如果n是1可以省略，`1> file`
 
 ```
 root in /opt λ cat /etc/hostname 1> t;cat t
@@ -137,7 +137,7 @@ stdout1 --> file
 stderr2 --> file
 ```
 
-### cmd 2>&1 > file
+### cmd 2>& 1 > file
 
 扩展成cmd 2>&1 1>file
 
@@ -184,13 +184,34 @@ some-command > /tmp/output.txt
 
 但是你能使用`>|`符号，表示强制重定向
 
-### <>
+### [n]<>file
 
-双向重定向，会导致阻塞，可以通过`timeout`命令来终止
+双向重定向，同时打开n作为写和读的文件描述符，==默认使用stdin==
 
 ```
-[root@8d3d229c-4aab-4812-96b9-37c8bc47a1d8 opt]# timeout 2s  cat <> /dev/zero
+#会将EOF写入到文件中
+[cpl@cyberpelican ~]$ echo test > file1
+#cat会读取到EOF然后停止，等价与重新写入到file1
+[cpl@cyberpelican ~]$ cat 0<> file1
+test
+[cpl@cyberpelican ~]$ cat file1
+test
 ```
+
+==结合exec有特俗用法==，当前shell &3的内容被输入到tempfile，tempfile的内容被输入到当前shell  &3，删除文件时还是可以从&3读取到内容
+
+```
+[cpl@cyberpelican ~]$ F=$(mktemp)
+[cpl@cyberpelican ~]$ exec 3<>$F
+[cpl@cyberpelican ~]$ echo hello world > $F
+[cpl@cyberpelican ~]$ cat $F
+hello world
+[cpl@cyberpelican ~]$ rm -f $F
+[cpl@cyberpelican ~]$ cat <&3
+hello world
+```
+
+
 
 ### exec 绑定重定向
 

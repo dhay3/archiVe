@@ -137,12 +137,12 @@ pattern：`tar [options] output input`
   解压文件，一般与`-f`参数一起使用
 
   ```
-  
+  cpl in ~ λ tar -xf 1.tar
   ```
 
 - -f
 
-  使用压缩文件或是普通文件，一般与`-c`或`-x`参数一起使用
+  ==指定使用的压缩文件或压缩后的文件名==，一般与`-c`或`-x`参数一起使用
 
   ```
   [root@chz Desktop]# tar -cf test.tar test1 test2
@@ -172,7 +172,7 @@ pattern：`tar [options] output input`
   [root@chz test]# tar -xvf test.tar.gz -C /opt
   ```
 
-## zip
+## zip unzip
 
 将文件压缩成`.zip`
 
@@ -183,8 +183,6 @@ pattern：`tar [options] output input`
 test1  test.zip
 ```
 
-## unzip
-
 解压`.zip`文件
 
 ```
@@ -192,5 +190,14 @@ test1  test.zip
 Archive:  test.zip
 replace test1? [y]es, [n]o, [A]ll, [N]one, [r]ename: y
  extracting: test1    
+```
+
+## xz  unxz
+
+将文件解压缩成`.xz`
+
+```
+xz 1
+unxz 1.xz
 ```
 
