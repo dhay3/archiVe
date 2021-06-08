@@ -6,8 +6,6 @@ https://www.linux.com/topic/networking/how-wrestle-control-sudo-sudoers/
 
 https://linux.die.net/man/5/sudoers
 
-
-
 sudoer默认会去读取，`/etc/sudoers`和`/etc/sudo.d`下的文件
 
 `/etc/sudoers`使用Backus-Naur Form(EBNF)编写，以如下格式定义
@@ -139,21 +137,39 @@ Defaults        always_set_home
 Defaults        env_reset
 ```
 
+同样可以使用`！`来表示关闭option
+
+```
+Defaults 		!pwfeedback
+```
+
 ### boolean flags
 
-该类别没有值
+该类别无值，显示表明就是on，可以使用`Defaults !options`来取消默认值
 
-- always_set_home：设置HOME环境变量
+- always_set_home：设置HOME环境变量，默认off
 
-- authenticate：每次调用命令前需要输入密码认证，但是可以被PASSWD和NOPASSWD覆写
+- authenticate：每次调用命令前需要输入密码认证，但是可以被PASSWD和NOPASSWD覆写，默认on
 
-- compress_io：使用zlib对I/O日志压缩
+- compress_io：使用zlib对I/O日志压缩，如果支出zlib默认为on
 
-- env_editor：visudo使用的编译器，需要设置SUDO_EDITOR，VISUAL，EDITOR环境变量
+- env_editor：visudo使用的编译器，需要设置SUDO_EDITOR，VISUAL，EDITOR环境变量。默认为on
 
-- env_reset：sudo使用最小范围的环境变量
+- env_reset：sudo只保留(TERM，PATH，HOME，MAIL，SHELL，LOGNAM，SUDO_*，USER)作为环境变量，如果设置的secure_path则使用该值作为PATH，==默认启用==。可以使用`printenv variblae`来查看，==使用`echo $varible`只是读取到当前shell中变量，而不是sudo扮演用户的变量==
 
-- fast_glob：快速模式扩展
+  ```
+  Defaults	！env_rest
+  ➜  sudoers.d sudo printenv http_proxy
+  socks5://127.0.0.1:1089
+  ➜  sudoers.d sudo printenv USER     
+  root
+  ```
+
+  https://superuser.com/questions/232231/how-do-i-make-sudo-preserve-my-environment-variables
+
+- fast_glob：快速模式扩展。==相对路劲中不能使用模式扩展，例如`cd ../etc/`，可以防止路径遍历==，默认关闭
+
+- insults：用户密码输入错误时提示
 
 - mail_always：使用sudo命令时，发送邮件
 
@@ -182,45 +198,65 @@ Defaults        env_reset
   cowrie ALL=(ALL:ALL) ALL
   ```
 
-  
+- sudoedit_follow
+
+  sudoedit可以修改连接文件对应的我文件
 
 ### integers
 
 该类别需要指定一个整数
 
-- passwd_timeout：sudo password timeout
-- timestamp_timeout：elapse before **sudo** will ask for a passwd again
+- command_timeout：命令允许运行的最长时间
+- passwd_tries：尝试密码输入的最大次数
+
+- passwd_timeout：sudo password prompt timeout，mins，0表示没有时限，默认5mins
+- ==timestamp_timeout==：elapse before **sudo** will ask for a passwd again，默认4mins，0表示每次使用sudo时都必须提供密码
+- umask ：umask使用的值
 
 ### string
 
 该类别需要指定一个自负床
 
 - badpass_message：登入错误后显示的错误信息
-
 - editor：sudoedit使用的编辑器，==只有在没有设置EDITOR的环境变量时才生效==，可以通过设置环境变量
 - env_keep：env_reset开启时的变量
 - env_reset：env_reset开启时需要移除的变量
 
+- passprompt：提示的prompt格式，默认`[sudo] password for %p`
+- runas_default：默认扮演的角色，默认使用root
+- sudoers_locale：sudo使用的locale设置，默认`C`
+- env_file：包含sudo使用的环境变量，自会添加不在env_keep和env_reset中的变量
+- logfile：sudo log存储的位置，默认由syslog管理
+- secure_path：$PATH的值
+
+## sudo and environment
+
+sudo默认使用`env_reset`即最小的环境变量集，例如在当前用户设置了`http_proxy`，但是使用了`sudo pacman -Sy`是读取不到`http_proxy`的。但是可以通过`evn_keep`可以从invoking user’s environment中继承过来。如果关闭了`env_reset`，并在`env_delete`中没有指明，那么会从invoking user’s enviroment中继承所有的环境变量
+
 ## 例子
 
 ```
-Defaults        always_set_home
-Defaults        compress_io
-#Defaults       env_editor
-Defaults        fast_glob
-Defaults        env_reset
-Defaults        mail_badpass
+#boolean options
+Defaults        !always_set_home 
+Defaults        compress_io 
+Defaults        fast_glob 
 Defaults        mail_no_host
-Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
 Defaults        pwfeedback
 Defaults        targetpw
-Defaults        passwd_timeout=5
-Defaults        editor=/usr/bin/vim.basic
+Defaults        sudoedit_follow
+Defaults		!reset_env
 
-root    ALL=(ALL:ALL) ALL
-#tz使用命令时无需密码
-tz ALL=(ALL:ALL) NOPASSWD: ALL
-cowrie ALL=(ALL:ALL) ALL
-ubuntu  ALL=(:root) NOPASSWD: /bin/su
+#integer options
+Defaults        passwd_timeout=1
+Defaults        passwd_tries=2
+Defaults        timestamp_timeout=0
+
+#string options
+Defaults        passprompt="password for [%h@%p]"
+Defaults        editor="/usr/bin/vim"
+Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+
+#cpl    ALL=(ALL:ALL) NOPASSWD:ALL
+cpl     ALL=(ALL:ALL) ALL
 ```
 
