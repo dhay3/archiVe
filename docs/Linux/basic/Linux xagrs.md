@@ -41,7 +41,7 @@ file1  minikube  v2ray-linux-64  xargs
 
   https://www.cnblogs.com/paul8339/p/7521027.html
 
-  将stdout放入`{}`中，`-I`需要只当标识符
+  将stdout放入`{}`中，`-I`需要指定标识符
 
   ```
   ############### 操作的目录下的文件###############
