@@ -112,9 +112,9 @@ https://docs.voidlinux.org/installation/live-images/partitions.html
 
 - UEFI
 
-  | 分区表 | 分区位置 | 分区大小  | 分区类型   | 挂载点      |
-  | ------ | -------- | --------- | ---------- | ----------- |
-  | GPT    | 任意     | 200MB-1GB | EFI System | `/boot/efi` |
+  | 分区表 | 分区位置 | 分区大小  | 分区类型   | 挂载点               | 文件系统 |
+  | ------ | -------- | --------- | ---------- | -------------------- | -------- |
+  | GPT    | 任意     | 200MB-1GB | EFI System | `/boot/efi`或`/boot` | fat32    |
 
   
 
