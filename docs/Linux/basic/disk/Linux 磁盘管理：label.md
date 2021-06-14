@@ -38,3 +38,4 @@ cpl in ~ λ sudo ntfslabel /dev/sdb5
 win-store
 ```
 
+还有fatlabel，exfatlabel
