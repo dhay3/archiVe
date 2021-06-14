@@ -55,7 +55,7 @@ syntax：`qemu-system-x86_64 [options] [disk_iamge]`
   当宿主机没有图形化功能时，可以设置vnc。其他人可以通过`vnc://IP:Port`连接虚拟机，例如：
 
   ```
-  kvm -hda disk01.img -cdrom os.iso -m 512 -boot d -vnc IP:1
+  qemu-system-x86_64 -hda disk01.img -cdrom os.iso -m 512 -boot d -vnc IP:1
   ```
 
   
