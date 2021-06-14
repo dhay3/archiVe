@@ -117,6 +117,8 @@
   mount -a  #挂载/etc/fstab中的所有filesystem
   ```
 
+  `-t`参数用于表明使用的fs，==如果分区为格式化同样还是需要先格式化(make filesys)==。如果这里要挂载的是移动设备，已近格式化了。可以使用该参数指明使用的fs，如果不指明系统会自动识别。
+
 - umount
 
   将分区卸载`umount <dev> `
