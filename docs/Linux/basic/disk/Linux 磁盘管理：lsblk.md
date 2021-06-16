@@ -49,6 +49,36 @@ sr0     11:0    1 1024M  0 rom
 
 ## 常用参数
 
+- `-o`
+
+  输出指定列，可以使用`+UUID`表示在默认输出添加额外的列。使用`--help`输出可用的列
+
+  ```
+  cpl in /mnt λ lsblk -o +label
+  NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT                                 LABEL
+  loop0         7:0    0 162.9M  1 loop /var/lib/snapd/snap/gnome-3-28-1804/145    
+  loop1         7:1    0  32.1M  1 loop /var/lib/snapd/snap/snapd/12057            
+  loop2         7:2    0  55.4M  1 loop /var/lib/snapd/snap/core18/2066            
+  loop3         7:3    0  76.8M  1 loop /var/lib/snapd/snap/termius-app/77         
+  loop4         7:4    0  65.1M  1 loop /var/lib/snapd/snap/gtk-common-themes/1515 
+  loop5         7:5    0  32.1M  1 loop /var/lib/snapd/snap/snapd/11841            
+  loop6         7:6    0  76.8M  1 loop /var/lib/snapd/snap/termius-app/76         
+  sda           8:0    0 238.5G  0 disk                                            
+  ├─sda1        8:1    0   3.6G  0 part                                            Kali Live
+  ├─sda2        8:2    0   736K  0 part                                            
+  ├─sda3        8:3    0  56.4G  0 part                                            persistence
+  ├─sda4        8:4    0    60G  0 part                                            qemu-disk
+  └─sda5        8:5    0    80G  0 part                                            store
+  nvme0n1     259:0    0 476.9G  0 disk                                            
+  ├─nvme0n1p1 259:1    0   260M  0 part                                            SYSTEM_DRV
+  ├─nvme0n1p2 259:2    0    16M  0 part                                            
+  ├─nvme0n1p3 259:3    0   100G  0 part                                            WIN
+  ├─nvme0n1p4 259:4    0  1000M  0 part                                            WINRE_DRV
+  ├─nvme0n1p5 259:5    0     2G  0 part /boot/efi                                  NO_LABEL
+  ├─nvme0n1p6 259:6    0     4G  0 part [SWAP]                                     
+  └─nvme0n1p7 259:7    0   250G  0 part /                                         
+  ```
+
 - `-f`
 
   列出磁盘的使用情况，同时展示文件系统==替代blkid==
