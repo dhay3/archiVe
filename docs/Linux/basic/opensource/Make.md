@@ -58,7 +58,7 @@ rm test*
 
 ```
 
-但是，如果当前目录中，正好有一个文件叫做clean，那么这个命令不会被执行。
+但是，==如果当前目录中，正好有一个文件叫做clean，那么这个命令不会被执行。==
 
 为了避免这种情况，可以明确声明clean是phony target
 
@@ -75,22 +75,19 @@ rm test*
 
 ### prerequisites
 
-前置条件通常为一组文件名，之间用空格分隔。它指定了target是否需要重新构建的判断标准：只要有一个前置文件不存在，"target"就不能构建。
+==前置条件通常为一组文件名==，之间用空格分隔。它指定了target是否需要重新构建的判断标准：只要有一个前置文件不存在，"target"就不能构建。
 
 ```
-[root@cyberpelican opt]# cat Makefile 
-source:
-	echo "this is source" >> source.txt
-	
-[root@cyberpelican opt]# make source
-echo "this is source" >> source.txt
-[root@cyberpelican opt]# cat source.txt 
-this is source
-[root@cyberpelican opt]# make source
-echo "this is source" >> source.txt
-[root@cyberpelican opt]# cat source.txt 
-this is source
-this is source
+cpl in /sharing λ cat Makefile 
+test: a.txt b.txt
+        echo test
+cpl in /sharing λ make test 
+make: *** No rule to make target 'a.txt', needed by 'test'.  Stop.
+cpl in /sharing λ echo a > a.txt
+cpl in /sharing λ echo a > b.txt
+cpl in /sharing λ make test 
+echo test
+test
 ```
 
 ### commands

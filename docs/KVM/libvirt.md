@@ -17,5 +17,5 @@ libvirt针对providers/hypervisors提供简单的管理方式，例如kvm/qemu�
 
 libvirt使用server/client模式，server只需要安装在宿主机上。`pacman -S libvirt`安装server，client是提供给用户的interface用来管理虚拟机，可以使用的client参考https://wiki.archlinux.org/title/Libvirt#Client
 
-## 配置
+==通常会使用virsh(CLI)，virtual manager(GUI)==
 

@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6e28b1cc-4f85-4826-9d67-df0f0e92353a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../../README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Docker/Docker compose.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Docker/Docker compose/docker-compose cli.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../Docker/Docker compose/docker-compose cli.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Kali/hydra/Hydra.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../Kali/hydra/Hydra.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Linux/基础/包管理/包管理：Linux yum.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../OpenSSL/openssl 证书.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../OpenSSL/openssl 证书.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../SSH/SSH 客户端连接.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../SSH/SSH 客户端连接.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../SSH/SSH 密钥校验.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../SSH/SSH 密钥校验.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../KVM/QEMU.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../KVM/QEMU.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../KVM/qemu-system.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../KVM/qemu-system.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Linux/basic/opensource/Make.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../Linux/basic/opensource/Make.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,13 +57,14 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Shell Script" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="last.edited.regexp" value="*/" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../../workspace_for_go/learn" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />

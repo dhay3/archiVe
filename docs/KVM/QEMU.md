@@ -9,3 +9,4 @@ qemu和vmware，virtualbox一样是一款虚拟化模拟器，和他们不同的
 ## 虚拟机
 
 运行qemu需要ISO
+
