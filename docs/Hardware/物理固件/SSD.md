@@ -25,17 +25,17 @@ SATA SSD 使用和 HHD 一样的SATA(Serial Advanced Technology Attachment)接�
 
 ![Transcend-mSATA-SSD](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Transcend-mSATA-SSD.8vq89iht4io.jpg)
 
-## NGFF M.2 SSD
+## NGFF SSD
 
-NGFF(Next Generation Form Factor)，也被称为M.2 SSD，使用M.2接口并且和mSATA设备不兼容。虽然mSATA接口兼容SATA1.0到SATA3.0，但是不兼容USB3.0和PCIe 3.0。但是M.2接口支持SATA3.0，USB3.0，PCIe 3.0
+NGFF(Next Generation Form Factor) SSD，也被称为M.2 SSD，使用M.2接口（==PCIe mini card物理接口==）并且和mSATA设备不兼容。虽然mSATA接口兼容SATA1.0到SATA3.0，但是不兼容USB3.0和PCIe 3.0。但是M.2接口支持SATA3.0，USB3.0，PCIe 3.0
 
 速率和SATA3.0 SSD 和 mSATA SSD差不多，但是同时有SATA和mSATA的优点
 
 ![Samsung-860-EVO-M](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Samsung-860-EVO-M.2-SSD-2.7eiu9rh2xyw0.jpg)
 
-## NVME PCIe M.2 SSD
+## NVME M.2 SSD
 
-NVME PCIe M.2 SSD 是目前市面上速度最快的SSD，同样使用M.2接口。读写速度大约在3500到3000MB/s，价格相对较贵。主板需要支持NVME才行
+NVME  M.2 SSD（使用PCIe mini card物理接口） 是目前市面上速度最快的SSD，同样使用M.2接口，但是使用NVMe协议。读写速度大约在3500到3000MB/s，价格相对较贵。主板需要支持NVME才行
 
 ![Samsung-960-EVO-M](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Samsung-960-EVO-M.2-SSD-NVMe-2.6vdlcbexduk0.jpg)
 

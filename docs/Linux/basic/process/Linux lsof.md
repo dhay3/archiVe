@@ -6,7 +6,7 @@
 
 ## 概述
 
-lsof 默认用于展示当前所有进程打开的文件，如果携带了参数将不会显示完整的列数。
+lsof 默认用于展示当前所有进程打开的文件，可以指定pid或命令名
 
 ```
 root in /opt λ lsof | more
@@ -122,9 +122,27 @@ systemd      1                root  mem       REG              252,1   121016   
   apache2    713        www-data    6u  IPv6  18442      0t0  TCP *:https (LISTEN)
   ```
 
+## 例子
 
+当磁盘在忙的时候无法卸载，可以通过lsof查看占用的文件，然后关闭进程
 
+```
+cpl in /mnt λ sudo umount /dev/sda4
+umount: /mnt/win: target is busy.
+cpl in /mnt λ lsof /dev/sda4
+COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+zsh      8323  cpl  cwd    DIR    8,4     4096    2 /mnt/win
+zsh     61660  cpl  cwd    DIR    8,4     4096    2 /mnt/win
+vim     61819  cpl  cwd    DIR    8,4     4096    2 /mnt/win
+zsh     70464  cpl  cwd    DIR    8,4     4096    2 /mnt/win
+zsh     77976  cpl  cwd    DIR    8,4     4096    2 /mnt/win
+man     99630  cpl  cwd    DIR    8,4     4096    2 /mnt/win
+man     99639  cpl  cwd    DIR    8,4     4096    2 /mnt/win
+less    99640  cpl  cwd    DIR    8,4     4096    2 /mnt/win
 
+cpl in /mnt λ lsof /dev/sda4  | sed -n '2,$p' | awk '{print($2)}' | xargs -i kill -9 {}
+cpl in /mnt λ sudo umount /dev/sda4 
+```
 
 
 
