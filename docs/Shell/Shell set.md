@@ -4,14 +4,10 @@ https://www.gnu.org/software/bash/manual/bash.html#The-Set-Builtin
 
 set用于设定shell该怎么执。
 
-> 所有参数都可以使用`+`来关闭功能选项
->
-> 通常使用`set -eo pipefail`，也可以使用`bash -euo pipefail script.sh`
->
 > 如果想要查看具体的内建命令如何使用
 >
 > 1. 非bash使用`bash -c "help command"`
-> 2. bash使用`help command`
+>2. bash使用`help command`
 
 ## set -a
 
@@ -170,3 +166,11 @@ a
 ### verbose
 
 等价`set -v`
+
+## 注意点
+
+1. 所有参数都可以使用`+`来关闭功能选项
+
+2. 通常使用`set -eo pipefail`，也可以使用`bash -euo pipefail script.sh`
+3. 小新使用`set -e`如果将其放在`PATH`目录中或是使用链接指向的文件中使用了该命令，在使用shell时就会解析文件。==这会导致接下来使用的shell错误就会退出。==
+
