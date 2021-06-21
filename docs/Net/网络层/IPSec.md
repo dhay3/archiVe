@@ -8,7 +8,7 @@ https://www.netadmin.com.tw/netadmin/zh-tw/technology/97CAE3300E9546B0A3A9443B66
 
 Internet Protocol Security（IPsec）是一个协议包，对IP的分组进行加密来保护IP协议，==通常使用500端口，处在网络层==。
 
-![](D:\asset\note\imgs\_aliyun\Snipaste_2021-04-21_12-49-20.png)
+![Snipaste_2021-04-21_12-49-20](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2021-04-21_12-49-20.1ht3jgiy6thc.png)
 
 通过电脑软件和路由器建立IPSec VPN Tunnel
 
