@@ -41,6 +41,8 @@ Terminal=false
 Categories=Education;Languages;Java;
 ```
 
+注意需要修改文件的所有权例如`chown cpl:cpl typora.desktop`，且需要运行`update-desktop-database`
+
 ## 例子
 
 typora desktop file
