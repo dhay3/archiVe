@@ -14,6 +14,12 @@ https://juejin.im/post/6844904084168769549
 
 ## 参数
 
+- -c
+
+  抓取指定个数个包后tcpdump自动退出
+
+  
+
 - -D
 
   显示所有网络接口。tcpdump默认监听第一个网络接口
@@ -47,7 +53,7 @@ https://juejin.im/post/6844904084168769549
 
 - -t
 
-  修改时间的显示，具体查看manule page
+  不打印时间错
 
 - -r
 
@@ -65,12 +71,36 @@ https://juejin.im/post/6844904084168769549
 
 - -w
 
-  将数据包写入到文件，所有内容将不会以标准输出流输出
+  将数据包以==raw==的格式(binary file)写入到文件，所有内容将不会以标准输出流输出
 
   ```
   [root@chz Desktop]# tcpdump -w test -i ens33
   ```
 
+- ==-W==
+
+  限制生成的文件个数，和-C，-G一起使用。最好将文件按照==strftime==格式命名
+
+  ```
+  cpl in /tmp λ sudo tcpdump -i wlp1s0 -n -G 30 -w %M%S.pcap -W 3
+  cpl in /tmp λ ls
+   0019.pcap
+   0049.pcap
+   0119.pcap
+  ```
+  
+- -G 
+
+  在指定间隔(sec)后向文件中写入也可以发送SIGINT信号中断进程提前写入，一般与-w或-W一起使用
+
+- -C 
+
+  指定生成文件的大小
+
+  ```
+  cpl in /tmp λ sudo tcpdump -i wlp1s0 -n -G 30 -w %M%S.pcap -C 10
+  ```
+  
 - -e
 
   显示link-layer MAC地址
