@@ -51,7 +51,7 @@ Address Resolution Protocol简称arp协议(基于layer 2)，网络设备要互�
 
 arp分以下几种情况：
 
-==但是不管怎样本机的subnet mask都会被使用，用于校验dst是否在同一LAN==
+==但是不管怎样本机的subnet mask都会被使用，用于校验dst是否在同一LAN，即判断`目标IP & 本机subnet mask ==本机IP & 本机subnet mask  `==
 
 ### dst in the LAN
 
@@ -60,19 +60,21 @@ graph LR
 a(a 192.168.100.103) -->|ping| b(b 192.168.0.100)
 ```
 
-1. a首先会在自己的neighbor table中查找是否有b的映射，如果有就不发送arp请求。直接发送数据帧
+1. 先校验是否在同一LAN
 
-2. 否则a会向广播地址(IP/MAC 255.255.255.255/00:00:00:00:00:00)发送arp包询问b的Mac地址
+2. a首先会在自己的neighbor table中查找是否有b的映射，如果有就不发送arp请求。直接发送数据帧
+
+3. 否则a会向广播地址(IP/MAC 255.255.255.255/00:00:00:00:00:00)发送arp包询问b的Mac地址
 
    ![2021-06-21_22-04](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/2021-06-21_22-04.28k56b6upfq.png)
 
    ==LAN中所有的host都可以收到广播地址发送的arp请求==如果和自己的IP不匹配就会丢弃arp请求。这router同样可以收到arp请求，但是router工作在layer 3不会发送layer 2的请求
 
-3. 然后b返回一个arp响应给a，并在b的neighbor table中记录a IP和MAC地址的映射
+4. 然后b返回一个arp响应给a，并在b的neighbor table中记录a IP和MAC地址的映射
 
    ![2021-06-21_22-10](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/2021-06-21_22-10.6byw4e6y4bs0.png)
 
-4. a在收到b的响应后在自己的neighbor table中同样记录b相对的映射
+5. a在收到b的响应后在自己的neighbor table中同样记录b相对的映射
 
    ```
    cpl in ~ λ ip n
@@ -91,6 +93,8 @@ graph LR
 a(a 192.168.0.103)-->b(router 192.168.0.1) -->c(b 153.81.21.19)
 ```
 
-1. a先查询route table发现next hop，如果next hop MAC地址在neighbor table中就不执行arp请求，反之会向广播地址询问next hop的MAC地址
-2. ==IP数据包头src为192.168.0.103，dst为153.81.21.19。MAC数据包头src为192.168.0.103MAC，dst为192.168.0.1MAC==
+1. 先校验是否在同一LAN
+2. a先查询route table发现next hop，如果next hop MAC地址在neighbor table中就不执行arp请求，反之会向广播地址询问Router的MAC地址
+3. ==IP数据包头src为192.168.0.103，dst为153.81.21.19。MAC数据包头src为192.168.0.103MAC，dst为192.168.0.1MAC==
+4. 交给路由器封装IP头部src为192.168.0.103 dest为153.81.21.19
 

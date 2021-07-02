@@ -81,6 +81,16 @@ http://c.biancheng.net/view/1062.html
   root          7      2  0 13:13 ?        00:00:00 [migration/0]
   ```
 
+- `ps -ef1`
+
+  查看指定pid 进程
+
+  ```
+  cpl in /usr/local/bin λ ps -ef1
+      PID TTY      STAT   TIME COMMAND
+        1 ?        Ss     0:03 /sbin/init
+  ```
+
 - `ps -af`
 
   查询当前终端的所有进程
