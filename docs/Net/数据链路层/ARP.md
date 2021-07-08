@@ -94,7 +94,8 @@ a(a 192.168.0.103)-->b(router 192.168.0.1) -->c(b 153.81.21.19)
 ```
 
 1. 先校验是否在同一LAN
-2. a先查询route table发现next hop，如果next hop MAC地址在neighbor table中就不执行arp请求，反之会向广播地址询问Router的MAC地址
+2. 然后a查询route table发现next hop，如果next hop MAC地址在neighbor table中就不执行arp请求，反之会向广播地址询问Router的MAC地址
 3. ==IP数据包头src为192.168.0.103，dst为153.81.21.19。MAC数据包头src为192.168.0.103MAC，dst为192.168.0.1MAC==
-4. 交给路由器封装IP头部src为192.168.0.103 dest为153.81.21.19
+4. 交给路由器封装IP头部src为192.168.0.103 dest为153.81.21.19，由路由器找到目标所在的地址
+5. b会将MAC地址返回，因为b认为a也是在LAN中
 
