@@ -14,11 +14,19 @@ syntax：`Nping [options] <target>`
 
   发包的个数
 
+- -H | --hide-sent
+
+  不输出发送的数据包(做flooding attack时使用)
+
+- -N | --no-capture
+
+  不输出回送的数据包(做flooding attack时使用)
+
 ### timing
 
 - `--delay <time>`
 
-  每执行一次probe间隔的时间 s | m | h
+  每执行一次probe间隔的时间 ms | s | m | h
 
 - `--rate <rate>`
 
@@ -258,5 +266,13 @@ RCVD (2.0420s) ARP reply 140.205.94.189 is at FE:EE:4E:0D:BD:1E
 Max rtt: N/A | Min rtt: N/A | Avg rtt: N/A
 Raw packets sent: 3 (126B) | Rcvd: 3 (150B) | Lost: 0 (0.00%)
 Nping done: 1 IP address pinged in 2.56 seconds
+```
+
+## 例子
+
+小包攻击
+
+```
+nping -HN --tcp --flag SYN --data-length 0 --delay 100ms -c 10000 taobao.com
 ```
 

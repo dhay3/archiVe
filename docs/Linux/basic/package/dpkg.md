@@ -38,5 +38,12 @@ package manager for Debian
   dpkg -S kvm | head -10
   ```
 
+  可以通过该命令过滤出某个命令归属的包
+  
+  ```
+  root in /home/ubuntu λ dpkg-query --search $(which arp)
+  net-tools: /usr/sbin/arp
+  ```
+  
   
 
