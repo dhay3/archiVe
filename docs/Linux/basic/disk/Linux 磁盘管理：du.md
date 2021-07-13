@@ -93,4 +93,33 @@ syntax：`du [options] [file]`
   du --exclude='*.o'
   ```
 
+## du vs stat
+
+```
+cpl in ~ λ du -h /etc/resolv.conf
+4.0K    /etc/resolv.conf
+cpl in ~ λ stat /etc/resolv.conf
+  File: /etc/resolv.conf
+  Size: 258             Blocks: 8          IO Block: 4096   regular file
+Device: 10307h/66311d   Inode: 12845122    Links: 1
+Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+Access: 2021-07-13 09:12:32.464541631 +0800
+Modify: 2021-07-13 09:12:32.464541631 +0800
+Change: 2021-07-13 09:12:32.464541631 +0800
+ Birth: 2021-07-13 09:12:32.464541631 +0800
+```
+
+1. stat输出以byte为单位，du默认以KB为单位
+
+2. stat输出的是apparent size(实际的大小)，du默认以4k为一个block(==物理扇区，一般为4k==)为单位计算大小。所以stat输出的一般比du输出的要小。==但是实际磁盘可能并不是以4k为物理扇区的，所以du默认实际大小并不准确==
+
+   ```
+   cpl in ~ λ sudo fdisk -lu /dev/nvme0n1p7
+   Disk /dev/nvme0n1p7: 250 GiB, 268435456000 bytes, 524288000 sectors
+   Units: sectors of 1 * 512 = 512 bytes
+   Sector size (logical/physical): 512 bytes / 512 bytes
+   I/O size (minimum/optimal): 512 bytes / 512 bytes
+   ```
+
+   
 
