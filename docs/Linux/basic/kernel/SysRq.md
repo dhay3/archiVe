@@ -76,7 +76,7 @@ alt + stop + command key
 
 alt + printScreen
 
-### 通用
+### ==通用==
 
 ```
 echo "command key" > /proc/sysrq-trigger
