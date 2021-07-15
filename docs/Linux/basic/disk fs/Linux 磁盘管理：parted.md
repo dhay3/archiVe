@@ -159,5 +159,26 @@ syntax：`parted [option] [device]`
 
   删除分区
 
+- align-check
+
+  检查磁盘是否4k对齐
+
+  ```
+  cpl in ~ λ sudo parted
+  GNU Parted 3.4
+  Using /dev/nvme0n1
+  Welcome to GNU Parted! Type 'help' to view a list of commands.
+  (parted) align-check                                                      
+  alignment type(min/opt)  [optimal]/minimal?
+  
+  Partition number? 1                                                       
+  1 aligned
+  
+  cpl in ~ λ sudo parted  /dev/nvme0n1p7  align-check opt 1
+  1 aligned
+  ```
+
+  
+
 
 

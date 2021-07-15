@@ -37,3 +37,14 @@ cpl in ~/note/docs/Linux/基础/disk on master ● λ stat -c %s Linux\ 磁盘�
 1754
 ```
 
+使用`-f`参数输出fs相关的信息，可以获得block size(在windows上被称为簇cluster)
+
+```
+cpl in /sys/block/nvme0n1/queue λ stat -f /etc/resolv.conf
+  File: "/etc/resolv.conf"
+    ID: bd5efaae75a7f210 Namelen: 255     Type: ext2/ext3
+Block size: 4096       Fundamental block size: 4096
+Blocks: Total: 64230001   Free: 52398172   Available: 49117276
+Inodes: Total: 16384000   Free: 15915349
+```
+
