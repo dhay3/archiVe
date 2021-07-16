@@ -18,7 +18,7 @@
 >
 > 2. 调用函数与jquery类似
 >
-> 3. powershell 中 ` 表示手动行换但是不推荐使用可能会报错，powershell会自动识别命令然后换行。
+> 3. ==powershell 中 ` 表示手动行换但是不推荐使用可能会报错，powershell会自动识别命令然后换行。==
 >
 >    https://stackoverflow.com/questions/3235850/how-to-enter-a-multi-line-command
 

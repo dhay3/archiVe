@@ -26,6 +26,10 @@ python -m pip completion --bash >> ~/.profile;source ~/.profile
 
 ## command
 
+> 由于pypi的服务器被发送了大量的恶意请求，现在永久关闭了`pip search`功能，如果需要查询包通过如下链接
+>
+> https://pypi.org/
+
 可以使用`pip help <command>`来查看command的具体用法
 
 ## requirement.txt/constraints.txt
