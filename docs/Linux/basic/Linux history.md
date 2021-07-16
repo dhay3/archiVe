@@ -1,6 +1,6 @@
 # Linux history 
 
-`history`命令能显示操作历史，即`.bash_history`文件的内容。
+`history`命令能显示Shell操作历史，即`.bash_history`或是其他shell的history文件的内容。
 
 ```
 $ history
@@ -61,3 +61,18 @@ $ history -c
 - `!string`：执行最近一个以指定字符串`string`开头的命令。
 - `!?string`：执行最近一条包含字符串`string`的命令。
 - `^string1^string2`：执行最近一条包含`string1`的命令，将其替换成`string2`
+
+## 特殊
+
+==如果在history命令之前加一个空格，那么命令不记录在history文件中==
+
+```
+cpl in /tmp λ : > ~/.zsh_history 
+cpl in /tmp λ cat ~/.zsh_history 
+: 1626398747:0;cat ~/.zsh_history
+cpl in /tmp λ  echo hidden msg
+hidden msg
+cpl in /tmp λ cat ~/.zsh_history
+: 1626398747:0;cat ~/.zsh_history
+```
+
