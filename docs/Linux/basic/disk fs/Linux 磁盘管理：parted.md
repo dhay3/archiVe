@@ -43,6 +43,33 @@ syntax：`parted [option] [device]`
 
 ## command
 
+- unit
+
+  parted默认以MB,GB的方式展示数据，可以使用该命令设置为sector方便4k对齐
+
+  ```
+  (parted) print
+  Model: Virtio Block Device (virtblk)
+  Disk /dev/vda: 53.7GB
+  Sector size (logical/physical): 512B/512B
+  Partition Table: msdos
+  Disk Flags: 
+  
+  Number  Start   End     Size    Type     File system  Flags
+   1      1049kB  53.7GB  53.7GB  primary  ext4         boot
+  
+                                                                     (parted) unit s
+                                                                     (parted) print
+  Model: Virtio Block Device (virtblk)
+  Disk /dev/vda: 104857600s
+  Sector size (logical/physical): 512B/512B
+  Partition Table: msdos
+  Disk Flags: 
+  
+  Number  Start  End         Size        Type     File system  Flags
+   1      2048s  104857566s  104855519s  primary  ext4         boot
+  ```
+
 - print
 
   等价于`-l`参数
@@ -100,7 +127,7 @@ syntax：`parted [option] [device]`
 
 - mkpart
 
-  生成分区，依次选择分区的名字，文件系统，起始点，终点。==注意这里少了一个Type字段，因为在GPT中没有主分区和扩展分区之分==
+  生成分区，依次选择分区的名字，文件系统，起始点，终点。==注意这里少了一个对应fdisk中的Type字段，因为在GPT中没有主分区和扩展分区之分==
 
   ```
   (parted) mkpart                                                           
@@ -158,6 +185,12 @@ syntax：`parted [option] [device]`
 - rm
 
   删除分区
+
+- name
+
+  修改分区的名字，MBR(msdos或dos)不支持
+
+- resuce 
 
 - align-check
 

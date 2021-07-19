@@ -1,5 +1,7 @@
 # Linux 磁盘管理：e2label
 
+> 使用lsblk -o + LABEL可以方便的输出所有分区的label
+
 ## volume-label
 
 volume label通常也叫做volume name，也就是我们说的卷名

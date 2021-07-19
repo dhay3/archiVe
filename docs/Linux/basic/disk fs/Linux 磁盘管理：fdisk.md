@@ -22,6 +22,8 @@ graph LR
 > 对于fdisk不熟的朋友还可以使用cfdisk来分区
 >
 > ==同一个目录下只能挂载一个分区==
+>
+> 最好以sector为单位，方便4k对齐
 
 ## 概念
 
@@ -337,7 +339,7 @@ sr0              11:0    1  4.4G  0 rom  /run/media/root/CentOS 7 x86_64
    UUID=52ff1027-e9d7-427d-9f43-3a98ba708796 /boot                   xfs     defaults        0 0
    /dev/mapper/centos-swap swap                    swap    defaults        0 0
    /dev/sdb1 /root/test ext4 defaults 0 0
-
+   
    ```
 
    我们也可以通过UUID来挂载，通过`blkid`来获取UUID
