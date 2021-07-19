@@ -89,7 +89,7 @@ syntax：`parted [option] [device]`
 
 - mklabel
 
-  修改磁盘的分区表，msdos表示mrb，gpt表示gpt。由于修改了分区表导致原来的数据丢失，分区也消失了。==所以需要修改`/etc/fstab`文件==
+  修改磁盘的分区表(partition table)，msdos表示mrb，gpt表示gpt。由于修改了分区表导致原来的数据丢失，分区也消失了。==所以需要修改`/etc/fstab`文件==
 
   ```
   (parted) print
@@ -161,7 +161,7 @@ syntax：`parted [option] [device]`
 
 - resizepart
 
-  改变分区大小
+  改变分区end位置
 
   ```
   (parted) resize 
