@@ -57,4 +57,4 @@ The Arch User Repository(AUR) 是arch的社区仓库(==有可能会有恶意代�
 
 ## upgrading
 
-在PKGBUILD中运行`git pull`即可获取最新的package
+在PKGBUILD中运行`git pull`即可获取最新的package，然后执行installing步骤

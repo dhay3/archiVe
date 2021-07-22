@@ -184,7 +184,7 @@ docker使用`--network`来指定生成的容器该怎么创建容器。可以使
 
    docker0作为容器的网关，vethxxx的另一端放在新建的容器中，以eth0命名。
 
-   <img src="D:\asset\note\imgs\_docker\Snipaste_2021-01-22_19-50-21.png" style="zoom:80%;" />
+   <img src="..\..\..\imgs\_docker\Snipaste_2021-01-22_19-50-21.png" style="zoom:80%;" />
 
    此时容器能与宿主机通信，同时也能访问外网。
 
@@ -369,6 +369,8 @@ root in ~ λ docker exec -it t3 /bin/bash
 ```
 
 ## Expose
+
+> 默认以TCP的形式暴露，如果想让cloudflared  dns-proxy 暴露需要指定UDP的方式
 
 - `--expose`
 

@@ -17,7 +17,7 @@ export NAME=value
 
 > 上面命令执行后，==当前 Shell 及随后新建的子 Shell，都可以读取变量`$NAME`。(父shell不能读取变量)==
 >
-> 也就是说在Shell脚本中的变量不能被父Shell使用，但是可以在子Shell中使用。==两个不同的Shell脚本变量不会被覆盖==
+> 也就是说在Shell脚本中的变量不能被父Shell使用，但是可以在子Shell中使用（==shell脚本也是一个shell）。==两个不同的Shell脚本变量不会被覆盖==
 
 子 Shell 如果修改继承的变量，不会影响父 Shell。
 

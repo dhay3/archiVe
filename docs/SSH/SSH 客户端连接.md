@@ -90,13 +90,21 @@ TLS_RSA_WITH_AES_128_CBC_SHA
 
 ## 参数
 
+> X和Y参数好需要联系ForwardX11和ForwardX11Trusted
+>
+> https://askubuntu.com/questions/35512/what-is-the-difference-between-ssh-y-trusted-x11-forwarding-and-ssh-x-u
+
 - `-i`
 
   指定连接使用的私钥，默认会在`~/.ssh/`下私钥。
 
+- -X
+
+  开启X11 forwarding，remote machine会被作为untrusted X11 client，如果一些操作设计到安全问题，X11 server会拒绝显示X11 client的graphical output
+
 - `-Y`
 
-  ==开启X11 forwarding==
+  ==开启trusted X11 forwarding==，remote machine被作为trusted X11 client，==但是这涉及到安全问题，如果remote machine上的其他X11 client有问题，就会导致X11 server不安全或信息泄露==
 
   ```
   ssh -Y host

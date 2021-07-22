@@ -96,9 +96,13 @@ option = value
 
   显示公钥指纹时使用的算法，默认sha256
 
-- ForwardX11
+- ==ForwardX11==
 
-  允许X11
+  允许X11，但是有安全限制
+
+- ==ForwardTrustedX11==
+
+  允许X11，无安全限制
 
 - GlobalKnownHostsFile
 
