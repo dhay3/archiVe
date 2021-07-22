@@ -1,6 +1,6 @@
 # SSH 客户端
 
-> 如果需要使用图形化界面编辑软件，例如gedit，mousepad 需要使用`-Y`参数，开启X11 forward trusted
+> 如果需要使用图形化界面编辑软件，例如gedit，mousepad 需要使用`-Y`或`-X`参数，开启X11 forward 
 >
 > 如果切换了用户，就不能使用X11 forward。
 >
@@ -98,11 +98,11 @@ TLS_RSA_WITH_AES_128_CBC_SHA
 
   指定连接使用的私钥，默认会在`~/.ssh/`下私钥。
 
-- -X
+- -X（也可以在配置文件中声明）
 
   开启X11 forwarding，remote machine会被作为untrusted X11 client，如果一些操作设计到安全问题，X11 server会拒绝显示X11 client的graphical output
 
-- `-Y`
+- `-Y`（也可以在配置文件中声明）
 
   ==开启trusted X11 forwarding==，remote machine被作为trusted X11 client，==但是这涉及到安全问题，如果remote machine上的其他X11 client有问题，就会导致X11 server不安全或信息泄露==
 

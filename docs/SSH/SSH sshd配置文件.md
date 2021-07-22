@@ -37,6 +37,8 @@ sshd配置文件如果没有时间单位默认为秒，不区分时间单位的�
 ## 配置文件
 
 > 可以通过Match指令块对原有的指令继承或重写
+>
+> sshd_config X11
 
 - ==TCPKeepAlive==
 
@@ -179,7 +181,9 @@ sshd配置文件如果没有时间单位默认为秒，不区分时间单位的�
 
   是否允许root用户登入，默认为prohibit-password，==为了安全因该将其设置为no==
 
+- X11Forwarding
 
+  开启X11 forwarding （如果需要X11必须在sshd中配置该项为yes）
 
 
 

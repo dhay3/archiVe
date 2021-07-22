@@ -98,11 +98,11 @@ option = value
 
 - ==ForwardX11==
 
-  允许X11，但是有安全限制
+  允许X11，但是有安全限制（可以使用-X替代）
 
 - ==ForwardTrustedX11==
 
-  允许X11，无安全限制
+  允许X11，无安全限制（可以使用-Y替代）
 
 - GlobalKnownHostsFile
 

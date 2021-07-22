@@ -4,7 +4,7 @@ X11Forwarding yes
 Subsystem sftp  /usr/lib/openssh/sftp-server
 AcceptEnv LANG LC_*
 
-#connection configuration, only IPV4 can connect in 
+#connection configuration, only IPV4 can connect in
 Port 65522
 AddressFamily inet
 ListenAddress 0.0.0.0
@@ -30,7 +30,7 @@ HostKey /etc/ssh/ssh_host_ed25519_key
 PasswordAuthentication yes
 PubkeyAuthentication yes
 PermitEmptyPasswords no
-PermitRootLogin no 
+PermitRootLogin yes
 StrictModes yes
 ChallengeResponseAuthentication yes
 
@@ -43,7 +43,16 @@ AllowTcpForwarding yes
 LogLevel INFO
 PrintMotd no
 
-#should provide publickey and password if user is root 
+#should provide publickey and password if user is root
 Match User root
-Port 65535
+AllowTcpForwarding no
 AuthenticationMethods publickey,password
+
+Match User tz
+AllowTcpForwarding no
+#AuthenticationMethods publickey,password
+AuthenticationMethods password
+
+Match User ubuntu
+AllowTcpForwarding no
+AuthenticationMethods password
