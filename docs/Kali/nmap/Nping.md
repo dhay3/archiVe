@@ -286,7 +286,7 @@ Nping done: 1 IP address pinged in 2.56 seconds
 
 ## 例子
 
-小包攻击
+SYN flood小包攻击
 
 ```
 nping -HN --tcp --flag SYN --data-length 0 --delay 100ms -c 10000 taobao.com

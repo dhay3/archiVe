@@ -5,7 +5,7 @@
 https://juejin.im/post/6844904084168769549
 
 ```
- tcpdump -i eth0 -nn -vv port 80 
+ tcpdump -Snnvvi eth0 tcp and port 80 
 ```
 
 ## 概述
@@ -45,13 +45,32 @@ https://juejin.im/post/6844904084168769549
 
   指定监听的接口
 
+- -S
+
+  以绝对的方式打印sequence number，默认第一个包先显示seq然后以相对的方式显示seq
+
+  ```
+  cpl in ~ λ sudo tcpdump -Snnvvi wlp1s0 tcp and host 1.1.1.1
+  tcpdump: listening on wlp1s0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+  13:16:04.968479 IP (tos 0x0, ttl 64, id 58267, offset 0, flags [DF], proto TCP (6), length 60)
+      30.226.76.42.52248 > 1.1.1.1.443: Flags [S], cksum 0x6d3c (incorrect -> 0xc0a5), seq 354593100, win 64240, options [mss 1460,sackOK,TS val 1233537427 ecr 0,nop,wscale 7], length 0
+  13:16:05.204493 IP (tos 0x14, ttl 48, id 0, offset 0, flags [DF], proto TCP (6), length 52)
+      1.1.1.1.443 > 30.226.76.42.52248: Flags [S.], cksum 0x108b (correct), seq 1646134020, ack 354593101, win 65535, options [mss 1460,nop,nop,sackOK,nop,wscale 10], length 0
+  13:16:05.204582 IP (tos 0x0, ttl 64, id 58268, offset 0, flags [DF], proto TCP (6), length 40)
+      30.226.76.42.52248 > 1.1.1.1.443: Flags [.], cksum 0x6d28 (incorrect -> 0x4f6a), seq 354593101, ack 1646134021, win 502, length 0
+  ```
+
 - -nn
 
   单个n取消DNS解析，两个n取消DNS解析和端口解析
 
+- -F 
+
+  以文件的形式指定filter
+
 - -t
 
-  不打印时间错
+  不打印时间戳
 
 - -r
 
@@ -75,6 +94,14 @@ https://juejin.im/post/6844904084168769549
   [root@chz Desktop]# tcpdump -w test -i ens33
   ```
 
+- -l
+
+  buffer stdout中的信息，可以结合pipeline将信息以==明文==的方式输出到文件中
+
+  ```
+  cpl in ~ λ sudo tcpdump -li wlp1s0 tcp and host 1.1.1.1 | tee data
+  ```
+  
 - ==-W==
 
   限制生成的文件个数，和-C，-G一起使用。最好将文件按照==strftime==格式命名
@@ -101,7 +128,7 @@ https://juejin.im/post/6844904084168769549
   
 - -e
 
-  显示link-layer MAC地址
+  ==显示link-layer MAC地址==
 
   ```
   [root@chz Desktop]# tcpdump -e -i ens33 
@@ -290,3 +317,27 @@ listening on ens33, link-type EN10MB (Ethernet), capture size 262144 bytes
 
    捕捉非arp协议的
 
+## TCP抓包
+
+> 可以使用nc来测试
+
+- 建立连接 `nc 1.1.1.1 80`
+
+  ==tcpdump只会在第一个包以绝对的方式显示seq，之后都会以相对的方式显示seq，可以使用`-S`参数==
+
+  ```
+  cpl in ~ λ sudo tcpdump -nni wlp1s0 tcp and host 1.1.1.1
+  tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+  listening on wlp1s0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+  12:59:39.143646 IP 30.226.76.42.52018 > 1.1.1.1.443: Flags [S], seq 2620238540, win 64240, options [mss 1460,sackOK,TS val 1232551602 ecr 0,nop,wscale 7], length 0
+  12:59:39.390211 IP 1.1.1.1.443 > 30.226.76.42.52018: Flags [S.], seq 3357268989, ack 2620238541, win 65535, options [mss 1460,nop,nop,sackOK,nop,wscale 10], length 0
+  12:59:39.390295 IP 30.226.76.42.52018 > 1.1.1.1.443: Flags [.], ack 1, win 502, length 0
+  ```
+
+- 关闭连接
+
+  ```
+  
+  ```
+
+  
