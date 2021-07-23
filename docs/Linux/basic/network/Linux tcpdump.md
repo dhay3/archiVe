@@ -18,8 +18,6 @@ https://juejin.im/post/6844904084168769549
 
   抓取指定个数个包后tcpdump自动退出
 
-  
-
 - -D
 
   显示所有网络接口。tcpdump默认监听第一个网络接口
@@ -130,11 +128,34 @@ https://juejin.im/post/6844904084168769549
   0 packets dropped by kernel
   ```
 
+## TCP flags
 
+```
+IP rtsg.1023 > csam.login: Flags [S], seq 768512:768512, win 4096, opts [mss 1024]
+              IP csam.login > rtsg.1023: Flags [S.], seq, 947648:947648, ack 768513, win 4096, opts [mss 1024]
+              IP rtsg.1023 > csam.login: Flags [.], ack 1, win 4096
+              IP rtsg.1023 > csam.login: Flags [P.], seq 1:2, ack 1, win 4096, length 1
+              IP csam.login > rtsg.1023: Flags [.], ack 2, win 4096
+              IP rtsg.1023 > csam.login: Flags [P.], seq 2:21, ack 1, win 4096, length 19
+              IP csam.login > rtsg.1023: Flags [P.], seq 1:2, ack 21, win 4077, length 1
+              IP csam.login > rtsg.1023: Flags [P.], seq 2:3, ack 21, win 4077, urg 1, length 1
+              IP csam.login > rtsg.1023: Flags [P.], seq 3:4, ack 21, win 4077, urg 1, length 1
+```
+
+- S：代表SYN
+- . : 代表ACK
+- F：代表FIN
+- P：代表PUSH
+- R：代表RST
+- U：代表URG
+- W：代表ECN CWR
+- E：代表ECN-Echo
+
+例如第一行表示从rtsg 1023端口发往csam login端口，tcp接受窗口为4096byte，seq为768512，没有发送数据
 
 ## 过滤器
 
-> 如果没有指定过滤器，所有的数据包会被捕捉。具体查看 pcap-filter(7)。与wireshark的过滤条件相同
+> 如果没有指定过滤器，所有的数据包(==所有的协议包==)会被捕捉。具体查看 pcap-filter(7)。与wireshark的过滤条件相同
 
 ### proto
 
@@ -144,7 +165,11 @@ Proto 过滤器用来过滤某个协议的数据，关键字为 `proto`，可省
 [root@chz Desktop]# tcpdump -i ens33 proto \\tcp
 或
 [root@chz Desktop]# tcpdump -i ens33 tcp
+#如果后面还有参数需要使用and连接
+cpl in ~ λ sudo tcpdump -nni wlp1s0 tcp and host 1.1.1.1
 ```
+
+
 
 ### host
 

@@ -180,6 +180,22 @@ Nping done: 1 IP address pinged in 1.11 seconds
 
   使用随机的CRC冗余码
 
+==不会建立完整的tcp连接，探测后会发送RST包==
+
+```
+#发送单个tcp包
+cpl in ~ λ sudo nping -c 1 --tcp 1.1.1.1
+
+#这里可以看到1.1.1.1发送ACK SYN后主机响应了一个RST
+cpl in ~ λ sudo tcpdump -nni wlp1s0 tcp and host 1.1.1.1
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on wlp1s0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+12:45:30.214545 IP 30.226.76.42.4244 > 1.1.1.1.80: Flags [S], seq 363736440, win 1480, length 0
+12:45:30.457450 IP 1.1.1.1.80 > 30.226.76.42.4244: Flags [S.], seq 4235195346, ack 363736441, win 65535, options [mss 1460], length 0
+12:45:30.457501 IP 30.226.76.42.4244 > 1.1.1.1.80: Flags [R], seq 363736441, win 0, length 0
+
+```
+
 ### upd probe mode
 
 使用`--udp`切换到udp probe mode
