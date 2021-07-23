@@ -42,7 +42,7 @@ total size is 0  speedup is 0.00
 
 syntax：
 
-> 在rsync中，目录与文件有严格的区别，如果想要表示目录下的所有文件，需要在最后添加slash，否则会将文件夹发送。
+> ==在rsync中，目录与文件有严格的区别，如果想要表示目录下的所有文件，需要在最后添加slash，否则会将文件夹发送。==
 
 - local 
 
@@ -118,9 +118,13 @@ drwxr-xr-x          4,096 2021/02/25 10:32:16 t
 
 ## 参数
 
-- --progress
+- --acls | -A
 
-  显示进度条
+  拷贝时保留acl
+
+  ```
+  cpl in /sharing/conf λ rsync --acls cus-bindkey cus-n
+  ```
 
 - `-e`
 
@@ -169,7 +173,7 @@ drwxr-xr-x          4,096 2021/02/25 10:32:16 t
 
   2. `-l,--link`
 
-     告诉rsync源地址如果遇到链接文件将链接文件拷贝到目的地址
+     告诉rsync源地址如果遇到链接文件将链接文件拷贝到目的地址（自动解析路径关系）
 
   3. `-p,--perms`
 
@@ -187,7 +191,7 @@ drwxr-xr-x          4,096 2021/02/25 10:32:16 t
 
      告诉rsync可以将字节和块文件复制到目的地址
 
-- `-n,--dry-run`
+- ==`-n,--dry-run`==
 
   模拟执行后的结果，不会生效
 
@@ -216,7 +220,7 @@ drwxr-xr-x          4,096 2021/02/25 10:32:16 t
 
   会在remote的`/tmp`下一个`/tmp/foo/bar/baz.c`的文件包括目录
 
-- `-P`
+- `-P | --progress` 
 
   打印文件传输进度，与`-v`参数冲突
   
@@ -284,6 +288,21 @@ drwxr-xr-x          4,096 2021/02/25 10:32:16 t
   
   sent 84 bytes  received 131 bytes  430.00 bytes/sec
   total size is 0  speedup is 0.00
+  ```
+  
+- `--remove-source-file`
+
+  移动而不是拷贝
+  
+  ```
+  ➜  test ls a
+   1   2   3
+  ➜  test rsync --remove-source-files -a a/ b
+  ➜  test ls
+   a   b
+  ➜  test cd b
+  ➜  b ls
+   1   2   3
   ```
   
 - `--delete`
@@ -419,11 +438,17 @@ rsync 可以通过`--filter,-f`参数来过滤同步的文件，后面跟pattern
 - `+`：include
 - `.`：merge
 - `:`：dir-merge
-
 - `H`：hide，指定传输隐藏文件的格式
-
 - `P`：protect，指定不能被删除的文件的格式
-
 - `R`：risk，指定可以被删除的文件的格式
 
-  
+```
+➜  test rsync -a  --filter "- 5" a/ b/
+➜  test ls a
+ 1   2   5   6   7   8
+➜  test ls b
+ 1   2   3   6   7   8
+```
+
+
+

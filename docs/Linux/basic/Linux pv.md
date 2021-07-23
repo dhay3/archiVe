@@ -6,6 +6,8 @@ https://www.tecmint.com/monitor-copy-backup-tar-progress-in-linux-using-pv-comma
 
 syntax：`pv [option] [file]`
 
+> 如果只是做文件复制可以使用rsync替代cp
+
 `pv`可以打印出进程的progress bar。`pv`会拷贝file到stdout，如果没有file就将stdin拷贝到stdout(和`cat`一样)，==然后将progress bar 输出到stderr==
 
 ## 参数
