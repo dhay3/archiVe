@@ -4,7 +4,7 @@
 
 https://www.ruanyifeng.com/blog/2019/09/curl-reference.html
 
-> 常用`curl -fsSL curl`
+> 常用`curl -fsSL url`
 
 ## 定义
 
@@ -308,32 +308,3 @@ https://www.ruanyifeng.com/blog/2019/09/curl-reference.html
   ```
 
   上面命令对`https://www.example.com`发出 POST 请求。
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
