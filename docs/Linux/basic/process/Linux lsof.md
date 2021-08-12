@@ -6,7 +6,7 @@
 
 ## 概述
 
-lsof 默认用于展示当前所有进程打开的文件，可以指定pid或命令名
+lsof 默认用于展示当前所有进程打开的文件，如果携带了参数将不会显示完整的列数。
 
 ```
 root in /opt λ lsof | more
@@ -121,28 +121,37 @@ systemd      1                root  mem       REG              252,1   121016   
   apache2    713        www-data    4u  IPv6  18438      0t0  TCP *:http (LISTEN)
   apache2    713        www-data    6u  IPv6  18442      0t0  TCP *:https (LISTEN)
   ```
+  
+  使用`lsof -i TCP:port`可以有效查看指定端口被占用的当前进程
+  
+  ```
+  root in ~ λ lsof -i TCP:10086
+  COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+  sshd    13848  cpl    9u  IPv4 888473      0t0  TCP localhost:10086 (LISTEN)  
+  ```
+  
+  指定使用IPV4
+  
+  ```
+  [root@k8snode01 ~]# lsof -i4
+  COMMAND      PID    USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+  systemd        1    root  108u  IPv4  20290      0t0  TCP *:sunrpc (LISTEN)
+  systemd        1    root  109u  IPv4  20291      0t0  UDP *:sunrpc
+  avahi-dae   1153   avahi   12u  IPv4  23793      0t0  UDP *:mdns
+  avahi-dae   1153   avahi   13u  IPv4  23794      0t0  UDP *:46965
+  rpcbind     1173     rpc    4u  IPv4  20290      0t0  TCP *:sunrpc (LISTEN)
+  rpcbind     1173     rpc    5u  IPv4  20291      0t0  UDP *:sunrpc
+  rpcbind     1173     rpc   10u  IPv4  22125      0t0  UDP *:ideafarm-door
+  cupsd       1648    root   12u  IPv4  29509      0t0  TCP localhost:ipp (LISTEN)
+  sshd        1650    root    3u  IPv4  29275      0t0  TCP *:ssh (LISTEN)
+  master      1838    root   13u  IPv4  28105      0t0  TCP localhost:smtp (LISTEN)
+  sshd        3034    root    3u  IPv4 476384      0t0  TCP k8snode01:ssh->192.168.80.1:14606 (ESTABLISHED)
+  sshd        3034    root    9u  IPv4 476513      0t0  TCP localhost:6011 (LISTEN)
+  ```
+  
+  
 
-## 例子
 
-当磁盘在忙的时候无法卸载，可以通过lsof查看占用的文件，然后关闭进程
-
-```
-cpl in /mnt λ sudo umount /dev/sda4
-umount: /mnt/win: target is busy.
-cpl in /mnt λ lsof /dev/sda4
-COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
-zsh      8323  cpl  cwd    DIR    8,4     4096    2 /mnt/win
-zsh     61660  cpl  cwd    DIR    8,4     4096    2 /mnt/win
-vim     61819  cpl  cwd    DIR    8,4     4096    2 /mnt/win
-zsh     70464  cpl  cwd    DIR    8,4     4096    2 /mnt/win
-zsh     77976  cpl  cwd    DIR    8,4     4096    2 /mnt/win
-man     99630  cpl  cwd    DIR    8,4     4096    2 /mnt/win
-man     99639  cpl  cwd    DIR    8,4     4096    2 /mnt/win
-less    99640  cpl  cwd    DIR    8,4     4096    2 /mnt/win
-
-cpl in /mnt λ lsof /dev/sda4  | sed -n '2,$p' | awk '{print($2)}' | xargs -i kill -9 {}
-cpl in /mnt λ sudo umount /dev/sda4 
-```
 
 
 
