@@ -144,11 +144,19 @@ https://www.ruanyifeng.com/blog/2019/09/curl-reference.html
   curl -H 'Referer: https://google.com?q=example' https://www.example.com
   ```
 
-- `-f`如果抓取指定网站的内容不显示，会默认显示一个错误页面，使用改参数内容将不显示，而是返回22号错误
+- `-f`如果抓取指定网站的内容不显示，会默认显示一个错误页面，使用改参数内容将不显示，而是返回exit code。==但是一般的网站重定向后会展示一个非默认的错误页面，所以不显示exit code==
 
   ```
-  root in /usr/local/\/CVE-2021-3156-main λ curl -f cyberpelican.link
-  curl: (22) The requested URL returned error: 403 Forbidden            
+  cpl in /tmp λ curl -fL http://ftp.cn.debian.org/debian/aa
+  curl: (22) The requested URL returned error: 404
+  cpl in /tmp λ curl -L http://ftp.cn.debian.org/debian/aa 
+  <html>
+  <head><title>404 Not Found</title></head>
+  <body>
+  <center><h1>404 Not Found</h1></center>
+  <hr><center>openresty</center>
+  </body>
+  </html>
   ```
   
 - `-F`参数用来向服务器上传二进制文件。
@@ -247,7 +255,7 @@ https://www.ruanyifeng.com/blog/2019/09/curl-reference.html
 
   不使用keepalive
 
-- `-L`参数会让 HTTP 请求跟随服务器的重定向。curl 默认不跟随重定向。
+- `-L`参数会让 HTTP 请求跟随服务器的重定向（==http status code是3xx==）。curl 默认不跟随重定向。
 
   ```
   $ curl -L -d 'tweet=hi' https://api.twitter.com/tweet
@@ -295,7 +303,7 @@ https://www.ruanyifeng.com/blog/2019/09/curl-reference.html
 
   curl重试时间和次数
   
-- `-s`参数将不输出错误和进度信息。
+- `-s`参数将不输出错误和==进度信息(也可以使用`--no-progress-meter`)==。
 
   ```
   $ curl -s https://www.example.com
@@ -342,7 +350,31 @@ https://www.ruanyifeng.com/blog/2019/09/curl-reference.html
 - `-v`参数输出通信的整个过程，用于调试。
 
   ```
-  $ curl -v https://www.example.com
+  cpl in /sharing/conf λ curl -v baidu.com
+  *   Trying 220.181.38.251:80...
+  * Connected to baidu.com (220.181.38.251) port 80 (#0)
+  > GET / HTTP/1.1
+  > Host: baidu.com
+  > User-Agent: curl/7.77.0
+  > Accept: */*
+  > 
+  * Mark bundle as not supporting multiuse
+  < HTTP/1.1 200 OK
+  < Date: Thu, 12 Aug 2021 03:01:16 GMT
+  < Server: Apache
+  < Last-Modified: Tue, 12 Jan 2010 13:48:00 GMT
+  < ETag: "51-47cf7e6ee8400"
+  < Accept-Ranges: bytes
+  < Content-Length: 81
+  < Cache-Control: max-age=86400
+  < Expires: Fri, 13 Aug 2021 03:01:16 GMT
+  < Connection: Keep-Alive
+  < Content-Type: text/html
+  < 
+  <html>
+  <meta http-equiv="refresh" content="0;url=http://www.baidu.com/">
+  </html>
+  * Connection #0 to host baidu.com left intact
   ```
 
   `--trace`参数也可以用于调试，还会输出原始的二进制数据。
@@ -373,7 +405,7 @@ https://www.ruanyifeng.com/blog/2019/09/curl-reference.html
   $ curl -X POST https://www.example.com
   ```
 
-  上面命令对`https://www.example.com`发出 POST 请求。
+  上面命令对`https://www.example.com`发出 POST 请求。也可以使用环境变量http_proxy(这个是特殊变量必须小写)和HTTPS_PROXY
 
 - `-0`
 
@@ -394,6 +426,133 @@ https://www.ruanyifeng.com/blog/2019/09/curl-reference.html
 
   使用http1.1发送请求，http2需要目标libcurl支持http2.0
 
+- `--trace-time`
+
+  和`-v`结合一起使用时，输出timestamp
+
+  ```
+  cpl in /sharing/conf λ curl -v --trace-time baidu.com
+  10:49:41.305257 *   Trying 220.181.38.148:80...
+  10:49:41.342109 * Connected to baidu.com (220.181.38.148) port 80 (#0)
+  10:49:41.342252 > GET / HTTP/1.1
+  10:49:41.342252 > Host: baidu.com
+  10:49:41.342252 > User-Agent: curl/7.77.0
+  10:49:41.342252 > Accept: */*
+  10:49:41.342252 > 
+  10:49:41.379880 * Mark bundle as not supporting multiuse
+  10:49:41.379938 < HTTP/1.1 200 OK
+  10:49:41.379960 < Date: Thu, 12 Aug 2021 02:49:43 GMT
+  10:49:41.379981 < Server: Apache
+  10:49:41.380000 < Last-Modified: Tue, 12 Jan 2010 13:48:00 GMT
+  10:49:41.380022 < ETag: "51-47cf7e6ee8400"
+  10:49:41.380042 < Accept-Ranges: bytes
+  10:49:41.380066 < Content-Length: 81
+  10:49:41.380085 < Cache-Control: max-age=86400
+  10:49:41.380107 < Expires: Fri, 13 Aug 2021 02:49:43 GMT
+  10:49:41.380128 < Connection: Keep-Alive
+  10:49:41.380144 < Content-Type: text/html
+  10:49:41.380163 < 
+  ```
+
+- `--trace <filej>`
+
+  输出到示详细的信息，可以使用`-`表示到stdout
+
+  ```
+  cpl in /sharing/conf λ curl --trace - baidu.com
+  == Info:   Trying 220.181.38.251:80...
+  == Info: Connected to baidu.com (220.181.38.251) port 80 (#0)
+  => Send header, 73 bytes (0x49)
+  0000: 47 45 54 20 2f 20 48 54 54 50 2f 31 2e 31 0d 0a GET / HTTP/1.1..
+  0010: 48 6f 73 74 3a 20 62 61 69 64 75 2e 63 6f 6d 0d Host: baidu.com.
+  0020: 0a 55 73 65 72 2d 41 67 65 6e 74 3a 20 63 75 72 .User-Agent: cur
+  0030: 6c 2f 37 2e 37 37 2e 30 0d 0
+  ......
+  ```
+
+- `-T | --upload <file>`
+
+  上传文件到remote url，如果是https使用PUT方法
+
+  ```
+  cpl in /sharing/conf λ curl -LT cus-alias http://ftp.cn.debian.org/debian
+  <html>
+  <head><title>405 Not Allowed</title></head>
+  <body>
+  <center><h1>405 Not Allowed</h1></center>
+  <hr><center>openresty</center>
+  </body>
+  </html>
+  ```
+
+- `--no-progress-meter`
+
+  下载或上传文件会显示进度条，可以使用该参数，关闭进度条显示
+
+  ```
+  cpl in /tmp λ curl  -o /dev/null baidu.com 
+    % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                   Dload  Upload   Total   Spent    Left  Speed
+  100    81  100    81    0     0    654      0 --:--:-- --:--:-- --:--:--   658
+  cpl in /tmp λ curl  --no-progress-meter -o /dev/null baidu.com
+  cpl in /tmp λ
+  ```
+
+## Exit code
+
+> man `/exit codes`
+
+在使用curl时，exit code会记录在括号中，例如
+
+```
+curl: (56) Recv failure: Connection reset by peer
+
+curl: (52) Empty reply from server
+```
+
 ## 注意点
 
 - 在linux上不支持file协议(UNC path)，在windows上可以使用
+- curl不能使用stdout重定向，因为curl会把后面的当做url，可以使用`-o`参数，结合`--no-progress-meter`关闭所有回显
+
+## 常用命令
+
+- `curl -skvo /dev/null <host>`
+
+  只输出请求和响应的关于http的详细信息，但不输出返回的信息
+
+  ```
+  cpl in /tmp λ curl -skvo /dev/null baidu.com
+  *   Trying 220.181.38.251:80...
+  * Connected to baidu.com (220.181.38.251) port 80 (#0)
+  > GET / HTTP/1.1
+  > Host: baidu.com
+  > User-Agent: curl/7.78.0
+  > Accept: */*
+  > 
+  * Mark bundle as not supporting multiuse
+  < HTTP/1.1 200 OK
+  < Date: Thu, 12 Aug 2021 04:01:58 GMT
+  < Server: Apache
+  < Last-Modified: Tue, 12 Jan 2010 13:48:00 GMT
+  < ETag: "51-47cf7e6ee8400"
+  < Accept-Ranges: bytes
+  < Content-Length: 81
+  < Cache-Control: max-age=86400
+  < Expires: Fri, 13 Aug 2021 04:01:58 GMT
+  < Connection: Keep-Alive
+  < Content-Type: text/html
+  < 
+  { [81 bytes data]
+  * Connection #0 to host baidu.com left intact
+  ```
+
+- `curl -fsSL host`
+
+  重定向，并以exit code的方式输出错误信息，但是不输出进度信息
+
+  ```
+  cpl in /tmp λ curl -fsSL -o /dev/null baidu.com
+  ```
+
+  

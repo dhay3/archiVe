@@ -157,7 +157,7 @@ pattern：`ip [options] OBJECT {COMMAND|help}`
   `ip a change`等价于`ip a add`，可以使用`ifconfig`替换
   
   ```
-[root@chz iproute2]# ifconfig ens33 192.168.80.200 netmask 255.255.255.0 broadcast 192.168.80.255
+  [root@chz iproute2]# ifconfig ens33 192.168.80.200 netmask 255.255.255.0 broadcast 192.168.80.255
   [root@chz iproute2]# ip a show up
   1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
       link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
@@ -172,7 +172,6 @@ pattern：`ip [options] OBJECT {COMMAND|help}`
       inet6 fe80::3d7c:65c6:7be7:a821/64 scope link noprefixroute 
          valid_lft forever preferred_lft forever
   ```
-  
 
 ## ip route
 
@@ -211,7 +210,7 @@ pattern：`ip [options] OBJECT {COMMAND|help}`
   192.168.80.0/24 dev ens33 proto kernel scope link src 192.168.80.101 metric 100 
   [root@chz network-scripts]# 
   
-  ----------------------------------------
+  
   
   [root@chz network-scripts]# ip r add 192.168.10.200 dev ens34 #指定LAN中主机不需要掩码
   [root@chz network-scripts]# ip r
@@ -221,7 +220,7 @@ pattern：`ip [options] OBJECT {COMMAND|help}`
   192.168.80.0/24 dev ens33 proto kernel scope link src 192.168.80.100 metric 100 
   192.168.80.0/24 dev ens33 proto kernel scope link src 192.168.80.101 metric 100 
   
-  ---------------------------------------
+  
   
   [root@chz network-scripts]# ip r add 39.156.69.79 via 192.168.80.2 dev ens33 #指定外网IP需要指定网关
   [root@chz network-scripts]# ip r
@@ -280,4 +279,3 @@ pattern：`ip [options] OBJECT {COMMAND|help}`
   [root@chz network-scripts]# arp 
   [root@chz network-scripts]# 
   ```
-
