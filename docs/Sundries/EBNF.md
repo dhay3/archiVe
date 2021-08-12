@@ -37,15 +37,74 @@ terminals通常由如下表格中的类型组成，也可以是a quoted literal(
 |                       | Java block comment                  | /’/*’ .*? ‘*/’/                                              |                                                              |
 |                       | Python line comment                 | /’#’ ~[rnf]*/                                                |                                                              |
 
-## non-terminal production rules
+## non-terminal 
 
-由terminal symbols组成，
+由terminal symbols和其他的non-terminal组成，==可以理解为二叉树的父节点==
+
+![2021-08-12_12-22](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/2021-08-12_12-22.4oq5txwzat20.png)
+
+production rules用于定义non-terminal
+
+## 常见符号
+
+definition也可以使用`::=`
+
+|        Usage         | Notation  |
+| :------------------: | :-------: |
+|      definition      |     =     |
+|  concatenation 组合  |     ,     |
+|     termination      |     ;     |
+|     alternation      |    \|     |
+|       optional       |  [ ... ]  |
+| repetition 0次或多次 |  { ... }  |
+|       grouping       |  ( ... )  |
+|   terminal string    |  " ... "  |
+|   terminal string    |  ' ... '  |
+|       comment        | (* ... *) |
+|   special sequence   |  ? ... ?  |
+|      exception       |     -     |
 
 ## 例子
 
+### 0x001
+
 ```enbf
-digit with zero ::= "0" | "1"
-digit :: = "2" | digit with zero
-numbers ::= {digit}
+digit with zero ::= "0" | "1";
+digit :: = "2" | digit with zero;
+numbers ::= {digit};
+```
+
+### 0x002
+
+```
+aa = "A";
+bb = 3 * aa, "B";
+cc = 3 * [aa], "C";
+dd = {aa}, "D";
+ee = aa, {aa}, "E";
+ff = 3 * aa, 3 * [aa], "F";
+gg = {3 * aa}, "G";
+```
+
+可以推出
+
+```
+aa: A
+bb: AAAB
+cc: C AC AAC AAAC
+dd: D AD AAD AAAD AAAAD etc.
+ee: AE AAE AAAE AAAAE AAAAAE etc.
+ff: AAAF AAAAF AAAAAF AAAAAAF
+gg: G AAAG AAAAAAG etc.
+```
+
+### 0x003
+
+用于描述脚本
+
+```
+who ::= "alice";
+say ::= func "say(who string)";
+do ::= who,say;
 ```
 
