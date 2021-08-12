@@ -111,8 +111,8 @@ root in /home/ubuntu λ lsof -c /^systemd$/
 2. i    ignore the case of letters.
 
 3. x    the regular expression is an extended one (default)\
-  • -U 
-  只列出UNIX socket相关的信息
+    • -U 
+    只列出UNIX socket相关的信息
 
   ```
   root in /home/ubuntu λ lsof -U | head -2
@@ -275,7 +275,7 @@ root in /tmp λ rm -f a.sh;lsof -w | grep a.sh
 bash       9384                  root  255r      REG              252,1         53     411838 /tmp/a.sh (deleted)
 ```
 
-所以只有总之对应的进程，文件才是真正的删除，切进程不是zombie
+所以只有总之对应的进程，文件才是真正的删除，且进程不是zombie
 
 ```
 root in /tmp λ ps -ef9384

@@ -18,6 +18,16 @@ https://www.ruanyifeng.com/blog/2019/09/curl-reference.html
 
 可以在任意系统的`terminal`上使用
 
+- `-a`以增量模式上传文件
+
+- `--cacert <file>`
+
+  指定使用的ca证书
+
+- `--compressed`
+
+  请求压缩的response，在stdout指定解压。可以防止mitma
+
 - `-A`参数指定客户端的用户代理标头，即`User-Agent`。curl 的默认用户代理字符串是`curl/[version]`。
 
   ```
@@ -58,7 +68,7 @@ https://www.ruanyifeng.com/blog/2019/09/curl-reference.html
 
   上面命令读取本地文件`cookies.txt`，里面是服务器设置的 Cookie（参见`-c`参数），将其发送到服务器。
 
-- `-c`参数将服务器设置的 Cookie 写入一个文件。
+- `-c|--cookie-jar`参数将服务器设置的 Cookie 写入一个文件。
 
   ```
   $ curl -c cookies.txt https://www.google.com
@@ -66,6 +76,10 @@ https://www.ruanyifeng.com/blog/2019/09/curl-reference.html
 
   上面命令将服务器的 HTTP 回应所设置 Cookie 写入文本文件`cookies.txt`。
 
+-  `-b | --cookie <filename>`
+
+  发送的请求将带有cookie header
+  
 - `-d`参数用于发送 POST 请求的数据体。
 
   ```
@@ -90,7 +104,31 @@ https://www.ruanyifeng.com/blog/2019/09/curl-reference.html
   $ curl --data-urlencode 'comment=hello world' https://google.com/login
   ```
 
-  上面代码中，发送的数据`hello world`之间有一个空格，需要进行 URL 编码。
+  上面代码中，发送的数据`hello world`之间有一个空格，所以需要进行 URL 编码。
+
+- `-D | --dump-header <filename>`
+
+  将接受到的header写入文件
+
+  ```
+  cpl in /tmp λ curl -D aaa baidu.com;cat aaa
+  <html>
+  <meta http-equiv="refresh" content="0;url=http://www.baidu.com/">
+  </html>
+  HTTP/1.1 200 OK
+  Date: Mon, 09 Aug 2021 17:44:25 GMT
+  Server: Apache
+  Last-Modified: Tue, 12 Jan 2010 13:48:00 GMT
+  ETag: "51-47cf7e6ee8400"
+  Accept-Ranges: bytes
+  Content-Length: 81
+  Cache-Control: max-age=86400
+  Expires: Tue, 10 Aug 2021 17:44:25 GMT
+  Connection: Keep-Alive
+  Content-Type: text/html
+  ```
+
+  
 
 - `-e`参数用来设置 HTTP 的标头`Referer`，表示请求的来源。
 
@@ -143,7 +181,7 @@ https://www.ruanyifeng.com/blog/2019/09/curl-reference.html
   $ curl -G -d 'q=kitties' -d 'count=20' https://google.com/search
   ```
 
-  上面命令会发出一个 GET 请求，实际请求的 URL 为`https://google.com/search?q=kitties&count=20`。如果省略`--G`，会发出一个 POST 请求。
+  上面命令会发出一个 GET 请求，实际请求的 URL 为`https://google.com/search?q=kitties&count=20`。如果省略`-G`，会发出一个 POST 请求。
 
   如果数据需要 URL 编码，可以结合`--data--urlencode`参数。
 
@@ -171,13 +209,13 @@ https://www.ruanyifeng.com/blog/2019/09/curl-reference.html
 
   上面命令添加 HTTP 请求的标头是`Content-Type: application/json`，然后用`-d`参数发送 JSON 数据。
 
-- `-i`参数打印出服务器回应的 HTTP 标头。
+- `-i`参数打印出服务器回应的 HTTP 响应头。
 
   ```bash
   $ curl -i https://www.example.com
   ```
 
-  上面命令收到服务器回应后，先输出服务器回应的标头，然后空一行，再输出网页的源码。
+  上面命令收到服务器回应后，先输出服务器回应的响应头，然后空一行，再输出网页的源码。
 
 - `-I`参数向服务器发出 HEAD 请求，然会将服务器返回的 HTTP 标头打印出来。
 
@@ -201,6 +239,14 @@ https://www.ruanyifeng.com/blog/2019/09/curl-reference.html
 
   上面命令不会检查服务器的 SSL 证书是否正确。
 
+- `--keepalive-time <seconds>`
+
+  发送keepalive信号的间隔，默认60sec，tcp连接保活
+
+- `--no-keepalive`
+
+  不使用keepalive
+
 - `-L`参数会让 HTTP 请求跟随服务器的重定向。curl 默认不跟随重定向。
 
   ```
@@ -213,6 +259,18 @@ https://www.ruanyifeng.com/blog/2019/09/curl-reference.html
   $ curl --limit-rate 200k https://google.com
   ```
 
+- `-L | --localtion`
+
+  高速curl如果3xx响应对请求不做修改(如果出现3xx可以使用该参数)
+
+  ```
+  curl -L qq.com
+  ```
+
+- `-m | --max-times <sec>`
+
+  执行curl的最长响应时间，一般用于批量脚本
+  
 - `-o`参数将服务器的回应保存成文件，等同于`wget`命令。
 
   ```
@@ -221,7 +279,7 @@ https://www.ruanyifeng.com/blog/2019/09/curl-reference.html
 
   上面命令将`www.example.com`保存成`example.html`。
 
-- `-O`参数将服务器回应保存成文件，并将 URL 的最后部分当作文件名。
+- `-O`参数将服务器回应的==文件(url对应的只能是文件)==保存成文件，并将 URL 的最后部分当作文件名。
 
   ```
   $ curl -O https://www.example.com/foo/bar.html
@@ -229,6 +287,14 @@ https://www.ruanyifeng.com/blog/2019/09/curl-reference.html
 
   上面命令将服务器回应保存成文件，文件名为`bar.html`。
 
+- `-Z | --parallel`
+
+  并发响应，可以加快速度
+  
+- `--retry-delay <sec>| --retry-max-time <sec>| retry <num>`
+
+  curl重试时间和次数
+  
 - `-s`参数将不输出错误和进度信息。
 
   ```
@@ -308,3 +374,26 @@ https://www.ruanyifeng.com/blog/2019/09/curl-reference.html
   ```
 
   上面命令对`https://www.example.com`发出 POST 请求。
+
+- `-0`
+
+  强制使用HTTP1.0发送请求，不保证响应的也是HTTP1.0
+
+  ```
+  cpl in /tmp λ curl -0v baidu.com
+  *   Trying 220.181.38.148:80...
+  * Connected to baidu.com (220.181.38.148) port 80 (#0)
+  > GET / HTTP/1.0
+  > Host: baidu.com
+  > User-Agent: curl/7.77.0
+  > Accept: */*
+  > 
+  ```
+
+- `--http1.1 | --http2`
+
+  使用http1.1发送请求，http2需要目标libcurl支持http2.0
+
+## 注意点
+
+- 在linux上不支持file协议(UNC path)，在windows上可以使用
