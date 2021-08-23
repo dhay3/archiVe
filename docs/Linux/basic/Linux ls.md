@@ -39,7 +39,7 @@ https://blog.csdn.net/JenMinZhang/article/details/9816853
 
   第四列：文件所在的组（有root组）
 
-  第五列：文件长度（大小）
+  第五列：文件长度（大小）==如果是文件夹不会显示真实的大小==
 
   第六列：文件最后修改的时间
 

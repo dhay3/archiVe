@@ -95,6 +95,8 @@ syntax：`du [options] [file]`
 
 ## du vs stat
 
+> 如果用`ls -l`看文件夹，是不会显示真实的大小，只会显示block size
+
 stat默认以实际存储的数据显示，du以block size为单位显示。如果实际大小小于block size时以block size取整显示(因为filesys只能操作block)
 
 ```

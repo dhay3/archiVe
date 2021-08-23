@@ -1,5 +1,7 @@
 # Linux chmod
 
+> 如果文件是从windows到linux，默认为777
+
 ## 概述
 
 Linux chmod（英文全拼：change mode）命令是控制用户对文件的权限的命令
