@@ -10,15 +10,27 @@ https://juejin.im/post/6844904084168769549
 
 ## 概述
 
-命令行抓包工具，不仅限于tcp协议。
+syntax：`tcpdump [options] [filters]`
+
+命令行抓包工具，不仅限于tcp协议。发送SINGTERM终止
+
+```
+root in /home/ubuntu λ tcpdump -i any -c 3
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
+08:15:34.080299 IP gns3vm.65522 > 42.120.72.99.2539: Flags [P.], seq 2112669508:2112669600, ack 824759699, win 501, length 92
+08:15:34.080575 IP gns3vm.65522 > 42.120.72.99.2539: Flags [P.], seq 92:200, ack 1, win 501, length 108
+08:15:34.080596 IP gns3vm.65522 > 42.120.72.99.2539: Flags [P.], seq 200:236, ack 1, win 501, length 36
+3 packets captured
+26 packets received by filter
+17 packets dropped by kernel
+```
+
+received by filter 会跟进OS不同执行不同的操作，查看manual page 获取详细信息
 
 ## 参数
 
-- -c
-
-  抓取指定个数个包后tcpdump自动退出
-
-- -D
+- -D | --list-interfaces
 
   显示所有网络接口。tcpdump默认监听第一个网络接口
 
@@ -43,8 +55,20 @@ https://juejin.im/post/6844904084168769549
 
 - -i
 
-  指定监听的接口
+  指定监听的接口，如果不指定默认使用第一个iface，可以使用any抓所有的iface
 
+  ```
+  root in /home/ubuntu λ tcpdump -i any
+  ```
+
+- -c
+
+  抓取指定个数个包后tcpdump自动退出，例如抓100个包
+
+  ```
+  root in /home/ubuntu λ tcpdump -i any -c 10
+  ```
+  
 - -S
 
   以绝对的方式打印sequence number，默认第一个包先显示seq然后以相对的方式显示seq
@@ -64,13 +88,27 @@ https://juejin.im/post/6844904084168769549
 
   单个n取消DNS解析，两个n取消DNS解析和端口解析
 
-- -F 
-
-  以文件的形式指定filter
-
 - -t
 
   不打印时间戳
+
+- -ttt
+
+  以delta的格式输出时间戳
+
+  ```
+  root in /home/ubuntu λ tcpdump -i any -c 10 -ttt
+  tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+  listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
+   00:00:00.000000 IP gns3vm.65522 > 42.120.72.99.2539: Flags [P.], seq 2112824520:2112824628, ack 824803895, win 501, length 108
+   00:00:00.000025 IP gns3vm.65522 > 42.120.72.99.2539: Flags [P.], seq 108:144, ack 1, win 501, length 36
+   00:00:00.000022 IP gns3vm.65522 > 42.120.72.99.2539: Flags [P.], seq 144:260, ack 1, win 501, length 116
+   00:00:00.000016 IP gns3vm.65522 > 42.120.72.99.2539: Flags [P.], seq 260:296, ack 1, win 501, length 36
+   00:00:00.000229 IP localhost.localdomain.58762 > localhost.domain: 16067+ [1au] PTR? 99.72.120.42.in-addr.arpa. (54)
+   00:00:00.134158 IP localhost.localdomain.49429 > localhost.domain: 50225+ [1au] PTR? 53.0.0.127.in-addr.arpa. (52)
+   00:00:00.000055 IP gns3vm.65522 > 42.120.72.99.2539: Flags [P.], seq 296:780, ack 1, win 501, length 484
+   00:00:00.000092 IP localhost.domain > localhost.localdomain.49429: 50225 1/0/1 PTR localhost. (75)
+  ```
 
 - -r
 
@@ -86,14 +124,6 @@ https://juejin.im/post/6844904084168769549
   10:55:15.443622 IP 192.168.80.200 > chz: ICMP echo request, id 3248, seq 677, length 64
   ```
 
-- -w
-
-  将数据包以==raw==的格式(binary file)写入到文件，所有内容将不会以标准输出流输出
-
-  ```
-  [root@chz Desktop]# tcpdump -w test -i ens33
-  ```
-
 - -l
 
   buffer stdout中的信息，可以结合pipeline将信息以==明文==的方式输出到文件中
@@ -101,10 +131,34 @@ https://juejin.im/post/6844904084168769549
   ```
   cpl in ~ λ sudo tcpdump -li wlp1s0 tcp and host 1.1.1.1 | tee data
   ```
+
+- -w
+
+  将数据包以==raw==的格式(binary file)写入到文件，所有内容将不会以标准输出流输出。如果和`-G`一起使用需要以`strftime`的格式命名
+
+  ```
+  [root@chz Desktop]# tcpdump -w test -i ens33
+  ```
+  
+- -C  file_size
+
+  当抓到的单个文件大于file_size(1 == 1 millions bytes)时，会新生成一个文件，后生成的文件以`test[1++]`的格式命名
+
+  ```
+  cpl in /tmp λ sudo tcpdump -i wlp1s0 -n -G 30 -w test.pcap -C 10
+  ```
+  
+- -G 
+
+  在指定间隔(sec)后向文件中写入也可以发送SIGINT信号中断进程提前写入，一般与-w或-W一起使用。`-w`必须以==`strftime`==格式命名
+
+  ```
+  sudo tcpdump -i wlp1s0 -n -G 30 -w %M%S.pcap
+  ```
   
 - ==-W==
 
-  限制生成的文件个数，和-C，-G一起使用。最好将文件按照==strftime==格式命名
+  限制生成的文件个数，和-C，-G一起使用。
 
   ```
   cpl in /tmp λ sudo tcpdump -i wlp1s0 -n -G 30 -w %M%S.pcap -W 3
@@ -113,17 +167,13 @@ https://juejin.im/post/6844904084168769549
    0049.pcap
    0119.pcap
   ```
-  
-- -G 
 
-  在指定间隔(sec)后向文件中写入也可以发送SIGINT信号中断进程提前写入，一般与-w或-W一起使用
+- -z command
 
-- -C 
-
-  指定生成文件的大小
+  在每次rotation后，都执行命令。需要和`-G`或`-C`一起使用否则无效
 
   ```
-  cpl in /tmp λ sudo tcpdump -i wlp1s0 -n -G 30 -w %M%S.pcap -C 10
+  
   ```
   
 - -e
@@ -138,22 +188,37 @@ https://juejin.im/post/6844904084168769549
   11:04:30.371881 00:0c:29:d7:d1:68 (oui Unknown) > 00:50:56:32:1b:8c (oui Unknown), ethertype IPv4 (0x0800), length 98: chz > 192.168.80.200: ICMP echo reply, id 3352, seq 1, length 64
   11:04:30.372686 00:0c:29:d7:d1:68 (oui Unknown) > 00:50:56:e3:f8:b0 (oui Unknown), ethertype IPv4 (0x0800), length 87: chz.40942 > gateway.domain: 12072+ PTR? 139.80.168.192.in-addr.arpa. (45)
   ```
+  
+- -F file
 
-- -c
-
-  抓取指定数量的数据包，可以使用SIGINT提前结束
+  使用文件作为filter
 
   ```
-  [root@chz Desktop]# tcpdump -i ens33 -c 3
+  root in /home/ubuntu λ cat > filter <<EOF
+  heredoc> tcp[13] == 2
+  heredoc> EOF
+  root in /home/ubuntu λ cat filter
+  tcp[13] == 2
+  root in /home/ubuntu λtcpdump -i any -c 3 -F filter
   tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-  listening on ens33, link-type EN10MB (Ethernet), capture size 262144 bytes
-  19:51:46.073738 ARP, Request who-has 192.168.80.200 tell chz, length 28
-  19:51:46.074334 IP chz.53701 > gateway.domain: 62718+ PTR? 200.80.168.192.in-addr.arpa. (45)
-  19:51:46.086321 IP gateway.domain > chz.53701: 62718 NXDomain 0/1/0 (80)
+  listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
+  08:38:10.664230 IP gns3vm.48340 > 169.254.0.4.http: Flags [S], seq 2275304406, win 64240, options [mss 1460,sackOK,TS val 2008682951 ecr 0,nop,wscale 7], length 0
+  08:38:11.660677 IP gns3vm.48342 > 169.254.0.4.http: Flags [S], seq 2028759254, win 64240, options [mss 1460,sackOK,TS val 2008683948 ecr 0,nop,wscale 7], length 0
+  08:38:12.661094 IP gns3vm.48344 > 169.254.0.4.http: Flags [S], seq 459183679, win 64240, options [mss 1460,sackOK,TS val 2008684948 ecr 0,nop,wscale 7], length 0
   3 packets captured
-  7 packets received by filter
+  3 packets received by filter
   0 packets dropped by kernel
   ```
+
+- -I
+
+  以monitor mode方式监听wi-fi interface，会让iface无法连接网络
+
+  ```
+  
+  ```
+
+  
 
 ## TCP flags
 
@@ -195,8 +260,6 @@ Proto 过滤器用来过滤某个协议的数据，关键字为 `proto`，可省
 #如果后面还有参数需要使用and连接
 cpl in ~ λ sudo tcpdump -nni wlp1s0 tcp and host 1.1.1.1
 ```
-
-
 
 ### host
 

@@ -18,6 +18,21 @@ tcpdump: listening on eth0, link-type EN10MB (Ethernet), capture size 262144 byt
 
 syntax：`ping [options] destination`
 
+```
+cpl in ~/note/docs/Linux/basic/network on master λ ping -Dnc 3 baidu.com
+PING baidu.com (220.181.38.148) 56(84) bytes of data.
+[1630906799.360199] 64 bytes from 220.181.38.148: icmp_seq=1 ttl=52 time=30.8 ms
+[1630906800.361975] 64 bytes from 220.181.38.148: icmp_seq=2 ttl=52 time=30.5 ms
+^C
+--- baidu.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1002ms
+rtt min/avg/max/mdev = 30.493/30.629/30.765/0.136 ms
+```
+
+发送了2个icmp包，接受到2个包的reply，0个包被丢弃
+
+round trip time(rtt)往返时延最小值，平均值，最大值，与平均值的偏差
+
 ## options
 
 - -A

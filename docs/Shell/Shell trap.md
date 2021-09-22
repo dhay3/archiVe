@@ -1,5 +1,7 @@
 # trap
 
+> bash -c “trap -l”
+
 trap命令用来捕获指定SIG，并执行指定ACTION，我们可以使用`trap -l`或是`kill -l`
 
 来查看所有的SIG

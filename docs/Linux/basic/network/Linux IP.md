@@ -1,6 +1,10 @@
 # Linux IP
 
-==一张NIC能有多个interface，一个interface能有多个IP，但是只能有一个MAC地址==
+reference：
+
+https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_networking/linux-traffic-control_configuring-and-managing-networking
+
+http://linux-ip.net/gl/ip-cref/ip-cref-node17.html
 
 ## ip
 
@@ -11,6 +15,47 @@
 pattern：`ip [options] OBJECT {COMMAND|help}`
 
 每一个对象都有help命令，可以查看具体的`COMMAND`。使用`-s`和`-d`参数显示更加详细的信息
+
+## keyword
+
+- mtu
+
+  maximal transform unit，单包最大的传输值
+
+  byte
+
+- qdisc
+
+  queueing discipline
+
+  接受和发送数据的缓冲队列使用的算法，具体可以使用的值参考[链接](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_networking/linux-traffic-control_configuring-and-managing-networking)，常见的有noqueue表示不使用队列缓存信息，noop使用blackhole，所有发送到该iface的数据包都会被丢弃
+
+  可以用`tc qdisc show dev <iface>`查看
+
+- state
+
+  表明iface的状态是否启用
+
+- master
+
+  该iface是另一个iface的子接口
+
+  ```
+  4: virbr0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default qlen 1000
+      link/ether 52:54:00:12:da:f9 brd ff:ff:ff:ff:ff:ff
+      inet 192.168.122.1/24 brd 192.168.122.255 scope global virbr0
+         valid_lft forever preferred_lft forever
+  5: virbr0-nic: <BROADCAST,MULTICAST> mtu 1500 qdisc fq_codel master virbr0 state DOWN group default qlen 1000
+      link/ether 52:54:00:12:da:f9 brd ff:ff:ff:ff:ff:ff
+  ```
+
+- group
+
+  ip 组
+
+- qlen
+
+  缓存队列最大的值
 
 ## ip link
 
@@ -31,6 +76,8 @@ pattern：`ip [options] OBJECT {COMMAND|help}`
   4: docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN mode DEFAULT group default 
       link/ether 02:42:58:78:34:6a brd ff:ff:ff:ff:ff:ff
   ```
+
+  
 
 - ==ip link set==
 
