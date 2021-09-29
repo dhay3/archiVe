@@ -55,7 +55,7 @@ received by filter 会跟进OS不同执行不同的操作，查看manual page �
 
 - -i
 
-  指定监听的接口，如果不指定默认使用第一个iface，可以使用any抓所有的iface
+  指定监听的接口，如果不指定默认使用第一个iface，==可以使用any抓所有的iface==
 
   ```
   root in /home/ubuntu λ tcpdump -i any
@@ -87,6 +87,10 @@ received by filter 会跟进OS不同执行不同的操作，查看manual page �
 - -nn
 
   单个n取消DNS解析，两个n取消DNS解析和端口解析
+
+- -v
+
+  打印出ttl,tos,id,length,flags,proto等信息
 
 - -t
 
@@ -210,15 +214,17 @@ received by filter 会跟进OS不同执行不同的操作，查看manual page �
   0 packets dropped by kernel
   ```
 
-- -I
+- -K | --dont-verify-checksums
 
-  以monitor mode方式监听wi-fi interface，会让iface无法连接网络
+  不计算crc冗余码
+
+- -l
+
+  将输出到stdout的内容输出到line buffered中
 
   ```
-  
+  tcpdump -l | tee dat
   ```
-
-  
 
 ## TCP flags
 
@@ -245,7 +251,9 @@ IP rtsg.1023 > csam.login: Flags [S], seq 768512:768512, win 4096, opts [mss 102
 
 例如第一行表示从rtsg 1023端口发往csam login端口，tcp接受窗口为4096byte，seq为768512，没有发送数据
 
-## 过滤器
+## Filter
+
+
 
 > 如果没有指定过滤器，所有的数据包(==所有的协议包==)会被捕捉。具体查看 pcap-filter(7)。与wireshark的过滤条件相同
 
@@ -358,11 +366,39 @@ listening on ens33, link-type EN10MB (Ethernet), capture size 262144 bytes
 [root@chz Desktop]# tcpdump -i ens33 portrange 80-3306
 ```
 
+### flags
+
+<img src="..\..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-25_00-39-07.png"/>
+
+首部20bytes，标志位从第13个octet（8bits一组）算起
+
+    |        		| 
+    |---------------| 
+    |C|E|U|A|P|R|S|F| 
+    |---------------| 
+    |7 6 5 4 3 2 1 0|
+
+ACK $2^4$
+
+SYN $2^1$ 
+
+FIN $2^0$
+
+如果只想要表示SYN包可以使用`tcp[13] == 2`，如果想表示包含SYN包的可以使用`tcp[13] == 2 & 2 == 2`，也可以使用name的形式`tcp-fin`, `tcp-syn`, `tcp-rst`, `tcp-push`, `tcp-ack`, `tcp-urg`.例如
+
+```
+tcpdump -i xl0 'tcp[tcpflags] & tcp-push != 0'
+```
+
+ 只抓PUSH的包
+
 ## 例子
 
 > 可以使用逻辑运算符('!' or 'not'；‘&&’ or  ‘and’；'||' or 'or')，也可以使用主机名，也可以使用子表达式
 
-1. ```
+1. 
+   
+   ```
    [root@chz Desktop]# tcpdump -i ens33 host 192.168.80.200 && 192.168.80.100
    tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
    listening on ens33, link-type EN10MB (Ethernet), capture size 262144 bytes
@@ -371,7 +407,7 @@ listening on ens33, link-type EN10MB (Ethernet), capture size 262144 bytes
    ```
 
    同时捕捉192.168.80.200和192.168.80.100数据包
-
+   
 2. ```
    [root@chz opt]# tcpdump -i ens33 not arp
    tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
