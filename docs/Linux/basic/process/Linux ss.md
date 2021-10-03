@@ -6,6 +6,8 @@ https://einverne.github.io/post/2013/01/ss-command-socket-statistics.html
 
 ## 概述
 
+syntax：`ss [options] [filter]`
+
 用来获取unix上的socket，==如果主机上不方便安装netstat可以使用该命令==。==如果没有带有参数默认只展示ESTABLISHED的socket==
 
 ```
@@ -20,6 +22,20 @@ u_str ESTAB  0      0                     @/tmp/.X11-unix/X0 30784              
 - `-O,--oneline`
 
   以一行展示套接字情况
+
+- `-o`
+
+  显示时间相关的信息
+
+  ```
+  cpl in ~ λ ss -npto 
+  State         Recv-Q      Send-Q                Local Address:Port                   Peer Address:Port       Process                                                                                                      
+  ESTAB         0           0                         127.0.0.1:45392                     127.0.0.1:1089        users:(("chrome",pid=7767,fd=26)) timer:(keepalive,20sec,0)                                                 
+  ESTAB         0           0                         127.0.0.1:15490                     127.0.0.1:37506       users:(("v2ray",pid=2406,fd=17)) timer:(keepalive,8.820ms,0)                                                
+  ESTAB         0           0                         127.0.0.1:
+  ```
+
+- 
 
 - `-r,--resolve`
 
@@ -86,6 +102,35 @@ u_str ESTAB  0      0                     @/tmp/.X11-unix/X0 30784              
 - `-K`
 
   关闭所有的sockets，该参数极其危险
+
+## filter
+
+Filter ::= [state STATE-FILTER] [EXPRESSION]
+
+STATE-FILTER ::= [established | syn-sent | syn-recv | fin-wait-1 |  fin-wait-2 | time-wait | closed | close-wait | last-ack | listening | closing]
+
+```
+cpl in ~ λ ss -lnpt state LISTENING 
+Recv-Q   Send-Q      Local Address:Port        Peer Address:Port   Process                                   
+0        128             127.0.0.1:631              0.0.0.0:*                                                
+0        4096            127.0.0.1:8889             0.0.0.0:*       users:(("v2ray",pid=2406,fd=4))          
+0        4096            127.0.0.1:1089             0.0.0.0:*       users:(("v2ray",pid=2406,fd=8))          
+0        4096            127.0.0.1:15490            0.0.0.0:*       users:(("v2ray",pid=2406,fd=10))         
+0        50                      *:1716                   *:*       users:(("kdeconnectd",pid=1573,fd=15))   
+0        128                 [::1]:631                 [::]:*    
+```
+
+EXPRESSION 可以是如下的值(具体查看man page)，可以通过逻辑符`&&`，`||`拼接
+
+{dst | src}  host
+
+{dport | sport} :port
+
+```
+cpl in ~ λ ss -npt state LISTENING  sport :1089
+Recv-Q        Send-Q               Local Address:Port                Peer Address:Port        Process        
+0             4096                     127.0.0.1:1089                     0.0.0.0:*            users:(("v2ray",pid=2406,fd=8))
+```
 
 ## Example
 

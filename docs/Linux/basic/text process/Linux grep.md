@@ -6,7 +6,7 @@ http://www.zsythink.net/archives/1733
 
 ## 概述
 
-grep 命令将匹配规则的file或是标准stdout中的内容，以一行的形式输出
+grep 命令将匹配规则的file或是==标准stdout==中的内容(不会读stderr中的内容)，以一行的形式输出
 
 pattern：`grep [options] pattern [file]`
 

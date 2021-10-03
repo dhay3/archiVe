@@ -226,6 +226,21 @@ received by filter 会跟进OS不同执行不同的操作，查看manual page �
   tcpdump -l | tee dat
   ```
 
+- `-s <snaplen>`
+
+  抓固定长度的包，默认抓262144bytes
+
+  ```
+  cpl in ~ λ sudo tcpdump -nni any -s 60 -c 10
+  tcpdump: data link type LINUX_SLL2
+  tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+  listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 60 bytes
+  16:20:45.271363 lo    In  IP 127.0.0.1.45414 > 127.0.0.1.1089: Flags [.], ack 4088476552, win 512, options [ [|tcp]
+  16:20:45.271397 lo    In  IP 127.0.0.1.1089 > 127.0.0.1.45414: Flags [.], ack 1, win 512, options [ [|tcp]
+  16:20:45.670890 wlp1s0 B   ARP, Request who-has 192.168.10.1 (ff:ff:ff:ff:ff:ff) tell 192.168.10.1, length 46
+  16:20:45.687370 lo    In  IP 127.0.0.1.37506 > 127.0.0.1.15490: Flags [P.], seq 3269200592:3269200707, ack 896792731, win 621, options [ [|tcp]
+  ```
+
 ## TCP flags
 
 ```
