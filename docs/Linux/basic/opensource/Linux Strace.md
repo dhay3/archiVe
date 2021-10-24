@@ -8,6 +8,8 @@ EBNF：`strace ::= "debuging tool","diagnostic";`
 
 syntax：`strace [options] command`
 
+当command退出时，strace会以同样的方式退出(exit code相同)
+
 ## system call
 
 > 所有的syscall都可以通过manual page查看，大都数的syscall都在高级编程语言中有库
@@ -71,15 +73,7 @@ syntax：`strace [options] command`
 
 ## options
 
-### filtering
-
-- `-z | --successful-only`
-
-  只打印syscall成功的
-
-- `-Z | --failed-only`
-
-  只打印syscal失败的
+### filtering    
 
 - `-e expr`
 
@@ -115,14 +109,49 @@ syntax：`strace [options] command`
 
      detached没返回就终止的
 
-  1. abbrev(a)
-  2. verbose(v)，raw(x)，signal(s)，read(r)，write(w)，fault，inject，status，quiet(q)，decode-fds，kvm。默认使用trace
+     默认all
 
-  
+  4. abbrev(a)
+
+     简要的输出syscall，默认all
+
+  5. verbose(v)
+
+     详细的输出syscall，默认all
+
+  6. raw(x)
+
+     以16进制的方式输出相关信息，默认all
+
+  7. read(r)
+
+     读取read syscall读取的内容以ascii的方式输出，例如`-e read=3,5`表示只读3和5的stream
+
+     ```
+     strace -e trace=read -e read pwd
+     ```
+
+  8. write(w)
+
+     和read syscall类似
+
+  9. quiet(q)
+
+     不输出指定的内容，可以如下几种值，具体查看man page
+
+     attach
+
+     ```
+     ("[Process NNNN attached ]",  "[Process NNNN detached ]")
+     ```
+
+     exit
+
+     ```
+     +++  exitedwith SSS +++
+     ```
 
   例如`-e trace=open`表示只看和open相关的syscall
-
-  
 
 ### startup
 
@@ -178,17 +207,68 @@ syntax：`strace [options] command`
 
 - `-o filename`
 
-   吧strace的输出重定向到文件中
+   把strace的输出重定向到文件中
 
-- `-i | --instruction-pointer`
+- `-k | --stack-traces`
 
-  在
+  输出每个syscall的堆栈信息
 
-### filtering
+- `-n | --syscall-number`
 
+  输出syscall number
 
+- `-z | --successful-only`
 
+  只打印syscall成功的
 
+- `-Z | --failed-only`
+
+  只打印syscal失败的
+
+- `-q[q...]`
+
+  q越多，输出的信息越少
+
+- `-t | --absolute-timestamps`
+
+  在每个syscall之前都加时间戳
+
+- `-d`
+
+  输出和strace相关的debug信息
+
+### statistics
+
+- `-c | --summary-only`
+
+  统计时间，syscall数量，错误数，当strace进程退出时
+
+  ```
+  cpl in ~/note on master λ strace -c pwd
+  /home/cpl/note
+  % time     seconds  usecs/call     calls    errors syscall
+  ------ ----------- ----------- --------- --------- ----------------
+    0.00    0.000000           0         1           read
+    0.00    0.000000           0         1           write
+    0.00    0.000000           0         5           close
+    0.00    0.000000           0         9           mmap
+    0.00    0.000000           0         3           mprotect
+    0.00    0.000000           0         1           munmap
+    0.00    0.000000           0         3           brk
+    0.00    0.000000           0         4           pread64
+    0.00    0.000000           0         1         1 access
+    0.00    0.000000           0         1           execve
+    0.00    0.000000           0         1           getcwd
+    0.00    0.000000           0         2         1 arch_prctl
+    0.00    0.000000           0         3           openat
+    0.00    0.000000           0         4           newfstatat
+  ------ ----------- ----------- --------- --------- ----------------
+  100.00    0.000000           0        39         2 total
+  ```
+
+- `-C | --summary`
+
+  和`-c`类似，但是会输出syscall的信息
 
 ## 输出分析
 
