@@ -71,6 +71,59 @@ syntax：`strace [options] command`
 
 ## options
 
+### filtering
+
+- `-z | --successful-only`
+
+  只打印syscall成功的
+
+- `-Z | --failed-only`
+
+  只打印syscal失败的
+
+- `-e expr`
+
+  指定trace的方式，`expr:=[qualifier=][!]value[,value]...`。
+
+  qualifier有如下几种
+
+  1. trace(t)
+
+     输出和syscall相关的信息
+
+     value有如下几种，syscall，?value，/regex(使用POSIX Extended Regex)，%process(输出进程creation，exec，termination相关的syscall)，%network(==输出与网络有关的syscall==)，%signal(==输出与posix signal相关的syscall==)，%memory(输出与内存相关的syscall)。默认使用all表示输出所有的syscall
+
+  2. signal(s)
+
+     输出和signal相关的信息
+
+     默认all
+
+  3. status
+
+     输出指定返回状态的syscall
+
+     状态可以是如下几种
+
+     successful表示无错误返回码（等价于-z）
+
+     failed错误返回码(等价与-Z)
+
+     unfinished没有终止的
+
+     unavailable不能获取错误信息的
+
+     detached没返回就终止的
+
+  1. abbrev(a)
+  2. verbose(v)，raw(x)，signal(s)，read(r)，write(w)，fault，inject，status，quiet(q)，decode-fds，kvm。默认使用trace
+
+  
+
+  例如`-e trace=open`表示只看和open相关的syscall
+
+  
+
 ### startup
 
 - `-p pid`
@@ -105,6 +158,22 @@ syntax：`strace [options] command`
 
   如果接受到指定syscall，就退出strace。目前只支持`execve`
 
+- `-f | --follow-forks`
+
+  strace以fork的方式跟踪当前进程，如果和`-p`一起使用，表示fork指定进程的所有值进程
+
+- `--output-separately`
+
+  和`--output=filename`一起使用时才有效，将pid的信息和输出信息分离。文件以`fliename.pid`命名
+
+- `-ff`
+
+  等价与`--follow-forks`加`--out-separately`
+
+- `-P path`
+
+  只追踪path下的syscall
+
 ### output
 
 - `-o filename`
@@ -117,13 +186,7 @@ syntax：`strace [options] command`
 
 ### filtering
 
-- `-z | --successful-only`
 
-  只打印syscall成功的
-
-- `-Z | --failed-only`
-
-  只打印syscal失败的
 
 
 

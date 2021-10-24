@@ -101,3 +101,14 @@ https://blog.csdn.net/JenMinZhang/article/details/9816853
 
   对排序后的文件逆序
 
+- -R
+
+  子目录遍历，但不会显示目录名只会显示文件名
+
+  ```
+  cpl in ~ λ sudo ls -R | grep -i strace
+  Linux Strace.md
+  ```
+
+  
+

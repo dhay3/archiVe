@@ -24,7 +24,7 @@ expression通常由global options，tests，actions，position options，oprator
 
 - `-name pattern`
 
-  匹配文件名，可以使用shell的模式扩展。==如果没有使用模式扩展表示精确匹配==
+  匹配文件名，可以使用shell的模式扩展。==如果没有使用模式扩展表示精确匹配==。只匹配文件名不匹配路径
 
   ```
   root in /usr/local/\/test1 λ find . -name "*2020-*"
@@ -75,8 +75,27 @@ expression通常由global options，tests，actions，position options，oprator
   ./2021-06.log
   ```
 
+  支持的regextype可以使用`find -regextype help`来查看
+
+  ```
+  cpl in ~ λ find -regextype help
+  find: Unknown regular expression type ‘help’; valid types are ‘findutils-default’, ‘ed’, ‘emacs’, ‘gnu-awk’, ‘grep’, ‘posix-awk’, ‘awk’, ‘posix-basic’, ‘posix-egrep’, ‘egrep’, ‘posix-extended’, ‘posix-minimal-basic’, ‘sed’.
+  ```
+
+  this is a match on the whole path
+
+  如果想要子目录遍历，需要在pattern前加`.*/`表示目录，否则会找不到。如果是想在当前目录下遍历子目录需要在pattern前加`\./`
+
+  ```
+  
+  ```
+
+  
+
 - `-type c`
 
+  可以一次指定多种类型，`-type f,l,s`
+  
   1. b：块文件
   2. c：字符设备文件
   3. d：目录
@@ -140,6 +159,14 @@ expression通常由global options，tests，actions，position options，oprator
 - `-print | -print0`  
 
   将匹配后的文件输出并换行，默认动作。print0不换行输出并且会原样输出文件名不转义
+
+- `-printf`
+
+  格式化输出，`%f`表示只输出文件名
+
+  ```
+  find . -maxdepth 1 -type d -printf '%f\n'
+  ```
 
 ## 案例
 
