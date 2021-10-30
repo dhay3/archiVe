@@ -207,7 +207,7 @@ syntax：`strace [options] command`
 
 - `-o filename`
 
-   把strace的输出重定向到文件中
+   把strace的输出重定向到文件中，然后可以结合grep来查看具体的信息
 
 - `-k | --stack-traces`
 
