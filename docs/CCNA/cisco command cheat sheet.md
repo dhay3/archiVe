@@ -1,3 +1,5 @@
+
+
 # cisco command cheat sheet
 
 参考：
@@ -36,16 +38,16 @@ cisco router有六种模式，通过如下命令可以在指定mode下切换到�
 
 命令行prompt可以清楚区别当前所处的mode
 
-| **Prompt**             | **PresentMode** | **Description**                                              |
-| ---------------------- | --------------- | ------------------------------------------------------------ |
-| Router>                | U               | User EXEC mode, is the first level of access.                |
-| Router#                | P               | Privileged EXEC mode. The second level of access, accessible with the “enable” command. |
-| Router(config)#        | G               | Configuration mode. Accessible only via the privileged EXEC mode. |
-| Router(config-if)#     | I               | Interface mode. Level accessible via configuration mode.     |
-| Router(config-router)# | R               | Routing mode. Level within configuration mode.               |
-| Router(config-line)#   | L               | Line level (vty, tty, async). Accessed via the configuration mode |
-| Router(config-vlan)#   | V               | Config-vlan, accessible via the global configuration mode.   |
-| Switch(vlan)#          | VD              | Vlan database, accessible from the privileged EXEC mode.     |
+| **Prompt**                                                   | **PresentMode** | **Description**                                              |
+| ------------------------------------------------------------ | --------------- | ------------------------------------------------------------ |
+| Router>                                                      | U               | User EXEC mode, is the first level of access.                |
+| Router#                                                      | P               | Privileged EXEC mode. The second level of access, accessible with the “enable” command. |
+| Router(config)#                                              | G               | Configuration mode. Accessible only via the privileged EXEC mode. |
+| Router(config-if)#                                           | I               | Interface mode. Level accessible via configuration mode.     |
+| Router(config-router)#                                       | R               | Routing mode. Level within configuration mode.               |
+| Router(config-line)#                                         | L               | Line level (vty, tty, async). Accessed via the configuration mode |
+| Router(config-vlan)#                                         | V               | Config-vlan, accessible via the global configuration mode.   |
+| Switc一台路由器要运行OSPF协议，必须存在Router ID是一个32bit无符号整数，是一台路由器在AS中唯一标识符。<br/><br/>Router ID的选取有两种方式：h(vlan)# | VD              | Vlan database, accessible from the privileged EXEC mode.     |
 
 ## Iface
 
@@ -57,6 +59,22 @@ interface表示一个接口
 例如表示`f0/0`，fastethernet 第一张NIC，第一个端口
 
 ## pipeline
+
+| **Command** |                    |
+| ----------- | ------------------ |
+| include     | 包含特定字符的行   |
+| section     | 包含特定字符的部分 |
+| begin       | 以特定字符开头     |
+
+可以使用缩写
+
+```
+R1#sh run | se r o
+router ospf 1
+ log-adjacency-changes
+ network 192.168.79.0 0.0.0.255 area 1
+ network 192.168.80.0 0.0.0.255 area 0
+```
 
 
 

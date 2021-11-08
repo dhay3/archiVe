@@ -1,6 +1,20 @@
 # OSPF
 
-Open Shortest Path First是一个基于链路状态的IGP协议，由于RIP的种种限制，RIP组件被OSPF取代
+reference：
+
+https://www.jannet.hk/open-shortest-path-first-ospf-zh-hant/
+
+## 概述
+
+Open Shortest Path First是一个基于链路状态(Link-State Routing Protocol)的IGP协议，由于RIP的种种限制，RIP组件被OSPF取代。每个在OSPF里的Router都会向Neighbor交换自己的Link-State，当Router收到这些Link-State之后，就会运用Dijkstra Alogrith来计算出最短的路径
+
+## 区域
+
+OSPF是设计给一个大型网络使用的，为了解决管理上的问题，OSPF采用了一个hierachical system(分层系统)，把大型的OSPF分割成多个Area。
+
+Area有两种表达方式，可以是一个16bits数字（0-65535），或者使用类似IP的方式（OID），例如：192.168.1.1，前者比较常见。Area0（或0.0.0.0）是一个特别的Area，我们称为Backbone Area（骨干），==所有其他Area必须与Backbone Area连接，这是规定==
+
+OSPF协议通过将自治系统划分为不同的区域解决LSDB(LInk-State Database)频繁更新的问题。逻辑上将路由器划分为不同的组，每个组区域号(Area ID)来标识。==区域的边界是路由器，而不是链路。一个网段只能属于一个区域。在OSPF里的==
 
 ## IGP协议区别
 
@@ -27,6 +41,3 @@ Router ID的选取有两种方式：
   1. 优先从Loopback地址中选择最大的IP地址作为Router ID
   2. 如果没有配置Loopback 接口，这在接口地址中选取最大的IP地址作为Router ID
 
-## 区域
-
-OSPF协议通过将自治系统划分为不同的区域解决LSDB(LInk-State Database)频繁更新的问题。逻辑上将路由器划分为不同的组，每个组区域号(Area ID)来标识。==区域的边界是路由器，而不是链路。一个网段只能属于一个区域。==
