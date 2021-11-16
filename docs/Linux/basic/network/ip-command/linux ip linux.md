@@ -26,6 +26,10 @@
 
 ## ip link add
 
+- `link <device>`
+
+  
+
 - `numtxqueues <queue_count>`
 
   指定发送数据的队列数
@@ -41,6 +45,8 @@
 - `gso_max_segs <segments>`
 
   指定接受segment(不包含包头)的大小
+
+## ip link delete
 
 
 

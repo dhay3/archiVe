@@ -14,7 +14,7 @@ https://www.pcwdld.com/cisco-commands-cheat-sheet
 - 和linux一样支持tab补全，==且支持缩写==
 - 在`?`中大写显示的选项表示用户需要填写的内容，`<cr>`表示carriage return
 - 命令的前面添加`no`来表示取消配置
-- 配置完成后可以通过write命令加配置写入到RAM
+- ==配置完成后可以通过write命令加配置写入到RAM=
 
 ## Modes
 
