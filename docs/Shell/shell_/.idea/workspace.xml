@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6e28b1cc-4f85-4826-9d67-df0f0e92353a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../Linux/basic/kernel/内核参数.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../Linux/basic/kernel/内核参数.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Linux/desktop file.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../Linux/desktop file.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../CCNA/OSPF.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../CCNA/OSPF.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -13,6 +12,13 @@
   </component>
   <component name="CompilerWorkspaceConfiguration">
     <option name="MAKE_PROJECT_ON_SAVE" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
   </component>
   <component name="GOROOT" path="$PROJECT_DIR$/../../../../../golang" />
   <component name="Git.Settings">
@@ -55,6 +61,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
