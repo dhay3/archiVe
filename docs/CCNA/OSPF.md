@@ -454,7 +454,9 @@ Link ID         ADV Router      Age         Seq#       Checksum Tag
 192.168.67.0    6.6.6.6         1282        0x80000004 0x009741 0
 ```
 
-收到了router LSA和external LSA
+收到了router LSA和external LSA，然后产出Route table，每一个Network都通了，还有什么问题呢？
+
+对于R1来说，无论去哪一个Network，Next Hop都是 192.168.12.2 是不是 ？那么，它为什么还有记住这么多的route呢？所以，OSPF的设计者也想到这个问题了，所以发明了Stub Area。我们试试把Area 10设定成Stub Area。指令非常简单，只要在OSPF设定中加一句`area <area number> stub`就可以了
 
 ## Network Type
 
