@@ -47,7 +47,7 @@ Targets   : 无
 
 - -m | -n
 
-  `-m`查看不是通过sync dbs安装的pkg(ps. not offical repo installed pkg)，`-n`查看通过sync dbs安装的pkg
+  `-m`查看不是通过sync dbs安装的pkg(ps. not offical repo installed pkg，==即从AUR安装的==)，`-n`查看通过sync dbs安装的pkg
 
 - -s
 
@@ -87,7 +87,7 @@ sync form remote server 。和apt一样如果一个package存在于多个pkg中�
 
 - -u
 
-  升级所有到达生命周期的pkg
+  升级==所有==到达生命周期的pkg
 
 - -y
 
@@ -210,4 +210,16 @@ exit 0
 ```
 
 
+
+## Pacman is currently in using
+
+https://bbs.archlinux.org/viewtopic.php?id=67729
+
+`rm /var/lib/paman/db.lck`
+
+## symbol lookup error 
+
+https://forum.manjaro.org/t/symbol-lookup-error/73596
+
+可能是没有更新完全导致的，使用`pacman -Syu`更新所有包即可，或是更新未完成的包
 
