@@ -138,11 +138,13 @@ expression通常由global options，tests，actions，position options，oprator
 
   找到文件后删除
 
-- `-exec`
+- `-exec {} \;`
 
   https://stackoverflow.com/questions/2961673/find-missing-argument-to-exec
 
-  找到文件后执行，直到遇到第一个`;`终止(也就是说需要在exec末尾添加`\;`)。`{}`内的值会被替换成find找到的值
+  https://unix.stackexchange.com/questions/12902/how-to-run-find-exec
+
+  找到文件后执行，直到遇到第一个`;`终止(也就是说需要在exec末尾添加`\;`，因为`;`会被shell识别所以需要转移)。`{}`内的值会被替换成find找到的值
 
   ```
   find /tmp/foo -exec echo {} \;
@@ -152,6 +154,22 @@ expression通常由global options，tests，actions，position options，oprator
 
   ```
   find /tmp/foo -exec sh -c 'ffmpeg ... && rm'
+  ```
+
+- `-exec {} +`
+
+  和`-exec {} \;`相同，但是`-exec {} \;`每次传入一个文件，`-exec {} +` 一次性传入所有文件（`+` 比` \;` 效率要高 ）
+
+  ```
+  $find . -type f -exec grep chz {} \;
+  find: ‘./h2o’: Permission denied
+  chz
+  chz
+  
+  $find . -type f -exec grep chz {} +
+  find: ‘./h2o’: Permission denied
+  ./chz1:chz
+  ./chz10:chz
   ```
 
 - `-ok command`
@@ -187,4 +205,3 @@ find /tmp -type f -name ".*"
 ```
 find /tmp -maxdepth 1 -type f -exec mv {} dev/ \;
 ```
-

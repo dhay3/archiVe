@@ -69,6 +69,10 @@ Targets   : 无
 
 sync form remote server 。和apt一样如果一个package存在于多个pkg中，需要指明repo，例如`pacman -S <reponame>/<pkg>`。`pacman -S <pkg>`==同时做upgrade和install==
 
+同时也可以指定版本
+
+`pacman -S "bash>=3.2"`
+
 - -i 
 
   查看pkg的详细信息
@@ -123,6 +127,20 @@ sync form remote server 。和apt一样如果一个package存在于多个pkg中�
 
   删除pkg(==本包==)不再需要的depends
 
+- -d
+
+  删除依赖
+
+  ```
+  cpl in ~/Downloads/gns3-gui/pkg/gns3-gui/usr/bin on master ● λ sudo pacman -Rdd python-distro 
+  
+  Packages (1) python-distro-1.6.0-1
+  
+  Total Removed Size:  0.15 MiB
+  
+  :: Do you want to remove these packages? [Y/n] 
+  ```
+
 ### -U | --upgrade
 
 安装一个本地包，通常和`makepkg`一起使用安装AUR BUILDPKG
@@ -130,6 +148,46 @@ sync form remote server 。和apt一样如果一个package存在于多个pkg中�
 ```
 pacman -U /path/to/package/package_name-version.pkg.tar.xz
 ```
+
+- `--overwirete <glob>`
+
+  如果有文件冲突，直接复写冲突的文件，通常和`-U`一起使用
+
+> 如果一个文件不能执行，很有可能就是依赖的问题，需要downgrade
+
+https://wiki.archlinux.org/title/downgrading_packages
+
+可以从`/var/cache/pacman/pkg`对包降级，例如
+
+`pacman -U /var/cahe/pacman/pkg/python-distro-1.6.0-1-any.pkg.tar.zst`
+
+如果cache被删除了，可以使用如下方法来降级
+
+先修改`/etc/pacman.conf`
+
+例如这个将时间置位2014.03.30
+
+```
+[core]
+SigLevel = PackageRequired
+Server=https://archive.archlinux.org/repos/2014/03/30/$repo/os/$arch
+
+[extra]
+SigLevel = PackageRequired
+Server=https://archive.archlinux.org/repos/2014/03/30/$repo/os/$arch
+
+[community]
+SigLevel = PackageRequired
+Server=https://archive.archlinux.org/repos/2014/03/30/$repo/os/$arch
+```
+
+或者是替换`/etc/pacman.d/mirrolist`中
+
+## options
+
+- `--noconfirm`
+
+  所有选项都选yes
 
 ## remove orphans
 

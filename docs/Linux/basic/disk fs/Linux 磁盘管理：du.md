@@ -2,6 +2,8 @@
 
 `du`命令用于查看文件的大小(默认以block size为最小显示单位)
 
+默认会遍历当前目录下的所有==目录(文件夹非文件)==，如果需要查看文件的大小需要使用`*`通配符
+
 syntax：`du [options] [file]`
 
 - -a
@@ -93,6 +95,16 @@ syntax：`du [options] [file]`
   du --exclude='*.o'
   ```
 
+- `--files0-form=E`
+
+  从文件中读file names，`-`表示从stdin中读，可以结合find一起使用
+
+  ```
+  find . -name "*txt" -exec echo -n -e {}"\0" \; | du -hc --files0-from=-
+  ```
+
+  
+
 ## du vs stat
 
 > 如果用`ls -l`看文件夹，是不会显示真实的大小，只会显示block size
@@ -112,6 +124,4 @@ Modify: 2021-07-13 09:12:32.464541631 +0800
 Change: 2021-07-13 09:12:32.464541631 +0800
  Birth: 2021-07-13 09:12:32.464541631 +0800
 ```
-
-
 
