@@ -1,5 +1,7 @@
 # awk 概述
 
+> awk 会自动识别传进来的是不是数字，如果是字符串按照ascii比较就会出现3 > 200，具体看字符/数字
+
 `awk`是面向行(line-oriented)的语言，和`grep`，`sed`被称为linux中的三剑客
 
 我们可以使用如下命令查看，当前使用的具体awk。`gawk`是有GNU实现的开源awk
@@ -12,6 +14,27 @@
 syntax：`awk [options] [--] [-f program-file] <file...>`
 
 program-file表示awk脚本，这里的`--`表示options结束，输入固定参数。
+
+## 字符/数字
+
+**字符转数字**
+
+数字加字符数字就可以转为数字
+
+```
+awk '{print(0+$1);if(0+$1 > 3.5){print 1;}else{print 2;}}' <<< "200.5"
+200.5
+```
+
+
+
+**数字转字符**
+
+数字加`“”`就可以转字符，可以和其他字符结合达到concat的效果
+
+```
+awk '{res=$1"";print(res)}' <<< 11
+```
 
 ## 注释换行
 
