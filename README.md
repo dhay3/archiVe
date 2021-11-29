@@ -44,6 +44,7 @@
 - [JUC_JVM](docs/JUC_JVM)
 - [Maven](docs/Maven)
 - [Mybatis-Plus](docs/Mybatis-Plus)
+- [Python](docs/Python)
 - [Rabbitmq](docs/Rabbitmq)
 - [Shiro](docs/Shiro)
 - [SpringBoot](docs/SpringBoot)

@@ -32,6 +32,38 @@ python -m pip completion --bash >> ~/.profile;source ~/.profile
 
 可以使用`pip help <command>`来查看command的具体用法
 
+### install
+
+从如下源按照包
+
+- PyPI
+- VCS project urls
+- Local project directories
+- Local or remote source archives
+- requiresments files
+
+#### options
+
+- `-r | --requirement <file>`
+
+  从requirement.txt中安装package
+
+- `--no-deps`
+
+  不安装依赖
+
+- `--pre`
+
+  包含pre-release和development versions，pip默认只安装stable version
+
+- `-U | --upgrade`
+
+  将依赖更新到最新的
+
+- `--force-reinstall`
+
+  强制重新安装
+
 ## requirement.txt/constraints.txt
 
 > 文件支持的operator

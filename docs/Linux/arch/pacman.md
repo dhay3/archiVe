@@ -83,7 +83,7 @@ sync form remote server 。和apt一样如果一个package存在于多个pkg中�
 
 - -s
 
-  重remote server上查看指定pkg
+  从remote server上查看指定pkg
 
   ```
   cpl in /etc/pacman.d λ pacman -Ssq firefox
@@ -181,7 +181,17 @@ SigLevel = PackageRequired
 Server=https://archive.archlinux.org/repos/2014/03/30/$repo/os/$arch
 ```
 
-或者是替换`/etc/pacman.d/mirrolist`中
+或者是替换`/etc/pacman.d/mirrolist`中的mirror
+
+```
+##                                                                              
+## Arch Linux repository mirrorlist                                             
+## Generated on 2042-01-01                                                      
+##
+Server=https://archive.archlinux.org/repos/2014/03/30/$repo/os/$arch
+```
+
+然后在运用`pacman -Sy python-distro`
 
 ## options
 

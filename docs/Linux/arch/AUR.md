@@ -3,6 +3,12 @@
 The Arch User Repository(AUR) 是arch的社区仓库(==有可能会有恶意代码==)，用户可以下载AUR并通过`makepkg`来编译AUR package descriptions(PKGBUILDS)，然后可以通过`pacman`来安装。
 
 > 需要确保`base-devel`完整安装，使用如下命令来安装`pacman -S --needed base-devel`
+>
+> AUR 克隆的git remote ropo和安装的目录没有关系(不一定，需要看源码是怎么写的)，可以删除或移动。makepkg会下载源码并编译
+>
+> 如果无法启动，看一下编译后的文件运行的日志
+>
+> `readlink -f $(which command)`
 
 ## installing
 
