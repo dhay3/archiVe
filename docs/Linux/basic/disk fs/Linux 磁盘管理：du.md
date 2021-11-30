@@ -109,19 +109,43 @@ syntax：`du [options] [file]`
 
 > 如果用`ls -l`看文件夹，是不会显示真实的大小，只会显示block size
 
-stat默认以实际存储的数据显示，du以block size为单位显示。如果实际大小小于block size时以block size取整显示(因为filesys只能操作block)
+1. stat默认以实际存储的数据显示(读取inode信息)，du以block size为单位显示。如果实际大小小于block size时以block size取整显示(因为filesys只能操作block)
 
-```
-cpl in ~ λ du -h /etc/resolv.conf
-4.0K    /etc/resolv.conf
-cpl in ~ λ stat /etc/resolv.conf
-  File: /etc/resolv.conf
-  Size: 258             Blocks: 8          IO Block: 4096   regular file
-Device: 10307h/66311d   Inode: 12845122    Links: 1
-Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
-Access: 2021-07-13 09:12:32.464541631 +0800
-Modify: 2021-07-13 09:12:32.464541631 +0800
-Change: 2021-07-13 09:12:32.464541631 +0800
- Birth: 2021-07-13 09:12:32.464541631 +0800
-```
+   ```
+   cpl in ~ λ du -h /etc/resolv.conf
+   4.0K    /etc/resolv.conf
+   cpl in ~ λ stat /etc/resolv.conf
+     File: /etc/resolv.conf
+     Size: 258             Blocks: 8          IO Block: 4096   regular file
+   Device: 10307h/66311d   Inode: 12845122    Links: 1
+   Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+   Access: 2021-07-13 09:12:32.464541631 +0800
+   Modify: 2021-07-13 09:12:32.464541631 +0800
+   Change: 2021-07-13 09:12:32.464541631 +0800
+    Birth: 2021-07-13 09:12:32.464541631 +0800
+   ```
+
+2. stat会被dd创建的假文件欺骗，但是du不会
+
+   ```
+   cpl in /tmp λ dd if=/dev/zero of=test bs=1G seek=100 count=0
+   0+0 records in
+   0+0 records out
+   0 bytes copied, 6.9299e-05 s, 0.0 kB/s
+   cpl in /tmp λ ll test
+   .rw-r--r-- cpl cpl 100 GB Tue Nov 30 21:23:18 2021  test
+   cpl in /tmp λ stat test
+     File: test
+     Size: 107374182400    Blocks: 0          IO Block: 4096   regular file
+   Device: 0,36    Inode: 269         Links: 1
+   Access: (0644/-rw-r--r--)  Uid: ( 1000/     cpl)   Gid: ( 1000/     cpl)
+   Access: 2021-11-30 21:23:18.281364762 +0800
+   Modify: 2021-11-30 21:23:18.281364762 +0800
+   Change: 2021-11-30 21:23:18.281364762 +0800
+    Birth: -
+   cpl in /tmp λ du -h test
+   0       test
+   ```
+
+   
 
