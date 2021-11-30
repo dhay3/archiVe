@@ -1,0 +1,194 @@
+# BGP
+
+reference:
+
+https://www.jannet.hk/border-gateway-protocol-bgp-zh-hans/
+
+## 概述
+
+BGP全写是Border Gateway Protocol最新的版本是BGP-4，即Version4，亦是最常学习和应用的版本。BGP通常应用与比较大型的网络结构中，用作交换不同AS之间的路由信息，例如ISP与ISP 之间的路由交换。BGP的复杂性在于建立Peers上的一些规限，以及有大量可以影响路由结构的Attribute，要学好BGP，就必须知道配置Attribute的方法
+
+## EBGP和IBGP
+
+学习任何routing protocol，第一步需要了解如何组成neighbors，在BGP中被称为Peers
+
+Peers利用TCP 179 port沟通，分为external BGP（EBGP）和internal BGP（EBGP）两种
+
+如果两个router在相同的AS之间组成Peers，就会称为IBGP peers
+
+如果两个router在不同的AS之间组成Peers，就会称为EBGP peers
+
+## 配置BGP
+
+做如下一个简单的例子
+
+![2021-11-30_22-23](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211130/2021-11-30_22-23.8bu7di38hvw.png)
+
+
+
+```
+R1#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+R1(config)#int f0/0  
+R1(config-if)#ip address 192.168.12.1 255.255.255.0
+R1(config-if)#exit    
+R1(config)#router bgp 65500
+R1(config-router)#
+*Nov 30 14:58:08.211: %BGP-4-NORTRID: BGP could not pick a router-id. Please configure manually.
+R1(config-router)#neighbor 192.168.12.2 remote
+
+R1#sh run int f0/0       
+Building configuration...
+
+Current configuration : 85 bytes
+!
+interface FastEthernet0/0
+ ip address 192.168.12.1 255.255.255.0
+ duplex full
+end
+
+R1#sh run | se bgp 
+router bgp 65500
+ bgp log-neighbor-changes
+ neighbor 192.168.12.2 remote-as 65501
+```
+
+```
+R2#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+R2(config)#int f0/0  
+R2(config-if)#ip address 192.168.12.2 255.255.255.0
+R2(config)#int f0/1
+R2(config-if)#ip address 192.168.23.2 255.255.255.0
+R2(config-if)#exit    
+R2(config)#router bgp 65500
+R2(config-router)#
+*Nov 30 14:58:08.211: %BGP-4-NORTRID: BGP could not pick a router-id. Please configure manually.
+R1(config-router)#neighbor 192.168.12.2 remote
+R2(config)#router bgp 65501
+R2(config-router)#neighbor 192.168.23.3 remote-as 6550 
+*Nov 30 15:07:41.967: %BGP-5-ADJCHANGE: neighbor 192.168.12.1 Up 
+R2(config-router)#neighbor 192.168.23.3 remote-as 65501
+
+R2#sh run int f0/0
+Building configuration...
+
+Current configuration : 85 bytes
+!
+interface FastEthernet0/0
+ ip address 192.168.12.2 255.255.255.0
+ duplex full
+end
+
+R2#sh run int f2/0
+Building configuration...
+
+Current configuration : 85 bytes
+!
+interface FastEthernet2/0
+ ip address 192.168.23.2 255.255.255.0
+ duplex full
+end
+
+R2#sh run | se bgp   
+router bgp 65501
+ bgp log-neighbor-changes
+ neighbor 192.168.12.1 remote-as 65500
+ neighbor 192.168.23.3 remote-as 65501
+```
+
+```
+R3#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+R3(config)#int f2/0
+R3(config-if)#ip address 192.168.23.3 255.255.255.0
+R3(config-if)#no shutdown 
+R3(config-if)#exit
+*Nov 30 15:13:41.543: %LINK-3-UPDOWN: Interface FastEthernet2/0, changed state to up
+*Nov 30 15:13:42.543: %LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet2/0, changed state to up
+R3(config)#router
+R3(config)#router bgp 65501
+R3(config-router)#neighbor 192.168.23.2 remote-as 65501
+
+R3#sh run int f2/0
+Building configuration...
+
+Current configuration : 85 bytes
+!
+interface FastEthernet2/0
+ ip address 192.168.23.3 255.255.255.0
+ duplex full
+end
+
+R3#sh run | se bgp
+router bgp 65501
+ bgp log-neighbor-changes
+ neighbor 192.168.23.2 remote-as 65501
+```
+
+
+
+## show ip bgp summary
+
+要知道peers是否建立成功，可以使用`show ip bgp summary`
+
+```
+R2#show ip bgp summary
+BGP router identifier 192.168.23.2, local AS number 65501
+BGP table version is 1, main routing table version 1
+
+Neighbor        V    AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+192.168.12.1    4 65500      21      21        1    0    0 00:18:57        0
+192.168.23.3    4 65501      19      19        1    0    0 00:16:27        0
+```
+
+每一栏的意思如下：
+
+- Neighbor
+
+  就是peer router interface 的 IP address
+
+- V
+
+  BGP的版本
+
+- AS
+
+  peer router的AS number。如果AS相同表示建立了IBGP，如果不同表示建立了EBGP
+
+- MsgRcvd/MsgSent
+
+  MsgRcvd 从 Peer收到的包，MsgSent 发送到Peer的包
+
+- TblVer
+
+  传送给这个Peer的BGP database
+
+- InQ
+
+  从Peer收到但为处理的BGP信息，如果这个数字很大的话，即是很多讯息在排队等待处理，代表peer CPU很忙
+
+- OutQ
+
+  等待发送到Peer的BGP信息，如果这个数字很大的话，可能是本端CPU很忙或bandwidth不足
+
+- UP/Down
+
+  这个Connection的维持上线或下线有多长时间了
+
+- State/PfxRcd
+
+  如果显示的是一个数字（计算是0），代表从这个Peer收到的BGP route 数量，即是Peer已成功建立。==但是如果显示的active的话，表示Peer没有建立成功==
+
+
+
+
+
+
+
+
+
+
+
+
+
