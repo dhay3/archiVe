@@ -273,7 +273,7 @@ SW2#show vlan
 <--Output Omitted-->
 ```
 
-然后把连着两只switch的interface设定为802.1q Trunk
+然后把连着两只switch的e0/2 interface设定为802.1q Trunk
 
 ```
 SW1(config)#int ethernet 0/2

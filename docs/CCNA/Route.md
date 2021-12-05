@@ -210,11 +210,11 @@ D    192.168.2.0/24 [90/409600] via 192.168.12.2
 
 ## route 选路
 
-> 匹配prefix最长，再比较AD（较小的优先），然后比较Metric（较小的优先）
+> 匹配prefix最长，再比较AD，然后比较Metric
 
 ### AD/Metric
 
-从不同来源收集回来的route有可能会出现相同的network，这时router就只会把administrative distance （AD）较小的Route放进route table。如果AD相同的话，Route Table 通常只会把metric最小的route放进route table，除非routing protocol有设定load balance
+从不同来源收集回来的route有可能会出现相同的network，这时router就只会把administrative distance （AD）较小的Route放进route table。==如果AD相同的话，Route Table 通常只会把metric最小的route放进route table==，除非routing protocol有设定load balance
 
 加入一条AD小于90的192.168.2.0/24 Static Route 会比EIGRP Route优先。例如加入一条AD 50 的static route
 
