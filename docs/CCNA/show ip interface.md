@@ -1,5 +1,9 @@
 # show ip interface
 
+reference:
+
+https://www.cisco.com/E-Learning/bulk/public/tac/cim/cib/using_cisco_ios_software/cmdrefs/show_ip_interface.htm#:~:text=To%20get%20a%20detailed%20listing,the%20standard%20show%20interface%20output).
+
 用于展示端口的信息，例如
 
 ```
@@ -65,5 +69,28 @@ Ethernet0 is administratively down, line protocol is down
 
   会对ARP广播有回包（即使目标地址不是改端口的MAC，但是知道目标地址的MAC）
 
-- 
+- `Split horizon is enabled`
 
+    不会将从接口学到的路由转发回该接口
+
+- `  ICMP redirects are always sent
+  ICMP unreachables are always sent
+  ICMP mask replies are never sent`
+
+  告诉iface该怎么处理ICMP回包
+
+- `  IP fast switching is enabled
+    IP fast switching on the same interface is disabled
+    IP SSE switching is disabled`
+
+  表示router该怎么交换数据包
+
+- `Router Discovery is disabled`
+
+  router discovery protocol 对这个端口不适用
+
+- `IP accounting is disabled`
+
+  IP accounting 不对这个端口使用
+
+-   `TCP/IP header compression is disabled`
