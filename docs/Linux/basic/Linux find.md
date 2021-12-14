@@ -82,15 +82,19 @@ expression通常由global options，tests，actions，position options，oprator
   find: Unknown regular expression type ‘help’; valid types are ‘findutils-default’, ‘ed’, ‘emacs’, ‘gnu-awk’, ‘grep’, ‘posix-awk’, ‘awk’, ‘posix-basic’, ‘posix-egrep’, ‘egrep’, ‘posix-extended’, ‘posix-minimal-basic’, ‘sed’.
   ```
 
-  this is a match on the whole path
+  ==this is a match on the whole path==
 
   如果想要子目录遍历，需要在pattern前加`.*/`表示目录，否则会找不到。如果是想在当前目录下遍历子目录需要在pattern前加`\./`
 
   ```
-  
+  find / -regextype posix-egrep -regex .*/lvs
   ```
 
-  
+  也可使用如下，匹配所有含有指定字符串的path(注意在egrep中`*`不是wildcard)
+
+  ```
+  find / -regextype posix-egrep -regex .*lvs.*
+  ```
 
 - `-type c`
 
