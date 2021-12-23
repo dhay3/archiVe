@@ -87,7 +87,35 @@ root in /opt/4 λ docker container ls -a | grep -v cowrie | sed -n '2,$p' | awk 
 7
 ```
 
+## step
+
+**first~step**
+
+表示从first开始，输出以 step 为原子
+
+```
+$ seq 10 | sed -n '0~4p'
+4
+8
+```
+
 ## regex
+
+sed 默认使用basic regex (BRE)，如果需要使用extended regex，需要使用`-r | --regexp-extended`
+
+```
+$seq 4 | sed -n '\%[[:digit:]]\+%p'
+1
+2
+3
+4
+
+$seq 4 | sed -rn '\%[[:digit:]]+%p'
+1
+2
+3
+4
+```
 
 > 如果包含特殊字符需要转义
 
@@ -95,6 +123,16 @@ root in /opt/4 λ docker container ls -a | grep -v cowrie | sed -n '2,$p' | awk 
 [root@k8snode01 opt]# sed -n '/bash$/P' /etc/passwd
 root:x:0:0:root:/root:/bin/bash
 chz:x:1000:1000:chz:/home/chz:/bin/bash
+```
+
+**\%regexp%**
+
+如果一个字符串有比较多的`/`，均需要转译。这时候可以使用`\%regex%`来替代。%可以被任意一个字符替代。以下三者均相同
+
+```
+sed -n '/^\/home\/alice\/documents\//p'
+sed -n '\%^/home/alice/documents/%p'
+sed -n '\;^/home/alice/documents/;p'
 ```
 
 **case-insensitive**
@@ -141,8 +179,4 @@ label:hello world
 pwd
 3
 ```
-
-
-
-
 

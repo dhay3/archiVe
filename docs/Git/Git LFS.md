@@ -8,6 +8,8 @@ https://blog.csdn.net/Tyro_java/article/details/53440666
 
 ## 概述
 
+> 如果文件名为中文可能会有问题
+
 GIT large files storage 用于解决git上传单个大文件（100MB的限制）到remote resposirory。详细可见
 
 https://docs.github.com/en/free-pro-team@latest/github/managing-large-files/working-with-large-files
@@ -51,3 +53,16 @@ Tracking "*.pdf"
 
 ```
 
+## command
+
+> 必须在含有`.git`的目录下
+
+- git lfs logs
+
+  查看错误日志
+
+- git lfs ls-files
+
+  查看当前使用lfs的文件
+
+  

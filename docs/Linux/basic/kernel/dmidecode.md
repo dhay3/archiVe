@@ -65,7 +65,6 @@ System Management BIOS，规定了OS可以从BIOS中读取的信息(也被称为
   cpl in /etc λ sudo dmidecode -t processor
   ```
 
-  
 
 ## options
 

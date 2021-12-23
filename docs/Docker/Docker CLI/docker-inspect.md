@@ -233,4 +233,18 @@ root in ~ λ docker inspect test11
   [{"Type":"volume","Name":"bb7b9d2e8c652b2cd30fdde0ab4cc10965967031418c5afe02c03a48046de1a5","Source":"/var/lib/docker/volumes/bb7b9d2e8c652b2cd30fdde0ab4cc10965967031418c5afe02c03a48046de1a5/_data","Destination":"/etc","Driver":"local","Mode":"","RW":true,"Propagation":""}] 
   ```
 
+  可以使用python来格式化JSON输出
+  
+  ```
+    test docker inspect centos --format="{{json .NetworkSettings}}" | python -m json.tool
+  {
+      "Bridge": "",
+      "SandboxID": "080f049186919dd56ab6733211d18c8c3f1d5b0b93d84811960dc7328e49968d",
+      "HairpinMode": false,
+      "LinkLocalIPv6Address": "",
+      "LinkLocalIPv6PrefixLen": 0,
+      "Ports": {},
+  ...omit...
+  ```
+  
   
