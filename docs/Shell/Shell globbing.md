@@ -1,4 +1,4 @@
-# Shell 模式扩展
+# Shell globbing
 
 > 命令组
 >
@@ -25,9 +25,13 @@ https://www.gnu.org/software/bash/manual/bash.html#Pattern-Matching
 
 > ==区别于regex==
 >
-> Shell接收到用户输入的命令以后，会根据空格将用户输入的，拆分成一个个词元（token）。然后，Shell 会扩展词元里面的特殊字符，扩展完成后才会调用相应的命令。
->
-> 这种特殊字符的扩展，称为模式扩展（globbing）。其中有些用到通配符，又称为通配符扩展（wildcard expansion）
+> BRE 和 ERE
+
+Shell接收到用户输入的命令以后，会根据空格将用户输入的，拆分成一个个词元（token）。然后，Shell 会扩展词元里面的特殊字符，扩展完成后才会调用相应的命令。
+
+这种特殊字符的扩展，称为模式扩展（globbing）。其中有些用到通配符，又称为通配符扩展（wildcard expansion）
+
+bash 会扩展 unquoted 的command，如果quoted就无法识别 
 
 ## ~扩展
 
@@ -188,6 +192,8 @@ test/test.sh
 ```
 
 ## [ ]扩展
+
+> 注意只可匹配一个字母
 
 方括号扩展的形式是[...]，只有文件确实存在的前提下才会扩展。==如果文件不存在，就会原样输出。括号之中的任意一个字符。==比如，[aeiou]可以匹配五个元音字母中的任意一个。
 
