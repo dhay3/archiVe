@@ -179,17 +179,7 @@ curl 如果没有保存文件或是下载文件，默认不会显示bar。可以
 
   以增量模式上传文件
 
-## ipv6
 
-https://serverfault.com/questions/1026466/ipv6-address-text-notation-with-prefix-inside-or-outside-square-brackets
-
-- `-g | --globoff`
-
-  关闭shell的globbing，url中可以出现`{}[]`。在shell中`[]`表示匹配指定字符，注意区别test command
-
-按照RFC 5952，如果需要表示ipv6地址，必须使用square bracket  (因为ipv6可以使用零分十进制，ip中带有：，如果直接更port就会出错，所以需要和square bracket一起使用)
-
-`curl -6g [ipv6]:port`
 
 ## http/https
 

@@ -2,6 +2,10 @@
 
 参考：https://www.atlassian.com/git/tutorials/setting-up-a-repository/git-config
 
+> 如果git 使用 `-c`，置顶配置就会被强制替换，例如：
+>
+> `git -c foo=bar`
+
 ## 概述
 
 git config 用于查询和设置git的配置文件。git的配置文件有三个等级
