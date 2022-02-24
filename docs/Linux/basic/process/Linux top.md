@@ -6,6 +6,8 @@
 
 top 有 3 部分组成：Summary Area，Fields/Columns Header，Task Area
 
+
+
 ### Linux memory
 
 Linux 中有3中memory，一种是optional的，
@@ -408,7 +410,9 @@ minor page faults delta
 
 - Z
 
-  ==修改top展示信息的颜色==
+  ==修改top展示信息的颜色==，使用`w`来当前选中的更改面板，默认USR，使用RGB 256
+
+  https://www.ditig.com/256-colors-cheat-sheet
 
 - `X`
 
@@ -423,6 +427,24 @@ minor page faults delta
    /bin/echo -e "file\tNUMA Info\t/proc/%d/numa_maps" >> ~/.toprc
    /bin/echo -e "pipe\tLog\ttail -n200 /var/log/syslog | sort -Mr" >> ~/.toprc
   ```
+
+### sorting
+
+- `M`
+
+  按照进程使用的内存大小排序
+
+- `N`
+
+  按照进程的PID排序
+
+- `P`
+
+  按照进程的CPU使用率排序
+
+- `T`
+
+  按照进程启用的时间排序
 
 ### summary area
 
@@ -445,6 +467,12 @@ minor page faults delta
 - `E`
 
   调整summary area memmory 显示的单位
+
+###  searching 
+
+- `L`
+
+  从所有field中选取含有指定字符的进程，使用`&`匹配下一个
 
 ### Fields/Columns Header
 
@@ -496,9 +524,36 @@ minor page faults delta
   22167 postfix   20   0   89808   4056   3060 S  0.0  0.8   0:00.00      `- pickup 
   ```
 
+- `n`
 
+  只显示指定数目的进程
 
+## config
 
+![2022-02-24_23-46](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220224/2022-02-24_23-46.2jvf71r4shk0.png)
+
+```
+cpl in ~/.config/procps λ cat toprc 
+top's Config File (Linux processes with windows)
+Id:j, Mode_altscr=1, Mode_irixps=1, Delay_time=1.0, Curwin=0
+Def     fieldscur=����'34�E79:@)=;*+,-./01268<>?ABCFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz
+        winflags=195892, sortindx=0, maxtasks=0, graph_cpus=0, graph_mems=0, double_up=0, combine_cpus=0
+        summclr=3, msgsclr=3, headclr=3, taskclr=3
+Job     fieldscur=����:(���;=@<�E)*+,-./012568>?ABCFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz
+        winflags=195892, sortindx=18, maxtasks=0, graph_cpus=0, graph_mems=0, double_up=0, combine_cpus=0
+        summclr=208, msgsclr=208, headclr=208, taskclr=208
+Mem     fieldscur=���<�����MBN�D347E&'()*+,-./0125689FGHIJKLOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz
+        winflags=195892, sortindx=21, maxtasks=0, graph_cpus=0, graph_mems=0, double_up=0, combine_cpus=0
+        summclr=93, msgsclr=93, headclr=93, taskclr=93
+Usr     fieldscur=�&D5'(*798:=M�)+,-./123406;<>?@ABCFGHIJKLNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz
+        winflags=64950, sortindx=20, maxtasks=0, graph_cpus=0, graph_mems=0, double_up=0, combine_cpus=0
+        summclr=2, msgsclr=2, headclr=2, taskclr=2
+Fixed_widest=0, Summ_mscale=2, Task_mscale=0, Zero_suppress=0
+
+pipe    Open Files      lsof -P -p %d 2>&1
+file    NUMA Info       /proc/%d/numa_maps
+pipe    Log     tail -n200 /var/log/syslog | sort -Mr
+```
 
 
 
