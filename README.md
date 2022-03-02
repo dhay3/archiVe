@@ -16,7 +16,6 @@
 - [Git](docs/Git)
 - [GPG](docs/GPG)
 - [Kurbernetes](docs/Kurbernetes)
-- [Virtualization](docs/Virtualization)
 - [Linux](docs/Linux/)
 - [LVS](docs/LVS)
 - [Net](docs/Net)
@@ -27,6 +26,8 @@
 - [Shell](docs/Shell)
 - [SSH](docs/SSH)
 - [Vagrant](docs/Vagrant)
+- [Vitualization](docs/Vitualization)
+- [Wireshark](docs/Wireshark)
 - [Zabbix](docs/Zabbix)
 - [Zookeeper](docs/Zookeeper)
 
@@ -45,6 +46,7 @@
 - [Maven](docs/Maven)
 - [Mybatis-Plus](docs/Mybatis-Plus)
 - [Python](docs/Python)
+- [Ruby](docs/Ruby)
 - [Rabbitmq](docs/Rabbitmq)
 - [Shiro](docs/Shiro)
 - [SpringBoot](docs/SpringBoot)
@@ -64,17 +66,12 @@
 ## grocery
 
 - [Sundries](docs/Sundries)
-
 - [Blog](docs/Blog)
 - [Bonus](docs/Bonus)
 - [Chrome](docs/Chrome)
-
 - [koolshare](docs/koolshare)
-
 - [Markdown](docs/Markdown)
-
 - [V2ray](docs/V2ray)
-
 - [Hardware](docs/Hardware)
 - [Hexo](docs/Hexo)
 
