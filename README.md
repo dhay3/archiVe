@@ -23,6 +23,7 @@
 - [OpenSSL](docs/OpenSSL)
 - [OpenVPN](docs/OpenVPN)
 - [PowerShell](docs/Powershell)
+- [Salt](docs/SaltStack)
 - [Shell](docs/Shell)
 - [SSH](docs/SSH)
 - [Vagrant](docs/Vagrant)
