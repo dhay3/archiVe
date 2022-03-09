@@ -147,7 +147,8 @@ b/a:
 1  2
 ```
 
-- 如果文件名包含空格，必须转译或使用`--protect-args`参数
+如果文件名包含空格，必须转译或使用`--protect-args`参数
+
 ```protobuf
 rsync -av host:'file\ name\ with\ spaces' /dest
 ```
@@ -155,260 +156,288 @@ rsync -av host:'file\ name\ with\ spaces' /dest
 
 - SRC
 
-源文件
+  源文件
+
 ## Optional Argus
 ### special
 
--  `-n,--dry-run`
-模拟执行后的结果，不会生效  
-```
-root in /opt λ rsync -anv hydra.restore cpl@8.135.0.171:/opt 
-sending incremental file list
-hydra.restore
+- `-n,--dry-run`
+  模拟执行后的结果，不会生效  
 
-sent 54 bytes  received 19 bytes  48.67 bytes/sec
-total size is 5,457  speedup is 74.75 (DRY RUN)
-```
+  ```
+  root in /opt λ rsync -anv hydra.restore cpl@8.135.0.171:/opt 
+  sending incremental file list
+  hydra.restore
+  
+  sent 54 bytes  received 19 bytes  48.67 bytes/sec
+  total size is 5,457  speedup is 74.75 (DRY RUN)
+  ```
 
 - `-r | --recursive`
 
-rsync 对文件递归拷贝，需要源目rsync的版本都是3.0.0以上的
+  rsync 对文件递归拷贝，需要源目rsync的版本都是3.0.0以上的
 
 - `-d | --dirs`
 
-对文件递归，和`-r`不一样的是只会对 the directory name specified is `.` or ends with a trailing slash的文件进行拷贝。如果和`-r`一起使用`-r`优先生效
+  对文件递归，和`-r`不一样的是只会对 the directory name specified is `.` or ends with a trailing slash的文件进行拷贝。如果和`-r`一起使用`-r`优先生效
 
--  `-R,--relative`
-使用相对路径生成文件 
-会在remote的`/tmp`下生成一个baz.c文件 
-会在remote的`/tmp`下一个`/tmp/foo/bar/baz.c`的文件包括目录 
-```
-rsync -av /foo/bar/baz.c remote:/tmp/
-rsync -avR /foo/bar/baz.c remote:/tmp/
-```
+- `-R,--relative`
+  使用相对路径生成文件 
+  会在remote的`/tmp`下生成一个baz.c文件 
+  会在remote的`/tmp`下一个`/tmp/foo/bar/baz.c`的文件包括目录 
+
+  ```
+  rsync -av /foo/bar/baz.c remote:/tmp/
+  rsync -avR /foo/bar/baz.c remote:/tmp/
+  ```
 
 - `--backup,-b`
-备份，被传输覆盖(preexisting destination files)或是使用`--delete`被删除的文件会以`~`为后缀备份，可以通过`--backup-dir`来指定备份存储的位置，`--suffix`指定后缀  
-```
-#被删除的文件
-root in /opt/test/t2 λ rsync  -b  -avvz --delete /opt/test/t1/ /opt/test/t2/
-sending incremental file list
-delta-transmission disabled for local transfer or --whole-file
-backed up 4 to 4~
-deleting 4
-1 is uptodate
-2 is uptodate
-3 is uptodate
-total: matches=0  hash_hits=0  false_alarms=0 data=0
+  备份，被传输覆盖(preexisting destination files)或是使用`--delete`被删除的文件会以`~`为后缀备份，可以通过`--backup-dir`来指定备份存储的位置，`--suffix`指定后缀  
 
-sent 89 bytes  received 172 bytes  522.00 bytes/sec
-total size is 0  speedup is 0.00
-root in /opt/test/t2 λ ls
- 1   2   3   4~
-
----
-#被覆盖的文件
-root in /opt/test/t2 λ rsync  -b  -avvz /opt/test/t1/ /opt/test/t2/
-sending incremental file list
-delta-transmission disabled for local transfer or --whole-file
-2 is uptodate
-3 is uptodate
-1
-backed up 1 to 1~
-total: matches=0  hash_hits=0  false_alarms=0 data=0
-
-sent 118 bytes  received 169 bytes  574.00 bytes/sec
-total size is 0  speedup is 0.00
-root in /opt/test/t2 λ ls
- 1   1~   2   3   4~
-root in /opt/test/t2 λ cat 1
-  File: 1   <EMPTY>
-root in /opt/test/t2 λ cat 1~
-  File: 1~
+  ```
+  #被删除的文件
+  root in /opt/test/t2 λ rsync  -b  -avvz --delete /opt/test/t1/ /opt/test/t2/
+  sending incremental file list
+  delta-transmission disabled for local transfer or --whole-file
+  backed up 4 to 4~
+  deleting 4
+  1 is uptodate
+  2 is uptodate
+  3 is uptodate
+  total: matches=0  hash_hits=0  false_alarms=0 data=0
+  
+  sent 89 bytes  received 172 bytes  522.00 bytes/sec
+  total size is 0  speedup is 0.00
+  root in /opt/test/t2 λ ls
+   1   2   3   4~
+  
+  ---
+  #被覆盖的文件
+  root in /opt/test/t2 λ rsync  -b  -avvz /opt/test/t1/ /opt/test/t2/
+  sending incremental file list
+  delta-transmission disabled for local transfer or --whole-file
+  2 is uptodate
+  3 is uptodate
   1
-```
+  backed up 1 to 1~
+  total: matches=0  hash_hits=0  false_alarms=0 data=0
+  
+  sent 118 bytes  received 169 bytes  574.00 bytes/sec
+  total size is 0  speedup is 0.00
+  root in /opt/test/t2 λ ls
+   1   1~   2   3   4~
+  root in /opt/test/t2 λ cat 1
+    File: 1   <EMPTY>
+  root in /opt/test/t2 λ cat 1~
+    File: 1~
+    1
+  ```
 
 - `--super`
 
-receiving rsync 会尝试使用super-user
+  receiving rsync 会尝试使用super-user
 
 - `-W,--whole-file`
-告诉rsync 不使用delta-transfer algorithm增量传输，而是使用全量传输。如果使用local syntax 默认使用该选项。 
+  告诉rsync 不使用delta-transfer algorithm增量传输，而是使用全量传输。如果使用local syntax 默认使用该选项。 
+
 - `--force`
 
-和`--delete`一起使用，强制删除非空文件
+  和`--delete`一起使用，强制删除非空文件
 
 - `-e | --rsh=COMMAND`
 
-告诉rsync使用的rmote shell，默认使用ssh
-```protobuf
-rsync -avz -e "ssh -p $port" /local/path/ user@remoteip:/path/to/files/
+  告诉rsync使用的rmote shell，默认使用ssh
 
--e 'ssh -p 2234'
--e 'ssh -o "ProxyCommand nohup ssh firewall nc -w1 %h %p"'
-```
+  ```
+  rsync -avz -e "ssh -p $port" /local/path/ user@remoteip:/path/to/files/
+  
+  -e 'ssh -p 2234'
+  -e 'ssh -o "ProxyCommand nohup ssh firewall nc -w1 %h %p"'
+  ```
 
 - `--rsync-path=PROGRAM`
 
-如果rsync在reciver side 不是使用默认path（`/usr/local/bin/rsync`），需要使用该参数指定。可使用如下方式修改在reciver side 调用rsync的目录
-```protobuf
-rsync -avR --rsync-path="cd /a/b && rsync" host:c/d /e/
-```
-也意味着PROGRAM的值可以是任意的
+  如果rsync在reciver side 不是使用默认path（`/usr/local/bin/rsync`），需要使用该参数指定。可使用如下方式修改在reciver side 调用rsync的目录
 
--  `-z,--compress`
-传输数据时使用压缩数据，不是在目的地址生成压缩文件
+  ```
+  rsync -avR --rsync-path="cd /a/b && rsync" host:c/d /e/
+  ```
+
+  也意味着PROGRAM的值可以是任意的
+
+- `-z,--compress`
+  传输数据时使用压缩数据，不是在目的地址生成压缩文件
+
 - `-P | --progress`
-打印文件传输进度，与`-v`参数冲突  
-```
-root in /opt/test λrsync -aP /opt/test/test2 /opt/test/test3
-sending incremental file list
-test2/
-test2/1
-              0 100%    0.00kB/s    0:00:00 (xfr#1, to-chk=19/21)
-test2/10
-              0 100%    0.00kB/s    0:00:00 (xfr#2, to-chk=18/21)
-test2/11
-              0 100%    0.00kB/s    0:00:00 (xfr#3, to-chk=17/21)
-test2/12
-              0 100%    0.00kB/s    0:00:00 (xfr#4, to-chk=16/21)
-test2/13
-              0 100%    0.00kB/s    0:00:00 (xfr#5, to-chk=15/21)
-test2/14
-              0 100%    0.00kB/s    0:00:00 (xfr#6, to-chk=14/21)
-```
+  打印文件传输进度，与`-v`参数冲突  
 
--  
+  ```
+  root in /opt/test λrsync -aP /opt/test/test2 /opt/test/test3
+  sending incremental file list
+  test2/
+  test2/1
+                0 100%    0.00kB/s    0:00:00 (xfr#1, to-chk=19/21)
+  test2/10
+                0 100%    0.00kB/s    0:00:00 (xfr#2, to-chk=18/21)
+  test2/11
+                0 100%    0.00kB/s    0:00:00 (xfr#3, to-chk=17/21)
+  test2/12
+                0 100%    0.00kB/s    0:00:00 (xfr#4, to-chk=16/21)
+  test2/13
+                0 100%    0.00kB/s    0:00:00 (xfr#5, to-chk=15/21)
+  test2/14
+                0 100%    0.00kB/s    0:00:00 (xfr#6, to-chk=14/21)
+  ```
+
+  
+
+- 
+
 ### transfer
 
 - `-I | --ignore-times`
 
-此选项会修改rsync的quick check algorithm。如果文件大小相同且mtime相同(不比较permissions、owner)，rsync会跳过此文件。
+  此选项会修改rsync的quick check algorithm。如果文件大小相同且mtime相同(不比较permissions、owner)，rsync会跳过此文件。
 
 - `--size-only`
 
-此选项会修改rsync的quick chekc algorithm。只针对文件大小变化的文件传输，在不想保留原文件的时间戳时使用
+  此选项会修改rsync的quick chekc algorithm。只针对文件大小变化的文件传输，在不想保留原文件的时间戳时使用
 
 - `-c | --checksum`
 
-修改rsync任务文件修改的逻辑，没有此参数默认使用quick check。使用MD5校验src和dst是否相同了，会增大disk I/O的压力
+  修改rsync任务文件修改的逻辑，没有此参数默认使用quick check。使用MD5校验src和dst是否相同了，会增大disk I/O的压力
 
 - `-a | --archive`
-将源地址中的内容同步到目的地址，同时会将隐藏文件同步。等价于`-rlptgoD`参数，同步文件的同时会同步文件的metadata（修改时间，权限等）。  
-```
-root in /opt λ rsync -av hydra.restore cpl@8.135.0.171:/home/cpl
-sending incremental file list
-hydra.restore
+  将源地址中的内容同步到目的地址，同时会将隐藏文件同步。等价于`-rlptgoD`参数，同步文件的同时会同步文件的metadata（修改时间，权限等）。  
 
-sent 5,555 bytes  received 35 bytes  3,726.67 bytes/sec
-total size is 5,457  speedup is 0.98
-```
+  ```
+  root in /opt λ rsync -av hydra.restore cpl@8.135.0.171:/home/cpl
+  sending incremental file list
+  hydra.restore
+  
+  sent 5,555 bytes  received 35 bytes  3,726.67 bytes/sec
+  total size is 5,457  speedup is 0.98
+  ```
 
-   1.  `-r, --recursive`
-告诉rsync递归拷贝 
-   1.  `-l,--link`
-告诉rsync源地址如果遇到链接文件将链接文件拷贝到目的地址（自动解析路径关系） 
-   1.  `-p,--perms`
-告诉rsync将源地址的文件权限同样复制到目的地址 
-   1.  `-g,--group`
-告诉rsync将源地址组信息复制到目的地址 
-   1.  `-o,--omit-dir-time`
-告诉rsync复制时忽略修改文件的时间 
-   1.  `-D,--device`
-告诉rsync可以将字节和块文件复制到目的地址 
+  a. `-r, --recursive`
+  告诉rsync递归拷贝 
+
+  b. `-l,--link`
+  告诉rsync源地址如果遇到链接文件将链接文件拷贝到目的地址（自动解析路径关系） 
+
+  c. `-p,--perms`
+  告诉rsync将源地址的文件权限同样复制到目的地址 
+
+  d. `-g,--group`
+  告诉rsync将源地址组信息复制到目的地址 
+
+  e. `-o,--omit-dir-time`
+  告诉rsync复制时忽略修改文件的时间 
+
+  f. `-D,--device`
+  告诉rsync可以将字节和块文件复制到目的地址 
+
 - `--update,-u`
-如果目标地址上的文件时间戳晚于源地址上的，rsync不对它做同步。只对目标地址上时间戳早于源地址上的文件做同步  。不会对 dirs，symlinks 或者 特殊文件(dev、socket file)生效
-```
-root in /opt/test/t2 λ stat 3
-  File: 3
-  Size: 4         	Blocks: 8          IO Block: 4096   regular file
-Device: 801h/2049d	Inode: 10653       Links: 1
-Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
-Access: 2021-02-25 14:29:14.573356713 +0800
-Modify: 2021-02-25 14:29:12.357356808 +0800
-Change: 2021-02-25 14:29:12.357356808 +0800
- Birth: -
-root in /opt/test/t2 λ cd ../t1 && stat 3
-  File: 3
-  Size: 0         	Blocks: 0          IO Block: 4096   regular empty file
-Device: 801h/2049d	Inode: 10647       Links: 1
-Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
-Access: 2021-02-25 13:59:35.217433003 +0800
-Modify: 2021-02-25 13:59:35.217433003 +0800
-Change: 2021-02-25 13:59:35.217433003 +0800
- Birth: -
+  如果目标地址上的文件时间戳晚于源地址上的，rsync不对它做同步。只对目标地址上时间戳早于源地址上的文件做同步  。不会对 dirs，symlinks 或者 特殊文件(dev、socket file)生效
 
-root in /opt/test/t2 λ rsync -avvu /opt/test/t1/ /opt/test/t2/
-sending incremental file list
-delta-transmission disabled for local transfer or --whole-file
-1 is newer
-2 is newer
-3 is newer
-total: matches=0  hash_hits=0  false_alarms=0 data=0
-
-sent 84 bytes  received 131 bytes  430.00 bytes/sec
-total size is 0  speedup is 0.00
-```
+  ```
+  root in /opt/test/t2 λ stat 3
+    File: 3
+    Size: 4         	Blocks: 8          IO Block: 4096   regular file
+  Device: 801h/2049d	Inode: 10653       Links: 1
+  Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+  Access: 2021-02-25 14:29:14.573356713 +0800
+  Modify: 2021-02-25 14:29:12.357356808 +0800
+  Change: 2021-02-25 14:29:12.357356808 +0800
+   Birth: -
+  root in /opt/test/t2 λ cd ../t1 && stat 3
+    File: 3
+    Size: 0         	Blocks: 0          IO Block: 4096   regular empty file
+  Device: 801h/2049d	Inode: 10647       Links: 1
+  Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+  Access: 2021-02-25 13:59:35.217433003 +0800
+  Modify: 2021-02-25 13:59:35.217433003 +0800
+  Change: 2021-02-25 13:59:35.217433003 +0800
+   Birth: -
+  
+  root in /opt/test/t2 λ rsync -avvu /opt/test/t1/ /opt/test/t2/
+  sending incremental file list
+  delta-transmission disabled for local transfer or --whole-file
+  1 is newer
+  2 is newer
+  3 is newer
+  total: matches=0  hash_hits=0  false_alarms=0 data=0
+  
+  sent 84 bytes  received 131 bytes  430.00 bytes/sec
+  total size is 0  speedup is 0.00
+  ```
 
 - `--inplace`
 
-rsync默认当文件需要更新时，是将源文件拷贝到目的，使用该参数rsync instead writes the updated data directly to the desitination file
-有几点需要注意的是
+  rsync默认当文件需要更新时，是将源文件拷贝到目的，使用该参数rsync instead writes the updated data directly to the desitination file
+  有几点需要注意的是
 
-1. hard links are note broken. 意味着可以在reciever hard link 看到新增修改的内容
-1. In-use binaries 不能被更新
-1. 传输过程中内容保持不一致
-1. 如果运行rsync的用户写权限不够，rsync不会对文件更新
-1. 如果reiever文件被覆写会降低rsync的效率
+  a. hard links are note broken. 意味着可以在reciever hard link 看到新增修改的内容
+
+  b. In-use binaries 不能被更新
+
+  c. 传输过程中内容保持不一致
+
+  d. 如果运行rsync的用户写权限不够，rsync不会对文件更新
+
+  e. 如果reiever文件被覆写会降低rsync的效率
+
 - `--append`
 
-将新的内容增加到EOF(end of the file)，源文件和目的文件会被认为完全相同的。如果receiver的文件大小和sender的一样或更大，文件就会被跳过。可以使用`--appned-verify`来校验整个文件的内容，如果文件校验失败会重传
+  将新的内容增加到EOF(end of the file)，源文件和目的文件会被认为完全相同的。如果receiver的文件大小和sender的一样或更大，文件就会被跳过。可以使用`--appned-verify`来校验整个文件的内容，如果文件校验失败会重传
 
 - `-l | --links`
 
-rsync对symlink默认处理，使用该参数会在reciever处生成symlink
-```protobuf
-[root@centos7 tmp]# ll
-total 0
-lrwxrwxrwx. 1 root root  4 Feb 27 15:01 a -> /etc
-[root@centos7 tmp]# rsync a b
-skipping non-regular file "a"
-[root@centos7 tmp]# ll
-total 0
-lrwxrwxrwx. 1 root root  4 Feb 27 15:01 a -> /etc
-[root@centos7 tmp]# rsync -l a b
-[root@centos7 tmp]# ll
-total 0
-lrwxrwxrwx. 1 root root  4 Feb 27 15:01 a -> /etc
-lrwxrwxrwx. 1 root root  4 Feb 27 15:03 b -> /etc
-[root@centos7 tmp]# 
-```
+  rsync对symlink默认处理，使用该参数会在reciever处生成symlink
+
+  ```
+  [root@centos7 tmp]# ll
+  total 0
+  lrwxrwxrwx. 1 root root  4 Feb 27 15:01 a -> /etc
+  [root@centos7 tmp]# rsync a b
+  skipping non-regular file "a"
+  [root@centos7 tmp]# ll
+  total 0
+  lrwxrwxrwx. 1 root root  4 Feb 27 15:01 a -> /etc
+  [root@centos7 tmp]# rsync -l a b
+  [root@centos7 tmp]# ll
+  total 0
+  lrwxrwxrwx. 1 root root  4 Feb 27 15:01 a -> /etc
+  lrwxrwxrwx. 1 root root  4 Feb 27 15:03 b -> /etc
+  [root@centos7 tmp]# 
+  ```
 
 - `-L | --copy-links`
 
-当遇见symlink时，拷贝symlink映射的文件而不是symlink。如果symlink映射的是一个目录，modern rsync 自动跳过
-```protobuf
-[root@centos7 tmp]# rsync -L a b
-skipping directory a
-[root@centos7 tmp]# ll
-total 0
-lrwxrwxrwx. 1 root root  4 Feb 27 15:01 a -> /etc
+  当遇见symlink时，拷贝symlink映射的文件而不是symlink。如果symlink映射的是一个目录，modern rsync 自动跳过
 
-[root@centos7 tmp]# rsync -L a.link b
-[root@centos7 tmp]# ll
-total 8
--rw-r--r--. 1 root root  2 Feb 27 15:08 a
-lrwxrwxrwx. 1 root root  1 Feb 27 15:08 a.link -> a
--rw-r--r--. 1 root root  2 Feb 27 15:09 b
-```
+  ```
+  [root@centos7 tmp]# rsync -L a b
+  skipping directory a
+  [root@centos7 tmp]# ll
+  total 0
+  lrwxrwxrwx. 1 root root  4 Feb 27 15:01 a -> /etc
+  
+  [root@centos7 tmp]# rsync -L a.link b
+  [root@centos7 tmp]# ll
+  total 8
+  -rw-r--r--. 1 root root  2 Feb 27 15:08 a
+  lrwxrwxrwx. 1 root root  1 Feb 27 15:08 a.link -> a
+  -rw-r--r--. 1 root root  2 Feb 27 15:09 b
+  ```
 
 - `-p | --perms`
 
-reciever side 的文件的 permissions 和 sender side 的一样。如果没有使用该参数，permission 会使用和`cp`及`tar`一样的规则。和`-A | --acls`等价
+  reciever side 的文件的 permissions 和 sender side 的一样。如果没有使用该参数，permission 会使用和`cp`及`tar`一样的规则。和`-A | --acls`等价
 
 - `--chmod`
 
-指定sender side 文件的permissions(实际permissions不会改变)，也意味着如果没有指定`--perms`reciever side 已经存在的文件的permissions不会改变
+  指定sender side 文件的permissions(实际permissions不会改变)，也意味着如果没有指定`--perms`reciever side 已经存在的文件的permissions不会改变
 
 - `-o | --owner`
 
@@ -416,175 +445,188 @@ reciever side 的文件的 permissions 和 sender side 的一样。如果没有�
 
 - `-g | --group`
 
-​	和`-o`一样，表示设置文件的group
+  和`-o`一样，表示设置文件的group
 
 - `--devices`
 
-rsync可以传输block device files，但是 receiver side running user 必须是 root
+  rsync可以传输block device files，但是 receiver side running user 必须是 root
 
 - `--specails`
 
-rsync 可以传输sockets fifos files
+  rsync 可以传输sockets fifos files
 
 - `-D`
 
-等价于`--devices`+ `--specails`
+  等价于`--devices`+ `--specails`
 
 - `-O | --omit-dir-times`
 
-如果mtime没有修改，不会传输directories
+  如果mtime没有修改，不会传输directories
 
 - `-J | --omit-link-times`
 
-如果mtime没有修改，不会传输symlinks
+  如果mtime没有修改，不会传输symlinks
 
 - `--existing`
-只同步目的地址中有的文件  
-```
-root in /opt/test/test3 λ rsync -av --existing /opt/test/test1/ /opt/test/test3/
-sending incremental file list
+  只同步目的地址中有的文件  
 
-sent 41 bytes  received 12 bytes  106.00 bytes/sec
-total size is 0  speedup is 0.00
-```
+  ```
+  root in /opt/test/test3 λ rsync -av --existing /opt/test/test1/ /opt/test/test3/
+  sending incremental file list
+  
+  sent 41 bytes  received 12 bytes  106.00 bytes/sec
+  total size is 0  speedup is 0.00
+  ```
 
 - `--remove-source-file`
-移动文件(意味着不包含目录)而不是拷贝  
-```
-[root@centos7 tmp]# rsync --remove-source-files a a.d  b
-skipping directory a.d
-[root@centos7 tmp]# ll
-total 4
-drwxr-xr-x. 2 root root  6 Feb 27 16:08 a.d
--rw-r--r--. 1 root root  2 Feb 27 16:08 b
-```
+  移动文件(意味着不包含目录)而不是拷贝  
+
+  ```
+  [root@centos7 tmp]# rsync --remove-source-files a a.d  b
+  skipping directory a.d
+  [root@centos7 tmp]# ll
+  total 4
+  drwxr-xr-x. 2 root root  6 Feb 27 16:08 a.d
+  -rw-r--r--. 1 root root  2 Feb 27 16:08 b
+  ```
 
 - `--delete`
-同步src_path的内容到dest_path，如果dest_path中内容比src_path多就会删除dest_path中的这些文件。这个参数非常危险，在使用前最好使用dry-run 。还可以结合`--delete-before`、`--delete-during`、`delete-delay`、`--delete-after`、`--delete-excluded`，具体查看man page
-```
-root in /opt/test λ rsync --delete -av /opt/test/test2/ /opt/test/test3/
-sending incremental file list
-deleting test2/9
-deleting test2/8
-deleting test2/7
-deleting test2/6
-deleting test2/5
-deleting test2/4
-deleting test2/3
-deleting test2/20
-deleting test2/2
-deleting test2/19
-deleting test2/18
-deleting test2/17
-deleting test2/16
-deleting test2/15
-deleting test2/14
-deleting test2/13
-deleting test2/12
-deleting test2/11
-deleting test2/10
-deleting test2/1
-deleting test2/
-./
-1
-10
-11
-12
-....
-```
+  同步src_path的内容到dest_path，如果dest_path中内容比src_path多就会删除dest_path中的这些文件。这个参数非常危险，在使用前最好使用dry-run 。还可以结合`--delete-before`、`--delete-during`、`delete-delay`、`--delete-after`、`--delete-excluded`，具体查看man page
+
+  ```
+  root in /opt/test λ rsync --delete -av /opt/test/test2/ /opt/test/test3/
+  sending incremental file list
+  deleting test2/9
+  deleting test2/8
+  deleting test2/7
+  deleting test2/6
+  deleting test2/5
+  deleting test2/4
+  deleting test2/3
+  deleting test2/20
+  deleting test2/2
+  deleting test2/19
+  deleting test2/18
+  deleting test2/17
+  deleting test2/16
+  deleting test2/15
+  deleting test2/14
+  deleting test2/13
+  deleting test2/12
+  deleting test2/11
+  deleting test2/10
+  deleting test2/1
+  deleting test2/
+  ./
+  1
+  10
+  11
+  12
+  ....
+  ```
 
 - `--max-size=SIZE`
 
-告诉rsync只传输小于SIZE的文件或目录，可以使用K、M、G作为单位
-```protobuf
---max-size=1.5mb-1 is 1499999 bytes, and --max-size=2g+1 is 2147483649 bytes.
-```
+  告诉rsync只传输小于SIZE的文件或目录，可以使用K、M、G作为单位
+
+  ```
+  --max-size=1.5mb-1 is 1499999 bytes, and --max-size=2g+1 is 2147483649 bytes.
+  ```
 
 - `--min-size=SIZE`
 
-逻辑含有同上
+  逻辑含义同上
 
 - `-C | --cvs-exclude`
 
-去掉cvs文件，默认包含如下格式的文件，以及`$HOME/.cvsignore`文件中记录的 和 CVSIGNORE 环境变量，可以和`--filter`兼容
-```protobuf
-RCS SCCS CVS CVS.adm RCSLOG cvslog.* tags TAGS .make.state .nse_depinfo *~ #* .#* ,*  _$*  *$  *.old  *.bak
-*.BAK *.orig *.rej .del-* *.a *.olb *.o *.obj *.so *.exe *.Z *.elc *.ln core .svn/ .git/ .hg/ .bzr/
-```
+  去掉cvs(control version system)文件，默认包含如下格式的文件，以及`$HOME/.cvsignore`文件中记录的 和 CVSIGNORE 环境变量，可以和`--filter`兼容
+
+  ```
+  RCS SCCS CVS CVS.adm RCSLOG cvslog.* tags TAGS .make.state .nse_depinfo *~ #* .#* ,*  _$*  *$  *.old  *.bak
+  *.BAK *.orig *.rej .del-* *.a *.olb *.o *.obj *.so *.exe *.Z *.elc *.ln core .svn/ .git/ .hg/ .bzr/
+  ```
 
 - `-f | --filter=RULE`
 
-exclude certain files from the list of files to be transferred，规则具体查看filter rules
+  exclude certain files from the list of files to be transferred，规则具体查看filter rules
 
 - `--exclude=PATTERN`
-排除文件。rsync默认会将隐藏文件同步，可以使用该参数排除，规则具体查看filter rules
-可以使用curly bracket 的模式扩展  
-```
-root in /opt/test1 λ rsync --exclude=".*" -av ~/ /opt/test1
-root in /opt/test1 λ ls -a                                 
- \u{1b}\u{1b}\u{1b}q   Desktop     Music       Public    Templates
- .                     Documents   nohup.out   revokey   Videos
- ..                    Downloads   Pictures    src
-```
-```
-rsync -av --exclude={'file1.txt','dir1/*'} source/ destination
-```
+  排除文件。rsync默认会将隐藏文件同步，可以使用该参数排除，规则具体查看filter rules
+  可以使用curly bracket 的模式扩展  
+
+  ```
+  root in /opt/test1 λ rsync --exclude=".*" -av ~/ /opt/test1
+  root in /opt/test1 λ ls -a                                 
+   \u{1b}\u{1b}\u{1b}q   Desktop     Music       Public    Templates
+   .                     Documents   nohup.out   revokey   Videos
+   ..                    Downloads   Pictures    src
+  ```
+
+  ```
+  rsync -av --exclude={'file1.txt','dir1/*'} source/ destination
+  ```
 
 - `--exclude-from=FILE`
 
-需要和`--exclude`一起使用，表示从具体某个目录下剔除。FILE可是使用`-`表示从stdin中读取
+  需要和`--exclude`一起使用，表示从具体某个目录下剔除。FILE可是使用`-`表示从stdin中读取
 
--  `--include=PATTERN`
-只同步指定规则的文件，具体规则查看filter rules  
-```
-rsync -av --include="*.txt" --exclude='*' source/ destination
-```
+- `--include=PATTERN`
+  只同步指定规则的文件，具体规则查看filter rules  
+
+  ```
+  rsync -av --include="*.txt" --exclude='*' source/ destination
+  ```
 
 - `--include-frome=FILE`
 
-字面意思，同`--exclude-from`
+  字面意思，同`--exclude-from`
 
 - `--bwllimit`
-最大的IOPS,可以使用单位，如果没有指定单位默认1024bytes  
-```
- rsync -avz   -e 'ssh -p 41456' --exclude='html/bridd.pub/application/config' --bwlimit=1.5m
-```
+  最大的IOPS,可以使用单位，如果没有指定单位默认1024bytes  
+
+  ```
+   rsync -avz   -e 'ssh -p 41456' --exclude='html/bridd.pub/application/config' --bwlimit=1.5m
+  ```
 
 - `--compare-dest=DIR`
 
-this option instructs rsync to use DIR on the destination machine as an additional hierarchy to compare destination files aganinst doing transfers, if the files are missing in the destination directory. If a file is found in DIR that is identical to the sender's file, the file wil NOT be transferred to the destination directory
-以reciver side DIR为基准，如果该文件内包含sender side 所有文件就不会通过，如果少只同步少的部分。可以将DIR作为back
+  this option instructs rsync to use DIR on the destination machine as an additional hierarchy to compare destination files aganinst doing transfers, if the files are missing in the destination directory. If a file is found in DIR that is identical to the sender's file, the file wil NOT be transferred to the destination directory
+  以reciver side DIR为基准，如果该文件内包含sender side 所有文件就不会通过，如果少只同步少的部分。可以将DIR作为back
 
 - `--copy-dest=DIR`
 
-behaves like `--compare-dest`，但是如果文件相同还是会做强制更新
+  behaves like `--compare-dest`，但是如果文件相同还是会做强制更新
 
 - `--link-dest=DIR`
 
-behaves like `--copy-dest`，但是如果文件相同会生成hard link
-```protobuf
-rsync -av --link-dest=$PWD/prior_dir host:src_dir/ new_dir/
-```
+  behaves like `--copy-dest`，但是如果文件相同会生成hard link
+
+  ```
+  rsync -av --link-dest=$PWD/prior_dir host:src_dir/ new_dir/
+  ```
+
 ### output
 
 - `-v | --verbose`
 
-rsync 默认sliently，可以使用多个v详细输出。如果连接的是rsync daemon，且设置了 max verbosity ，就只能使用指定的 verbosity 等级
+  rsync 默认sliently，可以使用多个v详细输出。如果连接的是rsync daemon，且设置了 max verbosity ，就只能使用指定的 verbosity 等级
 
 - `-q | --quiet`
 
-不输出从remote server的回显，一般用于crontab
+  不输出从remote server的回显，一般用于crontab
 
 - `--msgs2stderr`
 
-将stdout输出的内容输出到stderr
-```protobuf
-[root@centos7 tmp]# rsync -av --msgs2stderr a/ b > /dev/null
-sending incremental file list
+  将stdout输出的内容输出到stderr
 
-sent 76 bytes  received 12 bytes  176.00 bytes/sec
-total size is 4  speedup is 0.05
-```
+  ```
+  [root@centos7 tmp]# rsync -av --msgs2stderr a/ b > /dev/null
+  sending incremental file list
+  
+  sent 76 bytes  received 12 bytes  176.00 bytes/sec
+  total size is 4  speedup is 0.05
+  ```
+
 ## filter rules
 rsync 可以通过`--filter,-f`参数来过滤同步的文件，后面跟pattern
 
