@@ -8,11 +8,14 @@
 
 [https://www.huaweicloud.com/articles/51b251bb13e4ad517a86c4533d277636.html](https://www.huaweicloud.com/articles/51b251bb13e4ad517a86c4533d277636.html)
 
-> 常用参数`-avvz`
+https://www.ruanyifeng.com/blog/2020/08/rsync.html
+
+> 常用参数`-ahvvz`
 
 ## Digest
 用于本机计算机与远程计算机之间(也可以和rsync daemon 进行PIC proccess Inter communication)，或者两个本地目录之间同步文件。与其他文件传输工具（FTP或scp）不同，rsync 的最大特点是会检查发送方和接收方已有的文件，仅传输有变动的部分（增量传输delta-transfer algorithm，默认规则是文件大小或修改时间有变动）。
 rsync 默认使用ssh通道(除rsync daemon外)，所以使用rsync的前提是ssh必须是通的
+
 ```protobuf
 [root@centos7 a]# rsync -av -e 'ssh -p 65522' ubuntu@82.157.1.139:/etc
 The authenticity of host '[82.157.1.139]:65522 ([82.157.1.137]:65522)' can't be established.
@@ -291,7 +294,25 @@ rsync -av host:'file\ name\ with\ spaces' /dest
 
   
 
-- 
+- `--chown=USER:GROUP`
+
+  指定transfer 的文件所有者
+
+- `--address=ADDRESS`
+
+  和rsync daemon 交互的sender side 绑定IP，默认使用wildcard即本机所有路由可达IP
+
+- `--port=PORT`
+
+  指定rsync daemon 使用的port，默认使用873
+
+- `--password-file=FILE`
+
+  指定rsync daemon 使用的密码，但是同样需提供ssh通道的密码
+
+- `--list-only`
+
+  对sender side 文件做遍历
 
 ### transfer
 
@@ -602,8 +623,35 @@ rsync -av host:'file\ name\ with\ spaces' /dest
   behaves like `--copy-dest`，但是如果文件相同会生成hard link
 
   ```
-  rsync -av --link-dest=$PWD/prior_dir host:src_dir/ new_dir/
+  ➜  test ll a.d
+  .rw-r--r-- root root 2 B Wed Mar  9 22:41:58 2022  a
+  .rw-r--r-- root root 2 B Wed Mar  9 23:03:30 2022  b
+  ➜  test ll b.d
+  .rw-r--r-- root root 2 B Wed Mar  9 22:41:58 2022  a
+  .rw-r--r-- root root 0 B Wed Mar  9 23:43:24 2022  c
+  .rw-r--r-- root root 0 B Wed Mar  9 23:43:24 2022  d
+  ➜  test ll c.d
   ```
+
+- `--timeout=SECONDS`
+
+  如果没有数据传输了，等待最大的I/O timeout。默认0表示无限制
+
+- `--contimeout=SECONDS`
+
+  等待连接rsync daemon的最大超时时间
+
+- `--partial`
+
+  rsync 默认会删除传输未完整的文件，使用该参数可以保留这些不完整的文件
+
+- `--partial-dir=DIR`
+
+  指定partial 存储的文件，以便调用rsync是加速
+
+- `--prune-empty-dirs | -m`
+
+  传输是删除 receiving side 的空文件，包括级联文件
 
 ### output
 
@@ -614,6 +662,10 @@ rsync -av host:'file\ name\ with\ spaces' /dest
 - `-q | --quiet`
 
   不输出从remote server的回显，一般用于crontab
+
+- `--human-readable | -h`
+
+  字面意思
 
 - `--msgs2stderr`
 
@@ -627,7 +679,85 @@ rsync -av host:'file\ name\ with\ spaces' /dest
   total size is 4  speedup is 0.05
   ```
 
+- `--itemize-change | -i`
+
+  以简短的方式显示rsync做了什么，可以使用`-ii`未改变的文件也会显示出来，一般以`YXcstpoguax`格式展示
+
+  X 和 Y 可以代表的值具体查看man page
+
+- `--stats`
+
+  输出rsync statistics 信息
+
+  ```
+  ➜  test rsync  --stats a e 
+  
+  Number of files: 1 (reg: 1)
+  Number of created files: 0
+  Number of deleted files: 0
+  Number of regular files transferred: 1
+  Total file size: 2 bytes
+  Total transferred file size: 2 bytes
+  Literal data: 2 bytes
+  Matched data: 0 bytes
+  File list size: 0
+  File list generation time: 0.001 seconds
+  File list transfer time: 0.000 seconds
+  Total bytes sent: 82
+  Total bytes received: 35
+  
+  sent 82 bytes  received 35 bytes  234.00 bytes/se
+  ```
+
+  具体字段含义查看man page
+
+- `--log-file=FILE`
+
+  指定rsync daemon 日志存储的位置
+
+  ```
+  rsync -av --remote-option=--log-file=/tmp/rlog src/ dest/
+  
+  ```
+
+  
+
+### Daemon Argus
+
+- `--daemon`
+
+  告诉rsync 以 daemon 的方式运行，clinet 必须使用`host::module`或`rsync://host/module`来连接，daemon 默认会读取**rsyncd.conf**，具体配置查看man page
+
+- `bwlimit=RATE`
+
+  限制daemon的接受速率
+
+- `--address=ADDRESS`
+
+  daemon 绑定的IP，默认wildcard 绑定  
+
+- `--config=FILE`
+
+  指定deamon读取的配置文件
+
+- `--dparam=OVERRIDE | -M`
+
+  在启动daemon时指定的全局配置变量，优于配置文件
+
+  ```
+  rsync --daemon -M pidfile=/path/rsync.pid
+  ```
+
+- `--no-detach`
+
+  以前端的方式运行rsync daemon
+
+- `--port`
+
+  daemon 使用的端口默认873
+
 ## filter rules
+
 rsync 可以通过`--filter,-f`参数来过滤同步的文件，后面跟pattern
 
 - `-`：exclude
@@ -651,77 +781,3 @@ rsync 可以通过`--filter,-f`参数来过滤同步的文件，后面跟pattern
 ```protobuf
 rsync -Cavz . arvidsjaur:backup
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## 参数
-
-
--  `--link-dest`
-选定一个目录做为同步的基准。test1做为源地址，test2做为同步的基准，test3做为目的地址  
-```
-root in /opt/test λ ls
- test1   test2   test3
-root in /opt/test λ ls test2
- 1    11   13   15   17   19   20   4   6   8
- 10   12   14   16   18   2    3    5   7   9
-```
-
--  `--backup,-b`
-备份，被传输覆盖或是使用`--delete`被删除的文件会以`~`为后缀备份，可以通过`--backup-dir`来指定备份存储的位置，`--suffix`指定后缀  
-```
-#被删除的文件
-root in /opt/test/t2 λ rsync  -b  -avvz --delete /opt/test/t1/ /opt/test/t2/
-sending incremental file list
-delta-transmission disabled for local transfer or --whole-file
-backed up 4 to 4~
-deleting 4
-1 is uptodate
-2 is uptodate
-3 is uptodate
-total: matches=0  hash_hits=0  false_alarms=0 data=0
-
-sent 89 bytes  received 172 bytes  522.00 bytes/sec
-total size is 0  speedup is 0.00
-root in /opt/test/t2 λ ls
- 1   2   3   4~
-
----
-#被覆盖的文件
-root in /opt/test/t2 λ rsync  -b  -avvz /opt/test/t1/ /opt/test/t2/
-sending incremental file list
-delta-transmission disabled for local transfer or --whole-file
-2 is uptodate
-3 is uptodate
-1
-backed up 1 to 1~
-total: matches=0  hash_hits=0  false_alarms=0 data=0
-
-sent 118 bytes  received 169 bytes  574.00 bytes/sec
-total size is 0  speedup is 0.00
-root in /opt/test/t2 λ ls
- 1   1~   2   3   4~
-root in /opt/test/t2 λ cat 1
-  File: 1   <EMPTY>
-root in /opt/test/t2 λ cat 1~
-  File: 1~
-  1
-```
-
--  `--prune-empty-dirs,-m`
-该选项告诉receiver端的rsync从文件列表中删除空目录，包括那些没有文件的空的嵌套目录 
-
-## 
