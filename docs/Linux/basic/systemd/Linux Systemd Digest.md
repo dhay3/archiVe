@@ -10,7 +10,13 @@ https://zh.wikipedia.org/wiki/Systemd
 
 https://wiki.archlinux.org/index.php/systemd_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)
 
-## 概述
+
+
+## Digset
+
+systemd is a system and service manager for linux OS，以 PID 1 运行和 init system 的作用一样用于启动和维护 userspace services
+
+## SysV
 
 历史上，[Linux 的启动](http://www.ruanyifeng.com/blog/2013/08/linux_boot_process.html)一直采用[`init`](https://en.wikipedia.org/wiki/Init)进程。
 
@@ -39,6 +45,26 @@ Systemd 就是为了解决这些问题而诞生的。它的设计目标是，为
 根据Unix 惯例，==字母`d`是守护进程（daemon）的缩写==。 Systemd 这个名字的含义，就是它要守护整个系统。
 
 使用了 Systemd，就不需要再用`init`了。==Systemd 取代了`initd`，成为系统的第一个进程（PID 等于 1），其他进程都是它的子进程。==
+
+## Concepts
+
+systemd 通过 11 种不同的 unit 来管理
+
+units 有几种状态，根据不同的unit type 状态也会改变
+
+1. active, meaning started
+2. inactive, meaning stopped
+3. actived, once was active
+4. inactived, equal to inactive
+5. fail, srvice failed in some way（process returned error code on exit, or crashed, an operation timed out, or fater too many restarts）
+
+unit type 可以是如下几种
+
+
+
+
+
+
 
 通过如下命令可以查看systemd的版本
 

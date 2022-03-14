@@ -92,6 +92,10 @@ systemd-journald.service默认将日志保存在`/var/log/journal`下，用户�
 
   使用pcre2pattern过滤message部分内容
 
+- `--no-pager`
+
+  直接输出所有内容到stdout
+
 ### time
 
 - ` -S | --since , -U | --until`
