@@ -4,7 +4,7 @@
 
 ##  ntpd
 
-> 有的OS systemd以`ntpd.service`命名或`ntp.service`
+> 有的OS systemd以`ntpd.service`命名或`ntp.service` , 有的OS可能也不使用ntpd，而使用`systemd-timesyncd`或 `chrony`,
 
 ntpd是linux上实现ntp4的工具(==ntpd.service是一个一次性的service==)，默认读取`ntp.conf`。如果系统的时间存在较大的偏差会导致一些协议无法正常工作例如Vmess。
 
@@ -26,7 +26,7 @@ ntpd是linux上实现ntp4的工具(==ntpd.service是一个一次性的service==)
 
 ## ntp.conf
 
-### 概述
+### Digest
 
 参考：
 
@@ -36,7 +36,7 @@ https://www.thegeekstuff.com/2014/06/linux-ntp-server-client/
 
 ntp(Network Time Protocol)，是用于synchronize all participating computers to within a few millisecods of UTC。
 
-chrony是Linux中ntp实现的方式之一
+chrony是Linux中ntp实现的方式之一，systemd-timesynd 也是其中之一
 
 ### configuration
 
