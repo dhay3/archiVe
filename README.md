@@ -28,7 +28,7 @@
 - [SSH](docs/SSH)
 - [Vagrant](docs/Vagrant)
 - [Vitualization](docs/Vitualization)
-- [Wireshark](docs/Wireshark)
+- [Wireshark](docs/Net/Wireshark)
 - [Zabbix](docs/Zabbix)
 - [Zookeeper](docs/Zookeeper)
 
