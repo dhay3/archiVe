@@ -1,10 +1,14 @@
 # dmidecode
 
+ref:
+
+https://en.wikipedia.org/wiki/System_Management_BIOS
+
+## DMI/SMBIOS
+
+System Management BIOS，规定了OS可以从BIOS中读取的信息(主要是硬件相关的信息)，DMI(Desktop management interface)有更多的信息，其中包含SMBIOS
 
 
-## SMBIOS
-
-System Management BIOS，规定了OS可以从BIOS中读取的信息(也被称为DMI table包含硬件信息)。
 
 ## dmidecode
 
@@ -26,6 +30,22 @@ System Management BIOS，规定了OS可以从BIOS中读取的信息(也被称为
 - decode value：根据type不同，显示的内容不同
 
 可以展现的数据有大致如下：
+
+- System
+
+  包含机器型号，序列号等信息
+
+  ```
+  System Information
+          Manufacturer: LENOVO
+          Product Name: 82MS
+          Version: Lenovo XiaoXinPro 14ACH 2021
+          Serial Number: PF2PTW6L
+          UUID: cb18d6e6-7fe9-11eb-80ec-38f3ab15da50
+          Wake-up Type: Power Switch
+          SKU Number: LENOVO_MT_82MS_BU_idea_FM_XiaoXinPro 14ACH 2021
+          Family: XiaoXinPro 14ACH 2021
+  ```
 
 - Memory
 
@@ -68,11 +88,11 @@ System Management BIOS，规定了OS可以从BIOS中读取的信息(也被称为
 
 ## options
 
-- -q | --quite
+- `-q | --quite`
 
   只显示decode value
 
-- -s | --string KEYWORD
+- `-s | --string KEYWORD`
 
   只显示指定字段，具体查看manual page
 
@@ -81,7 +101,9 @@ System Management BIOS，规定了OS可以从BIOS中读取的信息(也被称为
   LENOVO
   ```
 
-  
+- `-t | --type TYPE`
+
+  只显示指定type的，具体可以使用的type查看man page DMI TYPES
 
 
 
