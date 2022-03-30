@@ -33,6 +33,8 @@
 
   maximal transform unit，单包最大的传输值
 
+  以太网卡默认1500
+
   byte
 
 - qdisc
