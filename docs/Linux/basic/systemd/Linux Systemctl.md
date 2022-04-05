@@ -417,6 +417,10 @@ vagrant  22910 22907  0 Feb25 ?        00:00:01 sshd: vagrant@pts/2
 
   等价于执行 halt
 
+- `suspend`
+
+  等价执行suspend 锁屏
+
 - `poweroff`
 
   等价于执行poweroff
