@@ -4,13 +4,19 @@
 
 ip route 用于管控 kernel routing table
 
-## 0x Terms
+## 0x2 Terms
 
 ### Route tables
 
 Linux 2.x 将路由分成多种 routing tables 用 1 - $2^{32}$ 或 字符来标识，默认记录在`/etc/iproute2/rt_tables`。其中`local` route table 是不可见的（包含local路由和broadcast路由）
 
-## 0x2 ENBF
+### defualt
+
+如果参数有default标识，表示使用 command 时的缺省值，这时可以省略参数，例如
+
+`ip route get 1.1.1.1`等价与`ip route get to 1.1.1.1`
+
+## 0x3 ENBF
 
 - SELECTOR := [ root PREFIX ] [ match PREFIX ] [ exact PREFIX ] [ table
   TABLE_ID ] [ vrf NAME ] [ proto RTPROTO ] [ type TYPE ] [
@@ -51,7 +57,7 @@ Linux 2.x 将路由分成多种 routing tables 用 1 - $2^{32}$ 或 字符来标
 
 - ROUTE_GET_FLAGS :=  [ fibmatch  ]
 
-## 0x3 Route types
+## 0x4 Route types
 
 - unicast
 
@@ -107,7 +113,7 @@ Linux 2.x 将路由分成多种 routing tables 用 1 - $2^{32}$ 或 字符来标
 
   多播
 
-## 0x04 Commands
+## 0x5 Commands
 
 具体字段可以使用的值查看EBNF
 
@@ -129,7 +135,7 @@ syntax：`ip route { add | del | change | append | replace } ROUTE`
 
 change or add new add
 
-- to TYPE PREFIX
+- to TYPE PREFIX（default）
 
   the destinatino prefix of the route
 
@@ -286,6 +292,136 @@ change or add new add
   route will be deleted after the expires time
 
   目前只支持IPv6
+
+### ip route delete
+
+syntax：`ip route { add | del | change | append | replace } ROUTE`
+
+delete route
+
+参数和 ip route add 相同
+
+### ip route show
+
+syntax：`ip route { show | flush } SELECTOR`
+
+list routes
+
+- to SELECTOR（default）
+
+  使用指定的SELECTOR过滤目的IP（如果没有指定SELECTOR，默认使用root 0/0 即列出 entire table），可以是如下值
+
+  1. root
+
+     root PREFIX selects routes with prefixes not shorter than PREFIX
+
+     例如 root 0/0 会选择 entire routing table
+
+     ```
+     [vagrant@localhost ~]$ ip route show root 10.0.2.0/23
+     10.0.2.0/24 dev eth0 proto kernel scope link src 10.0.2.15 metric 100
+     ```
+
+  2. match 
+
+     match PREFIX selects routes with prefixes not longer than PREFIX
+
+     例如 10.0/16 匹配 10.0/16，10/8，0/0，但是不匹配 10.1/16 和 10.0.0/24
+
+  3. exact
+
+     exact PREFIX or just PREFIX selects routes with this exact PREFIX
+
+- table TABLEID
+
+  show routes from table
+
+  默认只显示 mian table，TABLEID的值可以是
+
+  1. all - list all of the tables
+  2. cache - dump the routing cache
+
+- vrf NAME
+
+  show the routes for the table associated with the vrf name
+
+- from SELECTOR
+
+  使用SELECTOR过滤源IP，SELECTOR可以使用的值和 to 参数相同
+
+- protocol PTROTO
+
+  查看指定proto类型的路由
+
+  ```
+  cpl in ~/VagrantMachines/centos7 λ ip route show proto kernel
+  30.131.78.0/24 dev wlp1s0 scope link src 30.131.78.32 metric 600 
+  172.17.0.0/16 dev docker0 scope link src 172.17.0.1 linkdown
+  ```
+
+- type TYPE
+
+  只显示指定 TYPE 路由
+
+- dev NAME
+
+  only list routes of this type
+
+- via [FAMILY] PREFIX
+
+  only list routes going via the nexthop routers selected by PREFIX
+
+  ```
+  [vagrant@localhost ~]$ ip route show via 10.0.2.2/24
+  default via 10.0.2.2 dev eth0 proto dhcp metric 100
+  ```
+
+- src PREFIX
+
+  only list routes with preferred source addresses selected by PREFIX
+
+### ip route flush
+
+syntax：`ip route { show | flush } SELECTOR`
+
+清空指定路由条目
+
+### ip route get
+
+获得指定route条目，该命令不等价与`ip route show`
+
+syntax：`ip route get ADDRESS [ from ADDRESS iif STRING  ] [ oif STRING ] [ tos TOS ] [ vrf NAME ]`
+
+- to ADDRESS(default)
+
+  查看到指定ADDRESS的路由
+
+  ```
+  [vagrant@localhost ~]$ ip route get to 1.1.1.1
+  1.1.1.1 via 10.0.2.2 dev eth0 src 10.0.2.15 
+      cache 
+  ```
+
+- from ADDRESS
+
+  查看源地址
+
+### ip route save | restore
+
+save将路由保存成binary，restore 读取 binary并载入路由
+
+```
+ip route save > out
+ip route restart < out
+```
+
+## 0x6 Examples
+
+```
+[vagrant@localhost ~]$ sudo ip route add to default via 10.0.2.1 dev eth0
+```
+
+
 
 
 

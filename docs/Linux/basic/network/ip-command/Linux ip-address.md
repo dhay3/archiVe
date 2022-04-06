@@ -133,7 +133,7 @@ syntax：`ip address [ show [ dev IFNAME ] [ scope SCOPE-ID ] [ to PREFIX ] [ FL
 
 **IFADDR**
 
-- `dev IFNAME`
+- `dev IFNAME`(default)
 
   查看具体device L4 信息
 
