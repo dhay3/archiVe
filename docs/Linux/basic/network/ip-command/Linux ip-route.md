@@ -4,6 +4,12 @@
 
 ip route 用于管控 kernel routing table
 
+## 0x Terms
+
+### Route tables
+
+Linux 2.x 将路由分成多种 routing tables 用 1 - $2^{32}$ 或 字符来标识，默认记录在`/etc/iproute2/rt_tables`。其中`local` route table 是不可见的（包含local路由和broadcast路由）
+
 ## 0x2 ENBF
 
 - SELECTOR := [ root PREFIX ] [ match PREFIX ] [ exact PREFIX ] [ table
@@ -81,5 +87,207 @@ ip route 用于管控 kernel routing table
 
   包通过广播的方式发送出去
 
-  
+- throw
+
+  会假设没有路由条目，包会被丢弃回送ICMP net unreachable，源端收到 ENETUNERACH
+
+- nat
+
+  DNAT，由`via`字段选择规则，Linux 2.6 后不支持
+
+- anycast
+
+  the destinations are anycast addresses
+
+  多播
+
+- multicast
+
+  the destinations are unicast addresses
+
+  多播
+
+## 0x04 Commands
+
+具体字段可以使用的值查看EBNF
+
+### ip route add
+
+syntax：`ip route { add | del | change | append | replace } ROUTE`
+
+add new route
+
+### ip route change
+
+syntax：`ip route { add | del | change | append | replace } ROUTE`
+
+change route
+
+### ip route replace
+
+syntax：`ip route { add | del | change | append | replace } ROUTE`
+
+change or add new add
+
+- to TYPE PREFIX
+
+  the destinatino prefix of the route
+
+  如果没有指定TYPE(route types)，默认使用 unicast. PREFIX 可是点对点IP或是网段，如果没有指定 prefix，掩码为32位。也可以使用 defult 表示`0/0`或`::/0`
+
+- tos TOS | dsfield TOS
+
+  the type of service（TOS）
+
+- metric NUMBER | preference NUMBER
+
+  the preference value of the route
+
+  路由的优先值，值越小优先值越大
+
+- table TABLEID
+
+  tehi table to add this route to
+
+  TABLEID 使用`/etc/iproute2/rt_tables`中记录的值，如果没有指定TABLEID默认使用main，如果添加的route type 是local，broadcast，nat会自动添加到 local table
+
+- vrf NAME
+
+  the vrff name to add this route to
+
+- dev NAME
+
+  the out device name
+
+  流量出设备名
+
+- via [FAMLIY] ADDRESS
+
+  the address of the nexthop router，in the address family  FAMILY
+
+  下一跳地址
+
+- src ADDRESS
+
+  the source address to prefer when sending to the destinations convered by the route prefix
+
+- realm REALMID
+
+  the realm to which this route is assigned. REALMID 使用`/etc/iproute2/rt_realm`中记录的值
+
+- mtu MTU | mtu lock MTU
+
+  the mtu along the path to the destination
+
+- window NUMBER
+
+  TCP 窗口的最大值
+
+- rtt TIME | rttvar TIME
+
+  the initial RTT
+
+- rto_min TIME
+
+  the minimum TCP retransmission timeout
+
+  TCP重传超时时间
+
+- ssthresh NUMBER
+
+  the initial slow start threshold
+
+- cwnd NUMBER
+
+  the clamp for congestion window
+
+- initcwnd NUMBER
+
+  the initial congestion window
+
+- initrwnd NUMBER
+
+  initial receive window size
+
+- features  FEATURES
+
+  enable or disable pre-route features
+
+- quickack BOOL
+
+  enable or disable quick ack for connections to this destination
+
+- congctl NAMC
+
+- advmss
+
+  the maximal segment size to advertise to these destinations
+
+- nexthop
+
+  the nexthop of a multipath route
+
+  nexthop 是一个复杂参数格式如下
+
+  1. via [FAMILY] ADDRESS
+
+     the nexthop router
+
+  2. dev NAME
+
+     the output device
+
+  3. weight NUMBER
+
+     路由权重
+
+- scop SCOPE_VAL
+
+  路由在那个scop使用，如果没有指定默认使用global，表示全局生效
+
+- protocol PTROTO
+
+  标识当前路由的来源，PTROTO值使用`/etc/iproute2/rt_protos`中的值，如果没有指定默认使用 boot，可以是如下的值
+
+  1. redirect
+
+     the route was installed due to an ICMP redirect
+
+  2. kernel
+
+     the route was installed by the kernel during autoconfiguration
+
+  3. boot 
+
+     the route was installed during the bootup sequence. It assumes the route was added by someone who does’t understand what the are doing
+
+  4. static
+
+     the route was installed by the administrator to override dynamic routing
+
+  5. ra
+
+     the route was installed by router discovery
+
+  配置文件中的值没有保留，可以由用户自行设置
+
+- onlink
+
+  nexthop 会被任务直联，即使实际不是
+
+- pref PREF
+
+  the ipv6 route preference
+
+- encap ENCAPTYPE ENCAPHDR
+
+- expires TIME
+
+  route will be deleted after the expires time
+
+  目前只支持IPv6
+
+
+
+
 
