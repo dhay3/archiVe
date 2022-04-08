@@ -12,7 +12,7 @@ http://www.ruanyifeng.com/blog/2016/06/dns.html
 
 如果没有参数，默认查询根域
 
-<img src="..\..\imgs\_Kali\Snipaste_2020-09-01_16-01-04.png" style="zoom:80%;" />
+![Snipaste_2020-09-01_16-01-04](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220408/Snipaste_2020-09-01_16-01-04.61kxceles4g0.webp)
 
 这里显示根域有13个NS记录，对应13台DNS服务器的域名，然后向这13台DNS服务器查询
 

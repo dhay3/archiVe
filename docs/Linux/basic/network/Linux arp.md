@@ -1,5 +1,7 @@
 # Linux arp
 
+> 在kernel 2.2 之后尽量使用iproute2 `ip neigh`来替代arp
+
 - arp 
 
   查看主机的ARP table entry，使用`-n`参数以数字形式显示IP
