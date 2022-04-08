@@ -6,6 +6,8 @@ https://support.huawei.com/enterprise/zh/doc/EDOC1100105907
 
 https://www.baeldung.com/cs/multicast-vs-broadcast-anycast-unicast
 
+https://www.zhihu.com/question/267097519
+
 ## Terms
 
 只是一种网络模式
@@ -22,15 +24,19 @@ https://www.baeldung.com/cs/multicast-vs-broadcast-anycast-unicast
 
 组播是主机间一对多的通讯模式，报文会被发送到组播组（一组主机）。
 
+例如 192.168.80.0/24 的组播地址是 192.168.80.255
+
 ### unicast 单播
 
 单播是主机间一对一的通讯模式，网络中的设备只会将单播的报文送到指定目的地。报文不会被网络设备复制。例如HTTP、Telenet、FTP、SMTP都使用单播
 
 ### broadcast 广播
 
-广播是主机间一对所有的通讯模式，设备会将博文发送到网络中所有可能的接收者。设备会将他收到的广播报文都复制并转发到除该报文到达的接口外的每个接口。广播可能不会收到回应，或只有几台机器回应。例如 ARP、DHCP、NTP都使用关播
+广播是主机间一对所有的通讯模式，设备会将博文发送到网络中所有可能的接收者。设备会将他收到的广播报文都复制并转发到除该报文到达的接口外的每个接口。广播可能不会收到回应，或只有几台机器回应。例如 ARP、DHCP、NTP都使用广播
 
+其中ARP使用的广播地址是ffff:ffff:ffff:ffff
 
+DHCP使用的广播地址是255.255.255.255，在同一个广播域(由三层设备划分关播域，例如路由器)中所有的主机都会接收到广播的信息
 
 ## Example
 
