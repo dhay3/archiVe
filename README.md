@@ -1,78 +1,135 @@
 
 
-# Table of content
+# Fast Link
 
-![](https://img.shields.io/github/last-commit/dhay3/archive)
+![](https://img.shields.io/github/last-commit/dhay3/archive)![](https://img.shields.io/github/repo-size/dhay3/archive)
 
-![](https://img.shields.io/github/repo-size/dhay3/archive)
+> It’s a note of cyberpelican.
+>
+> The plain text means I was already leanrt that, but for somehow I didn’t write these (excuse for effortless). Someday will be make up for it.
 
-##  Dvops
+## [CloudOps](Docs/CloudOps/)
 
-- [aliyun](docs/aliyun)
-- [Apache](docs/Apache)
-- [CCNA](docs/CCNA)
-- [Docker](docs/Docker)
-- [Dos](docs/Dos)
-- [Git](docs/Git)
-- [GPG](docs/GPG)
-- [Kurbernetes](docs/Kurbernetes)
-- [Linux](docs/Linux/)
-- [LVS](docs/LVS)
-- [Net](docs/Net)
-- [Nginx](docs/Nginx)
-- [OpenSSL](docs/OpenSSL)
-- [OpenVPN](docs/OpenVPN)
-- [PowerShell](docs/Powershell)
-- [Salt](docs/SaltStack)
-- [Shell](docs/Shell)
-- [SSH](docs/SSH)
-- [Vagrant](docs/Vagrant)
-- [Vitualization](docs/Vitualization)
-- [Wireshark](docs/Net/Wireshark)
-- [Zabbix](docs/Zabbix)
-- [Zookeeper](docs/Zookeeper)
+- [Aliyun](Docs/CloudOps/Aliyun/)
+- [Cloudflare](Docs/CloudOps/Cloudflare/)
 
-## Devoplement
+## [Development](Docs/Development/)
 
-- [Database](docs/Database)
-- [DataStruct](docs/DataStruct)
-- [Dubbo](docs/Dubbo)
-- [EffectiveJava](docs/EffectiveJava)
-- [Go](docs/Go)
-- [GNS3](docs/GNS3)
-- [Gradle](docs/Gradle)
-- [JavaSE](docs/JavaSE)
-- [JetBrain](docs/JetBrain)
-- [JUC_JVM](docs/JUC_JVM)
-- [Maven](docs/Maven)
-- [Mybatis-Plus](docs/Mybatis-Plus)
-- [Python](docs/Python)
-- [Ruby](docs/Ruby)
-- [Rabbitmq](docs/Rabbitmq)
-- [Shiro](docs/Shiro)
-- [SpringBoot](docs/SpringBoot)
-- [SpringCloud](docs/SpringCloud)
-- [SpringSecurity](docs/SpringSecurity)
-- [Vue](docs/Vue)
+### [Maven](Docs/Development/Maven)
 
-## pentest
+- [Maven](Docs/Development/Maven/)
 
-- [Kali](docs/Kali)
-- [CTF](docs/CTF)
-- [Cowrie](docs/Cowrie)
-- [CVE](docs/CVE)
-- [Postman](docs/Postman)
-- [TOR](docs/TOR)
+### [MQ](Docs/Development/MQ)
 
-## grocery
+- [RabbitMQ](Docs/Development/Rabbitmq/)
+- RocketMQ
 
-- [Sundries](docs/Sundries)
-- [Blog](docs/Blog)
-- [Bonus](docs/Bonus)
-- [Chrome](docs/Chrome)
-- [koolshare](docs/koolshare)
-- [Markdown](docs/Markdown)
-- [V2ray](docs/V2ray)
-- [Hardware](docs/Hardware)
-- [Hexo](docs/Hexo)
+### [DataStruct](Docs/Development/DataStruct)
 
+- [DataStruct](Docs/Development/DataStruct/)
+
+### [Backend](Docs/Development/Backend)
+
+- [Go](Docs/Development/Backend/Go)
+- [Java](Docs/Development/Backend/Java)
+- [Python](Docs/Development/Backend/Python)
+- [Ruby](Docs/Development/Backend/Ruby)
+- C
+
+### [Frontend](Docs/Development/Frontend)
+
+- Javascript
+- html/css
+- Jquery
+- [Vue](Docs/Development/Frontend/Vue)
+
+### [Database](Docs/Development/Database)
+
+- [MySQL](Docs/Development/Database/MySQL)
+- [NoSQL](Docs/Development/Database/NoSQL)
+
+### [JetBrain](Docs/Development/JetBrain)
+
+- [IDEA](Docs/Development/JetBrain/idea)
+- Pycharm
+- Webstorm
+- Datagrip
+- Clion
+
+## [Com-mon Digest](Docs/Com-mon Digest)
+
+- [Hardware](/home/cpl/note/Docs/Hardware/)
+- [Interface](/home/cpl/note/Docs/Interface/)
+- [Network Devices](/home/cpl/note/Docs/Network Devices/)
+- [Partition](/home/cpl/note/Docs/Partition/)
+
+## [Net](Docs/Net)
+
+- [GNS3](Docs/Net/GN3/)
+- [CCNA](Docs/Net/CCNA/)
+- [Wireshark](Docs/Net/Wireshark/)
+- [Grocery](Docs/Net/Grocery/)
+
+### [OSI](Docs/Net/OSI)
+
+- [L1](Docs/Net/OSI/L1/)
+- [L2](Docs/Net/OSI/L2/)
+- [L3](Docs/Net/OSI/L3/)
+- [L4](Docs/Net/OSI/L4/)
+- [L7](Docs/Net/OSI/L7/)
+
+## [Ops](Docs/Ops)
+
+- [Apache2](Docs/Ops/Apache2)
+- [Docker](Docs/Ops/Docker)
+- [Git](Docs/Ops/Git)
+- [Kurbernetes](Docs/Ops/Kurbernetes)
+- [LVS](Docs/Ops/LVS)
+- [Nginx](Docs/Ops/Nginx)
+- [OpenGPG](Docs/Ops/OpenGPG)
+- [OpenSSH](Docs/Ops/OpenSSH)
+- [OpenSSL](Docs/Ops/OpenSSL)
+- [OpenVPN](Docs/Ops/OpenVPN)
+- [Packer](Docs/Ops/Packer)
+- [Postman](Docs/Ops/Postman)
+- [SaltStack](Docs/Ops/SaltStack)
+- [TOR](Docs/Ops/TOR)
+- [V2ray](Docs/Ops/V2ray)
+- [Vagrant](Docs/Ops/Vagrant)
+- [Zabbix](Docs/Ops/Zabbix)
+- [Zookeeper](Docs/Ops/Zookeeper)
+
+##  [OS](Docs/OS)
+
+- [GRUB](Docs/OS/GRUB)
+- [Koolshare](Docs/OS/Koolshare)
+
+- [Linux](Docs/OS/Linux)
+
+- [Powershell](Docs/OS/Powershell)
+- [Shell](Docs/OS/Shell)
+- [Virtualization](Docs/OS/Virtualization)
+- [Windows](Docs/OS/Windows)
+
+## [Pentest](Docs/Pentest)
+
+- [Cowrie](Docs/Pentest/Cowrie)
+- [CTF](Docs/Pentest/CTF)
+- [CVE](Docs/Pentest/CVE)
+
+### [Kali](Docs/Pentest/Kali)
+
+- [burpsuite](Docs/Pentest/Kali/burpsuite)
+- [ettercap](Docs/Pentest/Kali/ettercap)
+- [hydra](Docs/Pentest/Kali/hydra)
+- [metasploit](Docs/Pentest/Kali/metasploit)
+- [nmap](Docs/Pentest/Kali/nmap)
+- [sqlmap](Docs/Pentest/Kali/sqlmap)
+- [wifi](Docs/Pentest/Kali/wifi)
+
+## [Sundires](Docs/Sundries/)
+
+- [Blog](Docs/Sundries/Blog)
+- [Bonus](Docs/Sundries/Bonus)
+- [Chrome](Docs/Sundries/Chrome)
+- [Markdown](Docs/Sundries/Markdown)
