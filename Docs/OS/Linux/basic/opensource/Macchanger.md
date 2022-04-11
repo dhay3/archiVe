@@ -18,7 +18,7 @@ ifconfig eth0 #或是使用 ip l 显示
 
 MAC地址在`同一内网`中是可见的
 
-# `macchanger` —– 修改mac地址的工具
+## `macchanger` —– 修改mac地址的工具
 
 > 只能修改让别人看见的mac地址，`实际`真正的mac地址`不能改变`
 
@@ -43,7 +43,7 @@ macchanger -r eth0   #随机生成并修改eth0的MAC地址
 123456789101112131415161718
 ```
 
-# 开机自动修改 MAC地址
+## 开机自动修改 MAC地址
 
 ```
 crontab -e
