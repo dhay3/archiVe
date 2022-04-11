@@ -56,11 +56,11 @@
 - Datagrip
 - Clion
 
-## [Com-mon Digest](Docs/Com-mon Digest)
+## [Com-mon Digest](Docs/Com-mon%20Digest)
 
 - [Hardware](/home/cpl/note/Docs/Hardware/)
 - [Interface](/home/cpl/note/Docs/Interface/)
-- [Network Devices](/home/cpl/note/Docs/Network Devices/)
+- [Network Devices](/home/cpl/note/Docs/Network%20Devices/)
 - [Partition](/home/cpl/note/Docs/Partition/)
 
 ## [Net](Docs/Net)
