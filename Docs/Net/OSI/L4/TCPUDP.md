@@ -17,7 +17,7 @@ graph LR
 
 ==从运输层的角度看，通信的真正端点并不是主机而是主机中的进程==。也就是说，端到端的通信是应用进程之间的通信。
 
-<img src="..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-24_21-44-21.png"/>
+![Snipaste_2020-08-24_21-44-21](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/Snipaste_2020-08-24_21-44-21.4bqk1erejszk.webp)
 
 ## 端口/port
 
@@ -45,7 +45,7 @@ graph LR
 
 ### 常用的熟知端口
 
-<img src="..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-24_22-06-25.png"/>
+![Snipaste_2020-08-24_22-06-25](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/Snipaste_2020-08-24_22-06-25.6z7fxr32mydc.webp)
 
 ==注意如果连接的协议不同，端口是可以复用的==
 
@@ -65,18 +65,18 @@ udp        0      0 0.0.0.0:1194            0.0.0.0:*                           
 3. 面向报文，UDP对应用层交下来的报文，==既不合并，也不拆分，而是保留这些报文的边界。UDP一次交付一个完整的报文==
 4. 没有拥塞控制，因此网络出现的拥塞不会使源主机的发送速率降低。很适合多媒体通信
 5. 支持一对一，一对多，多对一和多对多的交互通信
-6. ==首部开销小，只有8个字节，比TCP的20个字节的首部要段==
+6. ==首部开销小，只有8个字节，比TCP的20个字节的首部要短==
 7. UDP对应用层交下来的报文，在添加首部后就向下交付给网络层。
 
 > 若报文太长，UDP把它交给IP层后，IP层在传送时可能要进行分片，这会降低网络层的效率
 >
 > 若报文太短，UDP把它交给IP层后，会使IP数据报的首部相对长度太长，这也降低了网络层效率
 
-<img src="..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-24_23-30-45.png" style="zoom:80%;" />
+![Snipaste_2020-08-24_23-30-45](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/Snipaste_2020-08-24_23-30-45.3kto5etbapts.webp)
 
 IP首部包含：源IP地址和目的IP地址
 
-<img src="..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-24_23-37-51.png" style="zoom:80%;" />
+![Snipaste_2020-08-24_23-37-51](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/Snipaste_2020-08-24_23-37-51.2gh14og714xs.webp)
 
 ## TCP
 
@@ -94,7 +94,7 @@ IP首部包含：源IP地址和目的IP地址
 
    > “面向字节流”的含义是：虽然应用程序和 TCP 的交互是一次一个数据块，但 TCP 把应用程序交下来的数据看成仅仅是一连串无结构的字节流。
 
-<img src="..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-24_23-46-43.png"/>
+![Snipaste_2020-08-24_23-46-43](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/Snipaste_2020-08-24_23-46-43.6e4z2xlyd4lc.webp)
 
    6. TCP 根据对方给出的窗口值和当前网络拥塞的程度来决定一个报文段应包含多少个字节（UDP 发送的报文长度是应用进程给出的）。==TCP具有流量控制功能==
    7. TCP 可把太长的数据块划分短一些再传送。
@@ -104,7 +104,7 @@ IP首部包含：源IP地址和目的IP地址
 
 > 首部最小20byte
 
-<img src="..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-25_00-39-07.png"/>
+![Snipaste_2020-08-25_00-39-07](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/Snipaste_2020-08-25_00-39-07.1253hfi6ogww.webp)
 
 - ==源端口和目的端口字段==：各占2字节。端口是运输层与应用层的服务接口。运输的复用和分用功能都要通过端口才能时限
 - 序号：占4字节。TCP连接中传送的数据流中的每一个字节都编上一个序号。序号字段的值则指的是本报文段所发送的数据的第一个字节的序号
@@ -138,29 +138,27 @@ TCP建立连接的过程叫做握手
 
 ### TCP的三报文握手
 
-<img src="..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-25_14-33-57.png"/>
+![Snipaste_2020-08-25_14-33-57](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/Snipaste_2020-08-25_14-33-57.8dt3pijhf8s.webp)
 
-<img src="..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-25_14-34-52.png"/>
+![Snipaste_2020-08-25_14-34-52](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/Snipaste_2020-08-25_14-34-52.6gei3h3j68zk.webp)
 
-<img src="..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-25_14-35-35.png"/>
+![Snipaste_2020-08-25_14-35-35](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/Snipaste_2020-08-25_14-35-35.f06txz3tz5s.webp)
 
-<img src="..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-25_14-37-36.png"/>
+![Snipaste_2020-08-25_14-37-36](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/Snipaste_2020-08-25_14-37-36.utib7a3omv4.webp)
 
-<img src="..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-25_14-42-53.png"/>
-
-
+![Snipaste_2020-08-25_14-42-53](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/Snipaste_2020-08-25_14-42-53.5xs4y7nho88.webp)
 
 ### TCP四报文握手
 
-<img src="..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-25_14-43-36.png"/>
+![Snipaste_2020-08-25_14-43-36](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/Snipaste_2020-08-25_14-43-36.57z1x7ajruyo.webp)
 
-<img src="..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-25_14-45-07.png"/>
+![Snipaste_2020-08-25_14-45-07](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/Snipaste_2020-08-25_14-45-07.4sjip93x0neo.webp)
 
-<img src="..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-25_14-46-06.png"/>
+![Snipaste_2020-08-25_14-46-06](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/Snipaste_2020-08-25_14-46-06.6a3qn55k9wn4.webp)
 
-<img src="..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-25_14-48-02.png"/>
+![Snipaste_2020-08-25_14-48-02](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/Snipaste_2020-08-25_14-48-02.6tp8g4r04s1s.webp)
 
-<img src="..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-25_14-48-55.png"/>
+![Snipaste_2020-08-25_14-48-55](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/Snipaste_2020-08-25_14-48-55.66q1dzji2igw.webp)
 
 > A必须等待2MSL的时间
 >
