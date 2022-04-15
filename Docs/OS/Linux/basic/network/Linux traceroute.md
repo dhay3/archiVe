@@ -4,7 +4,19 @@ ref:
 
 https://www.imperva.com/learn/ddos/ip-fragmentation-attack-teardrop/
 
+https://networkengineering.stackexchange.com/questions/54851/why-there-is-only-one-hop-in-the-tracert
 
+https://community.cisco.com/t5/routing/tracert-show-same-hop-twice/td-p/1502358
+
+https://community.cisco.com/t5/network-security/tracert-same-ip-in-multiple-hops/td-p/2282189
+
+https://networkengineering.stackexchange.com/questions/7135/traceroute-many-hops-with-the-same-ip
+
+https://www.reddit.com/r/networking/comments/9yhl46/trace_route_hop_repeating_the_same_ip_address/
+
+https://forum.netgate.com/topic/121406/traceroute-shows-the-same-address-for-each-hop
+
+https://supportportal.juniper.net/s/article/ScreenOS-Tracert-shows-same-IP-address-for-each-hop?language=en_US#:~:text=When%20a%20tracert%20is%20initiated,have%20the%20same%20IP%20address
 
 ## 0x1Digest
 
@@ -14,7 +26,9 @@ traceroute 是 LInux 上的一个网络工具，显示从源到目的包的路�
 
 ### principle
 
-traceroute 使用 IP 协议中 TTL 字段来实现，traceroute 开始探测时会发一个 ttl 值为 1 的，然后监听 nexthop 发回的 ICMP “time exceeded” 包（到达 nexthop 后仍不是目的 IP 包就会被丢弃，然后回送ICMP type 11），然后 ttl 值加 1，按照上述递归，直到回包是 ICMP “port unreachable”（默认使用UDP通常是30000以上的端口，如果端口没开就会回送 port unreachable） 或者是 TCP rest 或者是 hit max（ttl的值到了最大值，默认 30 hops）
+TTL 详情查看：https://github.com/dhay3/archive/blob/master/Docs/Net/Grocery/TTL.md
+
+traceroute 使用 IP 协议中 TTL 字段来实现，traceroute 开始探测时会发一个 ttl 值为 1 的，然后监听 nexthop 发回的 ICMP “time exceeded” 包（到达 nexthop 后仍不是目的 IP 包就会被丢弃，然后回送ICMP type 11），然后 源将 ttl 值加 1 继续发包往目的IP ，按照上述递归，直到回包是 ICMP “port unreachable”（默认使用UDP通常是30000以上的端口，如果端口没开就会回送 port unreachable） 或者是 TCP rest 或者是 hit max（ttl的值到了最大值，默认 30 hops）
 
 ### probe mode
 
@@ -215,3 +229,137 @@ address of gateway 显示的是 gateway 回包路由的源接口（下图中的f
 - `--sport=port`
 
   指定使用的源端口，同时也默认暗示使用`-N1 -w 5`
+
+## 0x3 Cautions
+
+### proxy
+
+当目的 IP 在 LAN，通常一跳就会到达，即目的IP。但是有一种情况很特殊——主机开启了代理，例如：使用了 v2ray 或 软路由，TCP 流量会被引流到 proxy，由 proxy 完成TCP连接 ，并将数据回送源。而 proxy 的 IP 通常会设置成内网 IP （192.168.80.1），这样就会导致源认为 one hop 就到了
+
+```
+cpl in ~ λ sudo traceroute -T baidu.com
+traceroute to baidu.com (220.181.38.148), 30 hops max, 60 byte packets
+ 1  220.181.38.148 (220.181.38.148)  36.867 ms  36.694 ms  36.656 ms
+```
+
+### same ip from different hops
+
+
+
+针对不同跳，出现同一个IP，可能有如下几种情况，以上述为例
+
+第一种：
+
+```
+traceroute 10.10.50.5
+1     10.10.10.1
+2     10.10.20.2
+3     10.10.30.3
+4     10.10.40.4
+5     10.10.40.4
+6     10.10.50.5
+```
+
+第 5 跳是一个防火墙，第 5 跳回送包时做了 SNAT
+
+补图
+
+第二种：
+
+```
+ 1  74.117.154.4 (74.117.154.4)  82.222 ms  81.909 ms  80.970 ms
+ 2  74.117.154.1 (74.117.154.1)  83.212 ms  83.725 ms  81.852 ms
+ 3  74.117.154.4 (74.117.154.4)  97.692 ms  81.136 ms *
+ 4  74.117.154.1 (74.117.154.1)  83.025 ms  82.698 ms  88.137 ms
+```
+
+路由指向错误，形成循环路由
+
+
+
+### not end
+
+```
+Sample: tracert 10.77.87.1
+
+Tracing route to 10.77.87.1 over a maximum of 30 hops:
+
+1    <1 ms    <1 ms    <1 ms  pfsense.firewall.intern.org
+  2    38 ms    44 ms    47 ms  10.77.87.1
+  3    52 ms    31 ms    30 ms  10.77.87.1
+  4    26 ms    43 ms    47 ms  10.77.87.1
+  5    44 ms    55 ms    50 ms  10.77.87.1
+  6    45 ms    36 ms    40 ms  10.77.87.1
+  7    56 ms    56 ms    65 ms  10.77.87.1
+  8    54 ms    42 ms    46 ms  10.77.87.1
+```
+
+在使用 traceroute 时，可能会出现在路径中已经出现了目的 IP ，但是还在发包
+
+TODO
+
+## 0x4 Packet analyze
+
+ping 和 traceroute 都使用了 TTL 这里在R1上使用 `traceroute 192.168.81.2`，cisco 命令默认使用 UDP
+
+链路 R1 -> R2 -> R3，只配置了静态路由
+
+```
+R1#show run int fa0/0
+Building configuration...
+
+Current configuration : 97 bytes
+!
+interface FastEthernet0/0
+ ip address 192.168.80.1 255.255.255.0
+ duplex auto
+ speed auto
+end
+```
+
+```
+R2#show run int fa1/0
+Building configuration...
+
+*Mar  1 00:30:39.611: %SYS-5-CONFIG_I: Configured from console by console
+Current configuration : 97 bytes
+!
+interface FastEthernet1/0
+ ip address 192.168.80.2 255.255.255.0
+ duplex auto
+ speed auto
+end
+
+R2#show run int fa0/1
+Building configuration...
+
+Current configuration : 97 bytes
+!
+interface FastEthernet0/1
+ ip address 192.168.81.1 255.255.255.0
+ duplex auto
+ speed auto
+end
+```
+
+```
+R3#show run int fa0/0
+Building configuration...
+
+Current configuration : 97 bytes
+!
+interface FastEthernet0/0
+ ip address 192.168.81.2 255.255.255.0
+ duplex auto
+ speed auto
+end
+```
+
+[trace.pcap](/home/cpl/note/appendix)
+
+![2022-03-28_20-48](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220328/2022-03-28_20-48.2mfdy7s8us40.webp)
+
+traceroute 探测一次会发 3 个包，前 3 个包的 ttl 值为 1（由traceroute设置），到达 192.168.80.1 时 ttl - 1 值为 0 回送给源 ICMP type 11 (ttl 255 表示还未到达目的端，不可达，由路由器设置可以知道路由器ttl默认为255)，第二次探测的 3 个包的 ttl 值会设置为 2，但是到达了目的了，所以就没有第三次探测了，同时回送给源 ICMP type 11(ttl 254 ，会减掉 1 跳)。如果 ttl 的值到达了 30 就会终止
+
+
+
