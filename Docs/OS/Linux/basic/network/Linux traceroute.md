@@ -2,21 +2,21 @@
 
 ref:
 
-https://www.imperva.com/learn/ddos/ip-fragmentation-attack-teardrop/
+[https://www.imperva.com/learn/ddos/ip-fragmentation-attack-teardrop/](https://www.imperva.com/learn/ddos/ip-fragmentation-attack-teardrop/)
 
-https://networkengineering.stackexchange.com/questions/54851/why-there-is-only-one-hop-in-the-tracert
+[https://networkengineering.stackexchange.com/questions/54851/why-there-is-only-one-hop-in-the-tracert](https://networkengineering.stackexchange.com/questions/54851/why-there-is-only-one-hop-in-the-tracert)
 
-https://community.cisco.com/t5/routing/tracert-show-same-hop-twice/td-p/1502358
+[https://community.cisco.com/t5/routing/tracert-show-same-hop-twice/td-p/1502358](https://community.cisco.com/t5/routing/tracert-show-same-hop-twice/td-p/1502358)
 
-https://community.cisco.com/t5/network-security/tracert-same-ip-in-multiple-hops/td-p/2282189
+[https://community.cisco.com/t5/network-security/tracert-same-ip-in-multiple-hops/td-p/2282189](https://community.cisco.com/t5/network-security/tracert-same-ip-in-multiple-hops/td-p/2282189)
 
-https://networkengineering.stackexchange.com/questions/7135/traceroute-many-hops-with-the-same-ip
+[https://networkengineering.stackexchange.com/questions/7135/traceroute-many-hops-with-the-same-ip](https://networkengineering.stackexchange.com/questions/7135/traceroute-many-hops-with-the-same-ip)
 
-https://www.reddit.com/r/networking/comments/9yhl46/trace_route_hop_repeating_the_same_ip_address/
+[https://www.reddit.com/r/networking/comments/9yhl46/trace_route_hop_repeating_the_same_ip_address/](https://www.reddit.com/r/networking/comments/9yhl46/trace_route_hop_repeating_the_same_ip_address/)
 
-https://forum.netgate.com/topic/121406/traceroute-shows-the-same-address-for-each-hop
+[https://forum.netgate.com/topic/121406/traceroute-shows-the-same-address-for-each-hop](https://forum.netgate.com/topic/121406/traceroute-shows-the-same-address-for-each-hop)
 
-https://supportportal.juniper.net/s/article/ScreenOS-Tracert-shows-same-IP-address-for-each-hop?language=en_US#:~:text=When%20a%20tracert%20is%20initiated,have%20the%20same%20IP%20address
+[https://supportportal.juniper.net/s/article/ScreenOS-Tracert-shows-same-IP-address-for-each-hop?language=en_US#:~:text=When a tracert is initiated,have the same IP address](https://supportportal.juniper.net/s/article/ScreenOS-Tracert-shows-same-IP-address-for-each-hop?language=en_US#:~:text=When%20a%20tracert%20is%20initiated,have%20the%20same%20IP%20address)
 
 ## 0x1Digest
 
@@ -26,7 +26,7 @@ traceroute 是 LInux 上的一个网络工具，显示从源到目的包的路�
 
 ### principle
 
-TTL 详情查看：https://github.com/dhay3/archive/blob/master/Docs/Net/Grocery/TTL.md
+TTL 详情查看：[https://github.com/dhay3/archive/blob/master/Docs/Net/Grocery/TTL.md](https://github.com/dhay3/archive/blob/master/Docs/Net/Grocery/TTL.md)
 
 traceroute 使用 IP 协议中 TTL 字段来实现，traceroute 开始探测时会发一个 ttl 值为 1 的，然后监听 nexthop 发回的 ICMP “time exceeded” 包（到达 nexthop 后仍不是目的 IP 包就会被丢弃，然后回送ICMP type 11），然后 源将 ttl 值加 1 继续发包往目的IP ，按照上述递归，直到回包是 ICMP “port unreachable”（默认使用UDP通常是30000以上的端口，如果端口没开就会回送 port unreachable） 或者是 TCP rest 或者是 hit max（ttl的值到了最大值，默认 30 hops）
 
@@ -52,19 +52,13 @@ TPC使用 half-open technique（半连接）
 
 ### method
 
-- default
-
-- icmp
-
-- tcp
-
-- tcpconn
-
-  使用全连接
-
-- raw
-
-  只使用IP协议
+-  default 
+-  icmp 
+-  tcp 
+-  tcpconn
+使用全连接 
+-  raw
+只使用IP协议 
 
 ### output
 
@@ -74,161 +68,99 @@ traceroute 默认会打印 3 个字段 ttl ，address of the gateway and round t
 
 address of gateway 显示的是 gateway 回包路由的源接口（下图中的f0/1）， 一般发包路由和回包路由都相同，但是也有可能发包路由和回包路由不同
 
-![2022-04-12_21-28](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/2022-04-12_21-28.1j5fzz3c2l9c.webp)
+![](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/2022-04-12_21-28.1j5fzz3c2l9c.webp#crop=0&crop=0&crop=1&crop=1&id=trttn&originHeight=296&originWidth=987&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
 
 如果address of gateway 显示的是 asterisk（*），表示在指定时间内（默认5sec）没有从 gateway 收到回包，造成这种的原因通常有
 
 1. 回包的链路中路由缺失，可以是回包链路中的任何一个节点（来回路由通常一样，出现这种情况概率在是来回路由不一致）
-2. 回包的源IP是一个私网IP，到达运营商后被丢弃
-3. 回包的链路中有ACL，可以是回包链路中的任何一个节点
-4. 当前大多数 firewall 都会过滤 UDP 端口，甚至是ICMP，碰到这种情况可以使用其他协议(TCP)来绕过 firewall
+1. 回包的源IP是一个私网IP，到达运营商后被丢弃（如果私网IP到源有路由同样会回包给源）
+1. 回包的链路中有ACL，可以是回包链路中的任何一个节点
+1. 当前大多数 firewall 都会过滤 UDP 端口，甚至是ICMP，碰到这种情况可以使用其他协议(TCP)来绕过 firewall
 
-==但是如果显示 * 并不表示 gateway 不可达，因为回包路由和入路由可能不一样，通过入路由能到达目的，但是节点因为路由或ACL原因没回包（在云主机中通常会出现这种情况）==
+但是如果显示 * 并不表示 gateway 不可达，因为回包路由和入路由可能不一样，通过入路由能到达目的，但是节点因为路由或ACL原因没回包（在云主机中通常会出现这种情况）
 
 #### annotation
 
 都是ICMP的回包类型
 
-- `!H | !N | !P`
-
-  分别表示host，network，protocol unreachable
-
-- `!S`
-
-  source route failed
-
-- `!F`
-
-   fragmentation needed（包没传完，需要分片），这时候可以加大MTU的值
-
-  如果数据包太大(大于MTU，通常是1500byte)，就会被分片（fragment），通过IP协议中 fragmentflag 来表示是否是分片包
-
-- `!X`
-
-  communication administratively prohibted
-
-  通常是主机的ACL或防火墙（iptables，firewalld等等）未放通
-
-- `!V`
-
-  host precedence violation
-
-- `!C`
-
-  precedence cutoff in effect
-
-- `!<num>`
-
-  ICMP unreachable code num
+-  `!H | !N | !P`
+分别表示host，network，protocol unreachable 
+-  `!S`
+source route failed 
+-  `!F`
+fragmentation needed（包没传完，需要分片），这时候可以加大MTU的值
+如果数据包太大(大于MTU，通常是1500byte)，就会被分片（fragment），通过IP协议中 fragmentflag 来表示是否是分片包 
+-  `!X`
+communication administratively prohibted
+通常是主机的ACL或防火墙（iptables，firewalld等等）未放通 
+-  `!V`
+host precedence violation 
+-  `!C`
+precedence cutoff in effect 
+-  `!<num>`
+ICMP unreachable code num 
 
 ## 0x2 Optional args
 
-1. `-n`，`-w`，`-t` 在一定程度上会加快traceroute的探测速度
-2. `--sport`，`--source`，`-zq` 可以提供绕过防火墙或ACL
-
-3. `--back`，`-d` 可以提供以下debug信息
+1.  `-n`，`-w`，`-t` 在一定程度上会加快traceroute的探测速度 
+1.  `--sport`，`--source`，`-zq` 可以提供绕过防火墙或ACL 
+1.  `--back`，`-d` 可以提供以下debug信息 
 
 ### probe args
 
-- `-4 | -6`
+-  `-4 | -6`
+traceroute 使用 IPv4 还是 IPv6，默认traceroute会去解析 host （即使是IP也会去解析DNS，和windows一样） 
+-  `-I | --icmp`
+使用 ICMP 探测 
+-  `-T | --tcp`
+使用 TCP SYN 探测 
+-  `-U | --udp`
+使用UDP探测，但是区别与默认的UDP探测方式，使用固定的 53 端口 
+-  `-P protocol | --protocol=protocol`
+使用指定的协议探测，这样我们就可以使用http或是smtp来探测 
+-  `-M method | --moudule=name`
+是用指定的 method，可以配合使用`-O`来指定参数 
+-  `-O option | --options options`
+指定 method 使用的参数 
+-  `-m n | --max-hops`
+指定最大的 ttl，默认 30 
+-  `--back`
+如果来回路由不一致会显示出来 
+-  `-n`
+不会将 IP 解析成 hostname，在一定程度上能快处理速度 
+-  `-p port | --port=port`
+指定探测的端口，如果是UDP的每探测一次就会+1，如果是TCP会使用固定值 
+-  `-d | --debug`
+debug 
+-  `-F | --dont-fragement`
+对数据包不分片 
+-  `-f n | --first=n`
+what ttl to start，第一次探测的ttl 
+上述表示直接从ttl 5开始探测 
+```
+cpl in ~ λ traceroute -nf 5 220.181.38.251
+traceroute to 220.181.38.251 (220.181.38.251), 30 hops max, 60 byte packets
+ 5  115.233.18.33  9.366 ms * 61.164.24.101  18.436 ms
+```
 
-  traceroute 使用 IPv4 还是 IPv6，默认traceroute会去解析 host （==即使是IP也会去解析DNS，和windows一样==）
-
-- `-I | --icmp`
-
-  使用 ICMP 探测
-
-- `-T | --tcp`
-
-  使用 TCP SYN 探测
-
-- `-U | --udp`
-
-  使用UDP探测，但是区别与默认的UDP探测方式，使用固定的 53 端口
-
-- `-P protocol | --protocol=protocol`
-
-  使用指定的协议探测，这样我们就可以使用http或是smtp来探测
-
-- `-M method | --moudule=name`
-
-  是用指定的 method，可以配合使用`-O`来指定参数
-
-- `-O option | --options options`
-
-  指定 method 使用的参数
-
-- `-m n | --max-hops`
-
-  指定最大的 ttl，默认 30
-
-- `--back`
-
-  ==如果来回路由不一致会显示出来==
-
-- `-n`
-
-  不会将 IP 解析成 hostname，在一定程度上能快处理速度
-
-- `-p port | --port=port`
-
-  指定探测的端口，如果是UDP的每探测一次就会+1，如果是TCP会使用固定值
-
-- `-d | --debug`
-
-  debug
-
-- `-F | --dont-fragement`
-
-  对数据包不分片
-
-- `-f n | --first=n`
-
-  what ttl to start，第一次探测的ttl
-
-  ```
-  cpl in ~ λ traceroute -nf 5 220.181.38.251
-  traceroute to 220.181.38.251 (220.181.38.251), 30 hops max, 60 byte packets
-   5  115.233.18.33  9.366 ms * 61.164.24.101  18.436 ms
-  ```
-
-  上述表示直接从ttl 5开始探测
-
-- `-g gateway | --gateway=gateway`
-
-  指定traceroute 第一跳探测使用的g ateway
-
-- `-i iface | --interface=iface`
-
-  指定 traceroute 第一跳探测使用device，默认会自动选择
-
-- `-t tos | --tos=tos`
-
-  设置tos的值，可以是 8 - 16 表示优先级从高到第
-
-- `-w max | --wait=max`
-
-  等待回报的最长时间，默认 5 sec，如果在 5 sec 内没有回包会显示 asterisk
-
-- `-q n | --queries = n`
-
-  每一跳探测几次，默认 3 次
-
-- `-s source_addr | --source=source_addr`
-
-  指定发包的源地址，默认自动选择
-
-- `-z n | --sendwait n`
-
-  每探测一次等待多长时间，默认0，如果firewall设置了 ICMP rate-limit 可以使用该参数。如果该值大于 10 就表示毫秒，小于10表示秒
-
-- `-A | --as-path-lookups`
-
-  每探测一次都会打印出 AS path
-
-- `--sport=port`
-
-  指定使用的源端口，同时也默认暗示使用`-N1 -w 5`
+-  `-g gateway | --gateway=gateway`
+指定traceroute 第一跳探测使用的g ateway 
+-  `-i iface | --interface=iface`
+指定 traceroute 第一跳探测使用device，默认会自动选择 
+-  `-t tos | --tos=tos`
+设置tos的值，可以是 8 - 16 表示优先级从高到第 
+-  `-w max | --wait=max`
+等待回报的最长时间，默认 5 sec，如果在 5 sec 内没有回包会显示 asterisk 
+-  `-q n | --queries = n`
+每一跳探测几次，默认 3 次 
+-  `-s source_addr | --source=source_addr`
+指定发包的源地址，默认自动选择 
+-  `-z n | --sendwait n`
+每探测一次等待多长时间，默认0，如果firewall设置了 ICMP rate-limit 可以使用该参数。如果该值大于 10 就表示毫秒，小于10表示秒 
+-  `-A | --as-path-lookups`
+每探测一次都会打印出 AS path 
+-  `--sport=port`
+指定使用的源端口，同时也默认暗示使用`-N1 -w 5` 
 
 ## 0x3 Cautions
 
@@ -244,8 +176,6 @@ traceroute to baidu.com (220.181.38.148), 30 hops max, 60 byte packets
 
 ### same ip from different hops
 
-
-
 针对不同跳，出现同一个IP，可能有如下几种情况，以上述为例
 
 第一种：
@@ -260,9 +190,9 @@ traceroute 10.10.50.5
 6     10.10.50.5
 ```
 
-第 5 跳是一个防火墙，第 5 跳回送包时做了 SNAT
+第 4 跳是一个防火墙，第 5 跳回送包的第4 跳时做了 SNAT
 
-补图
+![](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220223/lQLPDhtSJheUL73NAXrNAs6wfXzG7p6VCSoCV0QKgYA_AQ_718_378.1oofuh151pls.webp#crop=0&crop=0&crop=1&crop=1&id=UBL4l&originHeight=231&originWidth=737&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
 
 第二种：
 
@@ -273,30 +203,34 @@ traceroute 10.10.50.5
  4  74.117.154.1 (74.117.154.1)  83.025 ms  82.698 ms  88.137 ms
 ```
 
-路由指向错误，形成循环路由
-
-
-
+路由指向错误，形成循环路由，这个比较好理解
 ### not end
+在使用 traceroute 时，可能会出现在路径中已经出现了目的 IP ，但是还在发包。
+下列中 106.11.209.136  是 LVS vip 
 
 ```
-Sample: tracert 10.77.87.1
-
-Tracing route to 10.77.87.1 over a maximum of 30 hops:
-
-1    <1 ms    <1 ms    <1 ms  pfsense.firewall.intern.org
-  2    38 ms    44 ms    47 ms  10.77.87.1
-  3    52 ms    31 ms    30 ms  10.77.87.1
-  4    26 ms    43 ms    47 ms  10.77.87.1
-  5    44 ms    55 ms    50 ms  10.77.87.1
-  6    45 ms    36 ms    40 ms  10.77.87.1
-  7    56 ms    56 ms    65 ms  10.77.87.1
-  8    54 ms    42 ms    46 ms  10.77.87.1
+traceroute to 106.11.209.136 (106.11.209.136), 30 hops max, 60 byte packets
+ 1  * * *
+ 2  11.73.1.105 (11.73.1.105)  2.316 ms 11.73.1.85 (11.73.1.85)  2.278 ms 11.73.1.105 (11.73.1.105)  1.928 ms
+ 3  10.102.225.157 (10.102.225.157)  1.576 ms 10.102.225.217 (10.102.225.217)  38.096 ms 10.102.225.173 (10.102.225.173)  1.543 ms
+ 4  11.94.128.166 (11.94.128.166)  4.295 ms * *
+ 5  10.102.41.70 (10.102.41.70)  32.268 ms 10.102.50.174 (10.102.50.174)  35.230 ms 10.102.50.138 (10.102.50.138)  33.652 ms
+ 6  10.102.43.81 (10.102.43.81)  30.350 ms 10.102.43.61 (10.102.43.61)  29.687 ms 117.49.45.117 (117.49.45.117)  29.743 ms
+ 7  * 10.54.254.14 (10.54.254.14)  30.357 ms *
+ 8  * 119.38.212.25 (119.38.212.25)  36.998 ms 103.52.73.193 (103.52.73.193)  36.619 ms
+ 9  * 106.11.209.136 (106.11.209.136)  36.941 ms *
+10  11.17.124.133 (11.17.124.133)  40.483 ms 11.17.124.21 (11.17.124.21)  35.675 ms 11.129.153.73 (11.129.153.73)  35.450 ms
+11  * 106.11.209.136 (106.11.209.136)  35.064 ms  36.415 ms
+12  106.11.209.136 (106.11.209.136)  31.246 ms * *
+13  106.11.209.136 (106.11.209.136)  35.705 ms  35.579 ms  37.568 ms
+```
+在回 119.38.212.25 的机器上 ping 包
+```bash
+PING 106.11.206.136: 56  data bytes, press CTRL_C to break
+    Reply from 106.11.206.136: bytes=56 Sequence=1 ttl=245 time=44 ms
 ```
 
-在使用 traceroute 时，可能会出现在路径中已经出现了目的 IP ，但是还在发包
 
-TODO
 
 ## 0x4 Packet analyze
 
@@ -357,9 +291,6 @@ end
 
 [trace.pcap](/home/cpl/note/appendix)
 
-![2022-03-28_20-48](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220328/2022-03-28_20-48.2mfdy7s8us40.webp)
+![](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220328/2022-03-28_20-48.2mfdy7s8us40.webp#crop=0&crop=0&crop=1&crop=1&id=f4fDK&originHeight=493&originWidth=2230&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
 
 traceroute 探测一次会发 3 个包，前 3 个包的 ttl 值为 1（由traceroute设置），到达 192.168.80.1 时 ttl - 1 值为 0 回送给源 ICMP type 11 (ttl 255 表示还未到达目的端，不可达，由路由器设置可以知道路由器ttl默认为255)，第二次探测的 3 个包的 ttl 值会设置为 2，但是到达了目的了，所以就没有第三次探测了，同时回送给源 ICMP type 11(ttl 254 ，会减掉 1 跳)。如果 ttl 的值到达了 30 就会终止
-
-
-

@@ -4,9 +4,14 @@ ref：
 [https://curl.se/libcurl/c/curl_easy_getinfo.html](https://curl.se/libcurl/c/curl_easy_getinfo.html)
 [https://curl.se/docs/sslcerts.html](https://curl.se/docs/sslcerts.html)
 
+https://blog.cloudflare.com/a-question-of-timing/
+
+https://curl.se/mail/archive-2015-12/0011.html
+
 ## 0x1 Digest
 syntax：`curl [options] [URL...]`
-curl是一个基于libcurl的CLI工具，支持模拟多种协议请求,包括 dict,file,ftp,ftps,gopher,http,https,iamp,imaps,ldap,ladps,pop3,pop3s,rtmp,scp,sftp,smb,smbs,smtp,smtps,telnet,tftp
+curl是一个基于libcurl的CLI工具，支持模拟多种协议请求
+
 ## 0x2 Terms
 ### progress meter
 在使用 curl 时通常会显示 progress meter ——即进度，显示相关数据，单位以byte（所以可以通过这种方式来计算下载的速率，等同于wget）。但是服务端回显数据到请求端时不会显示进度条，如果想要显示进度条，可以使用shell redirct`>`或`-o`将内容重定向到文件
@@ -26,7 +31,23 @@ root in /home/ubuntu λ curl --progress-bar baidu.com > a
 ######################################################################################################################################### 100.0%
 ```
 如果需要关闭progress meter 可以使用`-s`或`--silent`
+
+### protocol
+
+curl 支持如下多种协议
+
+#### dict
+
+lets your lookup words using online dictionaries
+
+```
+cpl in ~ λ curl -Ss dict.org/d:with | more
+```
+
+
+
 ## 0x3 positional args
+
 curl 只有一种 positional args，即 URL。通常URL需要指定协议，但是如果没有指定协议（protocol://），curl默会根据URL来猜测使用的协议，通常是http，但是如果URL中包含`ftp.`就会使用ftp协议，同理其他类似的URL。针对`multipart/form-data`curl会复用tcp连接
 ### globbing
 curl可以使用globbing(为了方便记忆我这个功能叫做globbing，内置的表示即使在windows上可以使用，区别与linux中的globbing)
@@ -36,7 +57,13 @@ http://site.{one,two,three}.com
 ftp://ftp.example.com/file[1-100].txt
 http://example.com/archive[1996-1999]/vol[1-4]/part{a,b,c}.html
 ```
-如果URL在globbing中，shell就不会去解析globbing中的内容
+当使用curl globbing 时，URL通常需要加上双引号，否则可能会被 shell globbing 解析
+
+```
+ "http://[fe80::3%25eth0]/"
+```
+
+
 
 ## 0x4 optional args
 所有和boolean相关的参数，都可以添加前缀`no`，例如`--option`，如果需要取反可以使用`--no-option`（after 7.19.0）
@@ -415,7 +442,13 @@ cpl in /sharing/conf λ curl -LT cus-alias http://ftp.cn.debian.org/debian
 </body>
 </html>
 ```
-## Exit code
+## 0x5 Timing
+
+![2022-04-17_22-05](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220417/2022-04-17_22-05.75xnwr9nn780.webp)
+
+
+
+## 0x6 Exit code
 
 > man `/exit codes`
 
