@@ -34,15 +34,29 @@ root in /home/ubuntu λ curl --progress-bar baidu.com > a
 
 ### protocol
 
-curl 支持如下多种协议
+curl 支持如下多种协议，只介绍其中几种比较特殊的
 
 #### dict
+
+具体查看：https://github.com/dhay3/archive/blob/master/Docs/Net/0x1%20Digest.md
 
 lets your lookup words using online dictionaries
 
 ```
-cpl in ~ λ curl -Ss dict.org/d:with | more
+cpl in ~ λ curl dict.org/d:hello
 ```
+
+### file
+
+具体查看：
+
+read or write local files，curl 在linux上不支持远程读取文件但是在windows上支持
+
+### gopher
+
+### ldap
+
+
 
 
 
