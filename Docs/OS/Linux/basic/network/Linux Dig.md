@@ -14,7 +14,7 @@ http://www.ruanyifeng.com/blog/2016/06/dns.html
 
 ![Snipaste_2020-09-01_16-01-04](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220408/Snipaste_2020-09-01_16-01-04.61kxceles4g0.webp)
 
-这里显示根域有13个NS记录，对应13台DNS服务器的域名，然后向这13台DNS服务器查询
+![Snipaste_2020-09-01_16-01-04](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220408/Snipaste_2020-09-01_16-01-04.61kxceles4g0.webp)这里显示根域有13个NS记录，对应13台DNS服务器的域名，然后向这13台DNS服务器查询
 
 虽然只需要返回一个IP地址，但是DNS的查询过程非常复杂，分成多个步骤。
 
@@ -89,7 +89,7 @@ $ dig +short math.stackexchange.com
 
   查询的类型，如果没有默认查询A记录。可以是ANY, A, NS , MX等。==如果手动添加type需要使用指定DNS server==
 
-  <img src="..\..\imgs\_Kali\Snipaste_2020-09-01_17-26-01.png" style="zoom:80%;" />
+  <img src="..\..\..\..\..\Images\_Kali\Snipaste_2020-09-01_17-26-01.png" style="zoom:80%;" />
 
 ## 常用命令
 
@@ -97,31 +97,31 @@ $ dig +short math.stackexchange.com
 
   反向解析
 
-  <img src="..\..\imgs\_Kali\Snipaste_2020-09-01_17-36-12.png" style="zoom:80%;" />
+  <img src="..\..\..\..\..\Images\_Kali\Snipaste_2020-09-01_17-36-12.png" style="zoom:80%;" />
 
 - `dig +short host`
 
   只显示最后的结果，不显示中间查询的内容
 
-  <img src="..\..\imgs\_Kali\Snipaste_2020-09-01_16-44-38.png" style="zoom:80%;" />
+  <img src="..\..\..\..\..\Images\_Kali\Snipaste_2020-09-01_16-44-38.png" style="zoom:80%;" />
 
 - `dig +trace host`
 
   显示所有路由的过程
 
-  <img src="..\..\imgs\_Kali\Snipaste_2020-09-01_16-52-04.png" style="zoom:80%;" />
+  <img src="..\..\..\..\..\Images\_Kali\Snipaste_2020-09-01_16-52-04.png" style="zoom:80%;" />
 
 - `dig -ttluints host`
 
   以可读的形式显示缓存时间， 未加该参数默认以sec显示
 
-  <img src="..\..\imgs\_Kali\Snipaste_2020-09-01_16-53-19.png" style="zoom:80%;" />
+  <img src="..\..\..\..\..\Images\_Kali\Snipaste_2020-09-01_16-53-19.png" style="zoom:80%;" />
 
 - `dig -yaml host`
 
   以yaml形式显示结果
 
-  <img src="..\..\imgs\_Kali\Snipaste_2020-09-01_16-57-06.png" style="zoom:67%;" />
+  <img src="..\..\..\..\..\Images\_Kali\Snipaste_2020-09-01_16-57-06.png" style="zoom:67%;" />
 
 - `whois baidu.com`
 

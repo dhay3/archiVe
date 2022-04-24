@@ -24,7 +24,7 @@ https://itbilu.com/other/relate/EyxzdVl3.html
   
   例如：
 
-<img src="..\..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-30_16-58-17.png"/>
+<img src="..\..\..\..\Images\_Net\计算机网络\Snipaste_2020-08-30_16-58-17.png"/>
 
 第一条访问`chz.cyberpelican.space`跳转到102.168.80.201服务器
 
