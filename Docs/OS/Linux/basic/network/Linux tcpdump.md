@@ -266,6 +266,13 @@ IP rtsg.1023 > csam.login: Flags [S], seq 768512:768512, win 4096, opts [mss 102
 
 例如第一行表示从rtsg 1023端口发往csam login端口，tcp接受窗口为4096byte，seq为768512，没有发送数据
 
+注意，如下并不是 tcp flags，DF 表示 3 层 IP 的 don’t fragement 标志 
+
+```
+21:54:19.343958 wlp1s0 Out IP (tos 0xc0, ttl 1, id 0, offset 0, flags [DF], proto IGMP (2), length 32, options (RA))
+    192.168.2.194 > 224.0.0.251: igmp v2 report 224.0.0.251
+```
+
 ## Filter
 
 

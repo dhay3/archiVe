@@ -12,6 +12,7 @@ https://subinsb.com/default-device-ttl-values/
 https://community.cisco.com/t5/routing/tracert-show-same-hop-twice/td-p/1502358
 
 ## applicatons
+
 在应用层面 TTL 用来管理 cache（对应http报文头中的`Expires`,`Cache-Control`），常备用在 CDN，DNS 用来表示内容存在的时间
 ## network
 在网络（IP 数据包）中 TTL 的含义区别于应用中的
@@ -21,6 +22,8 @@ https://community.cisco.com/t5/routing/tracert-show-same-hop-twice/td-p/1502358
 
 Each packet has a place where it stores a numerical value determining how much longer it should continue to move through the network. Every time a router receives a packet, it subtracts one from the TTL count and then passes it onto the next location in the network.
 If at any point the TTL count is equal to zero after the subtraction, the router will discard the packet and send an ICMP message back to the originating host.
+
+==注意如果中间经过的是服务器，ttl 不会减 1==
 
 ## default value
 
