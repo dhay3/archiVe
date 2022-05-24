@@ -10,6 +10,8 @@ http://www.ruanyifeng.com/blog/2016/06/dns.html
 
 ## 概述
 
+> Dig 默认不会读取`/etc/hosts`中的配置，直接会去访问dns服务器，默认查询A记录
+
 如果没有参数，默认查询根域
 
 ![Snipaste_2020-09-01_16-01-04](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220408/Snipaste_2020-09-01_16-01-04.61kxceles4g0.webp)
