@@ -2,10 +2,15 @@
 
 ref：
 [https://www.kernel.org/doc/html/latest/admin-guide/sysctl/index.html/proc/sys/net](https://www.kernel.org/doc/html/latest/admin-guide/sysctl/index.html/proc/sys/net)
+
 [https://www.kernel.org/doc/html/latest/admin-guide/sysctl/net.html](https://www.kernel.org/doc/html/latest/admin-guide/sysctl/net.html)
+
 [https://www.kernel.org/doc/html/latest/networking/ip-sysctl.html](https://www.kernel.org/doc/html/latest/networking/ip-sysctl.html)
+
 [https://linuxconfig.org/how-to-turn-on-off-ip-forwarding-in-linux](https://linuxconfig.org/how-to-turn-on-off-ip-forwarding-in-linux)
+
 [https://man7.org/linux/man-pages/man7/tcp.7.html](https://man7.org/linux/man-pages/man7/tcp.7.html)
+
 [https://ixnfo.com/en/changing-gc_thresh-on-linux.html](https://ixnfo.com/en/changing-gc_thresh-on-linux.html)
 
 ## Dir
@@ -34,30 +39,41 @@ ref：
 
 ## core
 
--  rmem_default
-the default setting of the socket receive buffer in bytes
-提一嘴，套接字在 TCP/UDP 中使用，不仅仅只针对 TCP 
--  rmem_max
-the maximum receive socket buffer size in bytes 
--  wmem_default
-the default setting of the socket send buffer in bytes 
--  wmem_max
-the maximum send socket buffer size in bytes 
--  message_burst / message_cost
-these parameters are used to limit the warning message written to the kernel log from the networking. They enforce a rate limit to make denial-of-service attack impossible
-用来限制内核记录网络相关的日志，通过调整这两个参数还可以限制 Dos 占用系统的资源(减少了因为Dos而产生的日志IO)
-message_cost 的值越高，内核记录的日志就越少。mesage_burst 控制信息什么时候丢弃
-the default settings limit warning message to one every five seconds 
-```
-net.core.message_burst = 10
-net.core.message_cost = 5
-```
+- rmem_default
 
-不应该调整该参数即使出现 Dos 时，日志是关键信息 
+  the default setting of the socket receive buffer in bytes
+  提一嘴，套接字在 TCP/UDP 中使用，不仅仅只针对 TCP 
 
--  netdev_max_backlog
-maximum number of packets, queued on the INPUT side, when the interface receives packets faster than kernel can process them
-INPUT 链中的等待队列的最大长度 
+- rmem_max
+
+  the maximum receive socket buffer size in bytes 
+
+- wmem_default
+
+  the default setting of the socket send buffer in bytes 
+
+- wmem_max
+
+  the maximum send socket buffer size in bytes 
+
+- message_burst / message_cost
+
+  these parameters are used to limit the warning message written to the kernel log from the networking. They enforce a rate limit to make denial-of-service attack impossible
+  用来限制内核记录网络相关的日志，通过调整这两个参数还可以限制 Dos 占用系统的资源(减少了因为Dos而产生的日志IO)
+  message_cost 的值越高，内核记录的日志就越少。mesage_burst 控制信息什么时候丢弃
+  the default settings limit warning message to one every five seconds 
+
+  ```
+  net.core.message_burst = 10
+  net.core.message_cost = 5
+  ```
+
+  不应该调整该参数即使出现 Dos 时，日志是关键信息 
+
+- netdev_max_backlog
+
+  maximum number of packets, queued on the INPUT side, when the interface receives packets faster than kernel can process them
+  INPUT 链中的等待队列的最大长度 
 
 ## ipv4
 
