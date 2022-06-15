@@ -4,7 +4,7 @@ reference：
 
 https://www.cnblogs.com/hyddd/archive/2009/01/18/networking.html
 
-网桥，工作在L2，一般只有两个口，根据MAC寻址
+网桥，工作在L2，一般只有两个口，根据MAC寻址。可以直接理解成2口Switch
 
 ## bridge vs switch
 
