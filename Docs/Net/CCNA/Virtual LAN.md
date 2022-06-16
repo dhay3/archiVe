@@ -57,8 +57,6 @@ SW1(config-if)#switchport trunk native vlan 100
 
 ## Access Link
 
-用于连接主机和交换机之间的链路，链路上传达是 untagged帧
-
 我们使用下面一个例子，R1到R4表示四台Host，他们的e0/0分别设定成192.168.1.1/24 至 192.168.1.4/24
 
 ![Snipaste_2021-08-16_16-42-17](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211130/Snipaste_2021-08-16_16-42-17.42zv5s5nt740.png)
@@ -263,8 +261,6 @@ R3#ping 192.168.1.1
 在现实应用中，我们习惯把不通subnet ip 分配给不同的VLAN，例如VLAN 10用192.168.10.0/24，VLAN 20 用 192.168.20.0/24，很少会把同一个subnet设在多一个VLAN之中。
 
 ## Trunk Link
-
-用于交换机和交换机之间的链路，或者交换机与路由器之间的链路
 
 如果VLAN需要跨域多只switch，会出现什么问题？如果SW1把一些packet丢给SW2，SW2怎么分辨这些Packet来自哪一个VLAN？如果它不知道这些Packet来自哪个VLAN，它自然不知道应该把这个packet发到哪一个VLAN。解决方法很简单，只要在packet写上VLAN号码(VLAN ID)才把packet送走，其他switch就可以凭这个VLAN ID知道packet VLAN，这就是802.1 q VLAN Tag
 
@@ -581,12 +577,24 @@ Primary Secondary Type              Ports
 
 - Trans1/2
 
+## Access VS Trunk
+
+1. Access link 指的是接入链路，通常是用于连接主机和交换机的链路，接入链路上传递的是untagged 数据帧。Trunk Link 指的是主干链路，用于交换机之间互联或交换机与路由器之间的链路，主干链路上传递的是 tagged 数据帧
+2.  Acces 端口接受到数据帧之后添加 VLAN tag，转发数据帧前移除VLAN tag。
+3. Trunk 端口接受数据时，如果带有 tag，则直接接收，如果不带 tag，则添加上端口的 vlan id
+
 ## VLAN通信模式
 
 vlan 在划分广播域的同时也限制了不同VLAN间的2层通信，但是可以使用如下的方式(通过3层解决)解决VLAN间通信
 
-1. 多臂路由
-2. 单臂路由
+1. 多臂路由，官方没有这种定义，同样也是一种连接模型
+
+   ![2022-06-16_13-46](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220616/2022-06-16_13-46.15ko38h5yvj4.webp)
+
+2. 单臂路由(router on a stick)，只是一种连接模型，
+
+   ![2022-06-16_13-42](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220616/2022-06-16_13-42.5cut7yngubg0.webp)
+
 3. 使用VLANif
 
 ### 多臂路由
@@ -641,7 +649,7 @@ sip 192.168.1.1 dip 192.168.2.1，
 
 1. 因为源目IP不在同一个网段，需要通过网关（这里就是AR1 G0/0/2）将数据包发出去。首先会通过ARP学到网关的MAC。这样数据帧的2层源MAC是PC1的，目的MAC是网关的，3层源IP是192.168.1.1，目的IP是192.168.2.1
 2. 当数据帧到达交换机时，交换机会在入口SW1 GE0/0/0 打上vlan tag 其中包含vlan id 2。交换机MAC 地址表，查到MAC是从SW1 GE0/0/1来的，所以将数据帧送到SW1 GE0/0/1。由于 SW1 GE0/0/1是 trunk 口，数据帧从SW1 GE0/0/1 转发出去时，不会剥离 vlan tag。
-3. 到了AR1 GE0/0/0，路由器解封数据帧到3层（不会看2层数据帧是否带有 vlan tag），查看路由表，发现192.168.2.1 需要从AR GE0/0/2 转发出去（next hop 就是192.168.2.1，同时封装新的2层包头，不带有vlan tag）。
+3. 到了AR1 GE0/0/0，路由器解封数据帧到3层（不会看2层数据帧是否带有 vlan tag），查看路由表，发现192.168.2.1 需要从AR GE0/0/2 转发出去（next hop 就是192.168.2.1，同时封装新的2层包头，源MAC是AR1 GE/0/0/2 目MAC是SW1 GE0/0/2，不带有vlan tag）。
 4. 当SW1 GE0/0/2 收到数据包时，会打上 vlan tag 其中包含 vlan id 3，查看MAC表将数据帧从 SW1 GE0/0/4 转发到192.168.2.1，同时剥离 vlan tag。
 5. 这样PC2就收到PC1的包了
 
@@ -650,3 +658,96 @@ sip 192.168.1.1 dip 192.168.2.1，
 ### 单臂路由
 
 通过在路由器上配置子接口，通过一根物理网线直联路由器
+
+![对比如下三种方式实现Vlan之间通信的利与弊_多臂路由_06](https://s4.51cto.com//images/blog/202001/03/b6394fd98cd92709499360e42fc3f87a.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_30,g_se,x_10,y_10,shadow_20,type_ZmFuZ3poZW5naGVpdGk=)
+
+交换机S3配置
+
+```
+vlan batch 30
+#
+interface Ethernet0/0/1
+ port link-type access
+ port default vlan 30
+#
+interface GigabitEthernet0/0/2
+ port link-type trunk
+ port trunk allow-pass vlan 30
+#
+```
+
+交换机S2配置
+
+```
+vlan batch 10 20
+#
+interface Ethernet0/0/1
+ port link-type access
+ port default vlan 10
+#
+interface Ethernet0/0/2
+ port link-type access
+ port default vlan 20
+#
+interface GigabitEthernet0/0/2
+ port link-type trunk
+ port trunk allow-pass vlan 10 20
+#
+```
+
+交换机S1配置
+
+```
+vlan batch 10 20 30
+#
+interface GigabitEthernet0/0/1
+ port link-type trunk
+ port trunk allow-pass vlan 10 20 30
+#
+interface GigabitEthernet0/0/2
+ port link-type trunk
+ port trunk allow-pass vlan 10 20
+#
+interface GigabitEthernet0/0/3
+ port link-type trunk
+ port trunk allow-pass vlan 30
+#
+```
+
+路由器配置
+
+GE0/0/1.1 只剥离vlan10的数据帧，GE0/0/1.2 只剥离vlan20的数据帧，GE0/0/1.3 只剥离vlan30的数据帧
+
+```
+vlan batch 10 20 30
+#
+interface GigabitEthernet0/0/1.1
+ dot1q termination vid 10
+ ip address 192.168.1.254 255.255.255.0 
+ arp broadcast enable
+#
+interface GigabitEthernet0/0/1.2
+ dot1q termination vid 20
+ ip address 192.168.2.254 255.255.255.0 
+ arp broadcast enable
+#
+interface GigabitEthernet0/0/1.3
+ dot1q termination vid 30
+ ip address 192.168.3.254 255.255.255.0 
+ arp broadcast enable
+#
+```
+
+这样3台主机就能连通了
+
+#### PC1访问PC2
+
+sip 192.168.1.1 dip 192.168.2.1
+
+1. 因为源目IP不在同一个网段，需要通过网关（这里就是R1 G0/0/1.1）将数据包发出去。首先会通过ARP学到网关的MAC。这样数据帧的2层源MAC是PC1的，目的MAC是网关的，3层源IP是192.168.1.1，目的IP是192.168.2.1
+2. 当S2 e0/0/1 收到数据帧时，打上vlan tag 10。然后查MAC表根据条目，从S2 GE0/0/2转发给S1 GE0/0/2，由于是 trunk 口不会剥离vlan tag 10
+3. S1 GE0/0/2 收到数据帧时，查看MAC表根据条目，从S1 GE0/0/1 转发给 R1 GE0/0/1
+4. R1 GE0/0/1 收到数据帧后，因为IP配置在R1 GE0/0/1.1，所以根据配置剥离含有 vlan tag 10 的2层头。查看路由表需要从R1 G0/0/1.2转发给 192.168.2.1(2层源MAC 是 R1 G0/0/1.2，目的MAC是 192.168.2.1 MAC，3层源IP 192.168.1.1，目的IP 192.168.2.1)
+5. 由于 R1 GE0/0/1.2 配置`dot1q termination vid 20`，R1 GE0/0/1.2 在发送数据帧时，会打上 vlan tag 20
+6. S1 GE0/0/1 收到数据帧时，查看MAC表需要通过S1 GE0/0/2 转发出去
+7. S2 GE 0/0/2 收到数据帧
