@@ -33,7 +33,7 @@ Legend:
  8c60.4f46.74fc 是静态配置的 MAC，该MAC一定从Po4096来，改物理口划分给vlan3000
 444c.a827.59df、444c.a8a3.031a 都是从 Eth108/1/43 动态学来的
 ### 局域网一台交换机
-[https://s4.51cto.com/attachment/201306/172813479.jpg](https://s4.51cto.com/attachment/201306/172813479.jpg)
+![https://s4.51cto.com/attachment/201306/172813479.jpg](https://s4.51cto.com/attachment/201306/172813479.jpg)
 
 1. 主机A将一个源MAC地址为自己，目标MAC地址为主机B的数据帧发送给交换机
 1. 交换机在收到此数据帧后，首先将数据帧中的源MAC地址和对应的接口(f0/1)记录到MAC地址表中
@@ -41,7 +41,7 @@ Legend:
 1. 这时，局域网中所有主机都会收到此帧，但是只有主机B收到此数据帧时会响应并回应一个数据帧，此数据帧中包括主机B的MAC地址
 1. 当交换机收到主机B回应的数据帧后，也会记录数据帧中的源MAC地址(也就是主机B的MAC地址)，这时，再当主机A和主机B通信时，交换机根据MAC地址表中的记录，实现单播
 ### 局域网多台交换机
-[https://s4.51cto.com/attachment/201306/174620975.jpg](https://s4.51cto.com/attachment/201306/174620975.jpg)
+![https://s4.51cto.com/attachment/201306/174620975.jpg](https://s4.51cto.com/attachment/201306/174620975.jpg)
 
 1. 主机A将一个源MAC地址为自己，目标MAC地址为主机C的数据帧发送给交换机
 1. 交换机1收到此数据帧后，会学习源MAC地址，并检查MAC地址表，发现没有目标MAC地址记录，则会将数据帧广播出去，主机B和交换机2都会收到此数据帧
@@ -66,7 +66,7 @@ Address         Age       MAC Address     Interface
 10.85.17.1      00:02:01  2880.23a2.1c08  Vlan10
 ```
 上面表示 10.133.145.2 对应的MAC是 70c7.f27d.71e7，从 Ethernet1/1/1 学来
-[https://s4.51cto.com/attachment/201306/181713341.jpg](https://s4.51cto.com/attachment/201306/181713341.jpg)
+![https://s4.51cto.com/attachment/201306/181713341.jpg](https://s4.51cto.com/attachment/201306/181713341.jpg)
 
 1. 如果主机A想发送数据给主机B，主机A首先会检查自己的ARP缓存表，查看是否有主机B的IP地址和MAC地址的对应关闭，如果有，则会将主机B的MAC地址作为源MAC地址封装到数据帧中。如果没有，主机A则会发送一个ARP请求，请求的目标IP地址是主机B的IP地址，目标MAC地址是广播地址(ff:ff:ff:ff:ff:ff)，源IP地址和MAC地址是主机A的IP地址和MAC地址
 1. 当交换机接受到此数据帧后，发现此数据帧是广播帧，因此，会将此数据帧从其他接口发送出去
@@ -79,7 +79,7 @@ Address         Age       MAC Address     Interface
 1. 非直连路由：不是直接连接在路由器接口上的网段，需要手动添加或者使用动态路由
 
 路由器工作在网络层，可以识别逻辑地址。当路由器的某个接口收到一个包时，路由器会读取包中相应的目标的逻辑地址的网络部分，然后在路由表中查看。如果路由表中找到目标地址的路由条目，这把包转发到路由对应的接口。如果在路由表中没有找到目标地址的路由条目，但是如果路由配置默认路由，就使用默认路由转发对应的路由接口，如果没有配置默认路由，就会丢弃改包，并返回不可达的信息
-[https://s7.51cto.com/attachment/201306/191339247.jpg](https://s7.51cto.com/attachment/201306/191339247.jpg)
+![https://s7.51cto.com/attachment/201306/191339247.jpg](https://s7.51cto.com/attachment/201306/191339247.jpg)
 
 1. hosta 在网络层将上层来的数据报文封装成IP包，其中源IP地址为自己，目标IP地址是hostb，hosta用本机配置的24位子网掩码与目标地址进行“与”运算，得出目标地址与本机不是同一地址段，因此发送hostb的数据包需要经过网关路由a的转发
 1. hosta 通过arp请求获取网关路由a的 e0 的MAC地址，并在链路层将路由器e0接口的MAC地址封装成目标MAC地址，源MAC地址是自己

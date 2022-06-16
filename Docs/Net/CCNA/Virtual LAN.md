@@ -1,10 +1,14 @@
 # Virtual LAN
 
+ref
+
+https://zhuanlan.zhihu.com/p/343467875
+
 ## 概述
 
-LAN 指的是 local area network，而VLAN指的是virtual LAN。
+LAN 指的是 local area network，而VLAN指的是virtual LAN
 
-VLAN可以把一个实体LAN分割成多个虚拟的LAN，分割出来的VLAN各自独立，VLAN与VLAN之间默认无法互通。
+VLAN可以把一个实体LAN分割成多个虚拟的LAN，分割出来的VLAN各自独立，VLAN与VLAN之间默认无法互通(由于划分了广播域2层就不会通，因为学到不到MAC)。
 
 VLAN使用的协议有两种，ISL(Inter-Switch Link)和IEEE 802.1q。ISL是Cisco专有的，而802.1q是公开的
 
@@ -12,11 +16,48 @@ VLAN使用的协议有两种，ISL(Inter-Switch Link)和IEEE 802.1q。ISL是Cisc
 
 需要VLAN的原因有两个，网络效能和安全
 
-由于网络中会经常出现Broadcast封包，Broadcast 不仅需要通过Switch 传送到LAN里面的每一个Host，而且每一个收到Broadcast的Host都要花Computing Power去处理Broadcast，这对整个网络的效能都大打折扣。VLAN可以把实体LAN分割，==一个VLAN的Broadcast Traffic不会传到另一个VLAN==，每一个VLAN就变成是一个独立的Broadcast Domain，提升网络效能。==即划分广播域==
+由于网络中会经常出现Broadcast封包，Broadcast 不仅需要通过Switch 传送到LAN里面的每一个Host，而且每一个收到Broadcast的Host都要花Computing Power去处理Broadcast，这对整个网络的效能都大打折扣。VLAN可以把实体LAN分割，==一个VLAN的Broadcast Traffic不会传到另一个VLAN==，每一个VLAN就变成是一个独立的 Broadcast Domain，提升网络效能。==即划分广播域==
 
 另一方面，Broadcast在网络上散播可能造成安保问题，只要下载packet capture，即可打开Broadcast 封包，窥探其他Host的信息（IP and MAC address），利用VLAN可以限制Broadcast Traffic只在信任的网络中散播
 
-## 配置VLAN
+## VLAN Tag
+
+vlan id 可用范围 0 - 4095，如果互联的交换机口配置了vlan，数据包在进入交换机就会打上 vlan tag 其中包含 vlan id，交换机转发了数据包 vlan tag 就会剥离(如果互联trunk口 不会剥离 vlan tag)。
+
+## VLAN 1
+
+VLAN 1是一个预设的VLAN，所有Cisco Switch皆有VLAN 1，所有port也都预设在VLAN 1。
+
+VLAN 1和其他VLAN一样可以传送data之外，还可以传送Control Plane Traffic，例如 VTP，CDP，PAgP
+
+基于安全考虑，VLAN 1应避免给一般HOST使用
+
+## Native VLAN
+
+Native VLAN的意思是switch把这个VLAN的packet送上Trunk Link时，是不会放VLAN Tag。VLAN  1 就是一个预设的Native VLAN
+
+但是和刚才的说的不一样，但是可以仔细想想，如果2 - 4096的VLAN都有VLAN ID，只要Trunk Link 两边的Switch 都协议没有VLAN ID的packet 就是VLAN 1，那么VLAN 1就算没有VLAN ID 也可以被区别出来。
+
+所以当VLAN 1的packet 通过Trunk Link，用Packet capture软件也不会看到VLAN ID 1，只会看见一个没有VLAN ID的封包（即没有Tag）
+
+Native VLAN 的 ID是可以设定的，`switchport trunk native vlan <vlan_id>`，==trunk link 两边 interface 的 native VLAN 必须相同，否则会造成Native VLAN mismatch 的问题==
+
+```
+SW1(config-if)#switchport trunk native vlan 100
+ SW1(config-if)#exit
+ SW1#show int trunk
+ 
+ Port                Mode         Encapsulation  Status     Native vlan
+ Et0/1               on           802.1q         trunking      100   
+```
+
+另外Native VLAN 需要 和 分配给Port 的 VLAN 不同，为了避免Double tagging attack。
+
+除了更改Native VLAN外，较为简单的方法就是不要吧VLAN 1 分配给port使用
+
+## Access Link
+
+用于连接主机和交换机之间的链路，链路上传达是 untagged帧
 
 我们使用下面一个例子，R1到R4表示四台Host，他们的e0/0分别设定成192.168.1.1/24 至 192.168.1.4/24
 
@@ -223,6 +264,8 @@ R3#ping 192.168.1.1
 
 ## Trunk Link
 
+用于交换机和交换机之间的链路，或者交换机与路由器之间的链路
+
 如果VLAN需要跨域多只switch，会出现什么问题？如果SW1把一些packet丢给SW2，SW2怎么分辨这些Packet来自哪一个VLAN？如果它不知道这些Packet来自哪个VLAN，它自然不知道应该把这个packet发到哪一个VLAN。解决方法很简单，只要在packet写上VLAN号码(VLAN ID)才把packet送走，其他switch就可以凭这个VLAN ID知道packet VLAN，这就是802.1 q VLAN Tag
 
 VLAN Tag 是 Switch 在收到Packet时为他加上一个标识，目的是让packet在packet 在网络中传输是，所经过的switch 都可以查看这个packet是属于哪一个VLAN，从而把packet送到真正需要接收这个VLAN的port
@@ -386,37 +429,6 @@ SW1(config-if)#switchport trunk allowed vlan 10,20,30
 
 还有add，all，except，none，remove等操作，具体可以查看man page
 
-## VLAN 1
-
-VLAN 1是一个预设的VLAN，所有Cisco Switch皆有VLAN 1，所有port也都预设在VLAN 1。
-
-VLAN 1和其他VLAN一样可以传送data之外，还可以传送Control Plane Traffic，例如 VTP，CDP，PAgP
-
-基于安全考虑，VLAN 1应避免给一般HOST使用
-
-## Native VLAN
-
-Native VLAN的意思是switch把这个VLAN的packet送上Trunk Link时，是不会放VLAN Tag。VLAN  1 就是一个预设的Native VLAN
-
-但是和刚才的说的不一样，但是可以仔细想想，如果2 - 4096的VLAN都有VLAN ID，只要Trunk Link 两边的Switch 都协议没有VLAN ID的packet 就是VLAN 1，那么VLAN 1就算没有VLAN ID 也可以被区别出来。
-
-所以当VLAN 1的packet 通过Trunk Link，用Packet capture软件也不会看到VLAN ID 1，只会看见一个没有VLAN ID的封包（即没有Tag）
-
-Native VLAN 的 ID是可以设定的，`switchport trunk native vlan <vlan_id>`，==trunk link 两边 interface 的 native VLAN 必须相同，否则会造成Native VLAN mismatch 的问题==
-
-```
-SW1(config-if)#switchport trunk native vlan 100
- SW1(config-if)#exit
- SW1#show int trunk
- 
- Port                Mode         Encapsulation  Status     Native vlan
- Et0/1               on           802.1q         trunking      100   
-```
-
-另外Native VLAN 需要 和 分配给Port 的 VLAN 不同，为了避免Double tagging attack。
-
-除了更改Native VLAN外，较为简单的方法就是不要吧VLAN 1 分配给port使用
-
 ## VLAN internal usage
 
 在multilayer Switch 使用系统会偷偷得使用一些VLAN做内部用途
@@ -470,8 +482,6 @@ SW1(config)#vlan internal allocation policy descending
  4093 Ethernet1/2
  4094 Ethernet1/1
 ```
-
-
 
 ## show vlan
 
@@ -568,4 +578,75 @@ Primary Secondary Type              Ports
   Spanning Tree Protocol type that is used on the VLAN
 
 - BrdgMode
+
 - Trans1/2
+
+## VLAN通信模式
+
+vlan 在划分广播域的同时也限制了不同VLAN间的2层通信，但是可以使用如下的方式(通过3层解决)解决VLAN间通信
+
+1. 多臂路由
+2. 单臂路由
+3. 使用VLANif
+
+### 多臂路由
+
+因为不同VLAN之间的主机是不能实现2层通信的，所以必须通过3层路由才能将报文从一个VLAN转发到另外以下VLAN。2层交换机上配置VLAN，每一个VLAN使用一条独立的物理链路连接到路由器上的一个接口，实现VLAN通信
+
+![对比如下三种方式实现Vlan之间通信的利与弊_单臂路由_03](https://s4.51cto.com//images/blog/202001/03/dba5a8cb9f83e9b704bffeeb7b71798b.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_30,g_se,x_10,y_10,shadow_20,type_ZmFuZ3poZW5naGVpdGk=)
+
+交换机侧配置
+
+```
+#
+vlan batch 2 to 3
+#
+interface GigabitEthernet0/0/1
+ port link-type trunk
+ port trunk pvid vlan 2
+ port trunk allow-pass vlan 2 
+#
+interface GigabitEthernet0/0/2
+ port link-type trunk
+ port trunk pvid vlan 3
+ port trunk allow-pass vlan 3
+#
+interface GigabitEthernet0/0/3
+ port link-type access
+ port default vlan 2
+#
+interface GigabitEthernet0/0/4
+ port link-type access
+ port default vlan 3
+#
+```
+
+路由器配置
+
+```
+#
+interface GigabitEthernet0/0/0
+ ip address 192.168.1.254 255.255.255.0 
+#
+interface GigabitEthernet0/0/2
+ ip address 192.168.2.254 255.255.255.0 
+#
+```
+
+这样处于VLAN2和VLAN3的两台主机 就能互相通信了。
+
+#### PC1访问PC2
+
+sip 192.168.1.1 dip 192.168.2.1，
+
+1. 因为源目IP不在同一个网段，需要通过网关（这里就是AR1 G0/0/2）将数据包发出去。首先会通过ARP学到网关的MAC。这样数据帧的2层源MAC是PC1的，目的MAC是网关的，3层源IP是192.168.1.1，目的IP是192.168.2.1
+2. 当数据帧到达交换机时，交换机会在入口SW1 GE0/0/0 打上vlan tag 其中包含vlan id 2。交换机MAC 地址表，查到MAC是从SW1 GE0/0/1来的，所以将数据帧送到SW1 GE0/0/1。由于 SW1 GE0/0/1是 trunk 口，数据帧从SW1 GE0/0/1 转发出去时，不会剥离 vlan tag。
+3. 到了AR1 GE0/0/0，路由器解封数据帧到3层（不会看2层数据帧是否带有 vlan tag），查看路由表，发现192.168.2.1 需要从AR GE0/0/2 转发出去（next hop 就是192.168.2.1，同时封装新的2层包头，不带有vlan tag）。
+4. 当SW1 GE0/0/2 收到数据包时，会打上 vlan tag 其中包含 vlan id 3，查看MAC表将数据帧从 SW1 GE0/0/4 转发到192.168.2.1，同时剥离 vlan tag。
+5. 这样PC2就收到PC1的包了
+
+但是这样会有一个问题，交接网络比较复杂需要通过VLAN划分多个广播域。这样必然需要增加和路由器互联的接口，但是路由器的接口通常是有限的。这样成本就会上升
+
+### 单臂路由
+
+通过在路由器上配置子接口，通过一根物理网线直联路由器
