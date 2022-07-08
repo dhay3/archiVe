@@ -73,7 +73,7 @@ root in /home/ubuntu λ curl --progress-bar baidu.com > a
 
 https://everything.curl.dev/protocols/curl
 
-curl 支持如下多种协议，只介绍其中几种比较特殊的
+curl 支持如下多种协议，只介绍其中几种比较特殊的，还支持telnet
 
 #### dict
 
@@ -111,7 +111,7 @@ curl "baidu.com#[1-10]"
 curl baidu.como#{1..10}
 ```
 
-## 0x3 Positional--no-progress-meter Args
+## 0x3 Positional Args
 
 curl 只有一种 positional args，即 URL。通常URL需要指定协议，但是如果没有指定协议（protocol://），curl默会根据URL来猜测使用的协议，通常是http，但是如果URL中包含`ftp.`就会使用ftp协议，同理其他类似的URL。针对`multipart/form-data`curl会复用tcp连接
 
@@ -136,7 +136,7 @@ http://example.com/archive[1996-1999]/vol[1-4]/part{a,b,c}.html
 
 所有和boolean相关的参数，都可以添加前缀`no`，例如`--option`，如果需要取反可以使用`--no-option`（after 7.19.0，called as Negative options）。==以下参数按照`curl -h category`分类排序==
 
-### output(verbose)
+### verbose
 
 - `-i`
 
@@ -262,7 +262,7 @@ http://example.com/archive[1996-1999]/vol[1-4]/part{a,b,c}.html
   http://baidu.com/#
   ```
 
-### common optoinal args(curl)
+### common optoinal args(curl & output)
 
 - `--help | -h [category]`
 
@@ -429,12 +429,6 @@ http://example.com/archive[1996-1999]/vol[1-4]/part{a,b,c}.html
   curl: (7) Failed to connect to baidu.com port 80 after 0 ms: Connection refused
   ```
 
-  
-
-### ftp/sftp
-
-- `-a`
-以增量模式上传文件
 
 ### dns
 
@@ -442,7 +436,39 @@ http://example.com/archive[1996-1999]/vol[1-4]/part{a,b,c}.html
 
   使用指定的 dns 服务器而不是系统默认的
 
-### ssl
+- `--doh-url <URL>`
+
+  使用doh解析域名
+
+  ```
+  cpl in ~ λ curl -4I  --doh-url https://doh.pub/dns-query baidu.com
+  HTTP/1.1 200 OK
+  Date: Fri, 08 Jul 2022 14:20:12 GMT
+  Server: Apache
+  Last-Modified: Tue, 12 Jan 2010 13:48:00 GMT
+  ETag: "51-47cf7e6ee8400"
+  Accept-Ranges: bytes
+  Content-Length: 81
+  Cache-Control: max-age=86400
+  Expires: Sat, 09 Jul 2022 14:20:12 GMT
+  Connection: Keep-Alive
+  Content-Type: text/html
+  ```
+
+### tsl/ssl
+
+#### client side
+
+- `--cacert <file>`
+  指定使用的ca根证书
+
+- `--capath <dir>`
+
+  指定使用ca根证书的存储位置
+
+- `--cert <certificate[：password]>`
+
+  指定client使用的的证书文件和密码
 
 - `-1 | --http1.0`
 
@@ -460,14 +486,12 @@ http://example.com/archive[1996-1999]/vol[1-4]/part{a,b,c}.html
   $ curl -k https://www.example.com
   ```
 
-- `--cacert <file>`
-  指定使用的ca证书（即服务器回送的证书），可以现在浏览器上把证书下载下来
+//TODO
 
-- `--cert-type <type>`
+### ftp/sftp
 
-  ca证书的类型，默认`PEM`
-
-- `--cert`
+- `-a`
+以增量模式上传文件
 
 ### http
 
@@ -525,7 +549,7 @@ http://example.com/archive[1996-1999]/vol[1-4]/part{a,b,c}.html
 
   上面命令读取本地文件`cookies.txt`，里面是服务器设置的 Cookie（参见`-c`参数），将其发送到服务器。W
 
-- `-c|--cookie-jar`
+- `-c |--cookie-jar`
   将服务器返回的cookie保存到本地
   上面命令将服务器的 HTTP 回应所设置 Cookie 写入文本文件`cookies.txt`。
 
@@ -578,8 +602,11 @@ http://example.com/archive[1996-1999]/vol[1-4]/part{a,b,c}.html
   ```
 
 - `-G | --get`
+  
+  put the post data in the URL and use GET
+  
   当和`-d`一起使用是，使用该参数强制发送GET请求
-
+  
 - `-x`
   指定 HTTP 请求的代理。
 
@@ -667,8 +694,6 @@ http://example.com/archive[1996-1999]/vol[1-4]/part{a,b,c}.html
   `-F`参数也可以指定文件名。
   上面命令中，原始文件名为`photo.png`，但是服务器接收到的文件名为`me.png`。
 
-  
-
 - `-f | --fail`
   如果抓取指定网站的内容不显示，会默认显示一个错误页面，使用改参数内容将不显示，而是返回exit code。但是一般的网站重定向后会展示一个非默认的错误页面，所以不显示exit code
 
@@ -737,6 +762,10 @@ http://example.com/archive[1996-1999]/vol[1-4]/part{a,b,c}.html
   </html>
   ```
 
+- `--compressed`
+
+  返回的 http response 会被 compressed
+
 ## 0x5 Timing
 
 ![](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220417/2022-04-17_22-05.75xnwr9nn780.webp#crop=0&crop=0&crop=1&crop=1&id=xcRJ6&originHeight=957&originWidth=1145&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
@@ -757,66 +786,68 @@ curl: (52) Empty reply from server
 
 - 校验时耗
 
-```bash
-for cnt in {1..100}; do
-curl -SsLo /dev/null -w "%{remote_ip} %{time_namelookup} %{time_connect} %{time_appconnect} %{time_redirect} %{time_pretransfer} %{time_starttransfer} %{time_total}\n" https://taobao.api.xixikf.cn
-done
-
-for ($i=0;$i -lt 100;$i++){
-cmd /r curl -SsLo 1 -w "%{remote_ip} %{time_namelookup} %{time_connect} %{time_appconnect} %{time_redirect} %{time_pretransfer} %{time_starttransfer} %{time_total}\n" https://taobao.api.xixikf.cn
-}
-
-for /l %x in (1 ,1 ,100) do curl -SsLo 1 -w "%{remote_ip} %{time_namelookup} %{time_connect} %{time_appconnect} %{time_redirect} %{time_pretransfer} %{time_starttransfer} %{time_total}\n" https://taobao.api.xixikf.cn
-```
+  ```
+  for cnt in {1..100}; do
+  curl -SsLo /dev/null -w "%{remote_ip} %{time_namelookup} %{time_connect} %{time_appconnect} %{time_redirect} %{time_pretransfer} %{time_starttransfer} %{time_total}\n" https://taobao.api.xixikf.cn
+  done
+  
+  for ($i=0;$i -lt 100;$i++){
+  cmd /r curl -SsLo 1 -w "%{remote_ip} %{time_namelookup} %{time_connect} %{time_appconnect} %{time_redirect} %{time_pretransfer} %{time_starttransfer} %{time_total}\n" https://taobao.api.xixikf.cn
+  }
+  
+  for /l %x in (1 ,1 ,100) do curl -SsLo 1 -w "%{remote_ip} %{time_namelookup} %{time_connect} %{time_appconnect} %{time_redirect} %{time_pretransfer} %{time_starttransfer} %{time_total}\n" https://taobao.api.xixikf.cn
+  ```
 
 - 打流
 
-```bash
-traffic_monitor(){
-local chz_ips=( dev.cmccopen.cn );local loopz=100000;local max_wait=15;local conn_wait=10;local base_conn=2;
-local normal="\033[0m";local cyan="\033[0;36m";local yellow="\033[1;33m";local red="\033[31m"
-local factor4;local factor7;local R4;local R7
-for cnt in $(seq ${loopz}); do
-for idx in "${!chz_ips[@]}"; do
-local factor4[${idx}]=${factor4[idx]:-0};local factor7[${idx}]=${factor7[idx]:-0}
-local rst
-rst=$(curl -skLo /dev/null -m$max_wait --connect-timeout $conn_wait -w "@-" "${chz_ips[idx]}" <<< "$(date +"%T") %{remote_ip} %{remote_port} %{time_namelookup} %{time_connect} %{time_appconnect} %{time_total}")
-local ret_code=$?
-if (( ${ret_code} == 0 ));then
-factor4[${idx}]=$((${factor4[idx]} + 1));factor7[${idx}]=$((${factor7[idx]} + 1))
-R4=$(bc -l <<< "scale=3;${factor4[idx]}/${cnt}*100");R7=$(bc -l <<< "scale=3;${factor7[idx]}/${cnt}*100")
-awk -v R4=${R4} -v R7=${R7} -v cyan="${cyan}" -v normal="${normal}" '{
-if ($5 > 3)
-printf("%s> %s %16s:%-5s dns %6s] L4 %6s] L7 %6s] total %6s] R4 %3.f%] R7 %3.f%]%s\n",cyan,$1,$2,$3,$4,$5,$6,$7,R4,R7,normal)
-else
-printf("> %s %16s:%-5s dns %6s] L4 %6s] L7 %6s] total %6s] R4 %3.f%] R7 %3.f%]\n",$1,$2,$3,$4,$5,$6,$7,R4,R7)
-}' <<< "${rst}"
-elif (( ${ret_code} == 52 || ${ret_code} == 56 ));then
-factor4[${idx}]=$((${factor4[idx]} + 1))
-R4=$(bc -l <<< "scale=3;${factor4[idx]}/${cnt}*100");R7=$(bc -l <<< "scale=3;${factor7[idx]}/${cnt}*100")
-awk -v R4=${R4} -v R7=${R7} -v yellow="${yellow}" -v normal="${normal}" '{
-printf("%s> %s %16s:%-5s dns %6s] L4 %6s] L7 %6s] total %6s] R4 %3.f%] R7 %3.f%]%s\n",yellow,$1,$2,$3,$4,$5,$6,$7,R4,R7,normal)
-}' <<< "${rst}"
-else
-R4=$(bc -l <<< "scale=3;${factor4[idx]}/${cnt}*100");R7=$(bc -l <<< "scale=3;${factor7[idx]}/${cnt}*100")
-awk  -v R4=${R4} -v R7=${R7} -v red="${red}" -v normal="${normal}" '{
-printf("%s* %s %16s:%-5s dns %6s] L4 %6s] L7 %6s] total %6s] R4 %3.f%] R7 %3.f%]%s\n",red,$1,$2,$3,$4,$5,$6,$7,R4,R7,normal)
-}' <<< "${rst}"
-fi
-done
-done
-}; \
-traffic_monitor
-```
+  ```
+  traffic_monitor(){
+  local chz_ips=( dev.cmccopen.cn );local loopz=100000;local max_wait=15;local conn_wait=10;local base_conn=2;
+  local normal="\033[0m";local cyan="\033[0;36m";local yellow="\033[1;33m";local red="\033[31m"
+  local factor4;local factor7;local R4;local R7
+  for cnt in $(seq ${loopz}); do
+  for idx in "${!chz_ips[@]}"; do
+  local factor4[${idx}]=${factor4[idx]:-0};local factor7[${idx}]=${factor7[idx]:-0}
+  local rst
+  rst=$(curl -skLo /dev/null -m$max_wait --connect-timeout $conn_wait -w "@-" "${chz_ips[idx]}" <<< "$(date +"%T") %{remote_ip} %{remote_port} %{time_namelookup} %{time_connect} %{time_appconnect} %{time_total}")
+  local ret_code=$?
+  if (( ${ret_code} == 0 ));then
+  factor4[${idx}]=$((${factor4[idx]} + 1));factor7[${idx}]=$((${factor7[idx]} + 1))
+  R4=$(bc -l <<< "scale=3;${factor4[idx]}/${cnt}*100");R7=$(bc -l <<< "scale=3;${factor7[idx]}/${cnt}*100")
+  awk -v R4=${R4} -v R7=${R7} -v cyan="${cyan}" -v normal="${normal}" '{
+  if ($5 > 3)
+  printf("%s> %s %16s:%-5s dns %6s] L4 %6s] L7 %6s] total %6s] R4 %3.f%] R7 %3.f%]%s\n",cyan,$1,$2,$3,$4,$5,$6,$7,R4,R7,normal)
+  else
+  printf("> %s %16s:%-5s dns %6s] L4 %6s] L7 %6s] total %6s] R4 %3.f%] R7 %3.f%]\n",$1,$2,$3,$4,$5,$6,$7,R4,R7)
+  }' <<< "${rst}"
+  elif (( ${ret_code} == 52 || ${ret_code} == 56 ));then
+  factor4[${idx}]=$((${factor4[idx]} + 1))
+  R4=$(bc -l <<< "scale=3;${factor4[idx]}/${cnt}*100");R7=$(bc -l <<< "scale=3;${factor7[idx]}/${cnt}*100")
+  awk -v R4=${R4} -v R7=${R7} -v yellow="${yellow}" -v normal="${normal}" '{
+  printf("%s> %s %16s:%-5s dns %6s] L4 %6s] L7 %6s] total %6s] R4 %3.f%] R7 %3.f%]%s\n",yellow,$1,$2,$3,$4,$5,$6,$7,R4,R7,normal)
+  }' <<< "${rst}"
+  else
+  R4=$(bc -l <<< "scale=3;${factor4[idx]}/${cnt}*100");R7=$(bc -l <<< "scale=3;${factor7[idx]}/${cnt}*100")
+  awk  -v R4=${R4} -v R7=${R7} -v red="${red}" -v normal="${normal}" '{
+  printf("%s* %s %16s:%-5s dns %6s] L4 %6s] L7 %6s] total %6s] R4 %3.f%] R7 %3.f%]%s\n",red,$1,$2,$3,$4,$5,$6,$7,R4,R7,normal)
+  }' <<< "${rst}"
+  fi
+  done
+  done
+  }; \
+  traffic_monitor
+  ```
 
 - 重定向stoud，stderr中的内容
 
-```bash
-curl -o /dev/null -svm1 >&2 <host>
-```
+  ```
+  curl -o /dev/null -svm1 >&2 <host>
+  ```
 
 - 不输出所有的错误正常的信息，只显示verbose信息
 
-```bash
-curl -fsSvkL -o /dev/null https://baidu.com
-```
+  ```
+  curl -fsSvkL -o /dev/null https://baidu.com
+  ```
+
+  
