@@ -4,7 +4,27 @@
 
 https://wiki.archlinux.org/title/QEMU#Tips_and_tricks
 
+> 禁止使用 qemu-img 修改正常运行的 VM 的 disk image
+
 qemu-img用于生成hard disk imag(模拟的虚拟磁盘)，file format不同生成的hard disk image 不同
+
+## ENBF
+
+```
+FILENAME := is a disk image filename
+
+FMT := is the disk image format. It is guessed automatically in most cases. See below for a description of the supported disk formats
+
+SIZE := is the disk image size in  bytes.  Optional  suffixes  k  or  K (kilobyte,  1024)  M (megabyte, 1024k) and G (gigabyte, 1024M) and T (terabyte, 1024G) are supported.  b is ignored.
+
+OUTPUT_FILENAME := is the destination disk image filename.
+
+OUTPUT_FMT := is the destination format.
+
+OPTIONS := is a comma separated list of format specific  options  in  a name=value format. Use -o ? for an overview of the options supported by the used format or see the format descriptions below for details.
+
+SNAPSHOT_PARAM := is param used for internal snapshot, format is 'snapshot.id=[ID],snapshot.name=[NAME]' or '[ID_OR_NAME]'
+```
 
 ## commands
 
