@@ -1,4 +1,4 @@
-# qemu-img
+# qemu-img/虚拟磁盘
 
 参考：
 
@@ -54,7 +54,7 @@ Format specific information:
 
 syntax：`qemu-img resize [-f fmt] [--shrink] <filename> [+|- ]size`
 
-修改disk image的大小，如果需要缩小必须使用`--shrink`(需要先修改虚拟机中的分区和file system)
+修改disk image的大小，如果需要缩小必须使用`--shrink`(需要先修改虚拟机中的分区和file system，否则数据会丢失)
 
 ```bash
 cpl in ~/software/kvm λ qemu-img resize win.img +10M
@@ -62,6 +62,10 @@ Image resized.
 ```
 
 修改完后需要进入虚拟机修改file system
+
+### rebase
+
+changing the backing file of an image
 
 ### convert
 
@@ -79,8 +83,6 @@ disk size: 4 KiB
 cluster_size: 4096
 ```
 
-
-
 ### bench
 
 syntax：`qemu-img bench [-d depth] [-c count] [-s buffer_size] [-w]`
@@ -97,7 +99,7 @@ qemu支持的file format有如下几种类型
 
 - raw
 
-  默认使用的类型，可以将这种格式的file导入到其他的emulators。直接分配，可以减小宿主机磁盘IO。也可以通过`dd`来生成raw类型的hard disk image
+  默认使用的类型，可以将这种格式的file导入到其他的emulators。直接分配，分配多少占用宿主机就是多少。也可以通过`dd`来生成raw类型的hard disk image
 
   ```bash
   cpl in /sharing/vm λ dd if=/dev/zero of=dd bs=10M count=1
@@ -112,7 +114,7 @@ qemu支持的file format有如下几种类型
 
 - qcow2
 
-  生成的镜像更小，常常用在不支持linux fs的系统(例如windows)。只有虚拟机往扇区中写时才会分配
+  生成的镜像更小，常常用在不支持linux fs的系统(例如windows)。只有虚拟机往扇区中写时才会实际分配。如果使用这种方式替代raw类型的disk image 可能会造成性能上的影响
 
   ```bash
   cpl in /sharing/vm λ qemu-img create -f raw raw 10M    
