@@ -18,7 +18,12 @@ Address sizes:                   48 bits physical, 48 bits virtual
 Virtualization:                  AMD-V
 ```
 
-如果是intel CPU virtualization 的值必须是 VT-x，如果是amd CPU virtualization 的值必须是AMD-V。h或者通过如下命令查看
+如果是intel CPU virtualization 的值必须是 VT-x，如果是amd CPU virtualization 的值必须是AMD-V。如果显示的是 full 或者 para 表示当前的机器已经是虚拟机了
+
+
+
+或者通过如下命令查看
+
 ```
 grep -E --color=auto 'vmx|svm|0xc0f' /proc/cpuinfo
 ```
