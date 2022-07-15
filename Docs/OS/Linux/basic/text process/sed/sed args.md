@@ -1,10 +1,10 @@
-# sed 通用参数
+# sed args
 
 文本处理工具，如果没有指定`-e`，`-f`那么第一个不是参数的选项做为sed script
 
 syntax：`sed [options] [script] [input-file] `
 
-## 参数
+## Optional args
 
 - -n 
 
