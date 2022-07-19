@@ -279,7 +279,7 @@ IP rtsg.1023 > csam.login: Flags [S], seq 768512:768512, win 4096, opts [mss 102
 
 ### proto
 
-Proto 过滤器用来过滤某个协议的数据，关键字为 `proto`，可省略。proto 后面可以跟上协议号或协议名称，支持 `icmp`, `igmp`, `igrp`, `pim`, `ah`, `esp`, `carp`, `vrrp`, `udp`和 `tcp`。因为通常的协议名称是保留字段，所以在于 proto 指令一起使用时，必须根据 shell 类型使用一个或两个反斜杠（/）来转义。Linux 中的 shell 需要使用两个反斜杠来转义，MacOS 只需要一个
+Proto 过滤器用来过滤某个协议的数据，关键字为 `proto`，可省略。proto 后面可以跟上协议号或协议名称，支持 `icmp`, `igmp`, `igrp`, `pim`, `ah`, `esp`, `carp`, `vrrp`, `udp`和 `tcp`。因为通常的协议名称是保留字段，所以在于 proto 指令一起使用时，必须根据 shell 类型使用一个或两个反斜杠（\）来转义。Linux 中的 shell 需要使用两个反斜杠来转义，MacOS 只需要一个
 
 ```
 [root@chz Desktop]# tcpdump -i ens33 proto \\tcp
@@ -388,7 +388,7 @@ listening on ens33, link-type EN10MB (Ethernet), capture size 262144 bytes
 
 ### flags
 
-<img src="..\..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-25_00-39-07.png"/>
+![Snipaste_2020-08-25_00-39-07](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220719/Snipaste_2020-08-25_00-39-07.4kvfcqtsrsow.webp)
 
 首部20bytes，标志位从第13个octet（8bits一组）算起
 

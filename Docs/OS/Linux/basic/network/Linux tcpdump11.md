@@ -234,6 +234,22 @@ tcpdump 后会抓包结束后显示抓包的数量
 
   verbose out，具体查看 man page
 
+## Output format
+
+tcpdump 根据协议不同输出的内容的也不同
+
+- timestamp
+
+  默认每行都会输出 timestamp，通常以`hh:mm:ss.frac`的格式输出 accurate as the kernel’s clock。可以使用 `-t`来改变timestamp格式（例如 delta）
+
+- link level headers
+
+  if the `-e` option is given, the link level header is printed out. 
+
+- IPv4 packets
+
+  
+
 ## Filter Expressions
 
 > man pcap-filter
@@ -248,11 +264,92 @@ tcpdump 后会抓包结束后显示抓包的数量
 
    dir qualifiers specify a particular transfer direction to and/or from id. Possible protos are: `ether`, `fddi`, `tr`, `wlan`, `ip`, `ip6`, `arp`, `rarp`, `decnet`, `tcp` and `udp`
 
-3. 
+3. proto
 
+   proto qualifiers restrict the match to a particular protocol. Possibel protos are：`ether`, `fddi`, `tr`，`wlan`，`ip`，`ip6`，`arp`，`rarp`，`decent`，`tcp` and `udp`. ==If there is no proto qualifier, all protocols consistent with the type are assumed==
 
+4. logical expression
 
+   逻辑表达式, `and(&&)`, `or(||)`, `not(!)`
 
+### primitives
+
+顾名思义
+
+- `src|dst host <host>`
+- `host <host>`
+- `ether src|dst <ehost>`
+- `ether host ehost`
+- `gateway <host>`
+
+- `src|dst net <net>`
+
+- `net <net>`
+
+  an IPv4 networ number can be written as a dotted quad(e.g., 192.168.1.0)，dotted triple (e.g., 192.168.1), dotted pair (e.g., 172.16), or single number (e.g., 10); the netmask is 255.255.255.255 for a dotted quad (which means that it;s really a host match), 255.255.255.0 for a dotted triple, 255.255.0.0 for a dotted pair, or 255.0.0.0 for a single number
+
+- `net <net> mask <netmask>`
+
+- `net net/len`
+
+- `src|dst port <port>`
+- `port <port>`
+
+- `src|dst portrange <port1-port2>`
+
+- `portrange <port1-port2>`
+
+- `less|greater <length>`
+
+- `proto \<protocol>`
+
+  Proto 过滤器用来过滤某个协议的数据，关键字为 `proto`，可省略。proto 后面可以跟上协议号或协议名称，支持 `icmp`, `igmp`, `igrp`, `pim`, `ah`, `esp`, `carp`, `vrrp`, `udp`和 `tcp`。因为通常的协议名称是保留字段，所以在于 proto 指令一起使用时，必须根据 shell 类型使用一个或两个反斜杠（\）来转义
+
+- `tcp,udp,icmp`
+
+  abbreviation for `proto \protocol`
+
+- `ether proto <protocol>`
+
+- `ip,arp`
+
+  abbreviation for `ether proto \protocol`
+
+- `inbound | outbound`
+
+  packet was recieved | sent by the host performing the capturee rather than being sent | received by that host
+
+- `vlan [vlan_id]`
+
+  true if the packet is an IEEE 802.1Q VLAN packet
+
+### TCP Flag Filter
+
+![Snipaste_2020-08-25_00-39-07](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220719/Snipaste_2020-08-25_00-39-07.4kvfcqtsrsow.webp)
+
+TCP header，TCP 标志位从第 13 个 octet (8 bits 一组) 开始算起
+
+```
+|        		| 
+|---------------| 
+|C|E|U|A|P|R|S|F| 
+|---------------| 
+|7 6 5 4 3 2 1 0|
+```
+
+ACK $2^4$
+
+SYN $2^1$ 
+
+FIN $2^0$
+
+如果只想要表示SYN包可以使用`tcp[13] == 2`，如果想表示包含SYN包的可以使用`tcp[13] == 2 & 2 == 2`，也可以使用name的形式`tcp-fin`, `tcp-syn`, `tcp-rst`, `tcp-push`, `tcp-ack`, `tcp-urg`.例如
+
+```
+tcpdump -i xl0 'tcp[tcpflags] & tcp-push != 0'
+```
+
+ 只抓PUSH的包
 
 
 
