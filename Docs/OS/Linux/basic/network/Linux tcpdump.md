@@ -4,9 +4,7 @@
 
 https://juejin.im/post/6844904084168769549
 
-```
- tcpdump -Snnvvi eth0 tcp and port 80 
-```
+>  tcpdump -Snnvvi eth0 tcp and port 80 
 
 ## 概述
 
