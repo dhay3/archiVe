@@ -1,462 +1,437 @@
-# Linux tcpdump
+# Linux tcpdump11
 
-参考：
+ref:
 
-https://juejin.im/post/6844904084168769549
+https://www.tcpdump.org/
 
->  tcpdump -Snnvvi eth0 tcp and port 80 
+https://en.wikipedia.org/wiki/Promiscuous_mode
 
-## 概述
+pcap(3PCAP)
 
-syntax：`tcpdump [options] [filters]`
+## Digest
 
-命令行抓包工具，不仅限于tcp协议。发送SINGTERM终止
+syntax
 
 ```
-root in /home/ubuntu λ tcpdump -i any -c 3
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
-08:15:34.080299 IP gns3vm.65522 > 42.120.72.99.2539: Flags [P.], seq 2112669508:2112669600, ack 824759699, win 501, length 92
-08:15:34.080575 IP gns3vm.65522 > 42.120.72.99.2539: Flags [P.], seq 92:200, ack 1, win 501, length 108
-08:15:34.080596 IP gns3vm.65522 > 42.120.72.99.2539: Flags [P.], seq 200:236, ack 1, win 501, length 36
-3 packets captured
-26 packets received by filter
-17 packets dropped by kernel
+       tcpdump [ -AbdDefhHIJKlLnNOpqStuUvxX# ] [ -B buffer_size ]
+               [ -c count ] [ --count ] [ -C file_size ]
+               [ -E spi@ipaddr algo:secret,...  ]
+               [ -F file ] [ -G rotate_seconds ] [ -i interface ]
+               [ --immediate-mode ] [ -j tstamp_type ] [ -m module ]
+               [ -M secret ] [ --number ] [ --print ] [ -Q in|out|inout ]
+               [ -r file ] [ -s snaplen ] [ -T type ] [ --version ]
+               [ -V file ] [ -w file ] [ -W filecount ] [ -y datalinktype ]
+               [ -z postrotate-command ] [ -Z user ]
+               [ --time-stamp-precision=tstamp_precision ]
+               [ --micro ] [ --nano ]
+               [ expression ]
 ```
 
-received by filter 会跟进OS不同执行不同的操作，查看manual page 获取详细信息
+tcpdump 是一个基于 C 开发的 CLI 抓包工具，同样的还有 wireshark 出品的 tshark
 
-## 参数
+## Terms
 
-- -D | --list-interfaces
+- buffer size
 
-  显示所有网络接口。tcpdump默认监听第一个网络接口
+  packets that arrive for a capture are stored in a buffer, so that they do not have to be read by the application as soon as they arrive. On some platforms, the buffer’s size can be set; a size that’s too small could mean that, if too many packets are being captured and the snapshot length dosen’t limit the amount of data that’s buffered, packets could be dropped if the buffer fills up before the application can read packets from it, while a size that’s too large could use more non-pageable operating system memory than is necessary to prevent packets from being droppingq
+
+- promiscuous mode
+
+  On broadcast LANs such as Ethernet, if the network isn’t switched, or if the adapter is connected to a “mirror port” on a switch to which all packets passing through the switch are sent, a network adapter receives all packets on the LAN, including unicast or multicast packets not sent to a network address that the netwrok adapter isn’t configured to recognize
+
+  Normally, the adapter will discard those packets; however, many network adpaters support “promiscuous mode”, which is a mode in which all packets, even if they are not sent to an mode in which all packets, even if they are not sent to an address that the adapter recognized, are provided to the host. This is useful for passively capturing traffic between two or more other hosts for analysis
+
+  Note that even if an application dose not set promiscuous mode, the adpter could well be in promiscuous mode for some other reason
+
+  ==For now, this doesn’t work on the “any” device; if an argument of “any” or NULL is supplied, the setting of promiscuous mode is ignored==
+
+- monitor mode
+
+  On IEEE 802.11 wireless LANs（可以直接理解成 WIFI）, even if an adapter is in promiscuous mode, it will supply to the host only frames for the network with which it’s associated. It might also supply only data frames
+
+  In “monitor mode”, sometimes also called “rfmon mode” ( for “Radio Frequency MONitor” ), the adapter will supply all frames that it receives, with 802.11 headers, and might supply a pseudo-header with radia information about the frames as well.
+
+  Note that in monitor mode the adapter might disassociate from the network with which it’s associated, so that you will not be able to use any wireless networks with that adapter. This could prevent accessing files on a network server, or resolving host names or network addresses, if you are capturing in monitor mode and are not connected to anohter network with which it’s associated, so that you will not be able to use any wireless networks with that adapter. 
+
+  kali wifi attacker 就是使用 monitor mode 来监听数据包，然后 hack WIFI
+
+## Statistics
+
+tcpdump 后会抓包结束后显示抓包的数量
+
+```
+82 packets captured
+157 packets received by filter
+0 packets dropped by kernel
+```
+
+1. captured，this is the number of packets that tcpdump has received and processed
+
+2. received by filter，the meaning of this depneds on the OS on which you are running tcpdump. If a filter was specified on the command line, on some OSes it counts packets regardless of whether they were matched by the filter expression and, even if they were matched by the filter expression, regardless of whether tcpdump has read and process them yet, on other OSes it counts only packets that were matched by the filter expression regardless of whether tcpdump has read and processed them yet, and on ohter OSes it counts only packets that were matched by the filter expression and were processed by tcpdump
+
+   简单来说该值根据系统不同捕捉的数字也不同
+
+3. dropped by kernel, this is the number of packets that were dropped, due to a lack of buffer space, by the packet capture machanism in the OS
+
+## Optional args
+
+### Common args
+
+- `-D | --list-interfaces`
+
+  print the list of the network interfaces available on the system and on which tcpdumo can capture packets
+
+- `-L | --list-data-link-types`
+
+  list the known data link types for the interface
+
+- `-I | --monitor-mode`
+
+  put the interface in “monitor mode”; thisi is supported only on IEEE 802.11 WIFI interface（只支持无线网卡）
+
+- `-w file`
+
+  将 stdout 内容保存到文件
+
+- `-r file`
+
+  读取`-w`生成的文件
+
+### Input args
+
+- `-Q | --direction=direction`
+
+  ==只抓特定方向的包，值可以是`in`、`out`和`in-out`==
+
+- `-i | --interface=interface`
+
+  抓指定的NIC，如果没有指定且没有使用`-d`，默认抓 the system interface list for the lowest humbered, configured up interface( excluding loopback )
+
+  ==after 2.2. kernel, an interface argument of any can be used to capture packets from all interfaces==
+
+  if the `-D` flag is supported, an interface number as printed by that flag can be used as the interfaces argument
 
   ```
-  [root@chz Desktop]# tcpdump --list-interfaces
-  1.bluetooth0 (Bluetooth adapter number 0)
-  2.nflog (Linux netfilter log (NFLOG) interface)
-  3.nfqueue (Linux netfilter queue (NFQUEUE) interface)
-  4.usbmon1 (USB bus number 1)
-  5.usbmon2 (USB bus number 2)
-  6.ens33
-  7.any (Pseudo-device that captures on all interfaces)
-  8.lo [Loopback]
-  [root@chz Desktop]# tcpdump 
-  tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-  listening on bluetooth0, link-type BLUETOOTH_HCI_H4_WITH_PHDR (Bluetooth HCI UART transport layer plus pseudo-header), capture size 262144 bytes
-  ^C
-  0 packets captured
-  48 packets received by filter
-  0 packets dropped by kernel
+  cpl in ~ λ tcpdump -D
+  1.wlp1s0 [Up, Running, Wireless, Associated]
+  cpl in ~ λ sudo tcpdump -i 1 -c 10
   ```
 
-- -i
+  例如上述就表示抓 wlp1s0 无线网卡
 
-  指定监听的接口，如果不指定默认使用第一个iface，==可以使用any抓所有的iface==
+- `-I | --monitor-mode`
+
+  put the interface in “monitor mode”
+
+- `-B | --buffer-size=buffer_size`
+
+  set the OS capture buffer size, in units of KiB
+
+- `-c count`
+
+  exit after receiving count packets，抓指定个数的包
+
+- `-e`
+
+  ==print the link-level header on echo dump line==
+
+- `-F file`
+
+  use file as input for the filter expression. An additional expression given on the command line is ignored
+
+- `-G rotate_seconds`
+
+  every rotate_seconds seconds save the dump file named by `-w`
+
+  例如如下表示每隔3秒，将抓包内容写入/tmp/a
 
   ```
-  root in /home/ubuntu λ tcpdump -i any
+  tcpdump -i any -G 3 -w /tmp/a
   ```
 
-- -c
-
-  抓取指定个数个包后tcpdump自动退出，例如抓100个包
+  通常`-w` 使用的文件名需要以`strftime`(c lib)的格式命名，如果没有使用该格式，文件会被复写。
 
   ```
-  root in /home/ubuntu λ tcpdump -i any -c 10
+  tcpdump -i any -G 3 -w %D.pcap
   ```
+
+  如果和`-C`一起使用，文件名会以`file<count>`的格式命名（使用这种方式，文件名就可以不需要使用 `strftime`）
+
+  例如如下表示每隔30秒抓包，如果文件大小超过 100 kib 就写入到新文件 
+
+  ```
+  tcpdump -i any -G 30 -C 100 -w tmp.pcap
+  ```
+
+  可以和`-W`一起使用，表示每隔多少秒，抓包并写到文件，一共抓多少个文件
+
+  如下表示抓包30秒并写入到tmp.pcap
+
+  ```
+  tcpdump -i any -G 30 -W 1 -w tmp.pcap
+  ```
+
+  ==需要注意的一点时，如果在指定使用内没有抓到包，就不会写入到文件。==如果没有指定`-W`，需要使用 SIGINT 或类似的 posix signal 终止
+
+- `-C file_size`
+
+  before writing a raw packet to a savefile, check whether the file is currently larger than file_size and, if so , close the current savefile and open a new one. Savefiles after the first savefile will have the name specified with the `-w` flag, with a number after it, starting at 1 and countinuing upward
+
+- `-W filecounot`
+
+  和`-C`一起使用时，表示最多生成文件的个数
+
+  和`-G`一起使用时，表示最多生成文件的个数
+
+  和`-G`以及`-C`一起使用时，忽略该选项
+
+- `-l`
+
+  make stdout line buffered
+
+  几乎等价于`-w`
+
+  ```
+  tcpdump -l > dat
+  tcpdump -l > dat & tail -f data
+  ```
+
+### Output args
+
+- `-#|--number`
+
+  print an optional packet number at the beginning of the line
   
-- -S
+  多一列表示packet的序号
 
-  以绝对的方式打印sequence number，默认第一个包先显示seq然后以相对的方式显示seq
+- `-S | --absolute-tcp-sequence-numbers`
 
-  ```
-  cpl in ~ λ sudo tcpdump -Snnvvi wlp1s0 tcp and host 1.1.1.1
-  tcpdump: listening on wlp1s0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
-  13:16:04.968479 IP (tos 0x0, ttl 64, id 58267, offset 0, flags [DF], proto TCP (6), length 60)
-      30.226.76.42.52248 > 1.1.1.1.443: Flags [S], cksum 0x6d3c (incorrect -> 0xc0a5), seq 354593100, win 64240, options [mss 1460,sackOK,TS val 1233537427 ecr 0,nop,wscale 7], length 0
-  13:16:05.204493 IP (tos 0x14, ttl 48, id 0, offset 0, flags [DF], proto TCP (6), length 52)
-      1.1.1.1.443 > 30.226.76.42.52248: Flags [S.], cksum 0x108b (correct), seq 1646134020, ack 354593101, win 65535, options [mss 1460,nop,nop,sackOK,nop,wscale 10], length 0
-  13:16:05.204582 IP (tos 0x0, ttl 64, id 58268, offset 0, flags [DF], proto TCP (6), length 40)
-      30.226.76.42.52248 > 1.1.1.1.443: Flags [.], cksum 0x6d28 (incorrect -> 0x4f6a), seq 354593101, ack 1646134021, win 502, length 0
-  ```
+  以绝对值输出 tcp seq number
 
-- -nn
+- `-A`
 
-  单个n取消DNS解析，两个n取消DNS解析和端口解析
+  print echo packet in ASCII，明文输出包 segment
 
-- -v
+- `-q`
 
-  打印出ttl,tos,id,length,flags,proto等信息
+  输出的内容更精简
 
-- -t
+- `-n`
 
-  不打印时间戳
+  don’t convert address，将 host address 和 port number 解析
 
-- -ttt
+  某些版本需要repeat改参数才可以实现port number 节解析
 
-  以delta的格式输出时间戳
+- `-j | --time-stamp-type=tstamp_type`
 
-  ```
-  root in /home/ubuntu λ tcpdump -i any -c 10 -ttt
-  tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-  listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
-   00:00:00.000000 IP gns3vm.65522 > 42.120.72.99.2539: Flags [P.], seq 2112824520:2112824628, ack 824803895, win 501, length 108
-   00:00:00.000025 IP gns3vm.65522 > 42.120.72.99.2539: Flags [P.], seq 108:144, ack 1, win 501, length 36
-   00:00:00.000022 IP gns3vm.65522 > 42.120.72.99.2539: Flags [P.], seq 144:260, ack 1, win 501, length 116
-   00:00:00.000016 IP gns3vm.65522 > 42.120.72.99.2539: Flags [P.], seq 260:296, ack 1, win 501, length 36
-   00:00:00.000229 IP localhost.localdomain.58762 > localhost.domain: 16067+ [1au] PTR? 99.72.120.42.in-addr.arpa. (54)
-   00:00:00.134158 IP localhost.localdomain.49429 > localhost.domain: 50225+ [1au] PTR? 53.0.0.127.in-addr.arpa. (52)
-   00:00:00.000055 IP gns3vm.65522 > 42.120.72.99.2539: Flags [P.], seq 296:780, ack 1, win 501, length 484
-   00:00:00.000092 IP localhost.domain > localhost.localdomain.49429: 50225 1/0/1 PTR localhost. (75)
-  ```
+  设置时间戳，具体可用值参考`pcap-tstamp`
 
-- -r
+- `-t|-tt|-ttt|-tttt|-ttttt`
 
-  读取用-w生成的文件
+  具体看man page，==其中包含 delta time 设置==
 
-  ```
-  [root@chz Desktop]# tcpdump -r test 
-  reading from file test, link-type EN10MB (Ethernet)
-  10:55:13.395594 IP 192.168.80.200 > chz: ICMP echo request, id 3248, seq 675, length 64
-  10:55:13.395650 IP chz > 192.168.80.200: ICMP echo reply, id 3248, seq 675, length 64
-  10:55:14.420008 IP 192.168.80.200 > chz: ICMP echo request, id 3248, seq 676, length 64
-  10:55:14.420065 IP chz > 192.168.80.200: ICMP echo reply, id 3248, seq 676, length 64
-  10:55:15.443622 IP 192.168.80.200 > chz: ICMP echo request, id 3248, seq 677, length 64
-  ```
+- `-v|-vv|-vvv`
 
-- -l
+  verbose out，具体查看 man page
 
-  buffer stdout中的信息，可以结合pipeline将信息以==明文==的方式输出到文件中
+## Output format
+
+tcpdump 根据协议不同输出的内容的也不同
+
+- timestamp
+
+  默认每行都会输出 timestamp，通常以`hh:mm:ss.frac`的格式输出 accurate as the kernel’s clock。可以使用 `-t`来改变timestamp格式（例如 delta）
+
+- link level headers
+
+  if the `-e` option is given, the link level header is printed out. 
+
+- IPv4 packets
+
+  需要结合`-v`才会显示出来
 
   ```
-  cpl in ~ λ sudo tcpdump -li wlp1s0 tcp and host 1.1.1.1 | tee data
+  13:57:43.686243 lo    In  IP (tos 0x0, ttl 64, id 29563, offset 0, flags [DF], proto TCP (6), length 131)
+      127.0.0.1.15490 > 127.0.0.1.44690: Flags [P.], cksum 0xfe77 (incorrect -> 0x5332), seq 2199:2278, ack 2687, win 1535, options [nop,nop,TS val 3435790601 ecr 3435790600], length 79
   ```
 
-- -w
+  通常包含`tos`, `ttl`, `id`, `offset`, `flags [flags]`, `proto`, `length`, `options` 几个字段
 
-  将数据包以==raw==的格式(binary file)写入到文件，所有内容将不会以标准输出流输出。如果和`-G`一起使用需要以`strftime`的格式命名
+  flags 通常是 MF and DF，如果显示的值是`+`就表示MF(the more fragments)，如果显示的值是`DF`就表示DF(don’t fragments)，如果显示的`.`就表示没有设置分片位
 
-  ```
-  [root@chz Desktop]# tcpdump -w test -i ens33
-  ```
-  
-- -C  file_size
+- TCP packets
 
-  当抓到的单个文件大于file_size(1 == 1 millions bytes)时，会新生成一个文件，后生成的文件以`test[1++]`的格式命名
+  the general format of a TCP protocol line is:
 
-  ```
-  cpl in /tmp λ sudo tcpdump -i wlp1s0 -n -G 30 -w test.pcap -C 10
-  ```
-  
-- -G 
+  `src > dst: Flags [tcpflags], seq data-seqno, ack ackno, win window, urg urgent, options [opts], length len`
 
-  在指定间隔(sec)后向文件中写入也可以发送SIGINT信号中断进程提前写入，一般与-w或-W一起使用。`-w`必须以==`strftime`==格式命名
+  TCPflags 通常是如下的值`S(SYN)`, `.(ACK)`, `F(FIN)`, `P(PUSH)`, `R(RST)`, `U(URG)`, `W(ECN CWR)`, `E(ECN-Echo)`, `none(if no flags are set)`
+
+  data-seqno 序列号
 
   ```
-  sudo tcpdump -i wlp1s0 -n -G 30 -w %M%S.pcap
-  ```
-  
-- ==-W==
-
-  限制生成的文件个数，和-C，-G一起使用。
-
-  ```
-  cpl in /tmp λ sudo tcpdump -i wlp1s0 -n -G 30 -w %M%S.pcap -W 3
-  cpl in /tmp λ ls
-   0019.pcap
-   0049.pcap
-   0119.pcap
+  IP rtsg.1023 > csam.login: Flags [P.], seq 2:21, ack 1, win 4096, length 19
   ```
 
-- -z command
+  seq 2:21 表示当前的seq number 是 2，next seq number 是 21
 
-  在每次rotation后，都执行命令。需要和`-G`或`-C`一起使用否则无效
+- dns UDP packets
 
-  ```
-  
-  ```
-  
-- -e
-
-  ==显示link-layer MAC地址==
+  `src > dst:id op?flags qtype qclass name(len)`
 
   ```
-  [root@chz Desktop]# tcpdump -e -i ens33 
-  tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-  listening on ens33, link-type EN10MB (Ethernet), capture size 262144 bytes
-  11:04:30.371765 00:50:56:32:1b:8c (oui Unknown) > 00:0c:29:d7:d1:68 (oui Unknown), ethertype IPv4 (0x0800), length 98: 192.168.80.200 > chz: ICMP echo request, id 3352, seq 1, length 64
-  11:04:30.371881 00:0c:29:d7:d1:68 (oui Unknown) > 00:50:56:32:1b:8c (oui Unknown), ethertype IPv4 (0x0800), length 98: chz > 192.168.80.200: ICMP echo reply, id 3352, seq 1, length 64
-  11:04:30.372686 00:0c:29:d7:d1:68 (oui Unknown) > 00:50:56:e3:f8:b0 (oui Unknown), ethertype IPv4 (0x0800), length 87: chz.40942 > gateway.domain: 12072+ PTR? 139.80.168.192.in-addr.arpa. (45)
-  ```
-  
-- -F file
-
-  使用文件作为filter
-
-  ```
-  root in /home/ubuntu λ cat > filter <<EOF
-  heredoc> tcp[13] == 2
-  heredoc> EOF
-  root in /home/ubuntu λ cat filter
-  tcp[13] == 2
-  root in /home/ubuntu λtcpdump -i any -c 3 -F filter
-  tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-  listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
-  08:38:10.664230 IP gns3vm.48340 > 169.254.0.4.http: Flags [S], seq 2275304406, win 64240, options [mss 1460,sackOK,TS val 2008682951 ecr 0,nop,wscale 7], length 0
-  08:38:11.660677 IP gns3vm.48342 > 169.254.0.4.http: Flags [S], seq 2028759254, win 64240, options [mss 1460,sackOK,TS val 2008683948 ecr 0,nop,wscale 7], length 0
-  08:38:12.661094 IP gns3vm.48344 > 169.254.0.4.http: Flags [S], seq 459183679, win 64240, options [mss 1460,sackOK,TS val 2008684948 ecr 0,nop,wscale 7], length 0
-  3 packets captured
-  3 packets received by filter
-  0 packets dropped by kernel
+  15:03:44.246402 wlp1s0 Out IP 30.131.78.33.53904 > 30.30.30.30.53: 19926+ A? baidu.com. (27)
   ```
 
-- -K | --dont-verify-checksums
+## Filter Expressions
 
-  不计算crc冗余码
+> man pcap-filter
+>
+> ==需要注意的是 filter expressions 应用于每一个包==
 
-- -l
+过滤表达式，由多个 premitives 组成，premitives 由 id 组成，id 由多个 qulifier 组成。qulifier 可以是如下几种
 
-  将输出到stdout的内容输出到line buffered中
+1. type
 
-  ```
-  tcpdump -l | tee dat
-  ```
+   what kind of thing the id name or number refers to  . Possible types are `host`, `net`,  `port` and `portrange`. ==If there is no type qualifier, `host` is assumed.==
 
-- `-s <snaplen>`
+2. dir
 
-  抓固定长度的包，默认抓262144bytes
+   dir qualifiers specify a particular transfer direction to and/or from id. Possible protos are: `ether`, `fddi`, `tr`, `wlan`, `ip`, `ip6`, `arp`, `rarp`, `decnet`, `tcp` and `udp`
 
-  ```
-  cpl in ~ λ sudo tcpdump -nni any -s 60 -c 10
-  tcpdump: data link type LINUX_SLL2
-  tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
-  listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 60 bytes
-  16:20:45.271363 lo    In  IP 127.0.0.1.45414 > 127.0.0.1.1089: Flags [.], ack 4088476552, win 512, options [ [|tcp]
-  16:20:45.271397 lo    In  IP 127.0.0.1.1089 > 127.0.0.1.45414: Flags [.], ack 1, win 512, options [ [|tcp]
-  16:20:45.670890 wlp1s0 B   ARP, Request who-has 192.168.10.1 (ff:ff:ff:ff:ff:ff) tell 192.168.10.1, length 46
-  16:20:45.687370 lo    In  IP 127.0.0.1.37506 > 127.0.0.1.15490: Flags [P.], seq 3269200592:3269200707, ack 896792731, win 621, options [ [|tcp]
-  ```
+3. proto
 
-## TCP flags
+   proto qualifiers restrict the match to a particular protocol. Possibel protos are：`ether`, `fddi`, `tr`，`wlan`，`ip`，`ip6`，`arp`，`rarp`，`decent`，`tcp` and `udp`. ==If there is no proto qualifier, all protocols consistent with the type are assumed==
 
-```
-IP rtsg.1023 > csam.login: Flags [S], seq 768512:768512, win 4096, opts [mss 1024]
-              IP csam.login > rtsg.1023: Flags [S.], seq, 947648:947648, ack 768513, win 4096, opts [mss 1024]
-              IP rtsg.1023 > csam.login: Flags [.], ack 1, win 4096
-              IP rtsg.1023 > csam.login: Flags [P.], seq 1:2, ack 1, win 4096, length 1
-              IP csam.login > rtsg.1023: Flags [.], ack 2, win 4096
-              IP rtsg.1023 > csam.login: Flags [P.], seq 2:21, ack 1, win 4096, length 19
-              IP csam.login > rtsg.1023: Flags [P.], seq 1:2, ack 21, win 4077, length 1
-              IP csam.login > rtsg.1023: Flags [P.], seq 2:3, ack 21, win 4077, urg 1, length 1
-              IP csam.login > rtsg.1023: Flags [P.], seq 3:4, ack 21, win 4077, urg 1, length 1
-```
+4. logical expression
 
-- S：代表SYN
-- . : 代表ACK
-- F：代表FIN
-- P：代表PUSH
-- R：代表RST
-- U：代表URG
-- W：代表ECN CWR
-- E：代表ECN-Echo
+   逻辑表达式, `and(&&)`, `or(||)`, `not(!)`
 
-例如第一行表示从rtsg 1023端口发往csam login端口，tcp接受窗口为4096byte，seq为768512，没有发送数据
+### primitives
 
-注意，如下并不是 tcp flags，DF 表示 3 层 IP 的 don’t fragement 标志 
+顾名思义
 
-```
-21:54:19.343958 wlp1s0 Out IP (tos 0xc0, ttl 1, id 0, offset 0, flags [DF], proto IGMP (2), length 32, options (RA))
-    192.168.2.194 > 224.0.0.251: igmp v2 report 224.0.0.251
-```
+- `src|dst host <host>`
+- `host <host>`
+- `ether src|dst <ehost>`
+- `ether host ehost`
+- `gateway <host>`
 
-## Filter
+- `src|dst net <net>`
+
+- `net <net>`
+
+  an IPv4 networ number can be written as a dotted quad(e.g., 192.168.1.0)，dotted triple (e.g., 192.168.1), dotted pair (e.g., 172.16), or single number (e.g., 10); the netmask is 255.255.255.255 for a dotted quad (which means that it;s really a host match), 255.255.255.0 for a dotted triple, 255.255.0.0 for a dotted pair, or 255.0.0.0 for a single number
+
+- `net <net> mask <netmask>`
+
+- `net net/len`
+
+- `src|dst port <port>`
+- `port <port>`
+
+- `src|dst portrange <port1-port2>`
+
+- `portrange <port1-port2>`
+
+- `less|greater <length>`
+
+- `proto \<protocol>`
+
+  Proto 过滤器用来过滤某个协议的数据，关键字为 `proto`，可省略。proto 后面可以跟上协议号或协议名称，支持 `icmp`, `igmp`, `igrp`, `pim`, `ah`, `esp`, `carp`, `vrrp`, `udp`和 `tcp`。因为通常的协议名称是保留字段，所以在于 proto 指令一起使用时，必须根据 shell 类型使用一个或两个反斜杠（\）来转义
+
+- `tcp,udp,icmp`
+
+  abbreviation for `proto \protocol`
+
+- `ether proto <protocol>`
+
+- `ip,arp`
+
+  abbreviation for `ether proto \protocol`
+
+- `inbound | outbound`
+
+  packet was recieved | sent by the host performing the capturee rather than being sent | received by that host
+
+- `vlan [vlan_id]`
+
+  true if the packet is an IEEE 802.1Q VLAN packet
+
+### TCP Flag Filter
 
 
-
-> 如果没有指定过滤器，所有的数据包(==所有的协议包==)会被捕捉。具体查看 pcap-filter(7)。与wireshark的过滤条件相同
-
-### proto
-
-Proto 过滤器用来过滤某个协议的数据，关键字为 `proto`，可省略。proto 后面可以跟上协议号或协议名称，支持 `icmp`, `igmp`, `igrp`, `pim`, `ah`, `esp`, `carp`, `vrrp`, `udp`和 `tcp`。因为通常的协议名称是保留字段，所以在于 proto 指令一起使用时，必须根据 shell 类型使用一个或两个反斜杠（\）来转义。Linux 中的 shell 需要使用两个反斜杠来转义，MacOS 只需要一个
-
-```
-[root@chz Desktop]# tcpdump -i ens33 proto \\tcp
-或
-[root@chz Desktop]# tcpdump -i ens33 tcp
-#如果后面还有参数需要使用and连接
-cpl in ~ λ sudo tcpdump -nni wlp1s0 tcp and host 1.1.1.1
-```
-
-### host
-
-Host 过滤器用来过滤某个主机的数据报文。例如：
-
-```
-[root@chz Desktop]# tcpdump -i ens33 host 192.168.80.200
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on ens33, link-type EN10MB (Ethernet), capture size 262144 bytes
-11:15:53.352025 IP 192.168.80.200 > chz: ICMP echo request, id 3486, seq 1, length 64
-11:15:53.352103 IP chz > 192.168.80.200: ICMP echo reply, id 3486, seq 1, length 64
-11:15:54.357307 IP 192.168.80.200 > chz: ICMP echo request, id 3486, seq 2, length 64
-11:15:54.357366 IP chz > 192.168.80.200: ICMP echo reply, id 3486, seq 2, length 64
-11:15:58.359014 ARP, Request who-has 192.168.80.200 tell chz, length 28
-11:15:58.359522 ARP, Reply 192.168.80.200 is-at 00:50:56:32:1b:8c (oui Unknown), length 46
-11:15:58.518641 ARP, Request who-has chz tell 192.168.80.200, length 46
-11:15:58.518657 ARP, Reply chz is-at 00:0c:29:d7:d1:68 (oui Unknown), length 28
-```
-
-该命令会抓取所有发往主机 `192.168.80.200` 或者从主机 `192.168.80.200` 发出的流量。如果想==只抓取从该主机发出的流量(src host)==，可以使用下面的命令：
-
-```
-[root@chz Desktop]# tcpdump -i ens33 src host 192.168.80.200
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on ens33, link-type EN10MB (Ethernet), capture size 262144 bytes
-11:17:12.199686 IP 192.168.80.200 > chz: ICMP echo reply, id 8174, seq 1, length 64
-11:17:13.210913 IP 192.168.80.200 > chz: ICMP echo reply, id 8174, seq 2, length 64
-11:17:14.211471 IP 192.168.80.200 > chz: ICMP echo reply, id 8174, seq 3, length 64
-11:17:15.211456 IP 192.168.80.200 > chz: ICMP echo reply, id 8174, seq 4, length 64
-11:17:16.212138 IP 192.168.80.200 > chz: ICMP echo reply, id 8174, seq 5, length 64
-```
-
-==只抓取目标是该主机的流量(dst host)==
-
-```
-[root@chz Desktop]# tcpdump -i ens33 dst host 192.168.80.200
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on ens33, link-type EN10MB (Ethernet), capture size 262144 bytes
-11:17:51.266870 IP chz > 192.168.80.200: ICMP echo request, id 8174, seq 40, length 64
-11:17:52.269125 IP chz > 192.168.80.200: ICMP echo request, id 8174, seq 41, length 64
-11:17:53.271534 IP chz > 192.168.80.200: ICMP echo request, id 8174, seq 42, length 64
-```
-
-### net
-
-过滤指定网段的数据包，使用CIDR格式
-
-```
-[root@chz Desktop]# tcpdump -i ens33 net 192.168.80.0/24
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on ens33, link-type EN10MB (Ethernet), capture size 262144 bytes
-11:28:05.550637 IP chz > 192.168.80.200: ICMP echo request, id 8174, seq 653, length 64
-11:28:05.550987 IP 192.168.80.200 > chz: ICMP echo reply, id 8174, seq 653, length 64
-11:28:05.552051 IP chz.39578 > gateway.domain: 6019+ PTR? 200.80.168.192.in-addr.arpa. (45)
-```
-
-==如果只想抓取该网段发出的数据包(src net)==
-
-```
-[root@chz Desktop]# tcpdump -i ens33 src net 192.168.80.0/24
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on ens33, link-type EN10MB (Ethernet), capture size 262144 bytes
-11:29:26.704333 IP chz > 192.168.80.200: ICMP echo request, id 8174, seq 734, length 64
-11:29:26.704664 IP 192.168.80.200 > chz: ICMP echo reply, id 8174, seq 734, length 64
-11:29:26.705091 IP chz.54563 > gateway.domain: 52031+ PTR? 200.80.168.192.in-addr.arpa. (45)
-```
-
-==如果只想抓取目标是该网段的数据包(dst net)==
-
-```
-[root@chz Desktop]# tcpdump -i ens33 dst net 192.168.80.0/24
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on ens33, link-type EN10MB (Ethernet), capture size 262144 bytes
-11:30:31.828019 IP chz > 192.168.80.200: ICMP echo request, id 8174, seq 799, length 64
-11:30:31.828837 IP 192.168.80.200 > chz: ICMP echo reply, id 8174, seq 799, length 64
-11:30:31.829975 IP chz.54657 > gateway.domain: 30303+ PTR? 200.80.168.192.in-addr.arpa. (45)
-```
-
-### port
-
-Port 过滤器用来过滤通过某个端口的数据报文，关键字为 `port`。==同样也有src port 和 dst port==例如：
-
-```
-[root@chz Desktop]# tcpdump -i ens33 port 80
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on ens33, link-type EN10MB (Ethernet), capture size 262144 bytes
-11:13:57.551557 IP 192.168.80.200.43430 > chz.http: Flags [S], seq 2715582199, win 64240, options [mss 1460,sackOK,TS val 1613393823 ecr 0,nop,wscale 7], length 0
-11:13:57.551664 IP chz.http > 192.168.80.200.43430: Flags [R.], seq 0, ack 2715582200, win 0, length 0
-```
-
-### portrange
-
-过滤指定范围内的端口号的数据包。==同样也有src portrange 和 dst portrange==
-
-```
-[root@chz Desktop]# tcpdump -i ens33 portrange 80-3306
-```
-
-### flags
 
 ![Snipaste_2020-08-25_00-39-07](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220719/Snipaste_2020-08-25_00-39-07.4kvfcqtsrsow.webp)
 
-首部20bytes，标志位从第13个octet（8bits一组）算起
 
-    |        		| 
-    |---------------| 
-    |C|E|U|A|P|R|S|F| 
-    |---------------| 
-    |7 6 5 4 3 2 1 0|
-
-ACK $2^4$
-
-SYN $2^1$ 
-
-FIN $2^0$
-
-如果只想要表示SYN包可以使用`tcp[13] == 2`，如果想表示包含SYN包的可以使用`tcp[13] == 2 & 2 == 2`，也可以使用name的形式`tcp-fin`, `tcp-syn`, `tcp-rst`, `tcp-push`, `tcp-ack`, `tcp-urg`.例如
 
 ```
-tcpdump -i xl0 'tcp[tcpflags] & tcp-push != 0'
+0                            15                              31
+-----------------------------------------------------------------
+|          source port          |       destination port        |
+-----------------------------------------------------------------
+|                        sequence number                        |
+-----------------------------------------------------------------
+|                     acknowledgment number                     |
+-----------------------------------------------------------------
+|  HL   | rsvd  |C|E|U|A|P|R|S|F|        window size            |
+-----------------------------------------------------------------
+|         TCP checksum          |       urgent pointer          |
+-----------------------------------------------------------------
 ```
 
- 只抓PUSH的包
+TCP header 通常 20 字节(octets)，除非指定了 TCP options。从 0 开始算，标志位出现在第 13 个字节
 
-## 例子
+```
+0             7|             15|             23|             31
+----------------|---------------|---------------|----------------
+|  HL   | rsvd  |C|E|U|A|P|R|S|F|        window size            |
+----------------|---------------|---------------|----------------
+|               |  13th octet   |               |               |
+```
 
-> 可以使用逻辑运算符('!' or 'not'；‘&&’ or  ‘and’；'||' or 'or')，也可以使用主机名，也可以使用子表达式
+假设 13th octect number 是一个 8 bit unsinged integer，需要由 binary number 转成 decimal number
 
-1. 
-   
-   ```
-   [root@chz Desktop]# tcpdump -i ens33 host 192.168.80.200 && 192.168.80.100
-   tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-   listening on ens33, link-type EN10MB (Ethernet), capture size 262144 bytes
-   19:59:51.892328 IP 192.168.80.200 > chz: ICMP echo request, id 2177, seq 1, length 64
-   19:59:51.892465 IP chz > 192.168.80.200: ICMP echo reply, id 2177, seq 1, length 64
-   ```
+```
+|C|E|U|A|P|R|S|F|
+|---------------|
+|0 0 0 0 0 0 1 0|
+|---------------|
+|7 6 5 4 3 2 1 0|
+```
 
-   同时捕捉192.168.80.200和192.168.80.100数据包
-   
-2. ```
-   [root@chz opt]# tcpdump -i ens33 not arp
-   tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-   listening on ens33, link-type EN10MB (Ethernet), capture size 262144 bytes
-   ```
+所以如果需要表示 SYN，那么可以使用`tcp[13] == 2` 表示 13th octect 的值是 `00000010 == 2`
 
-   捕捉非arp协议的
+如果需要表示 SYN + ACK，那么可以使用`tcp[13] == 18` 表是 13th octect 的值是 `00010010 == 18`
 
-## TCP抓包
+如果需要抓只含有某个标志位的包需要怎么办？这是就需要`&`操作(与计算)
 
-> 可以使用nc来测试
+`tcp[13] & 2 == 2`，表示 13th octect 的值 & 2 的值 一定是 2，即表示 一定包含 SYN。==需要注意的一点&在shell中有特殊的含有(表示 async )，所有在 tcpdump 中需要将 filter expression 加上 single qutoed==。==同时抓 syn-ack 非常有助于对 TCP 异常的问题排查，例如 TCP 参数错误（通常都是由某几项 TCP options 导致，而 TCP options 都是在握手时协商预设的）导致连接异常，都是在 3 way handshake 中体现的==。同理的如果需要抓 RST 包，可以使用`tcp[13] & 4 == 4`
 
-- 建立连接 `nc 1.1.1.1 80`
+## Examples
 
-  ==tcpdump只会在第一个包以绝对的方式显示seq，之后都会以相对的方式显示seq，可以使用`-S`参数==
+同时匹配一个包源目IP是192.168.80.200 和 192.168.80.100
 
-  ```
-  cpl in ~ λ sudo tcpdump -nni wlp1s0 tcp and host 1.1.1.1
-  tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
-  listening on wlp1s0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
-  12:59:39.143646 IP 30.226.76.42.52018 > 1.1.1.1.443: Flags [S], seq 2620238540, win 64240, options [mss 1460,sackOK,TS val 1232551602 ecr 0,nop,wscale 7], length 0
-  12:59:39.390211 IP 1.1.1.1.443 > 30.226.76.42.52018: Flags [S.], seq 3357268989, ack 2620238541, win 65535, options [mss 1460,nop,nop,sackOK,nop,wscale 10], length 0
-  12:59:39.390295 IP 30.226.76.42.52018 > 1.1.1.1.443: Flags [.], ack 1, win 502, length 0
-  ```
+```
+tcpdump -i ens33 host 192.168.80.200 && 192.168.80.100
+```
 
-- 关闭连接
+匹配包中TCPflags 含有 SYN 的
 
-  ```
-  
-  ```
+```
+tcpdump -i any tcp[13] & 2 == 2
+```
 
-  
+抓30秒的包
+
+```
+tcpdump -i any -G 30 -W 1 -w /tmp/a.pcap
+```
+
+超详细抓包
+
+```
+tcpdump -nveSA#i ens0 
+```
+
