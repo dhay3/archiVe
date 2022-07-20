@@ -37,17 +37,23 @@ tcpdump 是一个基于 C 开发的 CLI 抓包工具，同样的还有 wireshark
 
 - promiscuous mode
 
+  简短的说如果NIC被置于混杂模式，LAN中的所有数据包都会到该NIC。所以需要注意的一点是，混杂模式是不安全的。例如宿主机的NIC设置成了 混杂模式，那么宿主机上的所有其他虚拟机都能获取到其他虚拟机上的数据包
+
   On broadcast LANs such as Ethernet, if the network isn’t switched, or if the adapter is connected to a “mirror port” on a switch to which all packets passing through the switch are sent, a network adapter receives all packets on the LAN, including unicast or multicast packets not sent to a network address that the netwrok adapter isn’t configured to recognize
 
-  Normally, the adapter will discard those packets; however, many network adpaters support “promiscuous mode”, which is a mode in which all packets, even if they are not sent to an mode in which all packets, even if they are not sent to an address that the adapter recognized, are provided to the host. This is useful for passively capturing traffic between two or more other hosts for analysis
+  Normally, the adapter will discard those packets; however, many network adpaters support “promiscuous mode”, ==which is a mode in which all packets, even if they are not sent to an address that the adpater recognizes, are provided to the host.==This is useful for passively capturing traffic between two or more other hosts for analysis
 
   Note that even if an application dose not set promiscuous mode, the adpter could well be in promiscuous mode for some other reason
 
   ==For now, this doesn’t work on the “any” device; if an argument of “any” or NULL is supplied, the setting of promiscuous mode is ignored==
 
+  `tcpdump -i any` 不支持混杂模式
+
+  promiscuous mode is often used to diagnose network connectivity issues. There are programs that make use of this feature ot show the user all the data being transferrred over the network. Some protocols like FTP and Telnet transfer data and passwords in clear text, without encryption, and network scanners can see this data. Therefore, computer users are encourage to stay away from insecure protocols like telnet and use more ones such as SSH
+
 - monitor mode
 
-  On IEEE 802.11 wireless LANs（可以直接理解成 WIFI）, even if an adapter is in promiscuous mode, it will supply to the host only frames for the network with which it’s associated. It might also supply only data frames
+  On ==IEEE 802.11 wireless LANs==（可以直接理解成 WIFI）, even if an adapter is in promiscuous mode, it will supply to the host only frames for the network with which it’s associated. It might also supply only data frames
 
   In “monitor mode”, sometimes also called “rfmon mode” ( for “Radio Frequency MONitor” ), the adapter will supply all frames that it receives, with 802.11 headers, and might supply a pseudo-header with radia information about the frames as well.
 
@@ -434,4 +440,3 @@ tcpdump -i any -G 30 -W 1 -w /tmp/a.pcap
 ```
 tcpdump -nveSA#i ens0 
 ```
-
