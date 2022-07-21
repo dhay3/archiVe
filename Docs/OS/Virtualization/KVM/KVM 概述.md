@@ -7,15 +7,16 @@ kernel-based virutal machine (KVM) 是一种针对 Linux 的开源的虚拟化�
 
 - VT
 
-vitualization technology 虚拟化技术
+  vitualization technology 虚拟化技术
 
 - HVM
 
-hardware Virtual machine 通常表示 X86 架构的 VT 扩展
+  hardware Virtual machine 通常表示 X86 架构的 VT 扩展
 
 - Intel VT/ AMD-V
 
-CPU 支持 VT 的扩展
+  CPU 支持 VT 的扩展
+
 ## FQA
 ### KVM VS Xen
 Xen 是一个外部的hypervisor，而 KVM 是Linux 内部的 hypervisor。这也意味着 KVM 比 Xen 使用更便捷

@@ -1,4 +1,4 @@
-# qemu-img/虚拟磁盘
+# qemu-img
 
 参考：
 
@@ -165,6 +165,8 @@ check-errors 通常包括如下几种状态码
 
 ### snapshot
 
+syntax：`snapshot`` [--object OBJECTDEF] [--image-opts] [-U] [-q] [-l | -a SNAPSHOT | -c SNAPSHOT | -d SNAPSHOT] FILENAME`
+
 - `-a`
 
   回滚到某一快照
@@ -270,8 +272,6 @@ Format specific information:
     corrupt: false
 ```
 
-
-
 ### resize
 
 syntax：`qemu-img resize [-f fmt] [--shrink] <filename> [+|- ]size`
@@ -287,7 +287,9 @@ Image resized.
 
 ### rebase
 
-changing the backing file of an image
+syntax：`rebase [--object OBJECTDEF] [--image-opts] [-U] [-q] [-f FMT] [-t CACHE] [-T  SRC_CACHE] [-p] [-u] -b BACKING_FILE [-F BACKING_FMT] FILENAME`
+
+changing the backing file of an image. only the formats qcow2 and qed support changing the backing file
 
 ### convert
 
@@ -324,24 +326,19 @@ disk size: 4 KiB
 
   如果多线程处理器，可以加速处理
 
-## format
+## Formats
 
 qemu支持的file format有如下几种类型
 
 - raw
 
-  默认使用的类型，可以将这种格式的file导入到其他的emulators。直接分配，分配多少占用宿主机就是多少。也可以通过`dd`来生成raw类型的hard disk image
+  ==默认使用的类型==，可以将这种格式的 image file导入到其他的emulators。如果OS支持`ext2`或者`ext3` on Linux or NTFS on windows。只有实际使用的扇区占用实际的物理磁盘空间。可以使用 `qemu-img info` 来查看实际占用的物理磁盘空间或者是用`ls -ls`
 
-  ```bash
-  cpl in /sharing/vm λ dd if=/dev/zero of=dd bs=10M count=1
-  1+0 records in
-  1+0 records out
-  10485760 bytes (10 MB, 10 MiB) copied, 0.00958298 s, 1.1 GB/s
-  cpl in /sharing/vm λ ll
-  .rw-r--r-- cpl cpl  10 MB Wed Jun  2 18:11:49 2021  dd
-  .rw-r--r-- cpl cpl 192 KB Wed Jun  2 18:11:00 2021  qcow2
-  .rw-r--r-- cpl cpl  10 MB Wed Jun  2 18:10:55 2021  raw
-  ```
+  支持的选项：
+
+  - preallocation
+
+    支持如下几个值（off, falloc, full）。其中 full 表示直接分配实际的大小
 
 - qcow2
 
@@ -356,6 +353,32 @@ qemu支持的file format有如下几种类型
   .rw-r--r-- cpl cpl 192 KB Wed Jun  2 18:11:00 2021  qcow2
   .rw-r--r-- cpl cpl  10 MB Wed Jun  2 18:10:55 2021  raw
   ```
+
+  支持的选项：
+
+  - compat
+
+    版本控制参数，具体查看man page
+
+  - backing_file
+
+    filename of a base image
+
+  - backing_fmt
+
+    image format of the base image
+
+  - encryption
+
+    use 128 bit AES-CBC encryption on the image
+
+  - preallocation
+
+  - data_file
+
+    filename where all guest data will be stored. If this option is used, the qcow2 file will only contain the image’s metadata
+
+    Note: data loss will occur if the given filename already exists when using this option with `qemu-img creat` since `qemu-img` will  create the data file anew, overwriting the file anew overwriting the file’s original contents 
 
 - other
 

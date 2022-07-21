@@ -16,7 +16,7 @@ Common users include：
 - a SOCKS or HTTP ProxyCommand for ssh(1)
 - and much, much more
 
-nc有很多的变种，有nc.traditional(GNU基础版)，nc.openbsd(openbsd版本)，netcat(nmap版)。不同版本的nc是可以互通。
+nc有很多的变种，有nc.traditional(GNU基础版)，nc.openbsd(openbsd版本)，netcat(nmap版，==通常叫做ncat==)。不同版本的nc是可以互通。
 
 ```
 root in ~ λ whereis nc

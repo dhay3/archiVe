@@ -56,4 +56,9 @@ modprobe kvm;modprobe kvm_intel
 modprobe kvm;modprobe kvm_amd
 ```
 
-如果 modprobe 不能载入 `kvm_intel` 或者 `kvm_amd` 但是可以载入 `kvm` 同时 `lscpu` 显示支持 VT，大概率可能是 BIOS 没有允许开启。可以通过`dmesg`来查看是否设置
+如果 modprobe 不能载入 `kvm_intel` 或者 `kvm_amd` 但是可以载入 `kvm` 同时 `lscpu` 显示支持 VT，大概率可能是 BIOS 没有允许开启。可以通过`dmesg`来导致错误的原因
+
+```
+dmesg | grep kvm
+```
+
