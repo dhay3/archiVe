@@ -1,3 +1,5 @@
+
+
 作者：明基专业摄影显示器
 链接：https://www.zhihu.com/question/19571221/answer/569037388
 来源：知乎
@@ -17,7 +19,7 @@ VGA接口也称为D-Sub接口。在CRT显示器时代，VGA接口是必备的。
 
 <img src="https://pic2.zhimg.com/50/v2-762220da3b6d54f9d15a4e4f8f08e3e8_hd.jpg?source=1940ef5c"/>
 
-## **DVI接口**
+## DVI接口
 
 <img src="https://pic2.zhimg.com/50/v2-5dd3c4951a6a5c178e773deb1ba6b422_hd.jpg?source=1940ef5c"/>
 
@@ -31,7 +33,7 @@ DVI的种类非常多，接口上有DVI-A、DVI-D、DVI-I，又可分为单通�
 
 现在有些支持4K分辨率的显示器，也带有DVI接口。为了达到4K的分辨率，在接口使用上就需要注意，不要使用DVI接口，否则是达不到4K分辨率的。      
 
-## **HDMI接口**
+## HDMI接口
 
 HDMI接口在2002年提出，现在已经发展到HDMI 2.1标准，而且随着行业发展，HDMI 2.1标准已经能够支持4K 120Hz及8K 60Hz，支持高动态范围成像（HDR），可以针对场景或帧数进行优化，向后兼容HDMI 2.0、HDMI 1.4。最主要的是，它是视音频同时传输的。
 
@@ -43,7 +45,7 @@ HDMI在物理接口上，有几种类型。主要有标准HDMI接口，mini HDMI
 
 <img src="https://pic4.zhimg.com/50/v2-e5be5a8d6d8dd9b0a17c5d61f209da59_hd.jpg?source=1940ef5c"/>
 
-## **DP接口**
+## DP接口
 
 DP（Display Port）接口是HDMI接口的竞争对手。在一些显卡与显示器上，除了有HDMI接口，也带有DP接口。目前DP接口发展到1.4版本，能传输10bit的4K 120Hz视频，也可以支持8K 60Hz视频。DP1.4兼容USB Type-C接口，这就意味着，我们可以使用DP1.4协议，在USB 3.1传输数据的同时，同步传输高清视频。从趋势来看，这对于推动周边影音及影像设备的升级，是非常有好处的。而且，DP接口也可以单根线同步传输声音，达到使用显示器声音的使用方式。
 
@@ -57,7 +59,7 @@ DP口定义了两种接头，全尺寸（Full Size）和迷你DP（Mini），两
 
 <img src="https://pic2.zhimg.com/50/v2-3527585f10c2696db83ca125449cb87e_hd.jpg?source=1940ef5c"/>
 
-## **USB Type-C接口**
+## USB Type-C接口
 
 USB接口早已被大家所熟知，以往USB接口被设计用来传输数据，所以它在移动硬盘等存储设备的使用上非常常见。现在USB 3.1 Gen2的速度已经达到10Gbps，设计标准也可以满足视频、数据兼顾传输，所以在一些显示器上，也能够发现USB 3.1接口。现在的USB3.1接口，已经能够满足4K 30P的分辨率显示，大致与HDMI1.4在同一水平。但它以后再进行升级，必将能成为最通用的显示传输方式。需要注意的是，USB 3.1 Gen1就是USB 3.0，而USB 3.1 Gen2才是真正的USB3.1。
 

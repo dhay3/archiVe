@@ -1,8 +1,10 @@
-# 磁盘接口
+# Hard Disk Interfaces
 
-转载:
+ref:
 
 https://www.cnblogs.com/awpatp/archive/2013/01/29/2881431.html
+
+https://en.wikipedia.org/wiki/Hard_disk_drive#Competition_from_SSDs
 
 ## IDE
 
