@@ -2,11 +2,11 @@
 
 现有一张表person1
 
-<img src="..\..\..\imgs\_MySQL\Snipaste_2020-09-14_15-42-18.png"/>
+![Snipaste_2020-09-14_15-42-18](https://git.poker/dhay3/image-repo/blob/master/20220722/Snipaste_2020-09-14_15-42-18.6sii1sa8gpog.webp?raw=true)
 
 - 使用UNION要求字段数相同
 
-<img src="..\..\..\imgs\_MySQL\Snipaste_2020-09-14_15-44-21.png"/>
+![Snipaste_2020-09-14_15-44-21](https://git.poker/dhay3/image-repo/blob/master/20220722/Snipaste_2020-09-14_15-44-21.32pjksusdku8.webp?raw=true)
 
 - 使用相同字段数，不同字段
 
@@ -14,12 +14,14 @@
   >
   > 如果想要保留重复的字段使用UNION ALL
 
-<img src="..\..\..\imgs\_MySQL\Snipaste_2020-09-14_15-47-05.png"/>
+![Snipaste_2020-09-14_15-47-05](https://git.poker/dhay3/image-repo/blob/master/20220722/Snipaste_2020-09-14_15-47-05.3ouwlba2t88w.webp?raw=true)
 
 - UNION使用ORDER BY
 
 > 内层的排序不会生效，最外层的才会生效
 
-<img src="..\..\..\imgs\_MySQL\Snipaste_2020-09-14_16-05-19.png"/>
+![Snipaste_2020-09-14_16-05-19](https://git.poker/dhay3/image-repo/blob/master/20220722/Snipaste_2020-09-14_16-05-19.2aqjvzg9m5a8.webp?raw=true)
 
-<img src="..\..\..\imgs\_MySQL\Snipaste_2020-09-14_16-06-23.png"/>
+
+
+![Snipaste_2020-09-14_16-06-23](https://git.poker/dhay3/image-repo/blob/master/20220722/Snipaste_2020-09-14_16-06-23.6zyptnj0mpkw.webp?raw=true)
