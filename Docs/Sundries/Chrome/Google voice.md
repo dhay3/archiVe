@@ -6,7 +6,7 @@ https://www.v2ex.com/t/845214
 
 https://support.google.com/voice#topic=1707989
 
-https://www.youtube.com/watch?v=phgrdZoAa_k
+https://support.google.com/voice/answer/159519?hl=en
 
 ## Digest
 
@@ -42,6 +42,14 @@ google voice 会根据用户的账户来分配功能
 
 可以从上面看到使用 google workspace 账户，能比使用个人账户 功能多出好多。google workspace 怎么玩会另外出一篇文章
 
+### 回收策略
+
+google voice 一段时间内（大概是90天左右）没有使用，你会收到告警信息其中包含 reclaim date（the date the number will be removed）。收到告警信息后可以通过如下任一方式来保号
+
+1. make a call or answewr a call with your voice number
+2. send a text message with your voice number
+3. listen to your voicemail
+
 ## Register
 
 ### 方法一
@@ -62,11 +70,27 @@ google voice 会根据用户的账户来分配功能
 
 完全免费
 
+## Reclaim Ur voice number
+
+因为 google voice 的策略问题，voice number 在一段时间内不使用就会被回收。这里的回收直接不会注入到 VoIP 池中，默认会有 45 天的静默期，如果超过 45 天才会注入到 VoIP 池中，其他用户才可以强注该账号。
+
+这是可以使用按照 Register 中的 方法三 免费找回回收的账号。如果不会操作可以联系我
 
 
 
+## Permanent
 
+由于策略问题，legacy google voice 功能从个人账号中删除了（workspace  账号保留该功能）。仅仅是入口被删除，使用 携替号转网 的功能可以解决
 
+https://support.google.com/voice/answer/1065667?authuser=0#googlexfer
 
+携号转网（port），指的是可以将使用的其他运营商号码转到 google voice 的功能。这样可以同时拥有 2 个 voice number，这样就可以将 voice number make permanent
 
+携号转网需要收取 20$ 
+
+## Calling rates
+
+google voice 的费用比国内的运营商大都要良心。具体可以通过如下连接查询
+
+https://voice.google.com/rates
 
