@@ -16,7 +16,7 @@ POSIX 操作系统会分配一个数字用于跟踪打开的文件，这个数�
 
 一条shell命令，都会继承其父进程的文件描述符，因此==所有的shell命令，都会默认有三个文件描述符。==
 
-<img src="..\..\..\imgs\_Linux\480px-Stdstreams-notitle.svg.png"/>
+![480px-Stdstreams-notitle](https://git.poker/dhay3/image-repo/blob/master/20220727/480px-Stdstreams-notitle.6bfsgmevmmbk.webp?raw=true)
 
 我们可以在linux上查看流对应文件
 
@@ -63,7 +63,7 @@ ubuntu18.04
 
 syntax：`[n]> file | [n]>> file`
 
-将文件描述符重定向到file指定的文件(以写方式打开)，如果n是1可以省略，`1> file`
+将文件描述符n重定向到file指定的文件(以写方式打开)，如果n是1可以省略，`1> file`
 
 ```
 root in /opt λ cat /etc/hostname 1> t;cat t
@@ -72,6 +72,8 @@ ubuntu18.04
 root in /opt λ cat /etc/hostname > t;cat t
 ubuntu18.04
 ```
+
+`>>`表示以 append 的模式
 
 syntax：`&> file  | >& file`
 
@@ -198,7 +200,7 @@ test
 test
 ```
 
-==结合exec有特俗用法==，当前shell &3的内容被输入到tempfile，tempfile的内容被输入到当前shell  &3，删除文件时还是可以从&3读取到内容
+==结合exec有特殊用法==，当前shell &3的内容被输入到tempfile，tempfile的内容被输入到当前shell  &3，删除文件时还是可以从&3读取到内容
 
 ```
 [cpl@cyberpelican ~]$ F=$(mktemp)
@@ -210,6 +212,10 @@ hello world
 [cpl@cyberpelican ~]$ cat <&3
 hello world
 ```
+
+
+
+### sub shell 重定向
 
 
 

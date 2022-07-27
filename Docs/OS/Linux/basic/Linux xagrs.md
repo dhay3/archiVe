@@ -4,7 +4,7 @@
 
 https://www.ruanyifeng.com/blog/2019/08/xargs-tutorial.html
 
-由于只有少数命令支持标准输出做为标准输入，只接收命令行参数，==`xargs`是将标准输出转为命令行参数==，一般和`rm，mkdir，ls，mv，cp`一起使用
+由于只有少数命令支持标准输出做为标准输入，只接收命令行参数，==`xargs`是将标准输出转为命令行参数==，一般和`rm，mkdir，ls，mv，cp`一起使用(==提一嘴，有些命令是支持占位符的可以使用`-`来表示stdin的内容是从stdout中来的==)
 
 ```
 [root@chz Desktop]# echo 'xargs'|xargs mkdir 
