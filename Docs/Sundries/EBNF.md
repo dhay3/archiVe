@@ -6,11 +6,13 @@ https://matt.might.net/articles/grammars-bnf-ebnf/
 
 https://tomassetti.me/ebnf/
 
-EBNF(Extended Backups-Naur Form)是一个用于定义语言的语言(sudoers配置文件就是使用EBNF来定义的)，在BNF的基础上扩展了。EBNF由terminal symbols和non-terminal production rules组成
+https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form
 
+## Digest
 
+EBNF(Extended Backups-Naur Form)是一个用于定义语言的语言(sudoers配置文件就是使用EBNF来定义的)，在BNF的基础上扩展（extend）了。EBNF由terminal symbols 和 non-terminal（由 production rules） 组成
 
-## terminal symbols
+## Terminal symbols
 
 terminals也被称为tokens，是EBNF中最小的单元，==可以理解为二叉树的叶子节点==
 
@@ -37,7 +39,7 @@ terminals通常由如下表格中的类型组成，也可以是a quoted literal(
 |                       | Java block comment                  | /’/*’ .*? ‘*/’/                                              |                                                              |
 |                       | Python line comment                 | /’#’ ~[rnf]*/                                                |                                                              |
 
-## non-terminal 
+## Non-terminal 
 
 由terminal symbols和其他的non-terminal组成，==可以理解为二叉树的父节点==
 

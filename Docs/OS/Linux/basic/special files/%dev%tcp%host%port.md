@@ -31,7 +31,7 @@ ssh_config.bak  ssh_host_dsa_key  ssh_host_ecdsa_key.pub  ssh_host_rsa_key
 
 ```
 ┌─────( root)─────(/etc) 
- └> $ printf GET HTTP 1.1 /r/n'  > /dev/tcp/baidu.com/443
+ └> $ printf 'GET HTTP 1.1 /r/n'  > /dev/tcp/baidu.com/443
 
 ---
 
