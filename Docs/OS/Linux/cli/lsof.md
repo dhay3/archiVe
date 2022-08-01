@@ -1,6 +1,8 @@
 # linux lsof
 
-> lsof -nPi  tcp@172.16.253.1:3080
+> lsof 现在可以在 github 上看到源码
+>
+> https://github.com/lsof-org/lsof
 
 ## Digest
 
@@ -24,66 +26,7 @@ lsof  [ -?abChlnNOPQRtUvVX ] [ -A A ] [ -c c ] [ +c c ] [ +|-d d ] [
 • a stream (socket)
 • a executing file
 
-`lsof` 如果没有带有参数，==默认输出当前所有进程打开的所有文件==。默认字段如下
-具体可以查看`manual page /^\s+COMMAND`
-
-```
-root in /opt λ lsof | more
-COMMAND    PID TID            USER   FD      TYPE             DEVICE SIZE/OFF       NODE NAME
-systemd      1                root  cwd       DIR              252,1     4096          2 /
-```
-
-• COMMAND：进程的名称
-• PID：进程标识符
-• USER：进程所有者
-• FD：文件描述符（File descriptor 一个索引用于表示被打开的文件，inode的接口），具体可以参考 [FD]()
-https://segmentfault.com/a/1190000009724931
-	（1）cwd：表示current work dirctory，即：应用程序的当前工作目录，这是该应用程序启动的目录，除非它本身对这个目录进行更改
-	（2）txt ：该类型的文件是程序代码，如应用程序二进制文件本身或共享库，如上列表中显示的 systemd 程序
-	（3）lnn：library references (AIX);
-	（4）er：FD information error (see NAME column);
-	（5）jld：jail directory (FreeBSD);
-	（6）ltx：shared library text (code and data);
-	（7）mxx ：hex memory-mapped type number xx.
-	（8）m86：DOS Merge mapped file;
-	（9）mem：memory-mapped file;
-	（10）mmap：memory-mapped device;
-	（11）pd：parent directory;
-	（12）rtd：root directory;
-	（13）tr：kernel trace file (OpenBSD);
-	（14）v86  VP/ix mapped file;
-	（15）0：表示标准输入
-	（16）1：表示标准输出
-	（17）2：表示标准错误
-
-一般在标准输出、标准错误、标准输入后还跟着文件状态模式：r、w、u等
-	（1）u：表示该文件被打开并处于读取/写入模式
-	（2）r：表示该文件被打开并处于只读模式
-	（3）w：表示该文件被打开并处于
-	（4）空格：表示该文件的状态模式为unknow，且没有锁定
-	（5）-：表示该文件的状态模式为unknow，且被锁定
-同时在文件状态模式后面，还跟着相关的锁
-	（1）N：for a Solaris NFS lock of unknown type;
-	（2）r：for read lock on part of the file;
-	（3）R：for a read lock on the entire file;
-	（4）w：for a write lock on part of the file;（文件的部分写锁）
-	（5）W：for a write lock on the entire file;（整个文件的写锁）
-	（6）u：for a read and write lock of any length;
-	（7）U：for a lock of unknown type;
-	（8）x：for an SCO OpenServer Xenix lock on part of the file;
-	（9）X：for an SCO OpenServ Xenix lock on the entire file;
-	（10）space：if there is no lock.
-• TYPE：文件类型
-	（1）DIR：表示目录
-	（2）CHR：表示字符类型
-	（3）BLK：块设备类型
-	（4）UNIX： UNIX 域套接字
-	（5）FIFO：先进先出 (FIFO) 队列
-	（6）IPv4：网际协议 (IP) 套接字
-• DEVICE：运行该进程的磁盘名称
-• SIZE：文件的大小
-• NODE：inode
-• NAME：打开文件的确切名称
+`lsof` 如果没有带有参数，==默认输出当前所有进程打开的所有文件==。
 
 ## Output/Columns
 
@@ -158,9 +101,106 @@ lsof 输出默认有如下几个字段
 
 6. TYPE
 
-4. PPID
+   is the type of the node associated with the file。==TYPE 值较多，具体参考 man page==
 
-   
+   - IPv4/IPv6: socket（包括 stream socket 和 datagram socket），可以参考 [Linux socket]()
+
+   - STSO: stream socket
+
+   - unix: unix domain socket
+
+     如果在 NAME 字段中出现
+
+     type=STREAM 表示使用 steam socket
+
+     type=DGRAM 表示使用 datagram socket
+
+   - sock: unknow domain socket
+
+   - BLK: block special file
+
+   - CHR: character special file
+
+   - DEL: linux map file that has bee deleted
+
+   - REG: regular file
+
+   - DIR: a directory
+
+   - PIPE: PIPE
+
+   - FIFO: FIFO special file （具名管道符）
+
+   - LINK: symbolic link file
+
+   - PSXMQ: POSIX message queue file
+
+7. DEVICE
+
+   contains the device numbers
+
+   ```
+   systemd-j   389                             root  mem       REG              259,7  16777216    7995568 /var/log/journal/e628a91a78ee47159d95
+   ```
+
+   device number 可以使用`lsblk`来查看，`MAJ:MIN`部分
+
+8. SIZE,SIZE/OFF or OFFSET
+
+   is the size of the file or the file offset ==in bytes==
+
+   the file size is displayed in decimal
+
+   the offset is normally displayed in decimal with a leading `0t` if it contains 8 digits or less; in hexadecimal with a leading `0x` if it is longer than 8 digits
+
+   该列会显示打开的文件 size 和 offset
+
+   ```
+   systemd-t   748                 systemd-timesync   15u     unix 0x00000000333b7388       0t0      11758 type=STREAM (CONNECTED)
+   ```
+
+9. NODE
+
+   - the inode number of a local file
+   - the internel protocol type, eg `TCP`
+   - `STR` for a stream
+   - `CCITT` for  a stream
+
+10. NAME
+
+    - the name of the mount point and file system on which the file resides
+
+    - the name of a character special or block special device
+
+    - the local and remote Internet addresses of a network file
+
+      ```
+      # lsof -nPi tcp@localhost
+      COMMAND   PID USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME
+      qv2ray   1813  cpl   40u  IPv6  958250      0t0  TCP 127.0.0.1:47104->127.0.0.1:15490 (ESTABLISHED)
+      ```
+
+      由 local IP:port -> remote IP:port(state) 组成 （除处于 LISTEN 状态的）
+
+    - the address or name fo a UNIX domain socket
+
+      ```
+      systemd-u   390                             root    5u     unix 0x00000000d3f17f38       0t0      12501 type=DGRAM (CONNECTED)
+      ```
+
+      这里表示 uninx socket 使用的是 datagram socket
+
+    - `STR` followed by the straeam name
+
+    - the system directory name
+
+非默认字段
+
+1. PPID
+
+2. TASKCMD
+
+   smae as the process named in COMMAND column
 
 ## Request option
 
@@ -315,6 +355,12 @@ specifying `-a`, `-U`, and `-u foo` produces a  listing  of  only  UNIX  socket 
 
   如果用户被删除了，但是系统上该用户启动的进程还未结束，lsof就会报错`lsof: no pwd entry for UID 1000`，可以使用该参数关闭告警
 
+- `-Q`
+
+  ignore failed search terms.
+
+  如果报错 exit code 返回 0
+
 ### process
 
 - `-R`
@@ -384,6 +430,8 @@ specifying `-a`, `-U`, and `-u foo` produces a  listing  of  only  UNIX  socket 
   gns3serve 1139 gns3    9u  IPv4  24330      0t0  TCP gns3vm:3080->gns3vm:41224 (ESTABLISHED)
   ```
 
+  port 部分可以使用`port1-port2`表示 range
+
 - `-s [p:s]`
 
   如果没有`[p:s]` 显示 size，而不显示 offset
@@ -445,6 +493,40 @@ specifying `-a`, `-U`, and `-u foo` produces a  listing  of  only  UNIX  socket 
    以 numeric 的形式显示端口号
 
 ## Examples
+
+使用逻辑与查看 IPv4 pid 为 1234 进程打开的文件
+
+```
+lsof -i 4 -a -p 1234
+```
+
+查看和`wonderland.cc.puredue.edu`端口513-515关联打开的文件
+
+```
+lsof -i @wonderland.cc.purdue.edu:513-515
+```
+
+使用逻辑或查看 pid 456 123 用户为 1234, abe 打开的文件
+
+```
+lsof -p 456,123,789 -u 1234,abe
+```
+
+查看块文件打开的所有文件
+
+```
+lsof /dev/hd4
+```
+
+查看打开`/ect`的进程
+
+```
+➜  /etc lsof -w /etc
+COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF     NODE NAME
+zsh     52523 root  cwd    DIR  259,7    12288 12845057 /etc
+```
+
+## Specail examples
 
 ### 0x001   
 
