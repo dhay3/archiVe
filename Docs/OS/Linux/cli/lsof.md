@@ -103,7 +103,7 @@ lsof 输出默认有如下几个字段
 
    is the type of the node associated with the file。==TYPE 值较多，具体参考 man page==
 
-   - IPv4/IPv6: socket（包括 stream socket 和 datagram socket），可以参考 [Linux socket]()
+   - IPv4/IPv6: socket（包括 stream socket 和 datagram socket），可以参考 [Linux socket.md]()
 
    - STSO: stream socket
 
