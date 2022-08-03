@@ -58,3 +58,26 @@ Type=Application
 Categories=Office
 ```
 
+clion/goland desktop file
+
+```
+cpl in /usr/share/applications λ cat typora.desktop 
+[Desktop Entry]
+Name=CLion
+Exec=/usr/local/bin/clion
+Icon=/sharing/apps/clion-2022.2/bin/clion.svg
+Terminal=false
+Type=Application
+Categories=Deve
+
+cpl in /usr/share/applications λ cat goland.desktop 
+[Desktop Entry]
+Exec=/sharing/apps/GoLand-2021.1.2/bin/goland.sh
+MimeType=text/plain;
+Name=goland
+Type=Application
+Icon=/sharing/apps/GoLand-2021.1.2/bin/goland.svg
+Terminal=false
+Categories=Development
+```
+

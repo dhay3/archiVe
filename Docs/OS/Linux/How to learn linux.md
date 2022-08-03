@@ -1,10 +1,11 @@
 # How to learn linux
 
-The world is on the linux
+> The world is on the linux
 
 ## CLI
 
 1. https://man7.org/
+2. https://www.gnu.org/
 
 ## kernel
 
