@@ -42,8 +42,9 @@ RUN yum -y install tcpdump
 RUN yum -y install mtr
 RUN yum -y install nc
 RUN yum -y install curl
-RUM yum -y iperf
+RUN yum -y iptables
 
 CMD ["/bin/bash"]
 ```
 
+AUR GNS3 可能有 bug，我一直不能在 GNS3 中加对同一个 image 打包的不同 image 

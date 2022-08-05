@@ -26,7 +26,9 @@ https://stackoverflow.com/questions/73251815/traceroute-always-shows-the-packets
 
 syntax:`traceroute [options] host`
 
-traceroute 是 LInux 上的一个网络工具，显示从源到目的包的路径。==如果包能到达目的主机，traceroute 就认为是正常的，所以对于 4层的 probing mode, 即使目的主机没有打开端口只要回包了(不管他回了什么，ACL 通常直接将包丢掉所以也就不会回包)也是显示正常的（换言之 traceroute 并不能用于 port scanning）==
+traceroute 是 LInux 上的一个网络工具，显示从源到目的包的路径。==如果包能到达目的主机且有回包，traceroute 就认为是正常的。所以对于 4层的 probing mode, 即使目的主机没有打开端口只要回包了( 不管他回了什么 RST 还是 SYN-ACK )也是显示正常的（换言之 traceroute 并不能用于 port scanning）==
+
+提一嘴 ACL 通常直接将包丢掉所以也就不会回包，traceroute 就认为是有问题的
 
 see the link below
 
@@ -38,7 +40,7 @@ TTL 详情查看：[https://github.com/dhay3/archive/blob/master/Docs/Net/Grocer
 
 traceroute 使用 IP 协议中 TTL 字段来实现，traceroute 开始探测时会发一个 ttl 值为 1 的，然后监听 nexthop 发回的 ICMP “time exceeded” 包（到达 nexthop 后仍不是目的 IP 包就会被丢弃，然后回送ICMP type 11），然后源将 ttl 值加 1 继续发包往目的IP（==根据 traceroute 实现的逻辑和方式不同，可能会出现异步下发的情况，即实际 3 跳到达目的机，但是traceroute 发包的 ttl 能到 9 甚至更大的情况==）
 
-按照上述递归，直到回包是 ICMP “port unreachable”（默认使用UDP通常是30000以上的端口，如果端口没开就会回送 port unreachable） 或者是 TCP RST 或者是 hit max（ttl的值到了最大值，默认 30 hops）
+按照上述递归，直到回包是 ICMP type 3 port unreachable（默认使用UDP通常是30000以上的端口，如果端口没开就会回送 port unreachable） 或者是 TCP RST 或者是 hit max（ttl的值到了最大值，默认 30 hops）
 
 ### Probing mode
 
@@ -48,17 +50,23 @@ traceroute 默认支持 3 种探测方式，ICMP，UDP（默认探测方式）�
 
 - UDP
 
-  默认探测方式，为了不让目的端处理UDP包，探测端口默认33434（通常是不会使用的端口），每探测一次然后依次 + 1
+  默认探测方式，为了不让目的端处理 UDP 包，探测端口默认 33434（通常是不会使用的端口），==每探测一次(不是每hop)==然后依次 + 1
 
-  如果到了目的主机，如果 UDP 端口没有开放，会回送 ICMP type x port unreachable
+  默认情况下如果到了目的主机，如果 UDP 端口没有开放，会回送 ICMP type 3 port unreachable
+
+  指定端口情况下
 
 - TCP
 
-  TPC使用 half-open technique（半连接）
+  TPC 使用 half-open technique（半连接）
 
-  如果TCP探测的端口在目的主机没有开放，会回送 TCP RST
+  如果 TCP 探测的端口在目的主机开放且链路中没有ACL，会回送 TCP SYN-ACK，之后 traceroute 会发送 TCP RST
 
-  如果TCP探测的端口在目的主机开放，会回送 TCP SYN-ACK，之后 traceroute 会发送 TCP RST
+  如果 TCP 探测的端口在目的主机开放，但是中间链路有对应的ACL，会重传
+
+  如果 TCP 探测的端口在目的主机没有开放且链路中没有ACL，会回送 TCP RST-ACK
+
+  如果 TCP 探测的端口在目的 主机没有开放，但是中间链路有对应的ACL，会重传
 
 - ICMP
 
@@ -785,12 +793,73 @@ Transmission Control Protocol, Src Port: 80, Dst Port: 47731, Seq: 1, Ack: 1, Le
 
 traceroute 将 ttl 的值设置成 3，TCP flag SYN，对应 523th。数据包到 R1 ttl minus 1, 转发到 R2。数据包到 R2 ttl minus 1，转发到 centos-2。centos-2 发现没有对应的socket address（没有打开80端口），回送 TCP flag ACK-RST，ttl 64。数据包到 R2 ttl minus 1，转发到 R1。数据包到 R1 ttl minus 1，转发到 centos-1，对应 545th
 
+**centos-1 <-> R1 4层 TCP ACL不通**
+
+使用 iptables 制造 4 层 ACL，方通 3 层
+
+```
+
+```
+
 #### UDP
+
+**centos-1 <-> R1 默认**
+
+默认 traceroute 会使用 33434 作为探测端口，之后每探测一次（==不是每hop==）port 就会自增。如果对应的端口没有开放，按照 RFC 默认会回送 ICMP type 3 port unreachable
+
+```
+
+```
+
+**centos-1 <-> R1 4层 UDP 监听指定端口不回包**
+
+因为 centos-2 udp 80 打开的进程是 cat。当 traceroute 发包时，是没有 4 层 segment 的，cat 也就不能正常执行将回显返回给 centos-1（换言之就是 centos-1 是收不到 centos-2 回的包的），所以后面会显示 asterisks
+
+netcat 之所以是正常的，因为 UDP 没有确认机制，只要包发出去就可以了(==但是不能回 ICMP type 3 port unreachable，如果回了 netcat 就会认为是异常的==)
+
+```
+[root@centos-2 network-scripts]# nc -lkvu 80 --exec cat
+Ncat: Version 7.70 ( https://nmap.org/ncat )
+Ncat: Listening on :::80
+Ncat: Listening on 0.0.0.0:80
+...
+exec: No such file or directory
+Ncat: Connection from 192.168.1.1.
+...
+
+[root@centos-1 network-scripts]# nc -nvzu 192.168.3.1 80
+Ncat: Version 7.70 ( https://nmap.org/ncat )
+Ncat: Connected to 192.168.3.1:80.
+Ncat: UDP packet sent successfully
+Ncat: 1 bytes sent, 0 bytes received in 2.01 seconds.
+
+[root@centos-1 network-scripts]# nc -nvzu 192.168.3.1 1900
+Ncat: Version 7.70 ( https://nmap.org/ncat )
+Ncat: Connected to 192.168.3.1:1900.
+Ncat: Connection refused.
+
+[root@centos-1 network-scripts]# traceroute -nUp 80 192.168.3.1
+traceroute to 192.168.3.1 (192.168.3.1), 30 hops max, 60 byte packets
+ 1  192.168.1.2  24.949 ms  27.535 ms  27.536 ms
+ 2  192.168.2.2  63.526 ms  63.851 ms  63.960 ms
+ 3  * * *
+ 4  * * *
+ ...
+```
+
+**centos-1 <-> R1 4 层 UDP 监听指定端口回包**
+
+
+
+```
+
+```
 
 #### Inclusion
 
 1. ==即使源到目的中间一共需要经过 3 跳，实际 traceroute 发的包的 ttl 值不一定等于 3，一般会大于 3。甚至 ttl 能达到 9==
-2. 使用 TCP probe mode 时，如果不
-3. 发包会如果出现数据包能到且能回包的情况下不会出现重传
-4. traceroute 默认还是同样严格按照`-q`参数预设的值，对每 hop 进行探测
+2. ==只要包到了目的主机，目的主机回送任意包，traceroute 都会认为正常。所以 traceroute 并不能做 port scanning==
+3. TCP probing mode , 即使端口是关闭的，回了 RST 包，traceroute 也会认为是正常的
+4. UDP probing mode, 因为 UDP 默认没有确认机制，所以可以选择不回包。即使目的端口是打开的，traceroute 也会认为是异常的
+5. traceroute 默认还是严格按照`-q`参数预设的值，对每 hop 进行探测
 
