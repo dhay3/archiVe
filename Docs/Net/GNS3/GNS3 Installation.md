@@ -1,18 +1,24 @@
-# GNS3 安装 	
+# GNS3 Instanllation 	
 
-> 注意为了正常运行GNS3，需要保证GUI和VM版本对应，否则导入IOS是可能会失效
+> 注意为了正常运行GNS3，需要保证GUI和VM版本对应，否则导入IOS时可能会失效
 
 ## GNS3 GUI
 
 这里只记录Linux的安装方式
 
-GNS GUI 默认支持Debian 和 Ubuntu 的，如果是 Arch 的可以使用 ARU 安装
+GNS GUI 默认支持 Debian 和 Ubuntu 的，如果是 Arch 的可以使用 ARU 安装
 
-如果是通过AUR安装的，可能会有依赖冲突的。需要手动安装依赖，大部分可能是python的lib，使用pip手动安装即可
+如果是通过 AUR 安装的，可能会有依赖冲突的。需要手动安装依赖，大部分可能是 python 的 lib，使用pip手动安装即可
 
-## GNS3 VM
+## GNS3 Server
+
+### local GNS3
+
+GNS server 安装在本地宿主机上，不太推荐
 
 ### local GNS3 VM
+
+GNS server 按照在本地虚拟机上
 
 https://docs.gns3.com/docs/getting-started/installation/download-gns3-vm
 
@@ -27,7 +33,6 @@ Result Code: NS_ERROR_FAILURE (0x80004005)
 Component: NetworkAdapterWrap
 Interface: INetworkAdapter {e9a0c183-7071-4894-93d6-dcbec010fa91}
 
-
 ```
 
 主需要为宿主机添加一张虚拟的NIC adaptor 即可
@@ -36,7 +41,13 @@ https://github.com/GNS3/gns3-vm/issues/102
 
 按照提供的信息在 edit - preferences 中配置 server 信息
 
+> 默认账号：gns3
+>
+> 默认密码：gns3
+
 ### remote GNS3 VM 
+
+GNS3 server 安装在 remote host VM 上
 
 > 出现[No module named 'apt_pkg' error](https://askubuntu.com/questions/1069087/modulenotfounderror-no-module-named-apt-pkg-error) 
 
@@ -78,3 +89,11 @@ nc -nvz 172.16.253.1 3080
 如果连接不上确保防火墙正常关闭，使用HTTP连接。
 
 按照提供的信息在 edit - preferences 中配置 server 信息
+
+## GNS3 wizard
+
+https://docs.gns3.com/docs/getting-started/setup-wizard-local-server
+
+通过 wizard 可以设置 GNS3 server 的安装方式
+
+help -> setup wizardd
