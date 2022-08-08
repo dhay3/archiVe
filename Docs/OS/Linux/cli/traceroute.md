@@ -26,13 +26,11 @@ https://stackoverflow.com/questions/73251815/traceroute-always-shows-the-packets
 
 syntax:`traceroute [options] host`
 
-traceroute 是 LInux 上的一个网络工具，显示从源到目的包的路径。==如果包能到达目的主机且有回包，traceroute 就认为是正常的。所以对于 4层的 probing mode, 即使目的主机没有打开端口只要回包了( 不管他回了什么 RST 还是 SYN-ACK )也是显示正常的（换言之 traceroute 并不能用于 port scanning）==
+traceroute 是一个网络工具，显示从源到目的包的路径。不同 OS 实现的方式各有不同
 
-提一嘴 ACL 通常直接将包丢掉所以也就不会回包，traceroute 就认为是有问题的
+==如果包能到达目的主机且有回包，traceroute 就认为是正常的。所以对于 4 层的 probing mode, 即使目的主机没有打开端口只要回包了( 不管他回了什么 RST 还是 SYN-ACK ) 也是显示正常的（换言之 traceroute 并不能用于 port scanning）==
 
-see the link below
-
-https://stackoverflow.com/questions/73251815/traceroute-always-shows-the-packets-arrive-to-the-socket-address-even-the-port-w?noredirect=1#comment129367207_73251815
+提一嘴 ACL 通常直接会将包丢掉所以也就不会回包，traceroute 就认为是有问题的
 
 ### Principle
 
@@ -40,47 +38,57 @@ TTL 详情查看：[https://github.com/dhay3/archive/blob/master/Docs/Net/Grocer
 
 traceroute 使用 IP 协议中 TTL 字段来实现，traceroute 开始探测时会发一个 ttl 值为 1 的，然后监听 nexthop 发回的 ICMP “time exceeded” 包（到达 nexthop 后仍不是目的 IP 包就会被丢弃，然后回送ICMP type 11），然后源将 ttl 值加 1 继续发包往目的IP（==根据 traceroute 实现的逻辑和方式不同，可能会出现异步下发的情况，即实际 3 跳到达目的机，但是traceroute 发包的 ttl 能到 9 甚至更大的情况==）
 
-按照上述递归，直到回包是 ICMP type 3 port unreachable（默认使用UDP通常是30000以上的端口，如果端口没开就会回送 port unreachable） 或者是 TCP RST 或者是 hit max（ttl的值到了最大值，默认 30 hops）
+按照上述递归，根据 probing mode 探测的协议，直到回包是 ICMP type 3 port unreachable（默认使用UDP通常是30000以上的端口，如果端口没开就会回送 port unreachable） 或者是 TCP RST 或者是 hit max（ttl的值到了最大值，默认 30 hops）。
 
 ### Probing mode
 
-traceroute 默认支持 3 种探测方式，ICMP，UDP（默认探测方式），TCP
+> 为了方便讨论以下均以 来回路由 ACL 一致的情况讨论，即不考虑回包路由 ACL 导致 traceroute 显示 asterisk 的场景，只要数据包能到目的就一定能回包。
+>
+> 实际情况下有很多即使数据包到了目的主机，且目的主机回包了，但是由于回包路由ACL不一致，导致丢包，traceroute 显示 asterisk
 
-每针对一跳会发 3 个探测包
+traceroute 默认支持 3 种探测方式，ICMP，UDP（默认探测方式），TCP。默认针对每一跳会发 3 个探测包
+
+数据包没有到达主机，意味着去方向路由不可达或者ACL(包含中间链路ACL和目的主机ACL)
+
+数据包到达目的主机，意味着去方向路由可达
 
 - UDP
 
   默认探测方式，为了不让目的端处理 UDP 包，探测端口默认 33434（通常是不会使用的端口），==每探测一次(不是每hop)==然后依次 + 1
 
-  默认情况下如果到了目的主机，如果 UDP 端口没有开放，会回送 ICMP type 3 port unreachable
+  如果数据包没到达目的主机，会回送 ICMP type 11 exceed, 会显示 asterisk
 
-  指定端口情况下
+  如果数据包到达目的主机，但是 UDP 端口没有开放，且端口没有对应进程，会回送 ICMP type 3 port unreachable
+
+  如果数据包达到目的主机，且 UDP 端口开放，但是没有对应的进程，数据包会被丢弃，显示 asterisk
+
+  如果数据包到达目的主机，且 UDP 端口开放，但是对应进程，没有回包的动作，显示 asterisk
+
+  如果数据包到达目的主机，且 UDP 端口开放，对应进程回包(不管是什么类型的包)，显示正常
 
 - TCP
 
   TPC 使用 half-open technique（半连接）
 
-  如果 TCP 探测的端口在目的主机开放且链路中没有ACL，会回送 TCP SYN-ACK，之后 traceroute 会发送 TCP RST
+  如果数据包没有到达目的主机，会显示 asterisk, ==不会重传==
 
-  如果 TCP 探测的端口在目的主机开放，但是中间链路有对应的ACL，会重传
+  如果数据包到达目的主机，如果对应的端口没有开放，会回送 TCP ACK-RST
 
-  如果 TCP 探测的端口在目的主机没有开放且链路中没有ACL，会回送 TCP RST-ACK
-
-  如果 TCP 探测的端口在目的 主机没有开放，但是中间链路有对应的ACL，会重传
+  如果数据包到达目的主机，如果对应的端口开放，会回送 TCP ACK-SYN, 然后 traceroute 会 TCP RST
 
 - ICMP
 
   按照正常 ICMP 报文回送
 
-  如果到了目的主机，如果主机存活且未禁ICMP，会回送 ICMP type 8 reply
+  如果数据包没到达目的主机，会回送 ICMP type 11 exceed，会显示 asterisk
 
-  如果没到目的主机，会回送 ICMP type 11 ttl exceed
+  如果数据包到达主机，且主机没有禁ICMP，会回送 TCMP type 8 reply
 
 ### Method
 
 traceroute 支持的所有探测模式
 
--  default 
+-  default（UDP 30000+）
 -  icmp 
 -  tcp 
 -  tcpconn
@@ -94,21 +102,33 @@ traceroute 默认会打印 3 个字段 TTL, address of the gateway, round trip t
 
 #### Asterisk
 
-address of gateway 显示的是 gateway 回包路由的源接口（例如下图中回程的 f0/1）， 一般发包路由和回包路由都相同，但是也有可能发包路由和回包路由不同的情况，如下图
+traceroute 如果没有收到 gateway 的回包就会显示 asterisk( * ), 如果正常会显示 address of gateway，==即回包路由的源接口IP==。
+
+例如，这里显示 first hop 回包路由的源接口 IP 是 192.168.2.1
+
+```
+cpl in ~ λ traceroute -nI baidu.com
+traceroute to baidu.com (39.156.66.10), 30 hops max, 60 byte packets
+ 1  192.168.2.1  19.017 ms  18.988 ms  18.984 ms
+```
+
+==一般发包路由和回包路由都相当==，但是由于逻辑接口的出现，==现在也会有发包路由和回包路由不同的情况(场景还挺多)==，如下图
+
+first hop 显示的回包地址是 f1/1 配置的 IP
 
 ![](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/2022-04-12_21-28.1j5fzz3c2l9c.webp#crop=0&crop=0&crop=1&crop=1&id=trttn&originHeight=296&originWidth=987&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
 
-如果 address of gateway 显示的是 asterisk（*），表示在指定时间内（默认5sec）没有从 gateway 收到回包，造成这种的原因通常有
+如果 address of gateway 显示的是 asterisk（*），表示在指定时间内（默认5sec）没有从 gateway 收到回包，造成这种的原因通常有：
 
-1. 发包没有到达节点，可能是没有路由或者ACL
-1. 回包的链路中路由缺失，可以是回包链路中的任何一个节点（来回路由通常一样，出现这种情况概率在是来回路由不一致）
+1. 发包没有到达节点，可能是没有路由或者ACL deny
+1. 发包到了节点，但是回包没有路由或者ACL deny （一般出现在来回路由不一致的场景）
 1. 回包的源IP是一个私网IP，到达运营商后被丢弃（如果私网IP到源有路由同样会回包给源）
-1. 回包的链路中有ACL，可以是回包链路中的任何一个节点
-1. 当前大多数 firewall 都会过滤 UDP 端口，甚至是ICMP(做 ICMP 限流)，碰到这种情况可以使用其他协议(TCP)来绕过 firewall
+1. 发的包是 UDP，大多数 router 或者 firewall 都会过滤 UDP 的包，因为 UDP 可能会打垮链路导致网络拥塞
+1. 发的包是 ICMP，大多数 router 或者 firewall 都会对 ICMP 限流
 
-但是如果显示 * 并不一定表示 gateway 不可达，因为回包路由和入路由可能不一样，通过入路由能到达目的，但是节点因为路由或ACL原因没回包（在云主机中通常会出现这种情况）
+==所以如果显示 * 并不一定表示 gateway 不可达，因为回包路由和入路由可能不一样，通过入路由能到达目的，但是节点因为路由或ACL原因没回包（在云主机中通常会出现这种情况）==
 
-==所以如果出现到最后一跳是目的IP，且显示的是 asterisk。并不能说明包没有到达目的主机上，有可能是目的主机给源IP回包的路径中出现了丢包==
+==为了排除这种现象，一般需要 both-direction traceroute==
 
 #### Annotation
 
@@ -798,8 +818,42 @@ traceroute 将 ttl 的值设置成 3，TCP flag SYN，对应 523th。数据包�
 使用 iptables 制造 4 层 ACL，方通 3 层
 
 ```
+[root@netos-2 /]# iptables -vnL 
+Chain INPUT (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 DROP       all  --  *      *       192.168.1.1          0.0.0.0/0           
 
+Chain FORWARD (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain OUTPUT (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+
+[root@netos-2 /]# iptables-save 
+# Generated by iptables-save v1.8.4 on Sun Aug  7 09:15:14 2022
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+-A INPUT -s 192.168.1.1/32 -j DROP
+COMMIT
+# Completed on Sun Aug  7 09:15:14 2022
+
+[root@netos-1 /]# traceroute -Tp 80 192.168.3.1
+traceroute to 192.168.3.1 (192.168.3.1), 30 hops max, 60 byte packets
+ 1  _gateway (192.168.1.2)  6.906 ms  8.908 ms  8.996 ms
+ 2  192.168.2.2 (192.168.2.2)  27.245 ms  28.067 ms  28.375 ms
+ 3  * * *
+ 4  * * *
+ 5  * * *
+ 6  * * *
+ 7  * * *
+ 8  *^C
 ```
+
+![2022-08-08_12-23](https://git.poker/dhay3/image-repo/blob/master/20220807/2022-08-08_12-23.6fcw0tzmnfk0.webp?raw=true)
+
+从 569th 开始 ttl 值为 3，可以从上图看到 centos-2 并没有回包给 centos-1，也没有出现重传
 
 #### UDP
 
@@ -808,8 +862,61 @@ traceroute 将 ttl 的值设置成 3，TCP flag SYN，对应 523th。数据包�
 默认 traceroute 会使用 33434 作为探测端口，之后每探测一次（==不是每hop==）port 就会自增。如果对应的端口没有开放，按照 RFC 默认会回送 ICMP type 3 port unreachable
 
 ```
+[root@netos-1 /]# traceroute 192.168.3.1
+traceroute to 192.168.3.1 (192.168.3.1), 30 hops max, 60 byte packets
+ 1  _gateway (192.168.1.2)  24.079 ms  24.806 ms  24.805 ms
+ 2  192.168.2.2 (192.168.2.2)  24.766 ms  24.783 ms  24.781 ms
+ 3  192.168.3.1 (192.168.3.1)  24.785 ms  24.783 ms  25.889 ms
+```
+
+![2022-08-07_16-08](https://git.poker/dhay3/image-repo/blob/master/20220807/2022-08-07_16-08.4k5fjwb9mmtc.webp?raw=true)
+
+观察 40th 和 56th
 
 ```
+40	273.584313	192.168.1.1	192.168.3.1	UDP	74	36621 → 33440 Len=32
+Frame 40: 74 bytes on wire (592 bits), 74 bytes captured (592 bits) on interface -, id 0
+Ethernet II, Src: 5e:e2:e3:c4:66:9c (5e:e2:e3:c4:66:9c), Dst: ca:01:09:a1:00:00 (ca:01:09:a1:00:00)
+Internet Protocol Version 4, Src: 192.168.1.1, Dst: 192.168.3.1
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+    Total Length: 60
+    Identification: 0x709d (28829)
+    Flags: 0x00
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 3
+    Protocol: UDP (17)
+    Header Checksum: 0xc1c1 [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: 192.168.1.1
+    Destination Address: 192.168.3.1
+User Datagram Protocol, Src Port: 36621, Dst Port: 33440
+Data (32 bytes)
+
+
+56	273.607823	192.168.3.1	192.168.1.1	ICMP	102	Destination unreachable (Port unreachable)
+Frame 56: 102 bytes on wire (816 bits), 102 bytes captured (816 bits) on interface -, id 0
+Ethernet II, Src: ca:01:09:a1:00:00 (ca:01:09:a1:00:00), Dst: 5e:e2:e3:c4:66:9c (5e:e2:e3:c4:66:9c)
+Internet Protocol Version 4, Src: 192.168.3.1, Dst: 192.168.1.1
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0xc0 (DSCP: CS6, ECN: Not-ECT)
+    Total Length: 88
+    Identification: 0x9150 (37200)
+    Flags: 0x00
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 62
+    Protocol: ICMP (1)
+    Header Checksum: 0x6542 [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: 192.168.3.1
+    Destination Address: 192.168.1.1
+Internet Control Message Protocol
+Data (32 bytes)
+```
+
+traceroute 将 ttl 的值设置成 3，UDP，对应 40th。数据包到了 R1 ttl minus1，转发到 R2。数据包到 R2 ttl minus 1, 转发到 centos-2。centos-2 发现没有对应的socket address，回送 ICMP port unreachable, ttl 64。数据包到了 R2 ttl minus 1, 转发到 R1。数据包到了 R2 ttl minus 1，转发到 centos-1, 对应 56th
 
 **centos-1 <-> R1 4层 UDP 监听指定端口不回包**
 
@@ -847,13 +954,17 @@ traceroute to 192.168.3.1 (192.168.3.1), 30 hops max, 60 byte packets
  ...
 ```
 
+逻辑上和 TCP 4层不回包一样，这里不做分析 
+
 **centos-1 <-> R1 4 层 UDP 监听指定端口回包**
 
-
-
-```
+需要使用代码实现
 
 ```
+//TODO
+```
+
+回包 traceroute 就会认为是正常的
 
 #### Inclusion
 
@@ -862,4 +973,10 @@ traceroute to 192.168.3.1 (192.168.3.1), 30 hops max, 60 byte packets
 3. TCP probing mode , 即使端口是关闭的，回了 RST 包，traceroute 也会认为是正常的
 4. UDP probing mode, 因为 UDP 默认没有确认机制，所以可以选择不回包。即使目的端口是打开的，traceroute 也会认为是异常的
 5. traceroute 默认还是严格按照`-q`参数预设的值，对每 hop 进行探测
+
+## Source code Patching
+
+https://github.com/openbsd/src/blob/master/usr.sbin/traceroute/traceroute.c
+
+TODO
 

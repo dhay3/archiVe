@@ -47,4 +47,8 @@ RUN yum -y iptables
 CMD ["/bin/bash"]
 ```
 
-AUR GNS3 可能有 bug，我一直不能在 GNS3 中加对同一个 image 打包的不同 image 
+AUR GNS3 可能有 bug，添加的 VMS 可能不会在面板中显示只需要重启以下 GNS3 就可以了 
+
+## Permanent networking conf
+
+GNS3 支持对 iface 配置做永久，可以右击实例，然后在 network configuration。
