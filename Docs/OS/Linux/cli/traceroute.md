@@ -22,6 +22,8 @@ https://www.hackingarticles.in/working-of-traceroute-using-wireshark/
 
 https://stackoverflow.com/questions/73251815/traceroute-always-shows-the-packets-arrive-to-the-socket-address-even-the-port-w?noredirect=1#comment129367207_73251815
 
+https://www.ibm.com/docs/en/qsip/7.4?topic=applications-icmp-type-code-ids
+
 ## Digest
 
 syntax:`traceroute [options] host`
@@ -82,7 +84,7 @@ traceroute 默认支持 3 种探测方式，ICMP，UDP（默认探测方式）�
 
   如果数据包没到达目的主机，会回送 ICMP type 11 exceed，会显示 asterisk
 
-  如果数据包到达主机，且主机没有禁ICMP，会回送 TCMP type 8 reply
+  如果数据包到达主机，且主机没有禁ICMP，会回送 ICMP type 0 reply
 
 ### Method
 
