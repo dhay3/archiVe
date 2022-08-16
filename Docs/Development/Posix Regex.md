@@ -1,4 +1,6 @@
-# Posix Regex
+# Regex
+
+ref
 
 https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html
 
@@ -6,172 +8,182 @@ https://remram44.github.io/regex-cheatsheet/regex.html
 
 https://www.gnu.org/savannah-checkouts/gnu/sed/manual/sed.html#BRE-vs-ERE
 
+## Digest
+
 regular expression( regex/regexp )正则表达式，遵从POSIX.1-2017 准则。Unix-like OS 中大多数文本处理工具（shell golabbing, awk, sed,etc）都支持两种 regex
 
 Basic Regular Expression( BRE ), Extended Regular Expression (ERE)
 
 默认一般使用 BRE，但是也有一些工具能使用 perl-compatibel regular expressions(PCRE)。例如 grep
 
+### Symbolic
 
+下面介绍一下符号含义
 
-### RE extensions
+#### characters/letters/digits
 
-> 注意区别于高级编程语言，无`\d`
+represent themselves
 
-- `\w`
+字面意思，没有特殊含义
 
-  匹配任意一个单词（前后导空格）
+#### backslash
 
-- `\W`
+转义符
 
-  匹配非单词字符
+#### period
 
-- `\b`
+`.` 
 
-  匹配字符边界
+匹配任意一个字符
 
-  ```
-  $ echo "abc %-= def." | sed 's/\b/X/g'
-  XabcX %-= XdefX.
-  ```
+#### asterisk
 
-- `\s`
+`*`
 
-  匹配空格
+匹配一个或多个任意字符
 
-- `\S`
+#### bracket
 
-  匹配非空格
+`[]` bracket 根据使用的场景有多种含义
 
-- `\<`
+1. range expression
 
-  匹配字符开头
+   例如`[abc]`, `[a-z]`
 
-  ```
-  $ echo "abc %-= def." | sed 's/\</X/g'
-  Xabc %-= Xdef.
-  ```
+   匹配 bracket 中 range 指定的任意一个字符。range 可以是指明范围内的字符，也可以是使用 hypen(短横) 连接的
 
-- `\>`
+2. not expression
 
-  匹配字符结尾
+   例如`[^abc]`
 
-  ```
-  $ echo "abc %-= def." | sed 's/\>/X/g'
-  abcX %-= defX.
-  ```
+   取反，匹配 bracket 中 非 range 指定的任意一个字符。range 可以是指明范围内的字符，也可以是使用 hypen(短横) 连接的
 
-RE Bracket Expression
+3. predefined expression
 
-### predefined bracket expression
+   `[:alnum:]` 等价与 `[0-9A-Za-z]`
 
-具体看sed man page，每个都需要在外层添加`[]`
+   `[:alpha:]` 等价与 `[A-Za-z]`
 
-- `[:alnum:]`
+   `[:digit:]` 等价与 `[0-9]`
 
-  等价`[0-9A-Za-z]`
+   `[:xdigit:]` 匹配 hex 中出现的数字和字母
 
-- `[:alpha:]`,`[:lower:]`,`[:upper:]`
+   `[:blank:]` 匹配 space 和 tab
 
-  匹配alphanumeric characters，字面意思
+   `[:space:]` 匹配 space, tab, newline, carriage return, line feed
 
-- `[:blank:]`
+    `[:cntrl:]`,  `[:graph:]`, `[:lowewr:]`, `[:print:]`, `[:punct:]`, `[:upper:]`
 
-  匹配空格和tab
+   顾名思义
 
-- `[:space:]`
+   需要注意的是这些只是 symbolic names, 如果需要使用还需要在外面加一层`[]`, 例如`[[:alpha:]]`
 
-  匹配tab，newline，carriage return，line feed，space
+   同样的`^`也表示取非, 例如`[^[:alpha:]]`，表示取字母的反，即数字
 
-- `[:digit:]`
+#### anchoring
 
-  等价`[0-9]`
+1. caret `^word`
 
-- `[:xdigit:]`
+   匹配首字符是 word 的
 
-  匹配16进制正出现的数字和字母
+2. dollor sign `word$`
 
-## BRE
+   匹配尾字符是 word 的
 
-Basic Regular Expression（BRE）
+#### extensions
 
-### ordinanry chars
+> 需要注意的是在 ERE 或是 BRE 中没有 `\d`
 
-- `(`,`)`,`{`,`}`
-- 1 - 9
-- a character inside a bracket expression。（ig：ipv6 address could in [ ]）
+1. `\<`
 
-### special chars
+   匹配字符开头
 
-- `\`
+   ```
+   $ echo "abc %-= def." | sed 's/\</X/g'
+   Xabc %-= Xdef.
+   ```
 
-  转义符
+2. `\>`
 
-- `.` period
+   匹配字符结尾
 
-  如果在bracket外表示任意一个字符，包括换行符
+   ```
+   $ echo "abc %-= def." | sed 's/\>/X/g'
+   abcX %-= defX.
+   ```
 
-- `*` asterisk
+3. `\bword`
 
-  匹配一个或多个字符
+   匹配 word edge 是空字符的
 
-- `[list]` square-bracket
+   ```
+   $ echo "abc %-= def." | sed 's/\b/X/g'
+   XabcX %-= XdefX.
+   ```
 
-  匹配list中的任意一个字符，可以使用char1-char2来表示中间的字符（按照ascii）
+4. `\Bword`
 
-- `\+`
+   匹配 word edge 不是空字符的
 
-  和`*`一样，但至少需要匹配一次
+5. `\s`
 
-- `\?`
+   匹配空格
 
-  和`.`一样，表示任意一个字符
+6. `\S`
 
-- `\{i\}`，`\{i,j}\`，`{\i,\}`
+   匹配非空格
 
-  和其他的regex一样表示匹配的次数
+#### repetition
 
-- `\(regex\)`
+1. `?`
 
-  subexpression
+   the preceding item is optional and matched at most once
 
-- `regexp1\|rgexp2`
+2. `*`
 
-  逻辑或
+   the preceding item will be matched zero or more times
 
-- `\digit`
+3. `+`
 
-  匹配第几个subexpression，复用subexpression
+   the preceding item will be matched one or more times
 
-  ```
-  $echo aa | grep '\(a\)\1'
-  aa
-  ```
+4. `{n}`
 
-- `^`，`$`
+   the preceding item is matched exactly n times
 
-  same as other regex，present anchor。如果在`[]`中表示取反
-  
-  | 字符 | 描述                                                         |
-  | ---- | ------------------------------------------------------------ |
-  | ^    | 匹配输入字符串的开始位置，除非在方括号表达式中使用，当该符号在方括号表达式中使用时，表示不接受该方括号表达式中的字符集合。要匹配 ^ 字符本身，请使用 \^。 |
-  | $    | 匹配输入字符串的结尾位置。如果设置了` RegExp` 对象的 `Multiline` 属性，则 $ 也匹配 '\n' 或 '\r'。要匹配 $ 字符本身，请使用 `\$`。 |
-  
-  看一个`$`的例子
-  
-  如果没有设置`multiline`只能匹配后面没有换行符的
-  
-  <img src="/home/cpl/note/docs/Sundries/..\..\imgs\_Net\Snipaste_2020-08-22_21-41-34.png" style="zoom:80%;" />
-  
-  <img src="/home/cpl/note/docs/Sundries/..\..\imgs\_Net\Snipaste_2020-08-22_21-44-11.png" style="zoom:80%;" />
+5. `{n,}`
 
-## ERE
+   the preceding item is matched n or more times
+
+6. `{,m}`
+
+   the preceding item is matched at most m times
+
+   这只有在 GNU 中有
+
+7. `{n,m}`
+
+   the preceding item is matched at least n times, but not more than m times
+
+#### concatenation
+
+两个 regexp 之间默认使用 and 逻辑拼接
+
+#### alternation
+
+`|`，两个 regexp 使用 or 逻辑拼接
+
+#### subexpression
+
+`()` parenthesized 中的表示子表达式，`\n` 如果 n 是一个数字，表示匹配之前的第 n 个子表达式
+
+## BRE vs ERE
 
 The only difference between basic and extended regular expressions is in the behavior of a few characters: ‘?’, ‘+’, parentheses, braces (‘{}’), and ‘|’. 
 
 *While basic regular expressions require these to be escaped if you want them to behave as special characters, when using extended regular expressions you must escape them if you want them to match a literal character.* 
 
-==即一些 speical chars 无需转译==
+BRE 和 ERE 的区别主要在于，在 BRE 中 `?`, `+`, `{`, `|`, `(`, `)` 没有任何特殊含义。需要使用 backslash 转义才有特殊含义，而 ERE 不需要
 
 ## Python/Go/Java regex
 
