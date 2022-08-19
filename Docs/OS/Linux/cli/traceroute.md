@@ -26,7 +26,18 @@ https://www.ibm.com/docs/en/qsip/7.4?topic=applications-icmp-type-code-ids
 
 ## Digest
 
-syntax:`traceroute [options] host`
+syntax:
+
+```
+       traceroute [-46dFITUnreAV] [-f first_ttl] [-g gate,...]
+               [-i device] [-m max_ttl] [-p port] [-s src_addr]
+               [-q nqueries] [-N squeries] [-t tos]
+               [-l flow_label] [-w waittimes] [-z sendwait] [-UL] [-D]
+               [-P proto] [--sport=port] [-M method] [-O mod_options]
+               [--mtu] [--back]
+               host [packet_len]
+       traceroute6  [options]
+```
 
 traceroute 是一个网络工具，显示从源到目的包的路径。不同 OS 实现的方式各有不同
 
@@ -94,9 +105,29 @@ traceroute 支持的所有探测模式
 -  icmp 
 -  tcp 
 -  tcpconn
-使用全连接 
+  使用全连接 
 -  raw
-只使用IP协议 
+  只使用IP协议 
+
+### Big packet/MTU
+
+在 host 后面有一个 optional args `packet_len`，这样我们就可以在一些大包丢包的场景中看包丢那了
+
+```
+root@VM-12-16-ubuntu:/home/ubuntu# traceroute -nI baidu.com 1000
+traceroute to baidu.com (39.156.66.10), 30 hops max, 1000 byte packets
+ ...
+```
+
+==需要注意的一点是， 如果和 TCP half open（即默认的 TCP 探测方式） 一起使用是没有任何效果的，因为都不会建连，谈何传输数据(默认的 60 byte 有一定的误导性，具体看 Packet analyze)。所以还是==
+
+这时候就可以使用 tcpconn method 来建立全连接发送数据包
+
+```
+root@fck:/# traceroute -M tcpconn -p 80 110.242.68.66 1000
+traceroute to 110.242.68.66 (110.242.68.66), 30 hops max, 1000 byte packets
+ ...
+```
 
 ### Output
 
@@ -566,6 +597,10 @@ traceroute 将 ttl 设置为 3，当数据包到达 R1 时，做 ttl minus 1 然
 traceroute 将 ttl 设置为 5，经过 R1 minus 1，对应 55th。centos-2 回包，经过 R2 minus 1 ，对应 71th
 
 #### TCP
+
+> 需要注意的一点是 TCP 发送默认的 60 byte，是不带 TCP segment 的，20 IP Header ，40 TCP Header
+
+![2022-08-19_23-04](https://git.poker/dhay3/image-repo/blob/master/20220819/2022-08-19_23-04.52qzjhjltgxs.webp?raw=true)
 
 **centos-1 <-> R1 4层TCP通**
 
