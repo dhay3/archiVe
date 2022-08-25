@@ -141,6 +141,8 @@ tcpdump 后会抓包结束后显示抓包的数量
 
   ==print the link-level header on echo dump line==
 
+  在 802.q 的场景下很有用。可以看到 vlan id
+
 - `-F file`
 
   use file as input for the filter expression. An additional expression given on the command line is ignored
@@ -293,7 +295,7 @@ tcpdump 根据协议不同输出的内容的也不同
 
 > man pcap-filter
 >
-> ==需要注意的是 filter expressions 应用于每一个包==
+> ==需要注意的是 filter expressions 应用于每一个包，和 wireshark filter 区别比较大==
 
 过滤表达式，由多个 premitives 组成，premitives 由 id 组成，id 由多个 qulifier 组成。qulifier 可以是如下几种
 
