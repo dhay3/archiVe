@@ -148,5 +148,3 @@ mandb 用于更新和 `whatis`, `appropos` 相关命令的 index cache
 
    ascii 表快查
 
-   
-

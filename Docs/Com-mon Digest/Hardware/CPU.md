@@ -54,7 +54,7 @@ CPU通常处理速度很快，但是磁盘可能I/O处理很慢。为了充分�
 
 A CPU cache is a hardware cache used by the CPU of a computer to redue the average cost (time or energy) to access data from the main memory.
 
-简单来说，CPU缓存就是加快内存读取速度的。当然越快越好。通常 CPU Cache 有加快指令集和数据 的 Cache。且按照L1,L2,L3 ... 来命名 Cache。
+简单来说，CPU缓存就是加快内存读取速度的。当然越大越好。通常 CPU Cache 有加快指令集和数据 的 Cache。且按照L1,L2,L3 ... 来命名 Cache。
 
 后来由于技术的发展 Cache L1 裂变成 L1i(for instruction) 和 L1d (for data)，Cache L2 保持不变，作为 Cache L1 的候补
 
