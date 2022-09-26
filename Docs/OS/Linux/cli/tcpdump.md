@@ -1,10 +1,12 @@
-# Linux tcpdump11
+# Linux tcpdump
 
 ref:
 
 https://www.tcpdump.org/
 
 https://en.wikipedia.org/wiki/Promiscuous_mode
+
+https://superuser.com/questions/925286/does-tcpdump-bypass-iptables
 
 pcap(3PCAP)
 
@@ -368,11 +370,7 @@ tcpdump 根据协议不同输出的内容的也不同
 
 ### TCP Flag Filter
 
-
-
 ![Snipaste_2020-08-25_00-39-07](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220719/Snipaste_2020-08-25_00-39-07.4kvfcqtsrsow.webp)
-
-
 
 ```
 0                            15                              31
@@ -415,7 +413,129 @@ TCP header 通常 20 字节(octets)，除非指定了 TCP options。从 0 开始
 
 如果需要抓只含有某个标志位的包需要怎么办？这是就需要`&`操作(与计算)
 
-`tcp[13] & 2 == 2`，表示 13th octect 的值 & 2 的值 一定是 2，即表示 一定包含 SYN。==需要注意的一点&在shell中有特殊的含有(表示 async )，所有在 tcpdump 中需要将 filter expression 加上 single qutoed==。==同时抓 syn-ack 非常有助于对 TCP 异常的问题排查，例如 TCP 参数错误（通常都是由某几项 TCP options 导致，而 TCP options 都是在握手时协商预设的）导致连接异常，都是在 3 way handshake 中体现的==。同理的如果需要抓 RST 包，可以使用`tcp[13] & 4 == 4`
+`tcp[13] & 2 == 2`，表示 13th octect 的值 & 2 的值 一定是 2，即表示 一定包含 SYN。==需要注意的一点&在shell中有特殊的含有(表示 async )，所有在 tcpdump 中需要将 filter expression 加上 single qutoed==。==同时抓 syn-ack 非常有助于对 TCP 异常的问题排查，例如 TCP 参数错误（通常都是由某几项 TCP options 导致，而 TCP options 都是在握手时协商预设的）导致连接异常，都是在 3 way-handshakes 中体现的==。同理的如果需要抓 RST 包，可以使用`tcp[13] & 4 == 4`
+
+
+
+## Tcpdump with iptables DROP
+
+As a matter of fact, *tcpdump* is the first software found after the wire (and the NIC, if you will) on the way *IN*, and the last one on the way *OUT*.  
+
+```
+Wire -> NIC -> tcpdump -> netfilter/iptables
+
+iptables -> tcpdump -> NIC -> Wire
+```
+
+做一个小实验分别在 filter 表 INPUT 和 OUTPUT chian 添加规则并抓包
+
+#### OUTPUT
+
+```
+cpl in ~ λ sudo iptables -t filter -A OUTPUT -d 39.156.66.10 -j DROP
+
+cpl in ~ λ sudo iptables -nvL OUTPUT                             
+cpl in ~ λ sudo iptables -t filter -nvL OUTPUT                        
+Chain OUTPUT (policy ACCEPT 13 packets, 1003 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 DROP       all  --  *      *       0.0.0.0/0            39.156.66.10
+```
+
+ICMP 包
+
+```
+cpl in ~ λ ping 39.156.66.10
+PING 39.156.66.10 (39.156.66.10) 56(84) bytes of data.
+^C
+--- 39.156.66.10 ping statistics ---
+2 packets transmitted, 0 received, 100% packet loss, time 1008ms
+```
+
+抓 39.156.66.10 的包
+
+```
+cpl in ~ λ sudo tcpdump -nni any host 39.156.66.10  
+tcpdump: data link type LINUX_SLL2
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 262144 bytes
+^C
+0 packets captured
+0 packets received by filter
+0 packets dropped by kernel
+```
+
+未抓到，==同时也没有显示丢包, ip statistic 同样未显示==
+
+```
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    RX:  bytes packets errors dropped  missed   mcast           
+       5209039   16216      0       0       0       0 
+    TX:  bytes packets errors dropped carrier collsns           
+       5209039   16216      0       0       0       0 
+2: wlp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DORMANT group default qlen 1000
+    link/ether 64:bc:58:bd:a6:19 brd ff:ff:ff:ff:ff:ff
+    RX:  bytes packets errors dropped  missed   mcast           
+     174107124  188640      0       0       0       0 
+    TX:  bytes packets errors dropped carrier collsns           
+      16661891  111714      0       0       0       0
+```
+
+符合规则，在 iptables 层面丢包
+
+#### INPUT
+
+```
+cpl in ~ λ sudo iptables -t filter -A INPUT -s 39.156.66.10 -j DROP 
+
+cpl in ~ λ sudo iptables -nvL INPUT                                 
+Chain INPUT (policy ACCEPT 5 packets, 518 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+    1    84 DROP       all  --  *      *       39.156.66.10         0.0.0.0/0
+```
+
+抓 39.156.66.10 的包
+
+```
+cpl in ~ λ sudo tcpdump -nni any host 39.156.66.10
+tcpdump: data link type LINUX_SLL2
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 262144 bytes
+01:37:04.090673 wlp1s0 Out IP 192.168.2.194 > 39.156.66.10: ICMP echo request, id 8, seq 1, length 64
+01:37:04.131768 wlp1s0 In  IP 39.156.66.10 > 192.168.2.194: ICMP echo reply, id 8, seq 1, length 64
+^C
+2 packets captured
+2 packets received by filter
+0 packets dropped by kernel
+```
+
+可以抓到发包和会包，==同时也没有显示丢包, ip statistic 同样未显示==
+
+```
+cpl in ~ λ ip -s link
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    RX:  bytes packets errors dropped  missed   mcast           
+       5209039   16216      0       0       0       0 
+    TX:  bytes packets errors dropped carrier collsns           
+       5209039   16216      0       0       0       0 
+2: wlp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DORMANT group default qlen 1000
+    link/ether 64:bc:58:bd:a6:19 brd ff:ff:ff:ff:ff:ff
+    RX:  bytes packets errors dropped  missed   mcast           
+     174648521  190837      0       0       0       0 
+    TX:  bytes packets errors dropped carrier collsns           
+      17067025  113850      0       0       0       0
+```
+
+符合规则，在 iptables 层面丢包
+
+## Tcpdump VS Wireshark
+
+1. tcpdump 不能智能的分析重传的包，但是可以从 seq number 来分析。如果需要 TUI 类型的工具来分析，可以使用 tshark
+
+2. tcpdump 使用的 filter expressions 和 wireshark 的大相径庭
+
+   
 
 ## Examples
 
