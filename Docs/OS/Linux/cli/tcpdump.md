@@ -535,7 +535,6 @@ cpl in ~ λ ip -s link
 
 2. tcpdump 使用的 filter expressions 和 wireshark 的大相径庭
 
-   
 
 ## Examples
 
