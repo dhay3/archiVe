@@ -33,21 +33,28 @@ https://docs.gns3.com/docs/emulators/create-a-docker-container-for-gns3/
 ```
 FROM centos$latest
 LABEL "author"="kikochz"
-LABEL "description"="a image for networking lab"
+LABEL "description"="A image for networking lab"
 RUN cd /etc/yum.repos.d/
-RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's/mirrorlist=/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
 RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
-RUN yum -y install traceroute
-RUN yum -y install tcpdump
+
+RUN yum -y install traceroute 
+RUN yum -y install tcpdump 
 RUN yum -y install mtr
 RUN yum -y install nc
 RUN yum -y install curl
-RUN yum -y iptables
+RUN yum -y install nmap
+RUN yum -y install telnet
+RUN yum -y install iptables
+#RUN    yum -y install openssh-server && yum install openssh
+#RUN ssh-keygen -A &&  /usr/sbin/sshd
 
 CMD ["/bin/bash"]
 ```
 
-AUR GNS3 可能有 bug，添加的 VMS 可能不会在面板中显示只需要重启以下 GNS3 就可以了 
+AUR GNS3 可能有 bug，添加的 VMS 可能不会在面板中显示只需要重启以下 GNS3 就可以了
+
+配置完成之后可以通过 termius telnet 来连接容器，但是需要注意的是 termius telnet 回车是`\n\r`所以在 UNIX-like OS 上每次执行完命令的时候会多输出一行 （因为不能识别`\r`），可能会导致一些命令出现异常，例如 `yum install` 如果不指定 `-y` 就会出现 `Is this ok [y/N]: Operation aborted.` 的错误
 
 ## Permanent networking conf
 

@@ -194,7 +194,7 @@ CMD  /code/run-extras
 
 #### RUN
 
-RUN指令用于在当前构建的==镜像中==执行命令
+RUN指令用于构建镜像过程中执行命令
 
 pattern：
 
@@ -218,7 +218,11 @@ pattern：
 >
 > `CMD ["/bin/bash"]`(如果你以一个Linux ditro为基础镜像就不需要指定，因为大多数构建的镜像中已执行该命令)
 >
-> 注意如果以shell form PID 为 1的进程是shell(pid为1的进程不会接受到SIGINT)，==如果使用shell form可能会导致容器不能正常退出，所以统一使用exec form来创建Dockerfile==
+> 注意
+>
+> 如果以shell form PID 为 1的进程是shell(pid为1的进程不会接受到SIGINT)
+>
+> ==另外如果使用shell form可能会导致容器不能正常退出，所以统一使用exec form来创建Dockerfile==
 >
 > **如果以exec form执行注意一下后面跟的是不是command string，如果是必须添加`-c`参数**
 

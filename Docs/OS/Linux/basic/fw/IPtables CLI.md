@@ -178,7 +178,7 @@ target = -j targetname [per-target-options]
 
 - `-m | --match match`
 
-  指定使用的模块
+  指定使用的模块，使用了特定模块就可以使用一些额外的参数，具体参考 `iptables-extensions`
 
 - `-v | --verbose`
 
