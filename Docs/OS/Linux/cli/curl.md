@@ -782,6 +782,42 @@ curl: (56) Recv failure: Connection reset by peer
 curl: (52) Empty reply from server
 ```
 
+## Connection refused
+
+curl 显示 Connection refused 一般有两种主要原因
+
+除常见的 TCP Reset 外，还可能是 ICMP port unreachable  
+
+例如下面这个例子
+
+TCP Reset
+
+```
+[root@netos-1 /]# curl 192.168.3.1
+curl: (7) Failed to connect to 192.168.3.1 port 80: Connection refused
+
+#目的抓包
+14:44:07.120585 IP 192.168.1.1.55248 > 192.168.3.1.80: Flags [S], seq 1553068776, win 64240, options [mss 1460,sackOK,TS val 1008466077 ecr 0,nop,wscale 7], length 0
+14:44:07.120658 IP 192.168.3.1.80 > 192.168.1.1.55248: Flags [R.], seq 0, ack 1553068777, win 0, length 0
+```
+
+ICMP port unreachable
+
+```
+#设置 iptables 规则
+[root@netos-2 /]# iptables -t filter -A INPUT -s 192.168.1.1 -j REJECT
+[root@netos-2 /]# iptables -nvL INPUT -t filter
+Chain INPUT (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 REJECT     all  --  *      *       192.168.1.1          0.0.0.0/0            reject-with icmp-port-unreachable
+ 
+[root@netos-1 /]# curl 192.168.3.1 curl: (7) Failed to connect to 192.168.3.1 port 80: Connection refused
+
+#目的抓包 
+14:50:31.308066 IP 192.168.1.1.55252 > 192.168.3.1.80: Flags [S], seq 3052281559, win 64240, options [mss 1460,sackOK,TS val 1008850265 ecr 0,nop,wscale 7], length 0
+14:50:31.308094 IP 192.168.3.1 > 192.168.1.1: ICMP 192.168.3.1 tcp port 80 unreachable, length 68
+```
+
 ## Common CLI
 
 ### 0x1 校验时耗
