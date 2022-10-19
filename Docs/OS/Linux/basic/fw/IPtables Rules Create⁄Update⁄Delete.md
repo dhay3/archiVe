@@ -97,5 +97,3 @@ num  target     prot opt source               destination
 #通过这种方式删除的好处是不需要指定 rule-specification
 [root@localhost /]# iptables -t filter -D INPUT 2
 ```
-
-## Multiple

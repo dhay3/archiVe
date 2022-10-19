@@ -172,13 +172,13 @@ target = -j targetname [per-target-options]
   set the target of the rule
 
   1. 可以是 userd-defined chain
-  2. 如果没有指定该参数同时也没有指定`-g`，匹配的数据包不会做任何操作，但是会被 counters 统计 
+  2. 如果没有指定该参数同时也没有指定`-g`，==匹配的数据包不会做任何操作，但是会被 counters 统计==
 
 ### Other args
 
 - `-m | --match match`
 
-  指定使用的模块，使用了特定模块就可以使用一些额外的参数，具体参考 `iptables-extensions`
+  指定使用的模块，使用了特定模块就可以使用一些额外的参数，具体参考 `iptables-extensions`。可以使用多个 `-m` 来匹配多个模块
 
 - `-v | --verbose`
 
