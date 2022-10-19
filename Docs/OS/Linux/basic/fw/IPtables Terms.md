@@ -12,13 +12,13 @@ https://arthurchiao.art/blog/deep-dive-into-iptables-and-netfilter-arch-zh/
 
 ![Snipaste_2020-10-13_23-24-43](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-13_23-24-43.1q1a0cer9hvk.png)
 
- 任何数据都会按照上述图表的顺序，从 NIC 到 kernel
+ 任何数据报文都会按照上述图表的顺序
 
-> tables 和 filter 大小写敏感
+> tables 和 chains 大小写敏感
 
 ## Tables
 
-iptables 有下面 5 张表，是逻辑上功能类似的 rules 集合
+iptables 有下面 5 张表，每张表都是逻辑上功能类似的 rules 集合
 
 1. raw
 
@@ -42,15 +42,11 @@ iptables 有下面 5 张表，是逻辑上功能类似的 rules 集合
 
 ## Chains
 
-每张表格都有不同的 chains
-
-
-
-每一条 chain 由多组 rules 组成。数据包经过一条 chain 时，会将当前 chain 的所有规则都按照顺序匹配一遍
+每张表格都有不同的 chains，每一条 chain 由多条 rules 组成
 
 为了方便下面用一张表格展示，其中 Y 标识这个 tables 里含有这个 chian。
 
-另外为了展示执行的优先级，这边将 nat 细分层了 SNAT 或者 DNAT (DNAT 执行的规则总是优先与 SNAT)
+另外为了展示每条 chain 在 table 中执行的优先级，这边将 nat 细分成了 SNAT 和 DNAT (DNAT 执行的规则总是优先与 SNAT)
 
 | Tables/Chains  | PREROUTING | INPUT | FORWARD | OUTPUT | POSTROUTING |
 | :------------- | :--------- | :---- | :------ | :----- | :---------- |
@@ -80,13 +76,22 @@ iptables 有下面 5 张表，是逻辑上功能类似的 rules 集合
 
 ## Rules
 
-每张 table 的每条 chain 都有一组 rules, 当 chain 被调用时会依次读取 chain 里面的 rules
+每张 table 的每条 chain 都有一组 rules, 当 chain 被调用时会依次读取 chain 里面的 rules 按照下面的规则执行
 
-如果匹配了 rule 的 match 就执行 target
-
-如果不匹配 match 就会检查下一条 rule
+```
+if 报文匹配了 rule match
+	if 指定了 target
+		执行 target
+		return
+	else
+		检查下一条 rule
+else
+	检查下一条 rule
+```
 
 ### Matches
+
+> 具体可以参考 iptables-extensions
 
 必须满足的条件, 条件可以是
 
@@ -101,12 +106,14 @@ iptables 有下面 5 张表，是逻辑上功能类似的 rules 集合
 
 ### Targets
 
+> 具体可以参考 iptables-extensions
+
 满足条件后执行的动作(action)叫做目标(target)
 
-可用的 targets 可以是 
+targets 可以是 
 
 1. user-defined chains
-2. built-in targets( ACCEPT, DROP, QUEUE, RETURN, REJECT, etc) 具体可以查看 `iptables-extensions(8)`
+2. built-in targets( ACCEPT, DROP, QUEUE, RETURN, REJECT, etc) 
 
 ## User-defined chains
 
@@ -116,7 +123,7 @@ iptables 不仅有 built-in chains, 同时还支持使用 user-defined chains
 
 ## Modules
 
-iptables 按照场景还提供了许多 modules，例如
+> 具体可以参考 iptables-extensions
 
-connlimit, conntrack, limit, recent 等等
+iptables 按照场景还提供了许多 modules，例如 connlimit, conntrack, limit, recent 等等
 

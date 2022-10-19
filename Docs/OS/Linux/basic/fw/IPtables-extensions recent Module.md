@@ -88,7 +88,7 @@ src=192.168.3.1 ttl: 62 last_seen: 4298543229 oldest_pkt: 6 4298541976, 42985422
 
   this option must be used in conjunction with one of `--rcheck` or `--update`. When used, this will narrrow the match to only happen when the address is in the list and was seen within the last given number of seconds
 
-  只会在第 second 内生效
+  匹配从 last_seen + seconds 之内
 
 - `--hitcount hits`
 
@@ -103,23 +103,21 @@ src=192.168.3.1 ttl: 62 last_seen: 4298543229 oldest_pkt: 6 4298541976, 42985422
   ```
   #将源地址加入到 badguy 中
   iptables -t filter -A INPUT -m recent --name badguy --set --rsource
-  
   iptables -t filter -A INPUT -m recent --name badguy --rcheck --hitcount 3 -j DROP
   ```
 
-- 每隔第 n 秒内的报文会被丢弃。设置下面两条规则后，会出现每隔第 3 秒的报文都会被丢弃
+- 第一个报文正常，从第一个报文开始后 n 秒内的报文会被丢弃；然后后面一个的报文正常，从后面一个的报文后 n 秒内的报文都会丢出；以此递归。（实际是从 从 last_seen 开始计算后面 n 秒内的报文都会被丢弃）。下面的例子 n = 5
 
   ```
-  iptables -t filter -A INPUT -m recent --name badguy --rcheck --seconds 3 -j DROP
-  
+  iptables -t filter -A INPUT -m recent --name badguy --rcheck --seconds 5 -j DROP
   iptables -t filter -A INPUT -m recent --name badguy --set --rsource
   ```
 
-- 11
+  交换一下两条规则
 
   ```
-  iptables -t filter -A INPUT -m recent --name badguy --update --seconds 10 -j DROP
   iptables -t filter -A INPUT -m recent --name badguy --set --rsource
+  iptables -t filter -A INPUT -m recent --name badguy --rcheck --seconds 5 -j DROP
   ```
 
-  
+  就出现直接丢包，因为匹配第一条规则的时候 last_seen 一直在更新，匹配到第二条规则时所以一直都在 5 秒内，所以直接丢包

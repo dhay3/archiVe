@@ -172,7 +172,7 @@ target = -j targetname [per-target-options]
   set the target of the rule
 
   1. 可以是 userd-defined chain
-  2. 如果没有指定该参数同时也没有指定`-g`，==匹配的数据包不会做任何操作，但是会被 counters 统计==
+  2. 如果没有指定该参数同时也没有指定`-g`，==报文同样会被匹配，但是不会做 return 的逻辑而是会匹配下面的 rules(这种情况一般只用在 recent moudle --set 用做计数)==
 
 ### Other args
 
