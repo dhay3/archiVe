@@ -4,15 +4,11 @@ ref:
 
 https://www.zsythink.net/archives/1544
 
-只写一些常用的 match modules，具体参考 man page
+## Digest
+
+IPtables 除了提供一些简单的 matches，还按照场景提供了大量的 matches modules。只写一些常用的 match modules，具体参考 man page
 
 ## Modules
-
-为了方便归类，这边按照协议进行划分 Modules
-
-以 192.168.3.1 访问 192.168.1.1 为例
-
-### IP
 
 #### addrtype
 
@@ -36,10 +32,6 @@ type 的值可以是
 
 #### ttl
 
-
-
-### ICMP
-
 #### icmp
 
 当指定 `-p icmp` 时自动加载, 支持如下参数
@@ -58,8 +50,6 @@ Chain INPUT (policy ACCEPT 0 packets, 0 bytes)
 ```
 
 从 192.168.3.1 来的 icmp type 8 (echo-request) 在 192.168.1.1 上通过 iptables 丢掉
-
-### TCP
 
 #### tcp
 
@@ -129,148 +119,25 @@ Ncat: Version 7.70 ( https://nmap.org/ncat )
 Ncat: Connection timed out.
 ```
 
-
-
 #### connbytes
 
-连接(这里的连接并不特指 TCP 报文，也包含 ICMP 报文，这里为了方便记忆就放在 tcp 下 )模块
-
-- `[!] --connbytes from[:to]`
-
-  match  packets  from a connection whose packets/bytes/average packet size is more than FROM and less than TO bytes/packets. if  TO  is  omitted  only  FROM check is done. "!" is used to match packets not falling in the range.
-
-- `--connbytes-mode {packets|bytes|avgpkt}`
-
-  决定`--connbytes`的数值对应的类型
-
-- `--connbytes-dir {original|reply|both}`
-
-  决定 `--connbytes`的计数方式
-
-例如
-
-192.168.3.1 访问 192.168.1.1
-
-```
-#192.168.1.1 iptables
-[root@netos-1 /]# iptables -t filter -A OUTPUT -d 192.168.3.1 -m connbytes --connbytes 3:5 --connbytes-dir both --connbytes-mode packets -j DROP
-[root@netos-1 /]# iptables -nvL OUTPUT
-Chain OUTPUT (policy ACCEPT 0 packets, 0 bytes)
- pkts bytes target     prot opt in     out     source               destination         
-    0     0 DROP       all  --  *      *       0.0.0.0/0            192.168.3.1          connbytes 3:5 connbytes mode packets connbytes direction both
-
-#192.168.3.1 ping
-[root@netos-2 /]# ping 192.168.1.1
-PING 192.168.1.1 (192.168.1.1) 56(84) bytes of data.
-64 bytes from 192.168.1.1: icmp_seq=1 ttl=62 time=47.9 ms
-64 bytes from 192.168.1.1: icmp_seq=3 ttl=62 time=37.3 ms
-
-#192.168.1.1 tcpdump
-12:48:20.990985 IP 192.168.3.1 > 192.168.1.1: ICMP echo request, id 8, seq 1, length 64
-12:48:20.991014 IP 192.168.1.1 > 192.168.3.1: ICMP echo reply, id 8, seq 1, length 64
-12:48:21.981651 IP 192.168.3.1 > 192.168.1.1: ICMP echo request, id 8, seq 2, length 64
-12:48:23.007687 IP 192.168.3.1 > 192.168.1.1: ICMP echo request, id 8, seq 3, length 64
-12:48:23.007710 IP 192.168.1.1 > 192.168.3.1: ICMP echo reply, id 8, seq 3, length 64
-```
-
-从 ping 和 tcpdump 的结果看，192.168.1.1 icmp seq 2 没有回包
-
-因为 iptables 的规则指定从 192.168.1.1 来的包或者是回的包都会被计数（both），当在`3:5`之间时就会执行 DROP target，所以 icmp seq 2 192.168.1.1 不回包
+具体查看 [IPtables-extensions connbytes Match]()
 
 #### connlimit
 
-用来限制从 client 来的连接数，不仅对 TCP 生效，ICMP 也生效
-
-- `--connlimit-upto n`
-
-  match if the number of existing connections is below or equal n
-
-- `--connlimit-above n`
-
-  match if the number of exsiting connections is above n
-
-```
-# allow 2 telnet connections per client host
-iptables -A INPUT  -p  tcp  --syn  --dport  23  -m  connlimit
---connlimit-above 2 -j REJECT
-
-# you can also match the other way around:
-iptables  -A  INPUT  -p  tcp  --syn  --dport  23 -m connlimit
---connlimit-upto 2 -j ACCEPT
-
-# limit the number of parallel HTTP requests to 16 per class C sized
-source network (24 bit netmask)
-iptables    -p    tcp   --syn   --dport   80   -m   connlimit
---connlimit-above 16 --connlimit-mask 24 -j REJECT
-
-```
+具体查看 [IPtables-extensions connlimit Match]()
 
 #### conntrack
 
-用来匹配 connection 状态(不仅限于 TCP 报文，ICMP 报文同样生效)
-
-- `[!] --ctstate statelist`
-
-  statelist 可以一个值也可以是一个数组。具体可以是 
-
-  - INVALID
-
-    The packet is associated with no known connection
-
-  - NEW
-
-    The packet has started a new connection or otherwise  associated with a connection which has not seen packets in both directions
-
-  -  ESTABLISHED
-
-    The packet is associated with a  connection  which  has  seen packets in both directions.
-
-  - RELATED
-
-    The  packet  is  starting a new connection, but is associated with an existing connection, such as an FTP data transfer  or an ICMP error.
-
-  - UNTRACKED
-
-    The  packet  is  not tracked at all, which happens if you explicitly untrack it by using -j CT --notrack in the  raw  table
-
-  - SNAT
-
-    A virtual state, matching if the original source address differs from the reply destination
-
-    即说明源IP做了 SNAT
-
-  - DNAT
-
-    A virtual state, matching if the original destination differs  from the reply source
-
-    即说明目IP做了 DNAT
-
-例如
-
-```
-[root@netos-1 /]# iptables -t filter -A INPUT -s 192.168.3.1 -m conntrack --ctstate NEW -j DROP
-
-[root@netos-2 /]# ping 192.168.1.1
-PING 192.168.1.1 (192.168.1.1) 56(84) bytes of data.
-^C
---- 192.168.1.1 ping statistics ---
-2 packets transmitted, 0 received, 100% packet loss, time 1019ms
-
-[root@netos-1 /]# iptables -nvL INPUT
-Chain INPUT (policy ACCEPT 0 packets, 0 bytes)
- pkts bytes target     prot opt in     out     source               destination         
-    2   168 DROP       all  --  *      *       192.168.3.1          0.0.0.0/0            ctstate NEW
-```
+具体查看 [IPtables-extensions conntrack/state Match]()
 
 #### state
 
-是 conntrack 的子集
-
-### Mixin
+具体查看 [IPtables-extensions conntrack/state Match]()
 
 #### recent
 
-具体查看 IPtables-extensions rcent Module
+具体查看 [IPtables-extensions rcent Match]()
 
 #### comment
 
@@ -319,4 +186,37 @@ match device group of packet’s incoming/outgoing interface
 
 #### string
 
+匹配报文的 ascii 内容，一般用于过滤 URL
+
+- `--algo {bm|kmp}`
+
+  选择字符串的匹配模式，指定
+
+- `[!] --string pattern`
+
+  matches the given pattern
+
+- `--icase`
+
+  Ignore case when searching
+
+```
+iptables  -A  INPUT  -p  tcp  --dport  80 -m string --algo bm --string 'example' -j DROP
+```
+
+如果使用了 TLS 就不能按照字符串匹配了，因为加密了，但是可以指定过滤 DNS 报文
+
+```
+iptables  -A  INPUT  -p  udp  --dport  53 -m string --algo bm --string 'example' -j DROP
+```
+
 #### time
+
+具体参考 [IPtables-extension time Match]()
+
+#### hashlimit
+
+
+
+
+
