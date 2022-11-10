@@ -58,4 +58,29 @@ AUR GNS3 可能有 bug，添加的 VMS 可能不会在面板中显示只需要�
 
 ## Permanent networking conf
 
-GNS3 支持对 iface 配置做永久，可以右击实例，然后在 network configuration。
+ref
+
+https://github.com/muhamadfaiz/Create-Sub-Interface-in-Debian
+
+GNS3 支持对 iface 配置做永久，可以右击实例，然后在 network configuration 中按照 debian 的格式配置
+
+```
+auto eth0
+iface eth0 inet static
+address 192.168.4.1
+netmask 255.255.255.0
+gateway 192.168.4.2
+# sub interface
+auto eth0:0
+iface eth0:0 inet static
+address 192.168.4.3
+netmask 255.255.255.0
+gateway 192.168.4.2
+# new NIC
+auto eth1 
+iface eth1 inet static
+address 192.168.5.1
+netmask 255.255.255.0
+gateway 192.168.4.2
+```
+

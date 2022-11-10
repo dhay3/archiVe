@@ -48,6 +48,8 @@ iptables 有下面 5 张表，每张表都是逻辑上功能类似的 rules 集�
 
 另外为了展示每条 chain 在 table 中执行的优先级，这边将 nat 细分成了 SNAT 和 DNAT (DNAT 执行的规则总是优先与 SNAT)
 
+这里可以思考一下为什么 DNAT 总是优先于 SNAT 的。==因为当一台主机收到报文时假设目的不是自己就会转发报文，如果是就会进入系统栈中处理，这时和源并没有关系。==
+
 | Tables/Chains  | PREROUTING | INPUT | FORWARD | OUTPUT | POSTROUTING |
 | :------------- | :--------- | :---- | :------ | :----- | :---------- |
 | (路由判断)     |            |       |         |        |             |

@@ -1,4 +1,4 @@
-# IPtables Read Rules
+# IPtables Query Rules
 
 ref
 
