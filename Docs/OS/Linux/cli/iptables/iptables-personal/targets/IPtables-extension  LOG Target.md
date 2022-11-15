@@ -49,7 +49,17 @@ LOG 模块可以将匹配的报文输出到 kernel log，这样就可以通过 `
 
 ## Examples
 
+> 无法在 GNS3 搭建的环境中复现
+
+设置规则
+
 ```
-iptables -t filter -A INPUT -j LOG --log-level debug
+cpl in ~ λ sudo iptables -t filter -A OUTPUT -d 192.168.1.1 -j LOG --log-level debug 
+```
+
+查看`dmesg`
+
+```
+[  520.234846] IN= OUT=wlp1s0 SRC=192.168.2.194 DST=192.168.1.1 LEN=84 TOS=0x00 PREC=0x00 TTL=64 ID=51714 DF PROTO=ICMP TYPE=8 CODE=0 ID=1 SEQ=2 
 ```
 
