@@ -4,6 +4,8 @@ ref
 
 https://www.zsythink.net/archives/1517
 
+## Digest
+
 IPtables Rules 默认不是永久的，会在服务器重启会清空。为了持久化可以通过下面这种方式（为了方便管理可是编写一个 systemctl unit file）
 
 iptables 组件中提供了 `iptables-save` 用于将 iptables rules 输出成文本格式
@@ -49,5 +51,22 @@ Chain FORWARD (policy ACCEPT 0 packets, 0 bytes)
 
 Chain OUTPUT (policy ACCEPT 4 packets, 528 bytes)
  pkts bytes target     prot opt in     out     source               destination
+```
+
+## iptables-save
+
+https://unix.stackexchange.com/questions/222224/what-do-the-numbers-in-brackets-mean-on-the-iptables-save-output
+
+使用 `iptables-save` 时会将当前的 counters 以 `[packets:bytes]`的格式显示。而在 chains 后面的是默认的 policy
+
+```
+*filter
+:INPUT ACCEPT [29845:17929031]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [28819:10183341]
+:DOCKER - [0:0]
+:DOCKER-ISOLATION-STAGE-1 - [0:0]
+:DOCKER-ISOLATION-STAGE-2 - [0:0]
+:DOCKER-USER - [0:0]
 ```
 

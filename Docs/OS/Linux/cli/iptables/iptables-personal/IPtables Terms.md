@@ -82,7 +82,7 @@ iptables 有下面 5 张表，每张表都是逻辑上功能类似的 rules 集�
 
 ```
 if 报文匹配了 rule match
-	if 指定了 target
+	if target == terminated target
 		执行 target
 		return
 	else
@@ -116,6 +116,16 @@ targets 可以是
 
 1. user-defined chains
 2. built-in targets( ACCEPT, DROP, QUEUE, RETURN, REJECT, etc) 
+
+同时 targets 也被分为 non-terminated targets 和 terminiated targets
+
+常见的 non-terminated targets 有：
+
+LOG, MARK, etc
+
+常见的 terminated targets 有：
+
+ACCEPT, DROP, REJECT, RETURN, SNAT, DNAT, etc
 
 ## User-defined chains
 
