@@ -103,6 +103,8 @@ target = -j targetname [per-target-options]
 
   等价于清空 table
 
+  ==这里需要注意的一定是，手动设置的 Policy 并不会被清除==
+
 - `-R | --replace chain rule-specification | rulenum`
 
   replace a rule in the selected chain
@@ -119,15 +121,17 @@ target = -j targetname [per-target-options]
 
 - `-X | --delete-chain [chain]`
 
-  delete the chain specified
+  delete the empty chain which specified
 
-  只有没有 rules 的 chain 才可以删除，empty built-in chains 只能通过 `iptables-nft` 删除 
+  一般用于删除没有 rules 的 user-defined chains，且不能删除 built-in chains (INPUT, OUTOUT, FOWARD...)
+
+  empty built-in chains 只能通过 `iptables-nft` 删除 
 
 - `-P | --policy chain target`
 
   set the policy for the built-in chain to the given target
 
-  修改 chain 缺省 target（只能是 ACCEPT 或 DROP），user-defined chain 不支持
+  修改 chain 缺省 target（只能是 ACCEPT 或 DROP），==user-defined chain 不支持==
 
 ### Matches args
 

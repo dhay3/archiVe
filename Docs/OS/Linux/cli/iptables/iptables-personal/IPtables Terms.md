@@ -82,7 +82,7 @@ iptables 有下面 5 张表，每张表都是逻辑上功能类似的 rules 集�
 
 ```
 if 报文匹配了 rule match
-	if target == terminated target
+	if target is terminated target
 		执行 target
 		return
 	else
@@ -110,7 +110,7 @@ else
 
 > 具体可以参考 iptables-extensions
 
-满足条件后执行的动作(action)叫做目标(target)
+满足条件后执行的动作 ( action ) 叫做目标 ( target )
 
 targets 可以是 
 
@@ -132,6 +132,23 @@ ACCEPT, DROP, REJECT, RETURN, SNAT, DNAT, etc
 iptables 不仅有 built-in chains, 同时还支持使用 user-defined chains
 
 和 built-in chains 不同的是 user-defined chains 只能被用做为 targets
+
+## Policy
+
+iptables 中的每一张 table 每一条 chain 都有一条默认的规则用于匹配，没有匹配到任何具名(手动设置) rules 的报文，即 fallback 规则
+
+```
+Chain INPUT (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination           
+```
+
+上述中的 policy ACCEPT 表示如果当前报文不匹配 INPUT chian 中具名的 rules 时，就指定当前报文为 ACCEPT target 
+
+chain’s Policy 可以通过 `-P` 来修改，例如
+
+```
+iptables -t filter -P INPUT DROP
+```
 
 ## Modules
 

@@ -53,7 +53,7 @@ Chain OUTPUT (policy ACCEPT 4 packets, 528 bytes)
  pkts bytes target     prot opt in     out     source               destination
 ```
 
-## iptables-save
+## iptables-save Stdout
 
 https://unix.stackexchange.com/questions/222224/what-do-the-numbers-in-brackets-mean-on-the-iptables-save-output
 
@@ -70,3 +70,4 @@ https://unix.stackexchange.com/questions/222224/what-do-the-numbers-in-brackets-
 :DOCKER-USER - [0:0]
 ```
 
+但是在 user-defined chians 后面一个字段值为 `-`, 因为 user-defined chains 不支持 Policy
