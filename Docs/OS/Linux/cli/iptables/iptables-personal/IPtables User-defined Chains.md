@@ -99,6 +99,8 @@ From 192.168.1.1 icmp_seq=1 Destination Port Unreachable
 
 ## Delete user-defined chain
 
+> 可以通过直接清空 tables 来清空 user-defined chain, 但是风险需要自己评估
+
 如果 user-defined chain 中包含 rules ，那么就不能被直接删除
 
 ```

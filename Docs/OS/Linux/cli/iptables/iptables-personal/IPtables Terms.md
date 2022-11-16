@@ -78,18 +78,21 @@ iptables 有下面 5 张表，每张表都是逻辑上功能类似的 rules 集�
 
 ## Rules
 
-每张 table 的每条 chain 都有一组 rules, 当 chain 被调用时会依次读取 chain 里面的 rules 按照下面的规则执行
+每张 table 的每条 chain 都有一组 rules, 当 chain 被调用时会依次读取 chain 里面的 rules 按照下面的伪代码执行
 
 ```
-if 报文匹配了 rule match
-	if target is terminated target
-		执行 target
-		return
-	else
-		检查下一条 rule
+rules = [...]
+
+match_rule(pkt,0)
+
+func match_rule(pkt,rule_idx)
+if pkt match rules[rule_idx].match && rule[rule_idx].target is terminated target
+	return
 else
-	检查下一条 rule
+	return match_rule(pkt,rule_idx++)   
 ```
+
+每条 rule 按照在 table 中的先后顺序匹配
 
 ### Matches
 
@@ -111,21 +114,6 @@ else
 > 具体可以参考 iptables-extensions
 
 满足条件后执行的动作 ( action ) 叫做目标 ( target )
-
-targets 可以是 
-
-1. user-defined chains
-2. built-in targets( ACCEPT, DROP, QUEUE, RETURN, REJECT, etc) 
-
-同时 targets 也被分为 non-terminated targets 和 terminiated targets
-
-常见的 non-terminated targets 有：
-
-LOG, MARK, etc
-
-常见的 terminated targets 有：
-
-ACCEPT, DROP, REJECT, RETURN, SNAT, DNAT, etc
 
 ## User-defined chains
 
