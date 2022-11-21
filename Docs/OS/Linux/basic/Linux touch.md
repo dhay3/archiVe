@@ -61,7 +61,7 @@ touch除了创建文件之外还可以修改文件的atime，ctime，mtime等。
    Birth: -
   ```
 
-- 使用指定文件的时间戳修改，并求改ctime到当前时间
+- 使用指定文件的时间戳修改，并修改ctime到当前时间
 
   ```
   root in /usr/local λ stat bin

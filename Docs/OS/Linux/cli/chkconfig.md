@@ -8,7 +8,7 @@ https://zh.wikipedia.org/wiki/%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB
 
 https://developer.aliyun.com/article/537443
 
-> chkconfig用于设置开机启动服务，在新版中被systemd替换
+> chkconfig用于设置开机启动服务，在较新的内核版本中被 systemd替换
 
 主要用于更新和查询系统服务运行级别。用于操作`/etc/rc[0-6].d`
 

@@ -28,8 +28,6 @@ Socket(s): 						 1
 
 表示一共有 16 个逻辑 CPU，8 核 2 线程，1 socket
 
-
-
 ```
 Virtualization features: 
   Virtualization:        AMD-V

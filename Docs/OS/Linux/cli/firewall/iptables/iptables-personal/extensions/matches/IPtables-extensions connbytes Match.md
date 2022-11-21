@@ -1,4 +1,4 @@
-# IPtables-extensions connbytes Module
+# IPtables-extensions connbytes Match
 
 ## Digest
 

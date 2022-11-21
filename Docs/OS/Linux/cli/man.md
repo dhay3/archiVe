@@ -84,13 +84,15 @@ man pages 一般以 nroff（在 GNU 体系中一般是 groff） 的格式存储�
 
 在 man page 中可能会出现一些有特殊含义的标识
 
-1. bold text
+1. **bold text**  
 
    type exactly as shown
 
-2. italic text
+2. <u>italic text</u>
 
    replace with appropriate argument
+
+   虽然叫做斜体，但是在 linux 中一般显示为下划线
 
 3. [-abc]
 
@@ -107,6 +109,12 @@ man pages 一般以 nroff（在 GNU 体系中一般是 groff） 的格式存储�
 6. [expression] ...
 
    entire expression within [ ] is repeatable
+
+7. \<expression\>
+
+   expresssion is postional
+
+   一般表示必不可缺的参数
 
 ## mandb
 

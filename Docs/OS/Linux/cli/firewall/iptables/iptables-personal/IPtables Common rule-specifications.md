@@ -24,6 +24,7 @@ iptables -t filter -A INPUT -j INGRESS
 iptables -N SSHOPEN
 
 iptables -t filter -A SSHOPEN -m state --state established,related -j ACCEPT
+#这里使用 None target
 iptables -t filter -A SSHOPEN -p tcp --dport 65522 -m recent --name SSHOPEN --set
 iptables -t filter -A SSHOPEN -p tcp --dport 65522 -j DROP
 iptables -t filter -A SSHOPEN -p tcp --dport 22 -m recent --name SSHOPEN --rcheck --seconds 600 -j ACCEPT

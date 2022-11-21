@@ -45,41 +45,44 @@ ACCEPT, DROP, REJECT, RETURN, SNAT, DNAT, etc
 
 ## None Target
 
-在 iptables rules 中 target 不是必须的，可以是空值。如果为空值，默认会使用 Policy 作为匹配后的动作即 traget
+在 iptables rules 中 target 不是必须的，可以是空值。如果为空值，iptables 只会记录 counter 值不会执行动作(可以把 None Target 直接理解成 non-terminated target)
 
 例如
 
-192.168.3.1 添加一条规则匹配从 192.168.1.1 来的报文
+192.168.1.1 访问 192.168.3.1
+
+192.168.3.1 配置规则
 
 ```
-[root@labos-2 /]# iptables -A INPUT -s 192.168.1.1 
-```
-
-然后从 192.168.1.1 ping 192.168.3.1
-
-这里可以发现是正常回包的，因为默认 built-in chain  policy 均为 ACCEPT
-
-```
-[root@labos-1 /]# ping 192.168.3.1
-PING 192.168.3.1 (192.168.3.1) 56(84) bytes of data.
-64 bytes from 192.168.3.1: icmp_seq=1 ttl=62 time=40.10 ms
-```
-
-修改 192.168.3.1  INPUT policy
-
-```
+[root@labos-2 /]# iptables -t filter -A INPUT -s 192.168.1.1    
+[root@labos-2 /]# iptables -t filter -A INPUT -s 192.168.1.1 -j ACCEPT
+#这里为了排除 policy 的影响将规则设置成丢包
 [root@labos-2 /]# iptables -P INPUT DROP
 ```
 
 然后从 192.168.1.1 ping 192.168.3.1
 
-这是可以发现丢包了，因为 192.168.3.1 INPUT 设置了 DROP policy
+这里可以发现是正常回包的
 
 ```
 [root@labos-1 /]# ping 192.168.3.1
 PING 192.168.3.1 (192.168.3.1) 56(84) bytes of data.
+64 bytes from 192.168.3.1: icmp_seq=1 ttl=62 time=37.8 ms
+64 bytes from 192.168.3.1: icmp_seq=2 ttl=62 time=37.8 ms
+64 bytes from 192.168.3.1: icmp_seq=3 ttl=62 time=38.3 ms
 ^C
 --- 192.168.3.1 ping statistics ---
-2 packets transmitted, 0 received, 100% packet loss, time 1026ms
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+rtt min/avg/max/mdev = 37.775/37.952/38.303/0.248 ms
+```
+
+查看 192.168.3.1 计数
+
+```
+[root@labos-2 /]# iptables -nvL
+Chain INPUT (policy DROP 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+    3   252            all  --  *      *       192.168.1.1          0.0.0.0/0           
+    3   252 ACCEPT     all  --  *      *       192.168.1.1          0.0.0.0/0
 ```
 

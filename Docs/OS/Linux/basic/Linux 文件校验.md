@@ -13,7 +13,7 @@ https://www.ruanyifeng.com/blog/2019/11/hash-sum.html
 
 ## 概述
 
-<img src="..\..\..\imgs\_Linux\Snipaste_2020-12-16_19-09-18.png"/>
+![Snipaste_2020-12-16_19-09-18](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221121/Snipaste_2020-12-16_19-09-18.2yddoia49xfk.webp)
 
 在下载一些文件，会提供用于校验的文件完整性和是否修改的文件。常见的有：`.sha1`，`.sha256`，`.sig`
 
