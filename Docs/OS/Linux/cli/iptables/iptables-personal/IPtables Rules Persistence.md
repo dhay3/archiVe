@@ -4,6 +4,8 @@ ref
 
 https://www.zsythink.net/archives/1517
 
+https://www.linuxtopia.org/Linux_Firewall_iptables/x1824.html
+
 ## Digest
 
 IPtables Rules 默认不是永久的，会在服务器重启会清空。为了持久化可以通过下面这种方式（为了方便管理可是编写一个 systemctl unit file）
@@ -71,3 +73,10 @@ https://unix.stackexchange.com/questions/222224/what-do-the-numbers-in-brackets-
 ```
 
 但是在 user-defined chians 后面一个字段值为 `-`, 因为 user-defined chains 不支持 Policy
+
+完整的格式为
+
+```
+ :<chain-name> <chain-policy> [<packet-counter>:<byte-counter>].
+```
+
