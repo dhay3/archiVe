@@ -11,29 +11,22 @@ install [OPTION]... -t DIRECTORY SOURCE...
 install [OPTION]... -d DIRECTORY...
 ```
 
-install 和 cp 一样都用于拷贝文件，但是 install 可以在拷贝的同时设置权限和属性
+`install` 命令用于拷贝文件的同时设置权限和属性，和 `cp` 不一样的是 `cp` 最多只能保留原文件的一些权限和属性，但是 `install` 可以手动指定
 
 ## Optional args
 
-- `-g | --group=GROUP`
+- `-o | --owner=onwer`
 
-  set group ownership
+  拷贝文件时，同时设置 onwership （只能被 root 使用）
 
-- `-o | --owner=OWNER`
+- `-m | --mode=mode`
 
-  set ownership
-
-- `-m | --mode=MODE`
-
-  set permission mode
-
-  拷贝的同时设置权限成 755
+  拷贝文件时，同时设置 mode permission
 
   ```
   install -o root -g root -m 755 kubectl  /usr/local/bin/different encryption methods and formattion
   ```
 
-- `-p | --presesrver-timestamps`
+- `-g | --group=group`
 
-  复制文件保留源文件件的 atime 和 mtime 值
-
+  拷贝文件时，同时设置 group ownership

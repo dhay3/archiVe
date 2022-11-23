@@ -1,12 +1,30 @@
 # Linux find
 
-## 概述
+## Digest
 
-pattern：`find [starting-point] [expression]`
+syntax
 
-find命令直接搜索硬盘速度较慢，如果没有指定starting-point默认使用`.`，==默认使用递归查询==
+```
+find  [-H]  [-L]  [-P]  [-D debugopts] [-Olevel] [starting-point...] [expression]
+```
 
-expression通常由global options，tests，actions，position options，oprators一个或多个组成
+find 是一个递归搜索文件的工具
+
+### Terms
+
+- starting-point
+
+  find 开始搜索的位置，如果没有指定，默认为 `.` (current directory)
+
+expression通常由 
+
+1. global options
+2. tests
+3. actions
+4. position options
+5. oprators
+
+一个或多个组成
 
 ## 全局条件
 
