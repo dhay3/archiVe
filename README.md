@@ -103,12 +103,14 @@
 
 - [GRUB](Docs/OS/GRUB)
 - [Koolshare](Docs/OS/Koolshare)
-
 - [Linux](Docs/OS/Linux)
-
 - [Powershell](Docs/OS/Powershell)
 - [Shell](Docs/OS/Shell)
-- [Virtualization](Docs/OS/Virtualization)
+
+​	[Virtualization](Docs/OS/Virtualization)
+
+- [vmware](Docs/OS/Virtualization/vmware)
+
 - [Windows](Docs/OS/Windows)
 
 ## [Pentest](Docs/Pentest)

@@ -2,21 +2,25 @@
 
 ```
 alias ls='lsd'
-alias l='ls -l'
+alias ll='ls -l'
 alias la='ls -a'
 alias lla='ls -la'
 alias lt='ls --tree'
-alias pacman='pacman --color auto'
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
+alias pacman='pacman --color always'
+alias grep='grep --color=auto -n'
+alias fgrep='fgrep --color=auto -n'
+alias egrep='egrep --color=auto -n'
 alias diff='diff --color=auto'
 alias radeontop='radeontop -c'
 alias dmesg='dmesg --color=always'
-alias cp='rsync --progress -av'
-alias mv='rsync --remove-source-files -av'
+alias cp='rsync --progress -azvh'
+# it will remove the source files without the parent directories
+# alias mv='rsync --remove-source-files -azvh'
+alias mv='mv -v'
 alias rm='rm -vi'
-#alias ping='nping --imcp'
+alias ip='ip -c=always'
+alias split='split --verbose'
+alias vbox='VirtualBox %U'
 
 alias -s {json,yaml,yml,html}=code
 alias -s md=typora

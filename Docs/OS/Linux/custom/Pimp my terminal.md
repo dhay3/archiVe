@@ -100,7 +100,7 @@ https://github.com/Mayccoll/Gogh/issues/203
 
 ==顺带关闭gnome terminal 的 sound bell==
 
-<img src="..\..\imgs\_Linux\Snipaste_2020-12-12_15-07-11.png"/>
+![Snipaste_2020-12-12_15-07-11](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221127/Snipaste_2020-12-12_15-07-11.nekmiaaobyo.webp)
 
 > 如果需要添加字形(glyphs)，请使用 [Font Awesome ➶](https://github.com/FortAwesome/Font-Awesome), [Devicons ➶](https://vorillaz.github.io/devicons/), [Octicons ➶](https://github.com/primer/octicons), and [others](https://github.com/ryanoasis/nerd-fonts#glyph-sets).
 
@@ -132,7 +132,7 @@ export LESS_TERMCAP_us=$'\e[1;4;31m'
 
 ## LSD
 
-<img src="..\..\imgs\_Linux\Snipaste_2020-12-12_16-05-35.png"/>
+![Snipaste_2020-12-12_16-05-35](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221127/Snipaste_2020-12-12_16-05-35.3y66baecbybk.webp)
 
 https://github.com/Peltoche/lsd
 
@@ -158,7 +158,7 @@ alias lt='ls --tree'
 
 https://github.com/cjbassi/ytop
 
-<img src="..\..\imgs\_Linux\Snipaste_2020-12-12_17-03-47.png"/>
+![Snipaste_2020-12-12_17-03-47](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221127/Snipaste_2020-12-12_17-03-47.66tadcit5bsw.webp)
 
 和LSD一样需要放在`/usr/local/bin`下
 
@@ -206,7 +206,7 @@ https://starship.rs/config/#username
 
 https://www.nerdfonts.com/cheat-sheet
 
-<img src="..\..\imgs\_Linux\Snipaste_2020-12-16_13-02-45.png"/>
+![Snipaste_2020-12-16_13-02-45](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221127/Snipaste_2020-12-16_13-02-45.5pda8x0jyy9s.webp)
 
 ```
 OS_ICON=
