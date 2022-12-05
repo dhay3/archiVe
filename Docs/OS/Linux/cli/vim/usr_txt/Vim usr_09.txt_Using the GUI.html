@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en"><script type="text/javascript">try {
+(function injectPageScriptAPI(scriptName, shouldOverrideWebSocket, shouldOverrideWebRTC, isInjected) { 
+
+    'use strict';
+
+    /**
+     * If script have been injected into a frame via contentWindow then we can simply take the copy of messageChannel left for us by parent document
+     * Otherwise creates new message channel that sends a message to the content-script to check if request should be allowed or not.
+     */
+    var messageChannel = isInjected ? window[scriptName] : (function () {
+
+        // Save original postMessage and addEventListener functions to prevent webpage from tampering both.
+        var postMessage = window.postMessage;
+        var addEventListener = window.addEventListener;
+
+        // Current request ID (incremented every time we send a new message)
+        var currentRequestId = 0;
+        var requestsMap = {};
+
+        /**
+         * Handles messages sent from the content script back to the page script.
+         *
+         * @param event Event with necessary data
+         */
+        var onMessageReceived = function (event) {
+
+            if (!event.data || !event.data.direction || event.data.direction !== "to-page-script@abu") {
+                return;
+            }
+
+            var requestData = requestsMap[event.data.requestId];
+            if (requestData) {
+                var wrapper = requestData.wrapper;
+                requestData.onResponseReceived(wrapper, event.data.block);
+                delete requestsMap[event.data.requestId];
+            }
+        };
+
+        /**
+         * @param url                The URL to which wrapped object is willing to connect
+         * @param requestType        Request type ( WEBSOCKET or WEBRTC)
+         * @param wrapper            WebSocket wrapper instance
+         * @param onResponseReceived Called when response is received
+         */
+        var sendMessage = function (url, requestType, wrapper, onResponseReceived) {
+
+            if (currentRequestId === 0) {
+                // Subscribe to response when this method is called for the first time
+                addEventListener.call(window, "message", onMessageReceived, false);
+            }
+
+            var requestId = ++currentRequestId;
+            requestsMap[requestId] = {
+                wrapper: wrapper,
+                onResponseReceived: onResponseReceived
+            };
+
+            var message = {
+                requestId: requestId,
+                direction: 'from-page-script@abu',
+                elementUrl: url,
+                documentUrl: document.URL,
+                requestType: requestType
+            };
+
+            // Send a message to the background page to check if the request should be blocked
+            postMessage.call(window, message, "*");
+        };
+
+        return {
+            sendMessage: sendMessage
+        };
+
+    })();
+
+    /*
+     * In some case Chrome won't run content scripts inside frames.
+     * So we have to intercept access to contentWindow/contentDocument and manually inject wrapper script into this context
+     *
+     * Based on: https://github.com/adblockplus/adblockpluschrome/commit/1aabfb3346dc0821c52dd9e97f7d61b8c99cd707
+     */
+    var injectedToString = Function.prototype.toString.bind(injectPageScriptAPI);
+
+    var injectedFramesAdd;
+    var injectedFramesHas;
+    if (window.WeakSet instanceof Function) {
+        var injectedFrames = new WeakSet();
+        injectedFramesAdd = WeakSet.prototype.add.bind(injectedFrames);
+        injectedFramesHas = WeakSet.prototype.has.bind(injectedFrames);
+    } else {
+        var frames = [];
+        injectedFramesAdd = function (el) {
+            if (frames.indexOf(el) < 0) {
+                frames.push(el);
+            }
+        };
+        injectedFramesHas = function (el) {
+            return frames.indexOf(el) >= 0;
+        };
+    }
+
+    /**
+     * Injects wrapper's script into passed window
+     * @param contentWindow Frame's content window
+     */
+    function injectPageScriptAPIInWindow(contentWindow) {
+        try {
+            if (contentWindow && !injectedFramesHas(contentWindow)) {
+                injectedFramesAdd(contentWindow);
+                contentWindow[scriptName] = messageChannel; // Left message channel for the injected script
+                var args = "'" + scriptName + "', " + shouldOverrideWebSocket + ", " + shouldOverrideWebRTC + ", true";
+                contentWindow.eval("(" + injectedToString() + ")(" + args + ");");
+                delete contentWindow[scriptName];
+            }
+        } catch (e) {
+        }
+    }
+
+    /**
+     * Overrides access to contentWindow/contentDocument for the passed HTML element's interface (iframe, frame, object)
+     * If the content of one of these objects is requested we will inject our wrapper script.
+     * @param iface HTML element's interface
+     */
+    function overrideContentAccess(iface) {
+
+        var contentWindowDescriptor = Object.getOwnPropertyDescriptor(iface.prototype, "contentWindow");
+        var contentDocumentDescriptor = Object.getOwnPropertyDescriptor(iface.prototype, "contentDocument");
+
+        // Apparently in HTMLObjectElement.prototype.contentWindow does not exist
+        // in older versions of Chrome such as 42.
+        if (!contentWindowDescriptor) {
+            return;
+        }
+
+        var getContentWindow = Function.prototype.call.bind(contentWindowDescriptor.get);
+        var getContentDocument = Function.prototype.call.bind(contentDocumentDescriptor.get);
+
+        contentWindowDescriptor.get = function () {
+            var contentWindow = getContentWindow(this);
+            injectPageScriptAPIInWindow(contentWindow);
+            return contentWindow;
+        };
+        contentDocumentDescriptor.get = function () {
+            injectPageScriptAPIInWindow(getContentWindow(this));
+            return getContentDocument(this);
+        };
+
+        Object.defineProperty(iface.prototype, "contentWindow", contentWindowDescriptor);
+        Object.defineProperty(iface.prototype, "contentDocument", contentDocumentDescriptor);
+    }
+
+    var interfaces = [HTMLFrameElement, HTMLIFrameElement, HTMLObjectElement];
+    for (var i = 0; i < interfaces.length; i++) {
+        overrideContentAccess(interfaces[i]);
+    }
+
+    /**
+     * Defines properties in destination object
+     * @param src Source object
+     * @param dest Destination object
+     * @param properties Properties to copy
+     */
+    var copyProperties = function (src, dest, properties) {
+        for (var i = 0; i < properties.length; i++) {
+            var prop = properties[i];
+            var descriptor = Object.getOwnPropertyDescriptor(src, prop);
+            // Passed property may be undefined
+            if (descriptor) {
+                Object.defineProperty(dest, prop, descriptor);
+            }
+        }
+    };
+
+    /**
+     * Check request by sending message to content script
+     * @param url URL to block
+     * @param type Request type
+     * @param callback Result callback
+     */
+    var checkRequest = function (url, type, callback) {
+        messageChannel.sendMessage(url, type, this, function (wrapper, blockConnection) {
+            callback(blockConnection);
+        });
+    };
+
+    /**
+     * The function overrides window.WebSocket with our wrapper, that will check url with filters through messaging with content-script.
+     *
+     * IMPORTANT NOTE:
+     * This function is first loaded as a content script. The only purpose of it is to call
+     * the "toString" method and use resulting string as a text content for injected script.
+     */
+    var overrideWebSocket = function () { 
+
+        if (!(window.WebSocket instanceof Function)) {
+            return;
+        }
+
+        /**
+         * WebSocket wrapper implementation.
+         * https://github.com/AdguardTeam/AdguardBrowserExtension/issues/349
+         *
+         * Based on:
+         * https://github.com/adblockplus/adblockpluschrome/commit/457a336ee55a433217c3ffe5d363e5c6980f26f4
+         */
+
+        /**
+         * As far as possible we must track everything we use that could be sabotaged by the website later in order to circumvent us.
+         */
+        var RealWebSocket = WebSocket;
+        var closeWebSocket = Function.prototype.call.bind(RealWebSocket.prototype.close);
+
+        function WrappedWebSocket(url, protocols) {
+            // Throw correct exceptions if the constructor is used improperly.
+            if (!(this instanceof WrappedWebSocket)) {
+                return RealWebSocket();
+            }
+            if (arguments.length < 1) {
+                return new RealWebSocket();
+            }
+
+            var websocket = new RealWebSocket(url, protocols);
+
+            // This is the key point: checking if this WS should be blocked or not
+            // Don't forget that the type of 'websocket.url' is String, but 'url 'parameter might have another type.
+            checkRequest(websocket.url, 'WEBSOCKET', function (blocked) {
+                if (blocked) {
+                    closeWebSocket(websocket);
+                }
+            });
+
+            return websocket;
+        }
+
+        // https://github.com/AdguardTeam/AdguardBrowserExtension/issues/488
+        WrappedWebSocket.prototype = RealWebSocket.prototype;
+        window.WebSocket = WrappedWebSocket.bind();
+
+        copyProperties(RealWebSocket, WebSocket, ["CONNECTING", "OPEN", "CLOSING", "CLOSED", "name", "prototype"]);
+
+        RealWebSocket.prototype.constructor = WebSocket;
+
+    };
+
+    /**
+     * The function overrides window.RTCPeerConnection with our wrapper, that will check ice servers URLs with filters through messaging with content-script.
+     *
+     * IMPORTANT NOTE:
+     * This function is first loaded as a content script. The only purpose of it is to call
+     * the "toString" method and use resulting string as a text content for injected script.
+     */
+    var overrideWebRTC = function () { 
+
+
+        if (!(window.RTCPeerConnection instanceof Function) &&
+            !(window.webkitRTCPeerConnection instanceof Function)) {
+            return;
+        }
+
+        /**
+         * RTCPeerConnection wrapper implementation.
+         * https://github.com/AdguardTeam/AdguardBrowserExtension/issues/588
+         *
+         * Based on:
+         * https://github.com/adblockplus/adblockpluschrome/commit/af0585137be19011eace1cf68bf61eed2e6db974
+         *
+         * Chromium webRequest API doesn't allow the blocking of WebRTC connections
+         * https://bugs.chromium.org/p/chromium/issues/detail?id=707683
+         */
+
+        var RealRTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection;
+        var closeRTCPeerConnection = Function.prototype.call.bind(RealRTCPeerConnection.prototype.close);
+
+        var RealArray = Array;
+        var RealString = String;
+        var createObject = Object.create;
+        var defineProperty = Object.defineProperty;
+
+        /**
+         * Convert passed url to string
+         * @param url URL
+         * @returns {string}
+         */
+        function urlToString(url) {
+            if (typeof url !== "undefined") {
+                return RealString(url);
+            }
+        }
+
+        /**
+         * Creates new immutable array from original with some transform function
+         * @param original
+         * @param transform
+         * @returns {*}
+         */
+        function safeCopyArray(original, transform) {
+
+            if (original === null || typeof original !== "object") {
+                return original;
+            }
+
+            var immutable = RealArray(original.length);
+            for (var i = 0; i < immutable.length; i++) {
+                defineProperty(immutable, i, {
+                    configurable: false, enumerable: false, writable: false,
+                    value: transform(original[i])
+                });
+            }
+            defineProperty(immutable, "length", {
+                configurable: false, enumerable: false, writable: false,
+                value: immutable.length
+            });
+            return immutable;
+        }
+
+        /**
+         * Protect configuration from mutations
+         * @param configuration RTCPeerConnection configuration object
+         * @returns {*}
+         */
+        function protectConfiguration(configuration) {
+
+            if (configuration === null || typeof configuration !== "object") {
+                return configuration;
+            }
+
+            var iceServers = safeCopyArray(
+                configuration.iceServers,
+                function (iceServer) {
+
+                    var url = iceServer.url;
+                    var urls = iceServer.urls;
+
+                    // RTCPeerConnection doesn't iterate through pseudo Arrays of urls.
+                    if (typeof urls !== "undefined" && !(urls instanceof RealArray)) {
+                        urls = [urls];
+                    }
+
+                    return createObject(iceServer, {
+                        url: {
+                            configurable: false, enumerable: false, writable: false,
+                            value: urlToString(url)
+                        },
+                        urls: {
+                            configurable: false, enumerable: false, writable: false,
+                            value: safeCopyArray(urls, urlToString)
+                        }
+                    });
+                }
+            );
+
+            return createObject(configuration, {
+                iceServers: {
+                    configurable: false, enumerable: false, writable: false,
+                    value: iceServers
+                }
+            });
+        }
+
+        /**
+         * Check WebRTC connection's URL and close if it's blocked by rule
+         * @param connection Connection
+         * @param url URL to check
+         */
+        function checkWebRTCRequest(connection, url) {
+            checkRequest(url, 'WEBRTC', function (blocked) {
+                if (blocked) {
+                    try {
+                        closeRTCPeerConnection(connection);
+                    } catch (e) {
+                        // Ignore exceptions
+                    }
+                }
+            });
+        }
+
+        /**
+         * Check each URL of ice server in configuration for blocking.
+         *
+         * @param connection RTCPeerConnection
+         * @param configuration Configuration for RTCPeerConnection
+         * https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration
+         */
+        function checkConfiguration(connection, configuration) {
+
+            if (!configuration || !configuration.iceServers) {
+                return;
+            }
+
+            var iceServers = configuration.iceServers;
+            for (var i = 0; i < iceServers.length; i++) {
+
+                var iceServer = iceServers[i];
+                if (!iceServer) {
+                    continue;
+                }
+
+                if (iceServer.url) {
+                    checkWebRTCRequest(connection, iceServer.url);
+                }
+
+                if (iceServer.urls) {
+                    for (var j = 0; j < iceServer.urls.length; j++) {
+                        checkWebRTCRequest(connection, iceServer.urls[j]);
+                    }
+                }
+            }
+        }
+
+        /**
+         * Overrides setConfiguration method
+         * https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/setConfiguration
+         */
+        if (RealRTCPeerConnection.prototype.setConfiguration) {
+
+            var realSetConfiguration = Function.prototype.call.bind(RealRTCPeerConnection.prototype.setConfiguration);
+
+            RealRTCPeerConnection.prototype.setConfiguration = function (configuration) {
+                configuration = protectConfiguration(configuration);
+                // Call the real method first, so that validates the configuration
+                realSetConfiguration(this, configuration);
+                checkConfiguration(this, configuration);
+            };
+        }
+
+        function WrappedRTCPeerConnection(configuration, arg) {
+
+            if (!(this instanceof WrappedRTCPeerConnection)) {
+                return RealRTCPeerConnection();
+            }
+
+            configuration = protectConfiguration(configuration);
+
+            /**
+             * The old webkitRTCPeerConnection constructor takes an optional second argument and we must pass it.
+             */
+            var connection = new RealRTCPeerConnection(configuration, arg);
+            checkConfiguration(connection, configuration);
+            return connection;
+        }
+
+        WrappedRTCPeerConnection.prototype = RealRTCPeerConnection.prototype;
+
+        var boundWrappedRTCPeerConnection = WrappedRTCPeerConnection.bind();
+        copyProperties(RealRTCPeerConnection, boundWrappedRTCPeerConnection, ["caller", "generateCertificate", "name", "prototype"]);
+        RealRTCPeerConnection.prototype.constructor = boundWrappedRTCPeerConnection;
+
+        if ("RTCPeerConnection" in window) {
+            window.RTCPeerConnection = boundWrappedRTCPeerConnection;
+        }
+        if ("webkitRTCPeerConnection" in window) {
+            window.webkitRTCPeerConnection = boundWrappedRTCPeerConnection;
+        }
+    };
+
+    if (shouldOverrideWebSocket) {
+        overrideWebSocket();
+    }
+
+    if (shouldOverrideWebRTC) {
+        overrideWebRTC();
+    }
+})('wrapper-script-48013587764301047', false, true);
+} catch (ex) { console.error('Error executing AG js: ' + ex); }
+(function () {
+            var current = document.currentScript;
+            var parent = current && current.parentNode;
+            if (parent) {
+                parent.removeChild(current);
+            }
+        })();</script><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Vim help pages, always up-to-date">
+<title>Vim: usr_09.txt</title>
+<link rel="shortcut icon" href="https://vimhelp.org/favicon.ico">
+<!-- favicon is based on http://amnoid.de/tmp/vim_solidbright_512.png and is used with permission by its author -->
+<link rel="stylesheet" href="Vim%20usr_09.txt_Using%20the%20GUI_files/vimhelp.css" type="text/css">
+
+<link rel="stylesheet" class="select2-css" href="Vim%20usr_09.txt_Using%20the%20GUI_files/select2.min.css" integrity="sha256-zaSoHBhwFdle0scfGEFUCwggPN7F+ip9XRglo8IWb4w=" crossorigin="anonymous">
+<script defer="defer" src="Vim%20usr_09.txt_Using%20the%20GUI_files/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script defer="defer" src="Vim%20usr_09.txt_Using%20the%20GUI_files/select2.min.js" integrity="sha256-9yRP/2EFlblE92vzCA10469Ctd0jT48HnmmMw5rJZrA=" crossorigin="anonymous"></script>
+<script defer="defer" src="Vim%20usr_09.txt_Using%20the%20GUI_files/vimhelp.js"></script>
+</head><body>
+<div class="bar">
+  <div class="ql">
+Quick links:
+<a href="https://vimhelp.org/">help overview</a> ·
+<a href="https://vimhelp.org/quickref.txt.html">quick reference</a> ·
+<a href="https://vimhelp.org/usr_toc.txt.html">user manual toc</a> ·
+<a href="https://vimhelp.org/#reference_toc">reference manual toc</a>
+· <a href="https://vimhelp.org/vim_faq.txt.html">faq</a></div>
+  <div class="srch">
+    <select id="vh-select-tag" data-select2-id="select2-data-vh-select-tag" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true" style="display: inline-block;"></select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-1-hf25" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-vh-select-tag-container" aria-controls="select2-vh-select-tag-container"><span class="select2-selection__rendered" id="select2-vh-select-tag-container" role="textbox" aria-readonly="true" title="Go to keyword"><span class="select2-selection__placeholder">Go to keyword</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+  </div>
+  <form class="srch" action="https://duckduckgo.com" method="get" target="_blank" rel="noopener noreferrer">
+    <input type="hidden" name="sites" value="vimhelp.org">
+    <input type="search" name="q" id="vh-srch-input" placeholder="Site search">
+  </form>
+</div>
+
+<main>
+<div id="vh-content">
+<pre><span id="usr_09.txt" class="t">usr_09.txt</span>    For <span class="i">Vim version 9.0.</span>  Last change: 2017 Aug 11
+
+                     VIM USER MANUAL <a href="https://vimhelp.org/motion.txt.html#-" class="d">-</a> by <a href="https://vimhelp.org/intro.txt.html#Bram" class="d">Bram</a> <a href="https://vimhelp.org/intro.txt.html#Moolenaar" class="d">Moolenaar</a>
+
+                                Using the <a href="https://vimhelp.org/gui.txt.html#GUI" class="d">GUI</a>
+
+
+Vim works in an ordinary terminal, while gVim has <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> Graphical <a href="https://vimhelp.org/autocmd.txt.html#User" class="d">User</a> Interface
+(GUI).  It can <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> the same things and <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> few more.  The <a href="https://vimhelp.org/gui.txt.html#GUI" class="d">GUI</a> offers menus, <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+toolbar, scrollbars and other items.  This chapter <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> about these extra things
+that the <a href="https://vimhelp.org/gui.txt.html#GUI" class="d">GUI</a> offers.
+
+<a href="#09.1" class="l">09.1</a>  Parts of the <a href="https://vimhelp.org/gui.txt.html#GUI" class="d">GUI</a>
+<a href="#09.2" class="l">09.2</a>  Using the mouse
+<a href="#09.3" class="l">09.3</a>  The <a href="https://vimhelp.org/gui.txt.html#clipboard" class="d">clipboard</a>
+<a href="#09.4" class="l">09.4</a>  <a href="https://vimhelp.org/visual.txt.html#Select" class="d">Select</a> mode
+
+     Next chapter: <a href="https://vimhelp.org/usr_10.txt.html#usr_10.txt" class="l">usr_10.txt</a>  Making big changes
+ Previous chapter: <a href="https://vimhelp.org/usr_08.txt.html#usr_08.txt" class="l">usr_08.txt</a>  Splitting <a href="https://vimhelp.org/windows.txt.html#windows" class="d">windows</a>
+Table of contents: <a href="https://vimhelp.org/usr_toc.txt.html#usr_toc.txt" class="l">usr_toc.txt</a>
+
+<span class="h">==============================================================================</span>
+<span id="09.1" class="t">09.1</span>  Parts of the <a href="https://vimhelp.org/gui.txt.html#GUI" class="d">GUI</a>
+
+You might have an icon on your desktop that starts gvim.  Otherwise, one of
+these commands should <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> it: 
+<span class="e"></span>
+<span class="e">        gvim file.txt</span>
+<span class="e">        vim -g file.txt</span>
+<span class="e"></span>
+If this doesn't work you don't have <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> version of Vim with <a href="https://vimhelp.org/gui.txt.html#GUI" class="d">GUI</a> support.  You
+will have to <a href="https://vimhelp.org/usr_90.txt.html#install" class="d">install</a> one first.
+   Vim will open <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> and display "file.txt" in it.  What the <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> looks
+like depends on the version of Vim.  It should resemble the following picture
+(for <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> far <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> this can be shown in ASCII!).
+
+        +----------------------------------------------------+
+        | file.txt <a href="https://vimhelp.org/motion.txt.html#%2B" class="d">+</a> (~/dir) <a href="https://vimhelp.org/motion.txt.html#-" class="d">-</a> VIM                         <a href="https://vimhelp.org/change.txt.html#X" class="d">X</a> |  &lt;- <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> title
+        +----------------------------------------------------+
+        | File  Edit  Tools  <a href="https://vimhelp.org/autocmd.txt.html#Syntax" class="d">Syntax</a>  Buffers  Window  Help   |  &lt;- menubar
+        +----------------------------------------------------+
+        | aaa  bbb  ccc  ddd  eee  fff  ggg  hhh  iii  jjj   |  &lt;- toolbar
+        | aaa  bbb  ccc  ddd  eee  fff  ggg  hhh  iii  jjj   |
+        +----------------------------------------------------+
+        | file text                                      | <a href="https://vimhelp.org/motion.txt.html#%5E" class="d">^</a> |
+        | <a href="https://vimhelp.org/change.txt.html#~" class="d">~</a>                                              | <a href="https://vimhelp.org/pattern.txt.html#%23" class="d">#</a> |
+        | <a href="https://vimhelp.org/change.txt.html#~" class="d">~</a>                                              | <a href="https://vimhelp.org/pattern.txt.html#%23" class="d">#</a> |  &lt;- scrollbar
+        | <a href="https://vimhelp.org/change.txt.html#~" class="d">~</a>                                              | <a href="https://vimhelp.org/pattern.txt.html#%23" class="d">#</a> |
+        | <a href="https://vimhelp.org/change.txt.html#~" class="d">~</a>                                              | <a href="https://vimhelp.org/pattern.txt.html#%23" class="d">#</a> |
+        | <a href="https://vimhelp.org/change.txt.html#~" class="d">~</a>                                              | <a href="https://vimhelp.org/pattern.txt.html#%23" class="d">#</a> |
+        |                                                | <a href="https://vimhelp.org/visual.txt.html#V" class="d">V</a> |
+        +----------------------------------------------------+
+
+The largest <a href="https://vimhelp.org/intro.txt.html#space" class="d">space</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> occupied by the file text.  This shows the file in the
+same way <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> terminal.  With some different colors and another font
+perhaps.
+
+
+<span class="c">THE WINDOW TITLE</span>
+
+At the very top <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> title.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> drawn by your <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> system.
+Vim will set the title to show the name of the current file.  First comes the
+name of the file.  Then some special characters and the directory of the file
+in parens.  These special characters can be present:
+
+        <a href="https://vimhelp.org/motion.txt.html#-" class="d">-</a>       The file cannot be modified (e.g., <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/helphelp.txt.html#help" class="d">help</a> file)
+        <a href="https://vimhelp.org/motion.txt.html#%2B" class="d">+</a>       The file contains changes
+        <a href="https://vimhelp.org/change.txt.html#%3D" class="d">=</a>       The file <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> read-only
+        =+      The file <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> read-only, contains changes anyway
+
+If nothing <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> shown you have an ordinary, unchanged file.
+
+
+<span class="c">THE MENUBAR</span>
+
+You know how <a href="https://vimhelp.org/gui.txt.html#menus" class="d">menus</a> work, right?  Vim has the usual items, plus <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> few more.
+Browse them to get an idea of what you can use them for.  <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> relevant submenu
+<a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> Edit/Global Settings.  You will find these entries:
+
+        Toggle Toolbar          make the toolbar appear/disappear
+        Toggle Bottom Scrollbar make <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> scrollbar appear/disappear <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the bottom
+        Toggle Left Scrollbar   make <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> scrollbar appear/disappear <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the left
+        Toggle Right Scrollbar  make <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> scrollbar appear/disappear <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the right
+
+On most systems you can tear-off the menus.  <a href="https://vimhelp.org/visual.txt.html#Select" class="d">Select</a> the top item of the menu,
+the one that looks like <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> dashed line.  You will get <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> separate <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> with
+the items of the menu.  It will hang around until you close the window.
+
+
+<span class="c">THE TOOLBAR</span>
+
+This contains icons for the most often used actions.  Hopefully the icons are
+self-explanatory.  There are <a href="https://vimhelp.org/gui.txt.html#tooltips" class="d">tooltips</a> to get an extra hint (move the mouse
+pointer to the icon without clicking and don't move <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> for <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> second).
+
+The "Edit/Global Settings/Toggle Toolbar" menu item can be used to make the
+toolbar disappear.  If you never want <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> toolbar, use this command in your
+<a href="https://vimhelp.org/starting.txt.html#vimrc" class="d">vimrc</a> file: 
+<span class="e"></span>
+<span class="e">        :set guioptions-=T</span>
+<span class="e"></span>
+This removes the 'T' flag from the <a href="https://vimhelp.org/options.txt.html#%27guioptions%27" class="o">'guioptions'</a> option.  Other parts of the
+<a href="https://vimhelp.org/gui.txt.html#GUI" class="d">GUI</a> can also be enabled or disabled with this option.  See the <a href="https://vimhelp.org/helphelp.txt.html#help" class="d">help</a> for it.
+
+
+<span class="c">THE SCROLLBARS</span>
+
+By default there <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> one scrollbar on the right.  It does the obvious thing.
+When you split the window, each <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> will get its own scrollbar.
+   You can make <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> horizontal scrollbar appear with the menu item
+Edit/Global Settings/Toggle Bottom Scrollbar.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> useful in <a href="https://vimhelp.org/diff.txt.html#diff" class="d">diff</a> mode, or
+when the <a href="https://vimhelp.org/options.txt.html#%27wrap%27" class="o">'wrap'</a> option has been reset (more about that later).
+
+When there are vertically split windows, only the <a href="https://vimhelp.org/windows.txt.html#windows" class="d">windows</a> on the right side
+will have <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> scrollbar.  However, when you move the cursor to <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> on the
+left, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> will be this one that the scrollbar controls.  This takes <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> bit of
+time to get used to.
+   When you work with vertically split windows, consider adding <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> scrollbar on
+the left.  This can be done with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> menu item, or with the <a href="https://vimhelp.org/options.txt.html#%27guioptions%27" class="o">'guioptions'</a> option:
+
+<span class="e">        :set guioptions+=l</span>
+<span class="e"></span>
+This adds the 'l' flag to <a href="https://vimhelp.org/options.txt.html#%27guioptions%27" class="o">'guioptions'</a>.
+
+<span class="h">==============================================================================</span>
+<span id="09.2" class="t">09.2</span>  Using the mouse
+
+Standards are wonderful.  In Microsoft Windows, you can use the mouse to
+select text in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> standard manner.  The <a href="https://vimhelp.org/change.txt.html#X" class="d">X</a> Window system also has <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> standard
+system for using the mouse.  Unfortunately, these two standards are not the
+same.
+   Fortunately, you can customize Vim.  You can make the behavior of the mouse
+work like an <a href="https://vimhelp.org/change.txt.html#X" class="d">X</a> Window system mouse or <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> Microsoft Windows mouse.  The following
+command makes the mouse behave like an <a href="https://vimhelp.org/change.txt.html#X" class="d">X</a> Window mouse: 
+<span class="e"></span>
+<span class="e">        :behave xterm</span>
+<span class="e"></span>
+The following command makes the mouse work like <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> Microsoft Windows mouse: 
+<span class="e"></span>
+<span class="e">        :behave mswin</span>
+<span class="e"></span>
+The default behavior of the mouse on UNIX systems <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> xterm.  The default
+behavior on <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> Microsoft Windows system <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> selected during the installation
+process.  For details about what the two behaviors are, see <a href="https://vimhelp.org/gui.txt.html#%3Abehave" class="l">:behave</a><a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  Here
+follows <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> summary.
+
+
+<span class="c">XTERM MOUSE BEHAVIOR</span>
+
+Left mouse click                position the cursor
+Left mouse drag                 select text in <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode
+Middle mouse click              paste text from the <a href="https://vimhelp.org/gui.txt.html#clipboard" class="d">clipboard</a>
+Right mouse click               extend the selected text until the mouse
+                                pointer
+
+
+<span class="c">MSWIN MOUSE BEHAVIOR</span>
+
+Left mouse click                position the cursor
+Left mouse drag                 select text in <a href="https://vimhelp.org/visual.txt.html#Select" class="d">Select</a> mode (see <a href="#09.4" class="l">09.4</a><a href="https://vimhelp.org/motion.txt.html#%29" class="d">)</a>
+Left mouse click, with Shift    extend the selected text until the mouse
+                                pointer
+Middle mouse click              paste text from the <a href="https://vimhelp.org/gui.txt.html#clipboard" class="d">clipboard</a>
+Right mouse click               display <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> pop-up menu
+
+
+The mouse can be further tuned.  Check out these <a href="https://vimhelp.org/options.txt.html#options" class="d">options</a> if you want to change
+the way how the mouse works:
+
+        <a href="https://vimhelp.org/options.txt.html#%27mouse%27" class="o">'mouse'</a>                 in which mode the mouse <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used by Vim
+        <a href="https://vimhelp.org/options.txt.html#%27mousemodel%27" class="o">'mousemodel'</a>            what effect <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> mouse click has
+        <a href="https://vimhelp.org/options.txt.html#%27mousetime%27" class="o">'mousetime'</a>             time between clicks for <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/term.txt.html#double-click" class="d">double-click</a>
+        <a href="https://vimhelp.org/options.txt.html#%27mousehide%27" class="o">'mousehide'</a>             hide the mouse while typing
+        <a href="https://vimhelp.org/options.txt.html#%27selectmode%27" class="o">'selectmode'</a>            whether the mouse starts <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> or <a href="https://vimhelp.org/visual.txt.html#Select" class="d">Select</a> mode
+
+<span class="h">==============================================================================</span>
+<span id="09.3" class="t">09.3</span>  The <a href="https://vimhelp.org/gui.txt.html#clipboard" class="d">clipboard</a>
+
+In <a href="https://vimhelp.org/motion.txt.html#section" class="d">section</a> <a href="https://vimhelp.org/usr_04.txt.html#04.7" class="l">04.7</a> the basic use of the <a href="https://vimhelp.org/gui.txt.html#clipboard" class="d">clipboard</a> was explained.  There <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> one
+essential thing to explain about X-windows: There are actually two places to
+exchange text between programs.  <a href="https://vimhelp.org/os_win32.txt.html#MS-Windows" class="d">MS-Windows</a> doesn't have this.
+
+In X-Windows there <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the "current selection"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the text that <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a>
+currently highlighted.  In Vim this <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> area (this assumes you are
+using the default option settings).  You can paste this selection in another
+application without any further action.
+   For example, in this text select <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> few words with the mouse.  Vim will
+switch to <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode and highlight the text.  Now start another gvim, without
+<a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file name argument, so that <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> displays an empty window.  Click the middle
+mouse button.  The selected text will be inserted.
+
+The "current selection" will only remain valid until some other text <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a>
+selected.  After doing the paste in the other gvim, now select some characters
+in that window.  You will notice that the words that were previously selected
+in the other <a href="https://vimhelp.org/starting.txt.html#gvim" class="d">gvim</a> <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> are displayed differently.  This means that <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> no
+longer <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the current selection.
+
+You don't need to select text with the mouse, using the keyboard commands for
+<a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode works just <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> well.
+
+
+<span class="c">THE REAL CLIPBOARD</span>
+
+Now for the other place with which text can be exchanged.  We call this the
+"real <a href="https://vimhelp.org/gui.txt.html#clipboard" class="d">clipboard</a>"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> to avoid confusion.  Often both the "current selection" and
+the "real <a href="https://vimhelp.org/gui.txt.html#clipboard" class="d">clipboard</a>" are called clipboard, you'll have to get used to that.
+   To <a href="https://vimhelp.org/change.txt.html#put" class="d">put</a> text on the real clipboard, select <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> few different words in one of
+the gvims you have running.  Then use the Edit/Copy menu entry.  Now the text
+has been copied to the real clipboard.  You can't see this, unless you have
+some application that shows the <a href="https://vimhelp.org/gui.txt.html#clipboard" class="d">clipboard</a> contents (e.g., KDE's Klipper).
+   Now select the other gvim, position the cursor somewhere and use the
+Edit/Paste menu.  You will see the text from the real <a href="https://vimhelp.org/gui.txt.html#clipboard" class="d">clipboard</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> inserted.
+
+
+<span class="c">USING BOTH</span>
+
+This use of both the "current selection" and the "real <a href="https://vimhelp.org/gui.txt.html#clipboard" class="d">clipboard</a>" might sound
+<a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> bit confusing.  But <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> very useful.  Let's show this with an example.
+Use one <a href="https://vimhelp.org/starting.txt.html#gvim" class="d">gvim</a> with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> text file and perform these actions:
+
+<a href="https://vimhelp.org/motion.txt.html#-" class="d">-</a>  <a href="https://vimhelp.org/visual.txt.html#Select" class="d">Select</a> two words in <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode.
+<a href="https://vimhelp.org/motion.txt.html#-" class="d">-</a>  Use the Edit/Copy menu to get these words onto the clipboard.
+<a href="https://vimhelp.org/motion.txt.html#-" class="d">-</a>  <a href="https://vimhelp.org/visual.txt.html#Select" class="d">Select</a> one other <a href="https://vimhelp.org/motion.txt.html#word" class="d">word</a> in <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode.
+<a href="https://vimhelp.org/motion.txt.html#-" class="d">-</a>  Use the Edit/Paste menu item.  What will happen <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> that the single selected
+   <a href="https://vimhelp.org/motion.txt.html#word" class="d">word</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> replaced with the two words from the clipboard.
+<a href="https://vimhelp.org/motion.txt.html#-" class="d">-</a>  Move the mouse pointer somewhere else and click the middle button.  You
+   will see that the <a href="https://vimhelp.org/motion.txt.html#word" class="d">word</a> you just overwrote with the <a href="https://vimhelp.org/gui.txt.html#clipboard" class="d">clipboard</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> inserted
+   here.
+
+If you use the "current selection" and the "real <a href="https://vimhelp.org/gui.txt.html#clipboard" class="d">clipboard</a>" with care, you can
+<a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> lot of useful editing with them.
+
+
+<span class="c">USING THE KEYBOARD</span>
+
+If you don't like using the mouse, you can access the current selection and
+the real <a href="https://vimhelp.org/gui.txt.html#clipboard" class="d">clipboard</a> with two registers.  The "* <a href="https://vimhelp.org/sponsor.txt.html#register" class="d">register</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> for the current
+selection.
+   To make text become the current selection, use <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode.  For example,
+to select <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> whole line just press "<a href="https://vimhelp.org/visual.txt.html#V" class="d">V</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+   To <a href="https://vimhelp.org/insert.txt.html#insert" class="d">insert</a> the current selection before the cursor: 
+<span class="e"></span>
+<span class="e">        "*P</span>
+<span class="e"></span>
+Notice the <a href="https://vimhelp.org/change.txt.html#uppercase" class="d">uppercase</a> "<a href="https://vimhelp.org/change.txt.html#P" class="d">P</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  The <a href="https://vimhelp.org/change.txt.html#lowercase" class="d">lowercase</a> "<a href="https://vimhelp.org/change.txt.html#p" class="d">p</a>" puts the text after the cursor.
+
+The "<a href="https://vimhelp.org/motion.txt.html#%2B" class="d">+</a> <a href="https://vimhelp.org/sponsor.txt.html#register" class="d">register</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used for the real clipboard.  For example, to copy the text
+from the cursor position until the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of the line to the clipboard: 
+<span class="e"></span>
+<span class="e">        "+y$</span>
+<span class="e"></span>
+Remember, "<a href="https://vimhelp.org/change.txt.html#y" class="d">y</a>" <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> yank, which <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> Vim's copy command.
+   To <a href="https://vimhelp.org/insert.txt.html#insert" class="d">insert</a> the contents of the real <a href="https://vimhelp.org/gui.txt.html#clipboard" class="d">clipboard</a> before the cursor: 
+<span class="e"></span>
+<span class="e">        "+P</span>
+<span class="e"></span>
+It's the same <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> for the current selection, but uses the plus (+) <a href="https://vimhelp.org/sponsor.txt.html#register" class="d">register</a>
+instead of the <a href="https://vimhelp.org/pattern.txt.html#star" class="d">star</a> <a href="https://vimhelp.org/motion.txt.html#%28" class="d">(</a>*<a href="https://vimhelp.org/motion.txt.html#%29" class="d">)</a> register.
+
+<span class="h">==============================================================================</span>
+<span id="09.4" class="t">09.4</span>  <a href="https://vimhelp.org/visual.txt.html#Select" class="d">Select</a> mode
+
+And now something that <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used more often on <a href="https://vimhelp.org/os_win32.txt.html#MS-Windows" class="d">MS-Windows</a> than on X-Windows.
+But both can <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> it.  You already know about <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode.  <a href="https://vimhelp.org/visual.txt.html#Select" class="d">Select</a> mode <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> like
+<a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode, because <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> also used to select text.  But there <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> an obvious
+difference: When typing text, the selected text <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> deleted and the typed text
+replaces it.
+
+To start working with <a href="https://vimhelp.org/visual.txt.html#Select" class="d">Select</a> mode, you <a href="https://vimhelp.org/vim_faq.txt.html#must" class="d">must</a> first enable <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> (for <a href="https://vimhelp.org/os_win32.txt.html#MS-Windows" class="d">MS-Windows</a>
+<a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> probably already enabled, but you can <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> this anyway): 
+<span class="e"></span>
+<span class="e">        :set selectmode+=mouse</span>
+<span class="e"></span>
+Now use the mouse to select some text.  It <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> highlighted like in <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode.
+Now press <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> letter.  The selected text <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> deleted, and the single <a href="https://vimhelp.org/print.txt.html#letter" class="d">letter</a>
+replaces it.  You are in <a href="https://vimhelp.org/insert.txt.html#Insert" class="d">Insert</a> mode now, thus you can continue typing.
+
+Since typing normal text causes the selected text to be deleted, you can not
+use the normal <a href="https://vimhelp.org/intro.txt.html#movement" class="d">movement</a> commands "<a href="https://vimhelp.org/usr_02.txt.html#hjkl" class="d">hjkl</a>"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> "<a href="https://vimhelp.org/motion.txt.html#w" class="d">w</a>"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> etc.  Instead, use the shifted
+function keys.  <a href="https://vimhelp.org/motion.txt.html#%3CS-Left%3E" class="s">&lt;S-Left&gt;</a> (shifted cursor left key) moves the cursor left.  The
+selected text <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> changed like in <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode.  The other shifted cursor keys
+<a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> what you expect.  <a href="https://vimhelp.org/term.txt.html#%3CS-End%3E" class="s">&lt;S-End&gt;</a> and <a href="https://vimhelp.org/term.txt.html#%3CS-Home%3E" class="s">&lt;S-Home&gt;</a> also work.
+
+You can tune the way <a href="https://vimhelp.org/visual.txt.html#Select" class="d">Select</a> mode works with the <a href="https://vimhelp.org/options.txt.html#%27selectmode%27" class="o">'selectmode'</a> option.
+
+<span class="h">==============================================================================</span>
+
+Next chapter: <a href="https://vimhelp.org/usr_10.txt.html#usr_10.txt" class="l">usr_10.txt</a>  Making big changes
+
+Copyright: see <a href="https://vimhelp.org/usr_01.txt.html#manual-copyright" class="l">manual-copyright</a>  vim:tw=78:ts=8:noet:ft=help:norl:
+
+
+</pre>
+</div>
+<div id="vh-sidebar" style="visibility: visible; position: sticky; left: 127.758px;"><ul><li><a href="#">↑Top↑</a></li><li><a href="#09.1">Parts of the GUI</a></li><li><a href="#09.2">Using the mouse</a></li><li><a href="#09.3">The clipboard</a></li><li><a href="#09.4">Select mode</a></li></ul></div>
+</main>
+<p>
+Quick links:
+<a href="https://vimhelp.org/">help overview</a> ·
+<a href="https://vimhelp.org/quickref.txt.html">quick reference</a> ·
+<a href="https://vimhelp.org/usr_toc.txt.html">user manual toc</a> ·
+<a href="https://vimhelp.org/#reference_toc">reference manual toc</a>
+· <a href="https://vimhelp.org/vim_faq.txt.html">faq</a></p>
+<footer>This site is maintained by Carlo Teubner (<i>(my first name) at cteubner dot net</i>).</footer>
+
+
+<div id="sourcegraph-app-background" data-platform="firefox-extension" data-version="22.11.24.1820" style="display: none;"></div></body></html>

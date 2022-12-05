@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en"><script type="text/javascript">try {
+(function injectPageScriptAPI(scriptName, shouldOverrideWebSocket, shouldOverrideWebRTC, isInjected) { 
+
+    'use strict';
+
+    /**
+     * If script have been injected into a frame via contentWindow then we can simply take the copy of messageChannel left for us by parent document
+     * Otherwise creates new message channel that sends a message to the content-script to check if request should be allowed or not.
+     */
+    var messageChannel = isInjected ? window[scriptName] : (function () {
+
+        // Save original postMessage and addEventListener functions to prevent webpage from tampering both.
+        var postMessage = window.postMessage;
+        var addEventListener = window.addEventListener;
+
+        // Current request ID (incremented every time we send a new message)
+        var currentRequestId = 0;
+        var requestsMap = {};
+
+        /**
+         * Handles messages sent from the content script back to the page script.
+         *
+         * @param event Event with necessary data
+         */
+        var onMessageReceived = function (event) {
+
+            if (!event.data || !event.data.direction || event.data.direction !== "to-page-script@abu") {
+                return;
+            }
+
+            var requestData = requestsMap[event.data.requestId];
+            if (requestData) {
+                var wrapper = requestData.wrapper;
+                requestData.onResponseReceived(wrapper, event.data.block);
+                delete requestsMap[event.data.requestId];
+            }
+        };
+
+        /**
+         * @param url                The URL to which wrapped object is willing to connect
+         * @param requestType        Request type ( WEBSOCKET or WEBRTC)
+         * @param wrapper            WebSocket wrapper instance
+         * @param onResponseReceived Called when response is received
+         */
+        var sendMessage = function (url, requestType, wrapper, onResponseReceived) {
+
+            if (currentRequestId === 0) {
+                // Subscribe to response when this method is called for the first time
+                addEventListener.call(window, "message", onMessageReceived, false);
+            }
+
+            var requestId = ++currentRequestId;
+            requestsMap[requestId] = {
+                wrapper: wrapper,
+                onResponseReceived: onResponseReceived
+            };
+
+            var message = {
+                requestId: requestId,
+                direction: 'from-page-script@abu',
+                elementUrl: url,
+                documentUrl: document.URL,
+                requestType: requestType
+            };
+
+            // Send a message to the background page to check if the request should be blocked
+            postMessage.call(window, message, "*");
+        };
+
+        return {
+            sendMessage: sendMessage
+        };
+
+    })();
+
+    /*
+     * In some case Chrome won't run content scripts inside frames.
+     * So we have to intercept access to contentWindow/contentDocument and manually inject wrapper script into this context
+     *
+     * Based on: https://github.com/adblockplus/adblockpluschrome/commit/1aabfb3346dc0821c52dd9e97f7d61b8c99cd707
+     */
+    var injectedToString = Function.prototype.toString.bind(injectPageScriptAPI);
+
+    var injectedFramesAdd;
+    var injectedFramesHas;
+    if (window.WeakSet instanceof Function) {
+        var injectedFrames = new WeakSet();
+        injectedFramesAdd = WeakSet.prototype.add.bind(injectedFrames);
+        injectedFramesHas = WeakSet.prototype.has.bind(injectedFrames);
+    } else {
+        var frames = [];
+        injectedFramesAdd = function (el) {
+            if (frames.indexOf(el) < 0) {
+                frames.push(el);
+            }
+        };
+        injectedFramesHas = function (el) {
+            return frames.indexOf(el) >= 0;
+        };
+    }
+
+    /**
+     * Injects wrapper's script into passed window
+     * @param contentWindow Frame's content window
+     */
+    function injectPageScriptAPIInWindow(contentWindow) {
+        try {
+            if (contentWindow && !injectedFramesHas(contentWindow)) {
+                injectedFramesAdd(contentWindow);
+                contentWindow[scriptName] = messageChannel; // Left message channel for the injected script
+                var args = "'" + scriptName + "', " + shouldOverrideWebSocket + ", " + shouldOverrideWebRTC + ", true";
+                contentWindow.eval("(" + injectedToString() + ")(" + args + ");");
+                delete contentWindow[scriptName];
+            }
+        } catch (e) {
+        }
+    }
+
+    /**
+     * Overrides access to contentWindow/contentDocument for the passed HTML element's interface (iframe, frame, object)
+     * If the content of one of these objects is requested we will inject our wrapper script.
+     * @param iface HTML element's interface
+     */
+    function overrideContentAccess(iface) {
+
+        var contentWindowDescriptor = Object.getOwnPropertyDescriptor(iface.prototype, "contentWindow");
+        var contentDocumentDescriptor = Object.getOwnPropertyDescriptor(iface.prototype, "contentDocument");
+
+        // Apparently in HTMLObjectElement.prototype.contentWindow does not exist
+        // in older versions of Chrome such as 42.
+        if (!contentWindowDescriptor) {
+            return;
+        }
+
+        var getContentWindow = Function.prototype.call.bind(contentWindowDescriptor.get);
+        var getContentDocument = Function.prototype.call.bind(contentDocumentDescriptor.get);
+
+        contentWindowDescriptor.get = function () {
+            var contentWindow = getContentWindow(this);
+            injectPageScriptAPIInWindow(contentWindow);
+            return contentWindow;
+        };
+        contentDocumentDescriptor.get = function () {
+            injectPageScriptAPIInWindow(getContentWindow(this));
+            return getContentDocument(this);
+        };
+
+        Object.defineProperty(iface.prototype, "contentWindow", contentWindowDescriptor);
+        Object.defineProperty(iface.prototype, "contentDocument", contentDocumentDescriptor);
+    }
+
+    var interfaces = [HTMLFrameElement, HTMLIFrameElement, HTMLObjectElement];
+    for (var i = 0; i < interfaces.length; i++) {
+        overrideContentAccess(interfaces[i]);
+    }
+
+    /**
+     * Defines properties in destination object
+     * @param src Source object
+     * @param dest Destination object
+     * @param properties Properties to copy
+     */
+    var copyProperties = function (src, dest, properties) {
+        for (var i = 0; i < properties.length; i++) {
+            var prop = properties[i];
+            var descriptor = Object.getOwnPropertyDescriptor(src, prop);
+            // Passed property may be undefined
+            if (descriptor) {
+                Object.defineProperty(dest, prop, descriptor);
+            }
+        }
+    };
+
+    /**
+     * Check request by sending message to content script
+     * @param url URL to block
+     * @param type Request type
+     * @param callback Result callback
+     */
+    var checkRequest = function (url, type, callback) {
+        messageChannel.sendMessage(url, type, this, function (wrapper, blockConnection) {
+            callback(blockConnection);
+        });
+    };
+
+    /**
+     * The function overrides window.WebSocket with our wrapper, that will check url with filters through messaging with content-script.
+     *
+     * IMPORTANT NOTE:
+     * This function is first loaded as a content script. The only purpose of it is to call
+     * the "toString" method and use resulting string as a text content for injected script.
+     */
+    var overrideWebSocket = function () { 
+
+        if (!(window.WebSocket instanceof Function)) {
+            return;
+        }
+
+        /**
+         * WebSocket wrapper implementation.
+         * https://github.com/AdguardTeam/AdguardBrowserExtension/issues/349
+         *
+         * Based on:
+         * https://github.com/adblockplus/adblockpluschrome/commit/457a336ee55a433217c3ffe5d363e5c6980f26f4
+         */
+
+        /**
+         * As far as possible we must track everything we use that could be sabotaged by the website later in order to circumvent us.
+         */
+        var RealWebSocket = WebSocket;
+        var closeWebSocket = Function.prototype.call.bind(RealWebSocket.prototype.close);
+
+        function WrappedWebSocket(url, protocols) {
+            // Throw correct exceptions if the constructor is used improperly.
+            if (!(this instanceof WrappedWebSocket)) {
+                return RealWebSocket();
+            }
+            if (arguments.length < 1) {
+                return new RealWebSocket();
+            }
+
+            var websocket = new RealWebSocket(url, protocols);
+
+            // This is the key point: checking if this WS should be blocked or not
+            // Don't forget that the type of 'websocket.url' is String, but 'url 'parameter might have another type.
+            checkRequest(websocket.url, 'WEBSOCKET', function (blocked) {
+                if (blocked) {
+                    closeWebSocket(websocket);
+                }
+            });
+
+            return websocket;
+        }
+
+        // https://github.com/AdguardTeam/AdguardBrowserExtension/issues/488
+        WrappedWebSocket.prototype = RealWebSocket.prototype;
+        window.WebSocket = WrappedWebSocket.bind();
+
+        copyProperties(RealWebSocket, WebSocket, ["CONNECTING", "OPEN", "CLOSING", "CLOSED", "name", "prototype"]);
+
+        RealWebSocket.prototype.constructor = WebSocket;
+
+    };
+
+    /**
+     * The function overrides window.RTCPeerConnection with our wrapper, that will check ice servers URLs with filters through messaging with content-script.
+     *
+     * IMPORTANT NOTE:
+     * This function is first loaded as a content script. The only purpose of it is to call
+     * the "toString" method and use resulting string as a text content for injected script.
+     */
+    var overrideWebRTC = function () { 
+
+
+        if (!(window.RTCPeerConnection instanceof Function) &&
+            !(window.webkitRTCPeerConnection instanceof Function)) {
+            return;
+        }
+
+        /**
+         * RTCPeerConnection wrapper implementation.
+         * https://github.com/AdguardTeam/AdguardBrowserExtension/issues/588
+         *
+         * Based on:
+         * https://github.com/adblockplus/adblockpluschrome/commit/af0585137be19011eace1cf68bf61eed2e6db974
+         *
+         * Chromium webRequest API doesn't allow the blocking of WebRTC connections
+         * https://bugs.chromium.org/p/chromium/issues/detail?id=707683
+         */
+
+        var RealRTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection;
+        var closeRTCPeerConnection = Function.prototype.call.bind(RealRTCPeerConnection.prototype.close);
+
+        var RealArray = Array;
+        var RealString = String;
+        var createObject = Object.create;
+        var defineProperty = Object.defineProperty;
+
+        /**
+         * Convert passed url to string
+         * @param url URL
+         * @returns {string}
+         */
+        function urlToString(url) {
+            if (typeof url !== "undefined") {
+                return RealString(url);
+            }
+        }
+
+        /**
+         * Creates new immutable array from original with some transform function
+         * @param original
+         * @param transform
+         * @returns {*}
+         */
+        function safeCopyArray(original, transform) {
+
+            if (original === null || typeof original !== "object") {
+                return original;
+            }
+
+            var immutable = RealArray(original.length);
+            for (var i = 0; i < immutable.length; i++) {
+                defineProperty(immutable, i, {
+                    configurable: false, enumerable: false, writable: false,
+                    value: transform(original[i])
+                });
+            }
+            defineProperty(immutable, "length", {
+                configurable: false, enumerable: false, writable: false,
+                value: immutable.length
+            });
+            return immutable;
+        }
+
+        /**
+         * Protect configuration from mutations
+         * @param configuration RTCPeerConnection configuration object
+         * @returns {*}
+         */
+        function protectConfiguration(configuration) {
+
+            if (configuration === null || typeof configuration !== "object") {
+                return configuration;
+            }
+
+            var iceServers = safeCopyArray(
+                configuration.iceServers,
+                function (iceServer) {
+
+                    var url = iceServer.url;
+                    var urls = iceServer.urls;
+
+                    // RTCPeerConnection doesn't iterate through pseudo Arrays of urls.
+                    if (typeof urls !== "undefined" && !(urls instanceof RealArray)) {
+                        urls = [urls];
+                    }
+
+                    return createObject(iceServer, {
+                        url: {
+                            configurable: false, enumerable: false, writable: false,
+                            value: urlToString(url)
+                        },
+                        urls: {
+                            configurable: false, enumerable: false, writable: false,
+                            value: safeCopyArray(urls, urlToString)
+                        }
+                    });
+                }
+            );
+
+            return createObject(configuration, {
+                iceServers: {
+                    configurable: false, enumerable: false, writable: false,
+                    value: iceServers
+                }
+            });
+        }
+
+        /**
+         * Check WebRTC connection's URL and close if it's blocked by rule
+         * @param connection Connection
+         * @param url URL to check
+         */
+        function checkWebRTCRequest(connection, url) {
+            checkRequest(url, 'WEBRTC', function (blocked) {
+                if (blocked) {
+                    try {
+                        closeRTCPeerConnection(connection);
+                    } catch (e) {
+                        // Ignore exceptions
+                    }
+                }
+            });
+        }
+
+        /**
+         * Check each URL of ice server in configuration for blocking.
+         *
+         * @param connection RTCPeerConnection
+         * @param configuration Configuration for RTCPeerConnection
+         * https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration
+         */
+        function checkConfiguration(connection, configuration) {
+
+            if (!configuration || !configuration.iceServers) {
+                return;
+            }
+
+            var iceServers = configuration.iceServers;
+            for (var i = 0; i < iceServers.length; i++) {
+
+                var iceServer = iceServers[i];
+                if (!iceServer) {
+                    continue;
+                }
+
+                if (iceServer.url) {
+                    checkWebRTCRequest(connection, iceServer.url);
+                }
+
+                if (iceServer.urls) {
+                    for (var j = 0; j < iceServer.urls.length; j++) {
+                        checkWebRTCRequest(connection, iceServer.urls[j]);
+                    }
+                }
+            }
+        }
+
+        /**
+         * Overrides setConfiguration method
+         * https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/setConfiguration
+         */
+        if (RealRTCPeerConnection.prototype.setConfiguration) {
+
+            var realSetConfiguration = Function.prototype.call.bind(RealRTCPeerConnection.prototype.setConfiguration);
+
+            RealRTCPeerConnection.prototype.setConfiguration = function (configuration) {
+                configuration = protectConfiguration(configuration);
+                // Call the real method first, so that validates the configuration
+                realSetConfiguration(this, configuration);
+                checkConfiguration(this, configuration);
+            };
+        }
+
+        function WrappedRTCPeerConnection(configuration, arg) {
+
+            if (!(this instanceof WrappedRTCPeerConnection)) {
+                return RealRTCPeerConnection();
+            }
+
+            configuration = protectConfiguration(configuration);
+
+            /**
+             * The old webkitRTCPeerConnection constructor takes an optional second argument and we must pass it.
+             */
+            var connection = new RealRTCPeerConnection(configuration, arg);
+            checkConfiguration(connection, configuration);
+            return connection;
+        }
+
+        WrappedRTCPeerConnection.prototype = RealRTCPeerConnection.prototype;
+
+        var boundWrappedRTCPeerConnection = WrappedRTCPeerConnection.bind();
+        copyProperties(RealRTCPeerConnection, boundWrappedRTCPeerConnection, ["caller", "generateCertificate", "name", "prototype"]);
+        RealRTCPeerConnection.prototype.constructor = boundWrappedRTCPeerConnection;
+
+        if ("RTCPeerConnection" in window) {
+            window.RTCPeerConnection = boundWrappedRTCPeerConnection;
+        }
+        if ("webkitRTCPeerConnection" in window) {
+            window.webkitRTCPeerConnection = boundWrappedRTCPeerConnection;
+        }
+    };
+
+    if (shouldOverrideWebSocket) {
+        overrideWebSocket();
+    }
+
+    if (shouldOverrideWebRTC) {
+        overrideWebRTC();
+    }
+})('wrapper-script-5086513719137158', false, true);
+} catch (ex) { console.error('Error executing AG js: ' + ex); }
+(function () {
+            var current = document.currentScript;
+            var parent = current && current.parentNode;
+            if (parent) {
+                parent.removeChild(current);
+            }
+        })();</script><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Vim help pages, always up-to-date">
+<title>Vim: usr_42.txt</title>
+<link rel="shortcut icon" href="https://vimhelp.org/favicon.ico">
+<!-- favicon is based on http://amnoid.de/tmp/vim_solidbright_512.png and is used with permission by its author -->
+<link rel="stylesheet" href="Vim%20usr_42.txt_Add%20new%20menus_files/vimhelp.css" type="text/css">
+
+<link rel="stylesheet" class="select2-css" href="Vim%20usr_42.txt_Add%20new%20menus_files/select2.min.css" integrity="sha256-zaSoHBhwFdle0scfGEFUCwggPN7F+ip9XRglo8IWb4w=" crossorigin="anonymous">
+<script defer="defer" src="Vim%20usr_42.txt_Add%20new%20menus_files/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script defer="defer" src="Vim%20usr_42.txt_Add%20new%20menus_files/select2.min.js" integrity="sha256-9yRP/2EFlblE92vzCA10469Ctd0jT48HnmmMw5rJZrA=" crossorigin="anonymous"></script>
+<script defer="defer" src="Vim%20usr_42.txt_Add%20new%20menus_files/vimhelp.js"></script>
+</head><body>
+<div class="bar">
+  <div class="ql">
+Quick links:
+<a href="https://vimhelp.org/">help overview</a> ·
+<a href="https://vimhelp.org/quickref.txt.html">quick reference</a> ·
+<a href="https://vimhelp.org/usr_toc.txt.html">user manual toc</a> ·
+<a href="https://vimhelp.org/#reference_toc">reference manual toc</a>
+· <a href="https://vimhelp.org/vim_faq.txt.html">faq</a></div>
+  <div class="srch">
+    <select id="vh-select-tag" data-select2-id="select2-data-vh-select-tag" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true" style="display: inline-block;"></select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-1-7i66" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-vh-select-tag-container" aria-controls="select2-vh-select-tag-container"><span class="select2-selection__rendered" id="select2-vh-select-tag-container" role="textbox" aria-readonly="true" title="Go to keyword"><span class="select2-selection__placeholder">Go to keyword</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+  </div>
+  <form class="srch" action="https://duckduckgo.com" method="get" target="_blank" rel="noopener noreferrer">
+    <input type="hidden" name="sites" value="vimhelp.org">
+    <input type="search" name="q" id="vh-srch-input" placeholder="Site search">
+  </form>
+</div>
+
+<main>
+<div id="vh-content">
+<pre><span id="usr_42.txt" class="t">usr_42.txt</span>    For <span class="i">Vim version 9.0.</span>  Last change: 2008 May 05
+
+                     VIM USER MANUAL <a href="https://vimhelp.org/motion.txt.html#-" class="d">-</a> by <a href="https://vimhelp.org/intro.txt.html#Bram" class="d">Bram</a> <a href="https://vimhelp.org/intro.txt.html#Moolenaar" class="d">Moolenaar</a>
+
+                              Add new <a href="https://vimhelp.org/gui.txt.html#menus" class="d">menus</a>
+
+
+By now you know that Vim <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> very flexible.  This includes the <a href="https://vimhelp.org/gui.txt.html#menus" class="d">menus</a> used in
+the GUI.  You can define your own menu entries to make certain commands easily
+accessible.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> for mouse-happy users only.
+
+<a href="#42.1" class="l">42.1</a>  Introduction
+<a href="#42.2" class="l">42.2</a>  Menu commands
+<a href="#42.3" class="l">42.3</a>  Various
+<a href="#42.4" class="l">42.4</a>  Toolbar and <a href="https://vimhelp.org/popup.txt.html#popup" class="d">popup</a> <a href="https://vimhelp.org/gui.txt.html#menus" class="d">menus</a>
+
+     Next chapter: <a href="https://vimhelp.org/usr_43.txt.html#usr_43.txt" class="l">usr_43.txt</a>  Using <a href="https://vimhelp.org/filetype.txt.html#filetypes" class="d">filetypes</a>
+ Previous chapter: <a href="https://vimhelp.org/usr_41.txt.html#usr_41.txt" class="l">usr_41.txt</a>  Write <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> Vim <a href="https://vimhelp.org/usr_41.txt.html#script" class="d">script</a>
+Table of contents: <a href="https://vimhelp.org/usr_toc.txt.html#usr_toc.txt" class="l">usr_toc.txt</a>
+
+<span class="h">==============================================================================</span>
+<span id="42.1" class="t">42.1</span>  Introduction
+
+The <a href="https://vimhelp.org/gui.txt.html#menus" class="d">menus</a> that Vim uses are defined in the file "$VIMRUNTIME/menu.vim"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  If
+you want to write your own menus, you might first want to look through that
+file.
+   To define <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> menu item, use the "<a href="https://vimhelp.org/gui.txt.html#%3Amenu" class="d">:menu</a>" command.  The basic form of this
+command <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> follows: 
+<span class="e"></span>
+<span class="e">        :menu {menu-item} {keys}</span>
+<span class="e"></span>
+The <span class="s">{menu-item}</span> describes where on the menu to <a href="https://vimhelp.org/change.txt.html#put" class="d">put</a> the item.  <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> typical
+<span class="s">{menu-item}</span> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> "File.Save"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> which represents the item "Save" under the
+"File" menu.  <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> dot <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used to separate the names.  Example: 
+<span class="e"></span>
+<span class="e">        :menu File.Save  :update&lt;CR&gt;</span>
+<span class="e"></span>
+The "<a href="https://vimhelp.org/editing.txt.html#%3Aupdate" class="d">:update</a>" command writes the file when <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> was modified.
+   You can add another level: "Edit.Settings.Shiftwidth" defines <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> submenu
+"Settings" under the "Edit" menu, with an item "Shiftwidth"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  You could use
+even deeper levels.  Don't use this too much, you need to move the mouse quite
+<a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> bit to use such an item.
+   The "<a href="https://vimhelp.org/gui.txt.html#%3Amenu" class="d">:menu</a>" command <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> very similar to the "<a href="https://vimhelp.org/map.txt.html#%3Amap" class="d">:map</a>" command: the left side
+specifies how the item <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> triggered and the right hand side defines the
+characters that are executed.  <span class="s">{keys}</span> are characters, they are used just like
+you would have typed them.  Thus in <a href="https://vimhelp.org/insert.txt.html#Insert" class="d">Insert</a> mode, when <span class="s">{keys}</span> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> plain text,
+that text <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> inserted.
+
+
+<span class="c">ACCELERATORS</span>
+
+The ampersand character (&amp;) <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used to indicate an accelerator.  For instance,
+you can use Alt-F to select "File" and <a href="https://vimhelp.org/change.txt.html#S" class="d">S</a> to select "Save"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  (The <a href="https://vimhelp.org/options.txt.html#%27winaltkeys%27" class="o">'winaltkeys'</a>
+option may disable this though!).  Therefore, the <span class="s">{menu-item}</span> looks like
+"&amp;File.&amp;Save"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  The accelerator characters will be underlined in the menu.
+   You <a href="https://vimhelp.org/vim_faq.txt.html#must" class="d">must</a> take care that each key <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used only once in each menu.  Otherwise
+you will not know which of the two will actually be used.  Vim doesn't warn
+you for this.
+
+
+<span class="c">PRIORITIES</span>
+
+The actual definition of the File.Save menu item <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> follows: 
+<span class="e"></span>
+<span class="e">        :menu 10.340 &amp;File.&amp;Save&lt;Tab&gt;:w  :confirm w&lt;CR&gt;</span>
+<span class="e"></span>
+The number 10.340 <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> called the priority number.  It <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used by the editor to
+decide where <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> places the menu item.  The first number (10) indicates the
+position on the menu bar.  Lower numbered <a href="https://vimhelp.org/gui.txt.html#menus" class="d">menus</a> are positioned to the left,
+higher numbers to the right.
+   These are the priorities used for the standard menus:
+
+          10    20     40     50      60       70               9999
+
+        +------------------------------------------------------------+
+        | File  Edit  Tools  <a href="https://vimhelp.org/autocmd.txt.html#Syntax" class="d">Syntax</a>  Buffers  Window            Help |
+        +------------------------------------------------------------+
+
+Notice that the Help menu <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> given <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> very high number, to make <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> appear on
+the far right.
+   The second number (340) determines the location of the item within the
+pull-down menu.  Lower numbers <a href="https://vimhelp.org/motion.txt.html#go" class="d">go</a> on top, higher number on the bottom.  These
+are the priorities in the File menu:
+
+                        +-----------------+
+            10.310      |Open...          |
+            10.320      |Split-Open...    |
+            10.325      |New              |
+            10.330      |Close            |
+            10.335      |---------------- |
+            10.340      |Save             |
+            10.350      |Save As...       |
+            10.400      |---------------- |
+            10.410      |Split Diff with  |
+            10.420      |Split Patched By |
+            10.500      |---------------- |
+            10.510      |Print            |
+            10.600      |---------------- |
+            10.610      |Save-Exit        |
+            10.620      |Exit             |
+                        +-----------------+
+
+Notice that there <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> room in between the numbers.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> where you can
+<a href="https://vimhelp.org/insert.txt.html#insert" class="d">insert</a> your own items, if you really want to (it's often better to leave the
+standard <a href="https://vimhelp.org/gui.txt.html#menus" class="d">menus</a> alone and add <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> new menu for your own items).
+   When you create <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> submenu, you can add another ".number" to the priority.
+Thus each name in <span class="s">{menu-item}</span> has its priority number.
+
+
+<span class="c">SPECIAL CHARACTERS</span>
+
+The <span class="s">{menu-item}</span> in this example <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> "&amp;File.&amp;Save&lt;Tab&gt;:w"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  This brings up an
+important point: <span class="s">{menu-item}</span> <a href="https://vimhelp.org/vim_faq.txt.html#must" class="d">must</a> be one word.  If you want to <a href="https://vimhelp.org/change.txt.html#put" class="d">put</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> dot,
+<a href="https://vimhelp.org/intro.txt.html#space" class="d">space</a> or tabs in the name, you either use the <a href="https://vimhelp.org/intro.txt.html#%3C%3E" class="d">&lt;&gt;</a> <a href="https://vimhelp.org/intro.txt.html#notation" class="d">notation</a> (&lt;Space&gt; and <a href="https://vimhelp.org/motion.txt.html#%3CTab%3E" class="s">&lt;Tab&gt;</a>,
+for instance) or use the <a href="https://vimhelp.org/intro.txt.html#backslash" class="d">backslash</a> (\) escape. 
+<span class="e"></span>
+<span class="e">        :menu 10.305 &amp;File.&amp;Do\ It\.\.\. :exit&lt;CR&gt;</span>
+<span class="e"></span>
+In this example, the name of the menu item "Do It..." contains <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/intro.txt.html#space" class="d">space</a> and the
+command <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> ":exit&lt;CR&gt;"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+
+The <a href="https://vimhelp.org/motion.txt.html#%3CTab%3E" class="s">&lt;Tab&gt;</a> character in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> menu name <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used to separate the part that defines
+the menu name from the part that gives <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> hint to the user.  The part after the
+<a href="https://vimhelp.org/motion.txt.html#%3CTab%3E" class="s">&lt;Tab&gt;</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> displayed right aligned in the menu.  In the File.Save menu the name
+used <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> "&amp;File.&amp;Save&lt;Tab&gt;:w"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  Thus the menu name <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> "File.Save" and the hint
+<a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> "<a href="https://vimhelp.org/editing.txt.html#%3Aw" class="d">:w</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+
+
+<span class="c">SEPARATORS</span>
+
+The separator lines, used to group related menu items together, can be defined
+by using <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> name that starts and ends in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> '-'.  For example "-sep-"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  When
+using several separators the names <a href="https://vimhelp.org/vim_faq.txt.html#must" class="d">must</a> be different.  Otherwise the names
+don't matter.
+   The command from <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> separator will never be executed, but you have to define
+one anyway.  <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> single colon will do.  Example: 
+<span class="e"></span>
+<span class="e">        :amenu 20.510 Edit.-sep3- :</span>
+<span class="e"></span>
+<span class="h">==============================================================================</span>
+<span id="42.2" class="t">42.2</span>  Menu commands
+
+You can define menu items that exist for only certain modes.  This works just
+like the variations on the "<a href="https://vimhelp.org/map.txt.html#%3Amap" class="d">:map</a>" command:
+
+        <a href="https://vimhelp.org/gui.txt.html#%3Amenu" class="d">:menu</a>           Normal, <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> and <a href="https://vimhelp.org/intro.txt.html#Operator-pending" class="d">Operator-pending</a> mode
+        <a href="https://vimhelp.org/gui.txt.html#%3Anmenu" class="d">:nmenu</a>          <a href="https://vimhelp.org/intro.txt.html#Normal" class="d">Normal</a> mode
+        <a href="https://vimhelp.org/gui.txt.html#%3Avmenu" class="d">:vmenu</a>          <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode
+        <a href="https://vimhelp.org/gui.txt.html#%3Aomenu" class="d">:omenu</a>          <a href="https://vimhelp.org/intro.txt.html#Operator-pending" class="d">Operator-pending</a> mode
+        :menu!          <a href="https://vimhelp.org/insert.txt.html#Insert" class="d">Insert</a> and <a href="https://vimhelp.org/cmdline.txt.html#Command-line" class="d">Command-line</a> mode
+        <a href="https://vimhelp.org/gui.txt.html#%3Aimenu" class="d">:imenu</a>          <a href="https://vimhelp.org/insert.txt.html#Insert" class="d">Insert</a> mode
+        <a href="https://vimhelp.org/gui.txt.html#%3Acmenu" class="d">:cmenu</a>          <a href="https://vimhelp.org/cmdline.txt.html#Command-line" class="d">Command-line</a> mode
+        <a href="https://vimhelp.org/gui.txt.html#%3Atlmenu" class="d">:tlmenu</a>         Terminal mode
+        <a href="https://vimhelp.org/gui.txt.html#%3Aamenu" class="d">:amenu</a>          All modes (except for Terminal mode)
+
+To avoid that the commands of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> menu item are being mapped, use the command
+"<a href="https://vimhelp.org/gui.txt.html#%3Anoremenu" class="d">:noremenu</a>"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> "<a href="https://vimhelp.org/gui.txt.html#%3Annoremenu" class="d">:nnoremenu</a>"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> "<a href="https://vimhelp.org/gui.txt.html#%3Aanoremenu" class="d">:anoremenu</a>"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> etc.
+
+
+USING :AMENU
+
+The "<a href="https://vimhelp.org/gui.txt.html#%3Aamenu" class="d">:amenu</a>" command <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> bit different.  It assumes that the <span class="s">{keys}</span> you
+give are to be executed in <a href="https://vimhelp.org/intro.txt.html#Normal" class="d">Normal</a> mode.  When Vim <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> in <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> or <a href="https://vimhelp.org/insert.txt.html#Insert" class="d">Insert</a> mode
+when the menu <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used, Vim first has to <a href="https://vimhelp.org/motion.txt.html#go" class="d">go</a> back to <a href="https://vimhelp.org/intro.txt.html#Normal" class="d">Normal</a> mode.  "<a href="https://vimhelp.org/gui.txt.html#%3Aamenu" class="d">:amenu</a>"
+inserts <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/pattern.txt.html#CTRL-C" class="k">CTRL-C</a> or <a href="https://vimhelp.org/motion.txt.html#CTRL-O" class="k">CTRL-O</a> for you.  For example, if you use this command:
+
+<span class="e">        :amenu  90.100 Mine.Find\ Word  *</span>
+<span class="e"></span>
+Then the resulting menu commands will be:
+
+        <a href="https://vimhelp.org/intro.txt.html#Normal" class="d">Normal</a> mode:            *
+        <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode:            <a href="https://vimhelp.org/pattern.txt.html#CTRL-C" class="k">CTRL-C</a> *
+        <a href="https://vimhelp.org/intro.txt.html#Operator-pending" class="d">Operator-pending</a> mode:  <a href="https://vimhelp.org/pattern.txt.html#CTRL-C" class="k">CTRL-C</a> *
+        <a href="https://vimhelp.org/insert.txt.html#Insert" class="d">Insert</a> mode:            <a href="https://vimhelp.org/motion.txt.html#CTRL-O" class="k">CTRL-O</a> *
+        <a href="https://vimhelp.org/cmdline.txt.html#Command-line" class="d">Command-line</a> mode:      <a href="https://vimhelp.org/pattern.txt.html#CTRL-C" class="k">CTRL-C</a> *
+
+When in <a href="https://vimhelp.org/cmdline.txt.html#Command-line" class="d">Command-line</a> mode the <a href="https://vimhelp.org/pattern.txt.html#CTRL-C" class="k">CTRL-C</a> will <a href="https://vimhelp.org/editing.txt.html#abandon" class="d">abandon</a> the command typed so far.
+In <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> and <a href="https://vimhelp.org/intro.txt.html#Operator-pending" class="d">Operator-pending</a> mode <a href="https://vimhelp.org/pattern.txt.html#CTRL-C" class="k">CTRL-C</a> will stop the mode.  The <a href="https://vimhelp.org/motion.txt.html#CTRL-O" class="k">CTRL-O</a> in
+<a href="https://vimhelp.org/insert.txt.html#Insert" class="d">Insert</a> mode will execute the command and then return to <a href="https://vimhelp.org/insert.txt.html#Insert" class="d">Insert</a> mode.
+   <a href="https://vimhelp.org/motion.txt.html#CTRL-O" class="k">CTRL-O</a> only works for one command.  If you need to use two or more
+commands, <a href="https://vimhelp.org/change.txt.html#put" class="d">put</a> them in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> function and call that function.  Example: 
+<span class="e"></span>
+<span class="e">        :amenu  Mine.Next\ File  :call &lt;SID&gt;NextFile()&lt;CR&gt;</span>
+<span class="e">        :function &lt;SID&gt;NextFile()</span>
+<span class="e">        :  next</span>
+<span class="e">        :  1/^Code</span>
+<span class="e">        :endfunction</span>
+<span class="e"></span>
+This menu entry goes to the next file in the argument <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> with "<a href="https://vimhelp.org/editing.txt.html#%3Anext" class="d">:next</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  Then
+<a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> searches for the line that starts with "Code"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+   The <a href="https://vimhelp.org/map.txt.html#%3CSID%3E" class="s">&lt;SID&gt;</a> before the function name <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the <a href="https://vimhelp.org/usr_41.txt.html#script" class="d">script</a> ID.  This makes the
+function local to the current Vim <a href="https://vimhelp.org/usr_41.txt.html#script" class="d">script</a> file.  This avoids problems when <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+function with the same name <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> defined in another <a href="https://vimhelp.org/usr_41.txt.html#script" class="d">script</a> file.  See <a href="https://vimhelp.org/map.txt.html#%3CSID%3E" class="l">&lt;SID&gt;</a><a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+
+
+<span class="c">SILENT MENUS</span>
+
+The menu executes the <span class="s">{keys}</span> <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> if you typed them.  For <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> "<a href="https://vimhelp.org/cmdline.txt.html#%3A" class="d">:</a>" command this
+means you will see the command being echoed on the command line.  If it's <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+long command, the hit-Enter prompt will appear.  That can be very annoying!
+   To avoid this, make the menu silent.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> done with the <span class="s">&lt;silent&gt;</span>
+argument.  For example, take the call to NextFile() in the previous example.
+When you use this menu, you will see this on the command line:
+
+<span class="h">        :call &lt;SNR&gt;34_NextFile() </span>
+
+To avoid this text on the command line, <a href="https://vimhelp.org/insert.txt.html#insert" class="d">insert</a> "<span class="s">&lt;silent&gt;</span>" <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> the first
+argument: 
+<span class="e"></span>
+<span class="e">        :amenu &lt;silent&gt; Mine.Next\ File :call &lt;SID&gt;NextFile()&lt;CR&gt;</span>
+<span class="e"></span>
+Don't use "<span class="s">&lt;silent&gt;</span>" too often.  It <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not needed for short commands.  If you
+make <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> menu for someone else, being able to see the executed command will give
+him <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> hint about what he could have typed, instead of using the mouse.
+
+
+<span class="c">LISTING MENUS</span>
+
+When <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> menu command <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used without <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <span class="s">{keys}</span> part, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> lists the already
+defined menus.  You can specify <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <span class="s">{menu-item}</span>, or part of it, to <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> specific
+menus.  Example: 
+<span class="e"></span>
+<span class="e">        :amenu</span>
+<span class="e"></span>
+This lists all menus.  That's <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> long list!  Better specify the name of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> menu
+to get <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> shorter list: 
+<span class="e"></span>
+<span class="e">        :amenu Edit</span>
+<span class="e"></span>
+This lists only the "Edit" menu items for all modes.  To <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> only one
+specific menu item for <a href="https://vimhelp.org/insert.txt.html#Insert" class="d">Insert</a> mode: 
+<span class="e"></span>
+<span class="e">        :imenu Edit.Undo</span>
+<span class="e"></span>
+Take care that you type exactly the right name.  Case matters here.  But the
+'&amp;' for accelerators can be omitted.  The <a href="https://vimhelp.org/motion.txt.html#%3CTab%3E" class="s">&lt;Tab&gt;</a> and what comes after <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> can be
+left out <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> well.
+
+
+<span class="c">DELETING MENUS</span>
+
+To delete <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> menu, the same command <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> for listing, but with "menu"
+changed to "unmenu"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  Thus "<a href="https://vimhelp.org/gui.txt.html#%3Amenu" class="d">:menu</a>" becomes, "<a href="https://vimhelp.org/gui.txt.html#%3Aunmenu" class="d">:unmenu</a>"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> "<a href="https://vimhelp.org/gui.txt.html#%3Anmenu" class="d">:nmenu</a>" becomes
+"<a href="https://vimhelp.org/gui.txt.html#%3Anunmenu" class="d">:nunmenu</a>"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> etc.  To delete the "Tools.Make" item for <a href="https://vimhelp.org/insert.txt.html#Insert" class="d">Insert</a> mode: 
+<span class="e"></span>
+<span class="e">        :iunmenu Tools.Make</span>
+<span class="e"></span>
+You can delete <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> whole menu, with all its items, by using the menu name.
+Example: 
+<span class="e"></span>
+<span class="e">        :aunmenu Syntax</span>
+<span class="e"></span>
+This deletes the <a href="https://vimhelp.org/autocmd.txt.html#Syntax" class="d">Syntax</a> menu and all the items in it.
+
+<span class="h">==============================================================================</span>
+<span id="42.3" class="t">42.3</span>  Various
+
+You can change the appearance of the <a href="https://vimhelp.org/gui.txt.html#menus" class="d">menus</a> with flags in <a href="https://vimhelp.org/options.txt.html#%27guioptions%27" class="o">'guioptions'</a>.  In the
+default value they are all included, except "<a href="https://vimhelp.org/motion.txt.html#M" class="d">M</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  You can remove <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> flag with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+command like: 
+<span class="e"></span>
+<span class="e">        :set guioptions-=m</span>
+
+        <a href="https://vimhelp.org/motion.txt.html#m" class="d">m</a>               When removed the menubar <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not displayed.
+
+        <a href="https://vimhelp.org/motion.txt.html#M" class="d">M</a>               When added the default <a href="https://vimhelp.org/gui.txt.html#menus" class="d">menus</a> are not loaded.
+
+        <a href="https://vimhelp.org/index.txt.html#g" class="d">g</a>               When removed the inactive menu items are not made grey
+                        but are completely removed.  (Does not work on all
+                        systems.)
+
+        <a href="https://vimhelp.org/motion.txt.html#t" class="d">t</a>               When removed the tearoff feature <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not enabled.
+
+The dotted line <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the top of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> menu <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> separator line.  When you select
+this item, the menu <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> "teared-off"<a href="https://vimhelp.org/cmdline.txt.html#%3A" class="d">:</a> It <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> displayed in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> separate window.
+This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> called <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> tearoff menu.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> useful when you use the same menu
+often.
+
+For translating menu items, see <a href="https://vimhelp.org/mlang.txt.html#%3Amenutrans" class="l">:menutrans</a><a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+
+Since the mouse has to be used to select <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> menu item, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> good idea to use
+the "<a href="https://vimhelp.org/editing.txt.html#%3Abrowse" class="d">:browse</a>" command for selecting <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file.  And "<a href="https://vimhelp.org/editing.txt.html#%3Aconfirm" class="d">:confirm</a>" to get <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/gui_w32.txt.html#dialog" class="d">dialog</a>
+instead of an error message, e.g., when the current buffer contains changes.
+These two can be combined: 
+<span class="e"></span>
+<span class="e">        :amenu File.Open  :browse confirm edit&lt;CR&gt;</span>
+<span class="e"></span>
+The "<a href="https://vimhelp.org/editing.txt.html#%3Abrowse" class="d">:browse</a>" makes <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file browser appear to select the file to edit.  The
+"<a href="https://vimhelp.org/editing.txt.html#%3Aconfirm" class="d">:confirm</a>" will pop up <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/gui_w32.txt.html#dialog" class="d">dialog</a> when the current buffer has changes.  You can
+then select to save the changes, throw them away or cancel the command.
+   For more complicated items, the <a href="https://vimhelp.org/builtin.txt.html#confirm%28%29" class="d">confirm()</a> and <a href="https://vimhelp.org/builtin.txt.html#inputdialog%28%29" class="d">inputdialog()</a> <a href="https://vimhelp.org/eval.txt.html#functions" class="d">functions</a> can
+be used.  The default <a href="https://vimhelp.org/gui.txt.html#menus" class="d">menus</a> contain <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> few examples.
+
+<span class="h">==============================================================================</span>
+<span id="42.4" class="t">42.4</span>  Toolbar and <a href="https://vimhelp.org/popup.txt.html#popup" class="d">popup</a> <a href="https://vimhelp.org/gui.txt.html#menus" class="d">menus</a>
+
+There are two special menus: ToolBar and PopUp.  Items that start with these
+names <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> not appear in the normal menu bar.
+
+
+<span class="c">TOOLBAR</span>
+
+The toolbar appears only when the "<a href="https://vimhelp.org/motion.txt.html#T" class="d">T</a>" flag <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> included in the <a href="https://vimhelp.org/options.txt.html#%27guioptions%27" class="o">'guioptions'</a>
+option.
+   The toolbar uses icons rather than text to represent the command.  For
+example, the <span class="s">{menu-item}</span> named "ToolBar.New" causes the "New" icon to appear
+on the toolbar.
+   The Vim editor has 28 built-in icons.  You can find <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> table here:
+<a href="https://vimhelp.org/gui.txt.html#builtin-tools" class="l">builtin-tools</a><a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  Most of them are used in the default toolbar.  You can
+redefine what these items <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> (after the default <a href="https://vimhelp.org/gui.txt.html#menus" class="d">menus</a> are setup).
+   You can add another bitmap for <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> toolbar item.  Or define <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> new toolbar
+item with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> bitmap.  For example, define <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> new toolbar item with: 
+<span class="e"></span>
+<span class="e">        :tmenu ToolBar.Compile  Compile the current file</span>
+<span class="e">        :amenu ToolBar.Compile  :!cc %:S -o %:r:S&lt;CR&gt;</span>
+<span class="e"></span>
+Now you need to create the icon.  For <a href="https://vimhelp.org/os_win32.txt.html#MS-Windows" class="d">MS-Windows</a> <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/vim_faq.txt.html#must" class="d">must</a> be in bitmap format,
+with the name "Compile.bmp"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  For <a href="https://vimhelp.org/os_unix.txt.html#Unix" class="d">Unix</a> XPM format <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used, the file name <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a>
+"Compile.xpm"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  The size <a href="https://vimhelp.org/vim_faq.txt.html#must" class="d">must</a> be 18 by 18 pixels.  On <a href="https://vimhelp.org/os_win32.txt.html#MS-Windows" class="d">MS-Windows</a> other sizes
+can be used <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> well, but <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> will look ugly.
+   Put the bitmap in the directory "bitmaps" in one of the directories from
+<a href="https://vimhelp.org/options.txt.html#%27runtimepath%27" class="o">'runtimepath'</a>.  E.g., for <a href="https://vimhelp.org/os_unix.txt.html#Unix" class="d">Unix</a> "~/.vim/bitmaps/Compile.xpm"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+
+You can define <a href="https://vimhelp.org/gui.txt.html#tooltips" class="d">tooltips</a> for the items in the toolbar.  <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> tooltip <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> short
+text that explains what <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> toolbar item will do.  For example "Open file"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  It
+appears when the mouse pointer <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> on the item, without moving for <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> moment.
+This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> very useful if the meaning of the picture isn't that obvious.
+Example: 
+<span class="e"></span>
+<span class="e">        :tmenu ToolBar.Make  Run make in the current directory</span>
+
+        <span class="n">Note:</span>
+        Pay attention to the <a href="https://vimhelp.org/change.txt.html#case" class="d">case</a> used.  "Toolbar" and "toolbar" are different
+        from "ToolBar"<a href="https://vimhelp.org/change.txt.html#%21" class="d">!</a>
+
+To remove <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> tooltip, use the <a href="https://vimhelp.org/gui.txt.html#%3Atunmenu" class="l">:tunmenu</a> command.
+
+The <a href="https://vimhelp.org/options.txt.html#%27toolbar%27" class="o">'toolbar'</a> option can be used to display text instead of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> bitmap, or both
+text and <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> bitmap.  Most people use just the bitmap, since the text takes
+quite <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> bit of space.
+
+
+<span class="c">POPUP MENU</span>
+
+The <a href="https://vimhelp.org/popup.txt.html#popup" class="d">popup</a> menu pops up where the mouse pointer is.  On <a href="https://vimhelp.org/os_win32.txt.html#MS-Windows" class="d">MS-Windows</a> you activate
+<a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> by clicking the right mouse button.  Then you can select an item with the
+left mouse button.  On <a href="https://vimhelp.org/os_unix.txt.html#Unix" class="d">Unix</a> the <a href="https://vimhelp.org/popup.txt.html#popup" class="d">popup</a> menu <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used by pressing and holding the
+right mouse button.
+   The <a href="https://vimhelp.org/popup.txt.html#popup" class="d">popup</a> menu only appears when the <a href="https://vimhelp.org/options.txt.html#%27mousemodel%27" class="o">'mousemodel'</a> has been set to "<a href="https://vimhelp.org/popup.txt.html#popup" class="d">popup</a>"
+or "popup_setpos"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  The difference between the two <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> that "popup_setpos"
+moves the cursor to the mouse pointer position.  When clicking inside <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+selection, the selection will be used unmodified.  When there <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> selection
+but you click outside of it, the selection <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> removed.
+   There <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> separate <a href="https://vimhelp.org/popup.txt.html#popup" class="d">popup</a> menu for each mode.  Thus there are never grey
+items like in the normal menus.
+
+What <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the meaning of life, the universe and everything?  <span id="42" class="t">42</span>
+Douglas Adams, the only person who knew what this question really was about <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a>
+now dead, unfortunately.  So now you might wonder what the meaning of death
+is...
+
+<span class="h">==============================================================================</span>
+
+Next chapter: <a href="https://vimhelp.org/usr_43.txt.html#usr_43.txt" class="l">usr_43.txt</a>  Using <a href="https://vimhelp.org/filetype.txt.html#filetypes" class="d">filetypes</a>
+
+Copyright: see <a href="https://vimhelp.org/usr_01.txt.html#manual-copyright" class="l">manual-copyright</a>  vim:tw=78:ts=8:noet:ft=help:norl:
+
+
+</pre>
+</div>
+<div id="vh-sidebar" style="visibility: visible; position: sticky; left: 106.442px;"><ul><li><a href="#">↑Top↑</a></li><li><a href="#42.1">Introduction</a></li><li><a href="#42.2">Menu commands</a></li><li><a href="#42.3">Various</a></li><li><a href="#42.4">Toolbar and popup menus</a></li></ul></div>
+</main>
+<p>
+Quick links:
+<a href="https://vimhelp.org/">help overview</a> ·
+<a href="https://vimhelp.org/quickref.txt.html">quick reference</a> ·
+<a href="https://vimhelp.org/usr_toc.txt.html">user manual toc</a> ·
+<a href="https://vimhelp.org/#reference_toc">reference manual toc</a>
+· <a href="https://vimhelp.org/vim_faq.txt.html">faq</a></p>
+<footer>This site is maintained by Carlo Teubner (<i>(my first name) at cteubner dot net</i>).</footer>
+
+
+<div id="sourcegraph-app-background" data-platform="firefox-extension" data-version="22.11.24.1820" style="display: none;"></div></body></html>

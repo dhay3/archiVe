@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en"><script type="text/javascript">try {
+(function injectPageScriptAPI(scriptName, shouldOverrideWebSocket, shouldOverrideWebRTC, isInjected) { 
+
+    'use strict';
+
+    /**
+     * If script have been injected into a frame via contentWindow then we can simply take the copy of messageChannel left for us by parent document
+     * Otherwise creates new message channel that sends a message to the content-script to check if request should be allowed or not.
+     */
+    var messageChannel = isInjected ? window[scriptName] : (function () {
+
+        // Save original postMessage and addEventListener functions to prevent webpage from tampering both.
+        var postMessage = window.postMessage;
+        var addEventListener = window.addEventListener;
+
+        // Current request ID (incremented every time we send a new message)
+        var currentRequestId = 0;
+        var requestsMap = {};
+
+        /**
+         * Handles messages sent from the content script back to the page script.
+         *
+         * @param event Event with necessary data
+         */
+        var onMessageReceived = function (event) {
+
+            if (!event.data || !event.data.direction || event.data.direction !== "to-page-script@abu") {
+                return;
+            }
+
+            var requestData = requestsMap[event.data.requestId];
+            if (requestData) {
+                var wrapper = requestData.wrapper;
+                requestData.onResponseReceived(wrapper, event.data.block);
+                delete requestsMap[event.data.requestId];
+            }
+        };
+
+        /**
+         * @param url                The URL to which wrapped object is willing to connect
+         * @param requestType        Request type ( WEBSOCKET or WEBRTC)
+         * @param wrapper            WebSocket wrapper instance
+         * @param onResponseReceived Called when response is received
+         */
+        var sendMessage = function (url, requestType, wrapper, onResponseReceived) {
+
+            if (currentRequestId === 0) {
+                // Subscribe to response when this method is called for the first time
+                addEventListener.call(window, "message", onMessageReceived, false);
+            }
+
+            var requestId = ++currentRequestId;
+            requestsMap[requestId] = {
+                wrapper: wrapper,
+                onResponseReceived: onResponseReceived
+            };
+
+            var message = {
+                requestId: requestId,
+                direction: 'from-page-script@abu',
+                elementUrl: url,
+                documentUrl: document.URL,
+                requestType: requestType
+            };
+
+            // Send a message to the background page to check if the request should be blocked
+            postMessage.call(window, message, "*");
+        };
+
+        return {
+            sendMessage: sendMessage
+        };
+
+    })();
+
+    /*
+     * In some case Chrome won't run content scripts inside frames.
+     * So we have to intercept access to contentWindow/contentDocument and manually inject wrapper script into this context
+     *
+     * Based on: https://github.com/adblockplus/adblockpluschrome/commit/1aabfb3346dc0821c52dd9e97f7d61b8c99cd707
+     */
+    var injectedToString = Function.prototype.toString.bind(injectPageScriptAPI);
+
+    var injectedFramesAdd;
+    var injectedFramesHas;
+    if (window.WeakSet instanceof Function) {
+        var injectedFrames = new WeakSet();
+        injectedFramesAdd = WeakSet.prototype.add.bind(injectedFrames);
+        injectedFramesHas = WeakSet.prototype.has.bind(injectedFrames);
+    } else {
+        var frames = [];
+        injectedFramesAdd = function (el) {
+            if (frames.indexOf(el) < 0) {
+                frames.push(el);
+            }
+        };
+        injectedFramesHas = function (el) {
+            return frames.indexOf(el) >= 0;
+        };
+    }
+
+    /**
+     * Injects wrapper's script into passed window
+     * @param contentWindow Frame's content window
+     */
+    function injectPageScriptAPIInWindow(contentWindow) {
+        try {
+            if (contentWindow && !injectedFramesHas(contentWindow)) {
+                injectedFramesAdd(contentWindow);
+                contentWindow[scriptName] = messageChannel; // Left message channel for the injected script
+                var args = "'" + scriptName + "', " + shouldOverrideWebSocket + ", " + shouldOverrideWebRTC + ", true";
+                contentWindow.eval("(" + injectedToString() + ")(" + args + ");");
+                delete contentWindow[scriptName];
+            }
+        } catch (e) {
+        }
+    }
+
+    /**
+     * Overrides access to contentWindow/contentDocument for the passed HTML element's interface (iframe, frame, object)
+     * If the content of one of these objects is requested we will inject our wrapper script.
+     * @param iface HTML element's interface
+     */
+    function overrideContentAccess(iface) {
+
+        var contentWindowDescriptor = Object.getOwnPropertyDescriptor(iface.prototype, "contentWindow");
+        var contentDocumentDescriptor = Object.getOwnPropertyDescriptor(iface.prototype, "contentDocument");
+
+        // Apparently in HTMLObjectElement.prototype.contentWindow does not exist
+        // in older versions of Chrome such as 42.
+        if (!contentWindowDescriptor) {
+            return;
+        }
+
+        var getContentWindow = Function.prototype.call.bind(contentWindowDescriptor.get);
+        var getContentDocument = Function.prototype.call.bind(contentDocumentDescriptor.get);
+
+        contentWindowDescriptor.get = function () {
+            var contentWindow = getContentWindow(this);
+            injectPageScriptAPIInWindow(contentWindow);
+            return contentWindow;
+        };
+        contentDocumentDescriptor.get = function () {
+            injectPageScriptAPIInWindow(getContentWindow(this));
+            return getContentDocument(this);
+        };
+
+        Object.defineProperty(iface.prototype, "contentWindow", contentWindowDescriptor);
+        Object.defineProperty(iface.prototype, "contentDocument", contentDocumentDescriptor);
+    }
+
+    var interfaces = [HTMLFrameElement, HTMLIFrameElement, HTMLObjectElement];
+    for (var i = 0; i < interfaces.length; i++) {
+        overrideContentAccess(interfaces[i]);
+    }
+
+    /**
+     * Defines properties in destination object
+     * @param src Source object
+     * @param dest Destination object
+     * @param properties Properties to copy
+     */
+    var copyProperties = function (src, dest, properties) {
+        for (var i = 0; i < properties.length; i++) {
+            var prop = properties[i];
+            var descriptor = Object.getOwnPropertyDescriptor(src, prop);
+            // Passed property may be undefined
+            if (descriptor) {
+                Object.defineProperty(dest, prop, descriptor);
+            }
+        }
+    };
+
+    /**
+     * Check request by sending message to content script
+     * @param url URL to block
+     * @param type Request type
+     * @param callback Result callback
+     */
+    var checkRequest = function (url, type, callback) {
+        messageChannel.sendMessage(url, type, this, function (wrapper, blockConnection) {
+            callback(blockConnection);
+        });
+    };
+
+    /**
+     * The function overrides window.WebSocket with our wrapper, that will check url with filters through messaging with content-script.
+     *
+     * IMPORTANT NOTE:
+     * This function is first loaded as a content script. The only purpose of it is to call
+     * the "toString" method and use resulting string as a text content for injected script.
+     */
+    var overrideWebSocket = function () { 
+
+        if (!(window.WebSocket instanceof Function)) {
+            return;
+        }
+
+        /**
+         * WebSocket wrapper implementation.
+         * https://github.com/AdguardTeam/AdguardBrowserExtension/issues/349
+         *
+         * Based on:
+         * https://github.com/adblockplus/adblockpluschrome/commit/457a336ee55a433217c3ffe5d363e5c6980f26f4
+         */
+
+        /**
+         * As far as possible we must track everything we use that could be sabotaged by the website later in order to circumvent us.
+         */
+        var RealWebSocket = WebSocket;
+        var closeWebSocket = Function.prototype.call.bind(RealWebSocket.prototype.close);
+
+        function WrappedWebSocket(url, protocols) {
+            // Throw correct exceptions if the constructor is used improperly.
+            if (!(this instanceof WrappedWebSocket)) {
+                return RealWebSocket();
+            }
+            if (arguments.length < 1) {
+                return new RealWebSocket();
+            }
+
+            var websocket = new RealWebSocket(url, protocols);
+
+            // This is the key point: checking if this WS should be blocked or not
+            // Don't forget that the type of 'websocket.url' is String, but 'url 'parameter might have another type.
+            checkRequest(websocket.url, 'WEBSOCKET', function (blocked) {
+                if (blocked) {
+                    closeWebSocket(websocket);
+                }
+            });
+
+            return websocket;
+        }
+
+        // https://github.com/AdguardTeam/AdguardBrowserExtension/issues/488
+        WrappedWebSocket.prototype = RealWebSocket.prototype;
+        window.WebSocket = WrappedWebSocket.bind();
+
+        copyProperties(RealWebSocket, WebSocket, ["CONNECTING", "OPEN", "CLOSING", "CLOSED", "name", "prototype"]);
+
+        RealWebSocket.prototype.constructor = WebSocket;
+
+    };
+
+    /**
+     * The function overrides window.RTCPeerConnection with our wrapper, that will check ice servers URLs with filters through messaging with content-script.
+     *
+     * IMPORTANT NOTE:
+     * This function is first loaded as a content script. The only purpose of it is to call
+     * the "toString" method and use resulting string as a text content for injected script.
+     */
+    var overrideWebRTC = function () { 
+
+
+        if (!(window.RTCPeerConnection instanceof Function) &&
+            !(window.webkitRTCPeerConnection instanceof Function)) {
+            return;
+        }
+
+        /**
+         * RTCPeerConnection wrapper implementation.
+         * https://github.com/AdguardTeam/AdguardBrowserExtension/issues/588
+         *
+         * Based on:
+         * https://github.com/adblockplus/adblockpluschrome/commit/af0585137be19011eace1cf68bf61eed2e6db974
+         *
+         * Chromium webRequest API doesn't allow the blocking of WebRTC connections
+         * https://bugs.chromium.org/p/chromium/issues/detail?id=707683
+         */
+
+        var RealRTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection;
+        var closeRTCPeerConnection = Function.prototype.call.bind(RealRTCPeerConnection.prototype.close);
+
+        var RealArray = Array;
+        var RealString = String;
+        var createObject = Object.create;
+        var defineProperty = Object.defineProperty;
+
+        /**
+         * Convert passed url to string
+         * @param url URL
+         * @returns {string}
+         */
+        function urlToString(url) {
+            if (typeof url !== "undefined") {
+                return RealString(url);
+            }
+        }
+
+        /**
+         * Creates new immutable array from original with some transform function
+         * @param original
+         * @param transform
+         * @returns {*}
+         */
+        function safeCopyArray(original, transform) {
+
+            if (original === null || typeof original !== "object") {
+                return original;
+            }
+
+            var immutable = RealArray(original.length);
+            for (var i = 0; i < immutable.length; i++) {
+                defineProperty(immutable, i, {
+                    configurable: false, enumerable: false, writable: false,
+                    value: transform(original[i])
+                });
+            }
+            defineProperty(immutable, "length", {
+                configurable: false, enumerable: false, writable: false,
+                value: immutable.length
+            });
+            return immutable;
+        }
+
+        /**
+         * Protect configuration from mutations
+         * @param configuration RTCPeerConnection configuration object
+         * @returns {*}
+         */
+        function protectConfiguration(configuration) {
+
+            if (configuration === null || typeof configuration !== "object") {
+                return configuration;
+            }
+
+            var iceServers = safeCopyArray(
+                configuration.iceServers,
+                function (iceServer) {
+
+                    var url = iceServer.url;
+                    var urls = iceServer.urls;
+
+                    // RTCPeerConnection doesn't iterate through pseudo Arrays of urls.
+                    if (typeof urls !== "undefined" && !(urls instanceof RealArray)) {
+                        urls = [urls];
+                    }
+
+                    return createObject(iceServer, {
+                        url: {
+                            configurable: false, enumerable: false, writable: false,
+                            value: urlToString(url)
+                        },
+                        urls: {
+                            configurable: false, enumerable: false, writable: false,
+                            value: safeCopyArray(urls, urlToString)
+                        }
+                    });
+                }
+            );
+
+            return createObject(configuration, {
+                iceServers: {
+                    configurable: false, enumerable: false, writable: false,
+                    value: iceServers
+                }
+            });
+        }
+
+        /**
+         * Check WebRTC connection's URL and close if it's blocked by rule
+         * @param connection Connection
+         * @param url URL to check
+         */
+        function checkWebRTCRequest(connection, url) {
+            checkRequest(url, 'WEBRTC', function (blocked) {
+                if (blocked) {
+                    try {
+                        closeRTCPeerConnection(connection);
+                    } catch (e) {
+                        // Ignore exceptions
+                    }
+                }
+            });
+        }
+
+        /**
+         * Check each URL of ice server in configuration for blocking.
+         *
+         * @param connection RTCPeerConnection
+         * @param configuration Configuration for RTCPeerConnection
+         * https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration
+         */
+        function checkConfiguration(connection, configuration) {
+
+            if (!configuration || !configuration.iceServers) {
+                return;
+            }
+
+            var iceServers = configuration.iceServers;
+            for (var i = 0; i < iceServers.length; i++) {
+
+                var iceServer = iceServers[i];
+                if (!iceServer) {
+                    continue;
+                }
+
+                if (iceServer.url) {
+                    checkWebRTCRequest(connection, iceServer.url);
+                }
+
+                if (iceServer.urls) {
+                    for (var j = 0; j < iceServer.urls.length; j++) {
+                        checkWebRTCRequest(connection, iceServer.urls[j]);
+                    }
+                }
+            }
+        }
+
+        /**
+         * Overrides setConfiguration method
+         * https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/setConfiguration
+         */
+        if (RealRTCPeerConnection.prototype.setConfiguration) {
+
+            var realSetConfiguration = Function.prototype.call.bind(RealRTCPeerConnection.prototype.setConfiguration);
+
+            RealRTCPeerConnection.prototype.setConfiguration = function (configuration) {
+                configuration = protectConfiguration(configuration);
+                // Call the real method first, so that validates the configuration
+                realSetConfiguration(this, configuration);
+                checkConfiguration(this, configuration);
+            };
+        }
+
+        function WrappedRTCPeerConnection(configuration, arg) {
+
+            if (!(this instanceof WrappedRTCPeerConnection)) {
+                return RealRTCPeerConnection();
+            }
+
+            configuration = protectConfiguration(configuration);
+
+            /**
+             * The old webkitRTCPeerConnection constructor takes an optional second argument and we must pass it.
+             */
+            var connection = new RealRTCPeerConnection(configuration, arg);
+            checkConfiguration(connection, configuration);
+            return connection;
+        }
+
+        WrappedRTCPeerConnection.prototype = RealRTCPeerConnection.prototype;
+
+        var boundWrappedRTCPeerConnection = WrappedRTCPeerConnection.bind();
+        copyProperties(RealRTCPeerConnection, boundWrappedRTCPeerConnection, ["caller", "generateCertificate", "name", "prototype"]);
+        RealRTCPeerConnection.prototype.constructor = boundWrappedRTCPeerConnection;
+
+        if ("RTCPeerConnection" in window) {
+            window.RTCPeerConnection = boundWrappedRTCPeerConnection;
+        }
+        if ("webkitRTCPeerConnection" in window) {
+            window.webkitRTCPeerConnection = boundWrappedRTCPeerConnection;
+        }
+    };
+
+    if (shouldOverrideWebSocket) {
+        overrideWebSocket();
+    }
+
+    if (shouldOverrideWebRTC) {
+        overrideWebRTC();
+    }
+})('wrapper-script-8207614629024237', false, true);
+} catch (ex) { console.error('Error executing AG js: ' + ex); }
+(function () {
+            var current = document.currentScript;
+            var parent = current && current.parentNode;
+            if (parent) {
+                parent.removeChild(current);
+            }
+        })();</script><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Vim help pages, always up-to-date">
+<title>Vim: usr_23.txt</title>
+<link rel="shortcut icon" href="https://vimhelp.org/favicon.ico">
+<!-- favicon is based on http://amnoid.de/tmp/vim_solidbright_512.png and is used with permission by its author -->
+<link rel="stylesheet" href="Vim%20usr_23.txt_Editing%20other%20files_files/vimhelp.css" type="text/css">
+
+<link rel="stylesheet" class="select2-css" href="Vim%20usr_23.txt_Editing%20other%20files_files/select2.min.css" integrity="sha256-zaSoHBhwFdle0scfGEFUCwggPN7F+ip9XRglo8IWb4w=" crossorigin="anonymous">
+<script defer="defer" src="Vim%20usr_23.txt_Editing%20other%20files_files/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script defer="defer" src="Vim%20usr_23.txt_Editing%20other%20files_files/select2.min.js" integrity="sha256-9yRP/2EFlblE92vzCA10469Ctd0jT48HnmmMw5rJZrA=" crossorigin="anonymous"></script>
+<script defer="defer" src="Vim%20usr_23.txt_Editing%20other%20files_files/vimhelp.js"></script>
+</head><body>
+<div class="bar">
+  <div class="ql">
+Quick links:
+<a href="https://vimhelp.org/">help overview</a> ·
+<a href="https://vimhelp.org/quickref.txt.html">quick reference</a> ·
+<a href="https://vimhelp.org/usr_toc.txt.html">user manual toc</a> ·
+<a href="https://vimhelp.org/#reference_toc">reference manual toc</a>
+· <a href="https://vimhelp.org/vim_faq.txt.html">faq</a></div>
+  <div class="srch">
+    <select id="vh-select-tag" data-select2-id="select2-data-vh-select-tag" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true" style="display: inline-block;"></select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-1-bl3o" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-vh-select-tag-container" aria-controls="select2-vh-select-tag-container"><span class="select2-selection__rendered" id="select2-vh-select-tag-container" role="textbox" aria-readonly="true" title="Go to keyword"><span class="select2-selection__placeholder">Go to keyword</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+  </div>
+  <form class="srch" action="https://duckduckgo.com" method="get" target="_blank" rel="noopener noreferrer">
+    <input type="hidden" name="sites" value="vimhelp.org">
+    <input type="search" name="q" id="vh-srch-input" placeholder="Site search">
+  </form>
+</div>
+
+<main>
+<div id="vh-content">
+<pre><span id="usr_23.txt" class="t">usr_23.txt</span>    For <span class="i">Vim version 9.0.</span>  Last change: 2020 Dec 19
+
+                     VIM USER MANUAL <a href="https://vimhelp.org/motion.txt.html#-" class="d">-</a> by <a href="https://vimhelp.org/intro.txt.html#Bram" class="d">Bram</a> <a href="https://vimhelp.org/intro.txt.html#Moolenaar" class="d">Moolenaar</a>
+
+                             Editing other files
+
+
+This chapter <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> about editing files that are not ordinary files.  With Vim you
+can edit files that are compressed or encrypted.  Some files need to be
+accessed over the internet.  With some restrictions, binary files can be
+edited <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> well.
+
+<a href="#23.1" class="l">23.1</a>  DOS, <a href="https://vimhelp.org/os_mac.txt.html#Mac" class="d">Mac</a> and <a href="https://vimhelp.org/os_unix.txt.html#Unix" class="d">Unix</a> files
+<a href="#23.2" class="l">23.2</a>  Files on the <a href="https://vimhelp.org/intro.txt.html#internet" class="d">internet</a>
+<a href="#23.3" class="l">23.3</a>  Encryption
+<a href="#23.4" class="l">23.4</a>  Binary files
+<a href="#23.5" class="l">23.5</a>  Compressed files
+
+     Next chapter: <a href="https://vimhelp.org/usr_24.txt.html#usr_24.txt" class="l">usr_24.txt</a>  Inserting quickly
+ Previous chapter: <a href="https://vimhelp.org/usr_22.txt.html#usr_22.txt" class="l">usr_22.txt</a>  Finding the file to edit
+Table of contents: <a href="https://vimhelp.org/usr_toc.txt.html#usr_toc.txt" class="l">usr_toc.txt</a>
+
+<span class="h">==============================================================================</span>
+<span id="23.1" class="t">23.1</span>  DOS, <a href="https://vimhelp.org/os_mac.txt.html#Mac" class="d">Mac</a> and <a href="https://vimhelp.org/os_unix.txt.html#Unix" class="d">Unix</a> files
+
+Back in the early days, the old Teletype machines used two characters to
+start <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> new line.  One to move the carriage back to the first position
+(carriage return, <a href="https://vimhelp.org/motion.txt.html#%3CCR%3E" class="s">&lt;CR&gt;</a>), another to move the paper up (line feed, <span class="s">&lt;LF&gt;</span>).
+   When computers came out, storage was expensive.  Some people decided that
+they did not need two characters for end-of-line.  The UNIX people decided
+they could use &lt;New Line&gt; or <a href="https://vimhelp.org/motion.txt.html#%3CNL%3E" class="s">&lt;NL&gt;</a> only for end-of-line.  The Apple people
+standardized on <a href="https://vimhelp.org/motion.txt.html#%3CCR%3E" class="s">&lt;CR&gt;</a>.  The Microsoft Windows folks decided to keep the old
+<a href="https://vimhelp.org/motion.txt.html#%3CCR%3E" class="s">&lt;CR&gt;</a><a href="https://vimhelp.org/motion.txt.html#%3CNL%3E" class="s">&lt;NL&gt;</a> (we use <a href="https://vimhelp.org/motion.txt.html#%3CNL%3E" class="s">&lt;NL&gt;</a> for line feed in the <a href="https://vimhelp.org/helphelp.txt.html#help" class="d">help</a> text).
+   This means that if you try to move <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file from one system to another, you
+have line-break problems.  The Vim editor automatically recognizes the
+different file formats and handles things properly behind your back.
+   The option <a href="https://vimhelp.org/options.txt.html#%27fileformats%27" class="o">'fileformats'</a> contains the <a href="https://vimhelp.org/various.txt.html#various" class="d">various</a> formats that will be tried
+when <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> new file <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> edited.  The following command, for example, tells Vim to
+try UNIX format first and <a href="https://vimhelp.org/os_msdos.txt.html#MS-DOS" class="d">MS-DOS</a> format second: 
+<span class="e"></span>
+<span class="e">        :set fileformats=unix,dos</span>
+<span class="e"></span>
+You will notice the format in the message you get when editing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file.  You
+don't see anything if you edit <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> native file format.  Thus editing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/os_unix.txt.html#Unix" class="d">Unix</a> file
+on <a href="https://vimhelp.org/os_unix.txt.html#Unix" class="d">Unix</a> won't result in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> remark.  But when you edit <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/os_dos.txt.html#dos" class="d">dos</a> file, Vim will
+notify you of this:
+
+<span class="h">        "/tmp/test" [dos] 3L, 71C </span>
+
+For <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/os_mac.txt.html#Mac" class="d">Mac</a> file you would see "[mac]"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+   The detected file format <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> stored in the <a href="https://vimhelp.org/options.txt.html#%27fileformat%27" class="o">'fileformat'</a> option.  To see
+which format you have, execute the following command: 
+<span class="e"></span>
+<span class="e">        :set fileformat?</span>
+<span class="e"></span>
+The three names that Vim uses are:
+
+        <a href="https://vimhelp.org/os_unix.txt.html#unix" class="d">unix</a>            <a href="https://vimhelp.org/motion.txt.html#%3CNL%3E" class="s">&lt;NL&gt;</a>
+        <a href="https://vimhelp.org/os_dos.txt.html#dos" class="d">dos</a>             <a href="https://vimhelp.org/motion.txt.html#%3CCR%3E" class="s">&lt;CR&gt;</a><a href="https://vimhelp.org/motion.txt.html#%3CNL%3E" class="s">&lt;NL&gt;</a>
+        <a href="https://vimhelp.org/os_mac.txt.html#mac" class="d">mac</a>             <a href="https://vimhelp.org/motion.txt.html#%3CCR%3E" class="s">&lt;CR&gt;</a>
+
+
+<span class="c">USING THE MAC FORMAT</span>
+
+On Unix, <a href="https://vimhelp.org/motion.txt.html#%3CNL%3E" class="s">&lt;NL&gt;</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used to break <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> line.  It's not unusual to have <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/motion.txt.html#%3CCR%3E" class="s">&lt;CR&gt;</a>
+character halfway <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> line.  Incidentally, this happens quite often in <a href="https://vimhelp.org/intro.txt.html#Vi" class="d">Vi</a> (and
+Vim) scripts.
+   On the Macintosh, where <a href="https://vimhelp.org/motion.txt.html#%3CCR%3E" class="s">&lt;CR&gt;</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the line break character, it's possible to
+have <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/motion.txt.html#%3CNL%3E" class="s">&lt;NL&gt;</a> character halfway <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> line.
+   The result <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> that it's not possible to be 100% sure whether <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file
+containing both <a href="https://vimhelp.org/motion.txt.html#%3CCR%3E" class="s">&lt;CR&gt;</a> and <a href="https://vimhelp.org/motion.txt.html#%3CNL%3E" class="s">&lt;NL&gt;</a> characters <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/os_mac.txt.html#Mac" class="d">Mac</a> or <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/os_unix.txt.html#Unix" class="d">Unix</a> file.  Therefore,
+Vim assumes that on <a href="https://vimhelp.org/os_unix.txt.html#Unix" class="d">Unix</a> you probably won't edit <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/os_mac.txt.html#Mac" class="d">Mac</a> file, and doesn't check
+for this type of file.  To check for this format anyway, add "<a href="https://vimhelp.org/os_mac.txt.html#mac" class="d">mac</a>" to
+<a href="https://vimhelp.org/options.txt.html#%27fileformats%27" class="o">'fileformats'</a>: 
+<span class="e"></span>
+<span class="e">        :set fileformats+=mac</span>
+<span class="e"></span>
+Then Vim will take <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> guess <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the file format.  Watch out for situations where
+Vim guesses wrong.
+
+
+<span class="c">OVERRULING THE FORMAT</span>
+
+If you use the good old <a href="https://vimhelp.org/intro.txt.html#Vi" class="d">Vi</a> and try to edit an <a href="https://vimhelp.org/os_msdos.txt.html#MS-DOS" class="d">MS-DOS</a> format file, you will
+find that each line ends with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> ^M character.  (^M <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/motion.txt.html#%3CCR%3E" class="s">&lt;CR&gt;</a>).  The automatic
+detection avoids this.  Suppose you <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> want to edit the file that way?  Then
+you need to overrule the format: 
+<span class="e"></span>
+<span class="e">        :edit ++ff=unix file.txt</span>
+<span class="e"></span>
+The "++" <a href="https://vimhelp.org/eval.txt.html#string" class="d">string</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> an item that tells Vim that an option name follows, which
+overrules the default for this single command.  "<a href="https://vimhelp.org/editing.txt.html#%2B%2Bff" class="d">++ff</a>" <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used for
+<a href="https://vimhelp.org/options.txt.html#%27fileformat%27" class="o">'fileformat'</a>.  You could also use "++ff=mac" or "++ff=dos"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+   This doesn't work for any option, only "<a href="https://vimhelp.org/editing.txt.html#%2B%2Bff" class="d">++ff</a>" and "<a href="https://vimhelp.org/editing.txt.html#%2B%2Benc" class="d">++enc</a>" are currently
+implemented.  The full names "++fileformat" and "++encoding" also work.
+
+
+<span class="c">CONVERSION</span>
+
+You can use the <a href="https://vimhelp.org/options.txt.html#%27fileformat%27" class="o">'fileformat'</a> option to convert from one file format to
+another.  Suppose, for example, that you have an <a href="https://vimhelp.org/os_msdos.txt.html#MS-DOS" class="d">MS-DOS</a> file named README.TXT
+that you want to convert to UNIX format.  Start by editing the <a href="https://vimhelp.org/os_msdos.txt.html#MS-DOS" class="d">MS-DOS</a> format
+file: 
+<span class="e">        vim README.TXT</span>
+<span class="e"></span>
+Vim will recognize this <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/os_dos.txt.html#dos" class="d">dos</a> format file.  Now change the file format to
+UNIX: 
+<span class="e"></span>
+<span class="e">        :set fileformat=unix</span>
+<span class="e">        :write</span>
+<span class="e"></span>
+The file <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> written in <a href="https://vimhelp.org/os_unix.txt.html#Unix" class="d">Unix</a> format.
+
+<span class="h">==============================================================================</span>
+<span id="23.2" class="t">23.2</span>  Files on the <a href="https://vimhelp.org/intro.txt.html#internet" class="d">internet</a>
+
+Someone sends you an e-mail message, which refers to <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file by its URL.  For
+example:
+
+<span class="h">        You can find the information here: </span>
+<span class="h">                ftp://ftp.vim.org/pub/vim/README </span>
+
+You could start <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> program to <a href="https://vimhelp.org/intro.txt.html#download" class="d">download</a> the file, save <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> on your local disk and
+then start Vim to edit it.
+   There <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> much simpler way.  Move the cursor to any character of the URL.
+Then use this command: 
+<span class="e"></span>
+<span class="e">        gf</span>
+<span class="e"></span>
+With <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> bit of luck, Vim will figure out which program to use for downloading
+the file, <a href="https://vimhelp.org/intro.txt.html#download" class="d">download</a> <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> and edit the copy.  To open the file in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> new <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> use
+<a href="https://vimhelp.org/index.txt.html#CTRL-W" class="k">CTRL-W</a> f.
+   If something goes wrong you will get an error message.  It's possible that
+the URL <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> wrong, you don't have permission to read it, the <a href="https://vimhelp.org/pi_netrw.txt.html#network" class="d">network</a> connection
+<a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> down, etc.  Unfortunately, it's hard to tell the cause of the error.  You
+might want to try the manual way of downloading the file.
+
+Accessing files over the <a href="https://vimhelp.org/intro.txt.html#internet" class="d">internet</a> works with the <a href="https://vimhelp.org/pi_netrw.txt.html#netrw" class="d">netrw</a> plugin.  Currently URLs
+with these formats are recognized:
+
+        ftp://          uses <a href="https://vimhelp.org/pi_netrw.txt.html#ftp" class="d">ftp</a>
+        rcp://          uses <a href="https://vimhelp.org/pi_netrw.txt.html#rcp" class="d">rcp</a>
+        scp://          uses <a href="https://vimhelp.org/pi_netrw.txt.html#scp" class="d">scp</a>
+        http://         uses wget (reading only)
+
+Vim doesn't <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> the communication itself, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> relies on the mentioned programs
+to be available on your computer.  On most <a href="https://vimhelp.org/os_unix.txt.html#Unix" class="d">Unix</a> systems "<a href="https://vimhelp.org/pi_netrw.txt.html#ftp" class="d">ftp</a>" and "<a href="https://vimhelp.org/pi_netrw.txt.html#rcp" class="d">rcp</a>" will
+be present.  "<a href="https://vimhelp.org/pi_netrw.txt.html#scp" class="d">scp</a>" and "wget" might need to be installed.
+
+Vim detects these URLs for each command that starts editing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> new file, also
+with "<a href="https://vimhelp.org/editing.txt.html#%3Aedit" class="d">:edit</a>" and "<a href="https://vimhelp.org/windows.txt.html#%3Asplit" class="d">:split</a>"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> for example.  Write commands also work, except for
+http://.
+
+For more information, also about passwords, see <a href="https://vimhelp.org/pi_netrw.txt.html#netrw" class="l">netrw</a><a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+
+<span class="h">==============================================================================</span>
+<span id="23.3" class="t">23.3</span>  Encryption
+
+Some information you prefer to keep to yourself.  For example, when <a href="https://vimhelp.org/editing.txt.html#writing" class="d">writing</a>
+<a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> test on <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> computer that students also use.  You don't want clever students
+to figure out <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> way to read the questions before the exam starts.  Vim can
+encrypt the file for you, which gives you some protection.
+   To start editing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> new file with encryption, use the "<a href="https://vimhelp.org/starting.txt.html#-x" class="d">-x</a>" argument to start
+Vim.  Example: 
+<span class="e"></span>
+<span class="e">        vim -x exam.txt</span>
+<span class="e"></span>
+Vim prompts you for <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> key used for encrypting and decrypting the file:
+
+<span class="h">        Enter encryption key: </span>
+
+Carefully type the secret key now.  You cannot see the characters you type,
+they will be replaced by stars.  To avoid the situation that <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> typing mistake
+will cause trouble, Vim asks you to enter the key again:
+
+<span class="h">        Enter same key again: </span>
+
+You can now edit this file normally and <a href="https://vimhelp.org/change.txt.html#put" class="d">put</a> in all your secrets.  When you
+finish editing the file and tell Vim to exit, the file <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> encrypted and
+written.
+   When you edit the file with Vim, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> will ask you to enter the same key
+again.  You don't need to use the "<a href="https://vimhelp.org/starting.txt.html#-x" class="d">-x</a>" argument.  You can also use the normal
+"<a href="https://vimhelp.org/editing.txt.html#%3Aedit" class="d">:edit</a>" command.  Vim adds <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> magic <a href="https://vimhelp.org/eval.txt.html#string" class="d">string</a> to the file by which <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> recognizes
+that the file was encrypted.
+   If you try to <a href="https://vimhelp.org/starting.txt.html#view" class="d">view</a> this file using another program, all you get <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> garbage.
+Also, if you edit the file with Vim and enter the wrong key, you get garbage.
+Vim does not have <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> mechanism to check if the key <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the right one (this makes
+<a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> much harder to break the key).
+
+
+<span class="c">SWITCHING ENCRYPTION ON AND OFF</span>
+
+To disable the <a href="https://vimhelp.org/editing.txt.html#encryption" class="d">encryption</a> of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file, set the <a href="https://vimhelp.org/options.txt.html#%27key%27" class="o">'key'</a> option to an empty string:
+
+<span class="e">        :set key=</span>
+<span class="e"></span>
+The next time you write the file this will be done without encryption.
+   Setting the <a href="https://vimhelp.org/options.txt.html#%27key%27" class="o">'key'</a> option to enable <a href="https://vimhelp.org/editing.txt.html#encryption" class="d">encryption</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> good idea, because
+the password appears in the clear.  Anyone shoulder-surfing can read your
+password.
+   To avoid this problem, the "<a href="https://vimhelp.org/editing.txt.html#%3AX" class="d">:X</a>" command was created.  It asks you for an
+<a href="https://vimhelp.org/editing.txt.html#encryption" class="d">encryption</a> key, just like the "<a href="https://vimhelp.org/starting.txt.html#-x" class="d">-x</a>" argument did: 
+<span class="e"></span>
+<span class="e">        :X</span>
+<span class="e">        Enter encryption key: ******</span>
+<span class="e">        Enter same key again: ******</span>
+<span class="e"></span>
+<span class="e"></span>
+<span class="c">LIMITS ON ENCRYPTION</span>
+
+The <a href="https://vimhelp.org/editing.txt.html#encryption" class="d">encryption</a> algorithm used by Vim <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not very strong.  It <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> good enough to
+keep out the casual prowler, but not good enough to keep out <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> cryptology
+expert with lots of time on his hands.  The text in the swap file and the <a href="https://vimhelp.org/undo.txt.html#undo" class="d">undo</a>
+file <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> also encrypted.  However, this <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> done block-by-block and may reduce
+the time needed to crack <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> password.  You can disable the swap file, but then
+<a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> crash will cause you to lose your work, since Vim keeps all the text in
+memory only.  The <a href="https://vimhelp.org/undo.txt.html#undo" class="d">undo</a> file can be disabled with the only disadvantage that
+you can't <a href="https://vimhelp.org/undo.txt.html#undo" class="d">undo</a> after unloading the buffer.
+   To avoid using <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> swap file, supply the <a href="https://vimhelp.org/starting.txt.html#-n" class="d">-n</a> argument on the command line.
+For example, to edit the encrypted file "file.txt" without <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> swap file use the
+following command: 
+<span class="e"></span>
+<span class="e">        vim -x -n file.txt</span>
+<span class="e"></span>
+When already editing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file, the swapfile can be disabled with: 
+<span class="e"></span>
+<span class="e">        :setlocal noswapfile</span>
+<span class="e"></span>
+Since there <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> no swapfile, <a href="https://vimhelp.org/recover.txt.html#recovery" class="d">recovery</a> will be impossible.  Save the file <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> bit
+more often to avoid the risk of losing your changes.
+
+While the file <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> in memory, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> in plain text.  Anyone with privilege can
+look in the editor's memory and discover the contents of the file.
+   If you use <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/starting.txt.html#viminfo" class="d">viminfo</a> file, be aware that the contents of text <a href="https://vimhelp.org/change.txt.html#registers" class="d">registers</a> are
+written out in the clear <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> well.
+   If you really want to secure the contents of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file, edit <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> only on <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+portable computer not connected to <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> network, use good <a href="https://vimhelp.org/editing.txt.html#encryption" class="d">encryption</a> tools, and
+keep the computer locked up in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> big safe when not in use.
+
+<span class="h">==============================================================================</span>
+<span id="23.4" class="t">23.4</span>  Binary files
+
+You can edit binary files with Vim.  Vim wasn't really made for this, thus
+there are <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> few restrictions.  But you can read <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file, change <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> character and
+write <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> back, with the result that only that one character was changed and
+the file <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> identical otherwise.
+   To make sure that Vim does not use its clever tricks in the wrong way, add
+the "<a href="https://vimhelp.org/starting.txt.html#-b" class="d">-b</a>" argument when <a href="https://vimhelp.org/starting.txt.html#starting" class="d">starting</a> Vim: 
+<span class="e"></span>
+<span class="e">        vim -b datafile</span>
+<span class="e"></span>
+This sets the <a href="https://vimhelp.org/options.txt.html#%27binary%27" class="o">'binary'</a> option.  The effect of this <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> that unexpected side
+effects are turned off.  For example, <a href="https://vimhelp.org/options.txt.html#%27textwidth%27" class="o">'textwidth'</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> set to zero, to avoid
+automatic <a href="https://vimhelp.org/change.txt.html#formatting" class="d">formatting</a> of lines.  And files are always read in <a href="https://vimhelp.org/os_unix.txt.html#Unix" class="d">Unix</a> file format.
+
+Binary mode can be used to change <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> message in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> program.  Be careful not to
+<a href="https://vimhelp.org/insert.txt.html#insert" class="d">insert</a> or delete any characters, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> would stop the program from working.  Use
+"<a href="https://vimhelp.org/change.txt.html#R" class="d">R</a>" to enter replace mode.
+
+Many characters in the file will be unprintable.  To see them in Hex format: 
+<span class="e"></span>
+<span class="e">        :set display=uhex</span>
+<span class="e"></span>
+Otherwise, the "<a href="https://vimhelp.org/various.txt.html#ga" class="d">ga</a>" command can be used to see the value of the character
+under the cursor.  The output, when the cursor <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> on an <a href="https://vimhelp.org/intro.txt.html#%3CEsc%3E" class="s">&lt;Esc&gt;</a>, looks like
+this:
+
+<span class="h">        &lt;^[&gt;  27,  Hex 1b,  Octal 033 </span>
+
+There might not be many line breaks in the file.  To get some overview switch
+the <a href="https://vimhelp.org/options.txt.html#%27wrap%27" class="o">'wrap'</a> option off: 
+<span class="e"></span>
+<span class="e">        :set nowrap</span>
+<span class="e"></span>
+<span class="e"></span>
+<span class="c">BYTE POSITION</span>
+
+To see on which byte you are in the file use this command: 
+<span class="e"></span>
+<span class="e">        g CTRL-G</span>
+<span class="e"></span>
+The output <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> verbose:
+
+<span class="h">    Col 9-16 of 9-16; Line 277 of 330; Word 1806 of 2058; Byte 10580 of 12206 </span>
+
+The last two numbers are the byte position in the file and the total number of
+bytes.  This takes into account how <a href="https://vimhelp.org/options.txt.html#%27fileformat%27" class="o">'fileformat'</a> changes the number of bytes
+that <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> line break uses.
+    To move to <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> specific byte in the file, use the "<a href="https://vimhelp.org/motion.txt.html#go" class="d">go</a>" command.  For
+example, to move to byte 2345: 
+<span class="e"></span>
+<span class="e">        2345go</span>
+<span class="e"></span>
+<span class="e"></span>
+<span class="c">USING XXD</span>
+
+<a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> real binary editor shows the text in two ways: <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> and in hex format.
+You can <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> this in Vim by first converting the file with the "xxd" program.
+This comes with Vim.
+   First edit the file in binary mode: 
+<span class="e"></span>
+<span class="e">        vim -b datafile</span>
+<span class="e"></span>
+Now convert the file to <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> hex dump with xxd: 
+<span class="e"></span>
+<span class="e">        :%!xxd</span>
+<span class="e"></span>
+The text will look like this:
+
+<span class="h">        0000000: 1f8b 0808 39d7 173b 0203 7474 002b 4e49  ....9..;..tt.+NI </span>
+<span class="h">        0000010: 4b2c 8660 eb9c ecac c462 eb94 345e 2e30  K,.`.....b..4^.0 </span>
+<span class="h">        0000020: 373b 2731 0b22 0ca6 c1a2 d669 1035 39d9  7;'1.".....i.59. </span>
+
+You can now <a href="https://vimhelp.org/starting.txt.html#view" class="d">view</a> and edit the text <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> you like.  Vim treats the information <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a>
+ordinary text.  Changing the hex does not cause the printable character to be
+changed, or the other way around.
+   Finally convert <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> back with:
+
+<span class="e">        :%!xxd -r</span>
+<span class="e"></span>
+Only changes in the hex part are used.  Changes in the printable text part on
+the right are ignored.
+
+See the manual page of xxd for more information.
+
+<span class="h">==============================================================================</span>
+<span id="23.5" class="t">23.5</span>  Compressed files
+
+This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> easy: You can edit <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> compressed file just like any other file.  The
+"<a href="https://vimhelp.org/pi_gzip.txt.html#gzip" class="d">gzip</a>" <a href="https://vimhelp.org/usr_05.txt.html#plugin" class="d">plugin</a> takes care of decompressing the file when you edit it.  And
+compressing <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> again when you write it.
+   These compression methods are currently supported:
+
+        .Z      <a href="https://vimhelp.org/pi_gzip.txt.html#compress" class="d">compress</a>
+        .gz     <a href="https://vimhelp.org/pi_gzip.txt.html#gzip" class="d">gzip</a>
+        .bz2    <a href="https://vimhelp.org/pi_gzip.txt.html#bzip2" class="d">bzip2</a>
+
+Vim uses the mentioned programs to <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> the actual compression and
+decompression.  You might need to <a href="https://vimhelp.org/usr_90.txt.html#install" class="d">install</a> the programs first.
+
+<span class="h">==============================================================================</span>
+
+Next chapter: <a href="https://vimhelp.org/usr_24.txt.html#usr_24.txt" class="l">usr_24.txt</a>  Inserting quickly
+
+Copyright: see <a href="https://vimhelp.org/usr_01.txt.html#manual-copyright" class="l">manual-copyright</a>  vim:tw=78:ts=8:noet:ft=help:norl:
+
+
+</pre>
+</div>
+<div id="vh-sidebar" style="visibility: visible; position: sticky; left: 110.775px;"><ul><li><a href="#">↑Top↑</a></li><li><a href="#23.1">DOS, Mac and Unix files</a></li><li><a href="#23.2">Files on the internet</a></li><li><a href="#23.3">Encryption</a></li><li><a href="#23.4">Binary files</a></li><li><a href="#23.5">Compressed files</a></li></ul></div>
+</main>
+<p>
+Quick links:
+<a href="https://vimhelp.org/">help overview</a> ·
+<a href="https://vimhelp.org/quickref.txt.html">quick reference</a> ·
+<a href="https://vimhelp.org/usr_toc.txt.html">user manual toc</a> ·
+<a href="https://vimhelp.org/#reference_toc">reference manual toc</a>
+· <a href="https://vimhelp.org/vim_faq.txt.html">faq</a></p>
+<footer>This site is maintained by Carlo Teubner (<i>(my first name) at cteubner dot net</i>).</footer>
+
+
+<div id="sourcegraph-app-background" data-platform="firefox-extension" data-version="22.11.24.1820" style="display: none;"></div></body></html>
