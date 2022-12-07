@@ -417,6 +417,22 @@ TCP header 通常 20 字节(octets)，除非指定了 TCP options。从 0 开始
 
 
 
+## Capture domain name packets
+
+tcpdump 和 wireshark 不一样， tcpdump 可以直接抓指定域名的报文
+
+```
+pl in ~ λ sudo tcpdump -nni wlp1s0 host baidu.com 
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on wlp1s0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+22:17:13.680118 IP 192.168.2.194.52000 > 39.156.66.10.80: Flags [S], seq 1951551414, win 64240, options [mss 1460,sackOK,TS val 23985928 ecr 0,nop,wscale 7], length 0
+22:17:13.733831 IP 39.156.66.10.80 > 192.168.2.194.52000: Flags [S.], seq 1780741195, ack 1951551415, win 8192, options [mss 1400,sackOK,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,wscale 5], length 0
+22:17:13.733907 IP 192.168.2.194.52000 > 39.156.66.10.80: Flags [.], ack 1, win 502, length 0
+...
+```
+
+
+
 ## Tcpdump with iptables DROP
 
 As a matter of fact, *tcpdump* is the first software found after the wire (and the NIC, if you will) on the way *IN*, and the last one on the way *OUT*.  
@@ -532,7 +548,6 @@ cpl in ~ λ ip -s link
 ## Tcpdump VS Wireshark
 
 1. tcpdump 不能智能的分析重传的包，但是可以从 seq number 来分析。如果需要 TUI 类型的工具来分析，可以使用 tshark
-
 2. tcpdump 使用的 filter expressions 和 wireshark 的大相径庭
 
 

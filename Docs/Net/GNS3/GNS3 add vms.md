@@ -28,7 +28,7 @@ https://docs.gns3.com/docs/emulators/create-a-docker-container-for-gns3/
 
 需要这注意的是，通过这种方式启动的容器的网络环境是 none 模式。
 
-这里推荐使用 Dockerfile 打包，这是使用 centos 做镜像源，打包一些常用的工具
+这里推荐使用 Dockerfile 打包，这是使用 centos 做镜像源，打包一些常用的工具(可以按需选择，==但是需要注意的一点是如果容器需要使用`ipvsadm`，需要在宿主机（即 GNS-VM）上也要安装`ipvsadm`==)
 
 ```
 FROM centos$latest
@@ -46,6 +46,8 @@ RUN yum -y install curl
 RUN yum -y install nmap
 RUN yum -y install telnet
 RUN yum -y install iptables
+RUN yum -y install ipvsadm
+RUN yum -y install nginx
 #RUN    yum -y install openssh-server && yum install openssh
 #RUN ssh-keygen -A &&  /usr/sbin/sshd
 
