@@ -5,7 +5,7 @@
 " Maintainer: 
 "    Cyberpelican
 " Version:
-"    0.1
+"    0.2
 " 
 " Common references
 " github.com/amix/vimrc/blob/master/vimrcs/basic.vim
@@ -15,19 +15,20 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General Options
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-" common global options
+" Common Global Options
 set nocompatible
 set encoding=utf-8
 set confirm
 set fileformats=unix,dos,mac
+set backspace=indent,eol,start
 
-" disable annoying sound on error
+" Disable Annoying Sound On Error
 set noerrorbells
 set novisualbell
 set t_vb=
 set tm=500
 
-" indention options
+" Indention Options
 set autoindent
 set smartindent
 set smarttab
@@ -36,7 +37,7 @@ set expandtab
 set shiftwidth=2
 set shiftround
 
-" search options
+" Search Options
 set hlsearch
 set magic
 set ignorecase
@@ -45,15 +46,15 @@ set smartcase
 set showmatch
 set matchtime=5
 
-" command options
+" Command Options
 set cmdheight=1
 set wildmenu
 
-" diff options
+" Diff Options
 " set diff
 " set diffopt=filler,vertical
 
-" display options
+" Display Options
 set title
 set ruler
 set number
@@ -63,7 +64,7 @@ set scrolloff=7
 syntax on
 " colorscheme torte
 
-" miscellaneous options
+" Miscellaneous Options
 set lazyredraw
 set autoread
 set noautowrite
@@ -74,18 +75,10 @@ set shell=sh
 set regexpengine=0
 filetype plugin on
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vundle
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'VundleVim/Vundle.vim'
-call vundle#end()
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Maps
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " normal mode maps
 map <F2> GoDate: <Esc>:read !date<CR>kJ
 " map <space> /
@@ -95,14 +88,88 @@ imap <F2> <CR>Date: <Esc>:read !date<CR>kJa<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Autocmds
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" return to last edit position when opening files
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+" delete trailing white space on save
+if has("autocmd")
+    autocmd BufWritePre *.txt,*.js,*.java,*.py,*.go,*.yml,*.yaml,*.json,*.sh :call CleanExtraSpaces()
+endif
+
+" NERDTree
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+" code autocompletion
+" autocmd FileType css  set omnifunc=csscomplete#CompleteCSS
+" autocmd FileType js   set omnifunc=javascriptcomplete#CompleteJS
+" autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+" autocmd FileType php  set omnifunc=phpcomplete#CompletePHP
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Code
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    endif
+    return ''
+endfunction
+
+fun! CleanExtraSpaces()
+    let save_cursor = getpos(".")
+    let old_query = getreg('/')
+    silent! %s/\s\+$//e
+    call setpos('.', save_cursor)
+    call setreg('/', old_query)
+endfun
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Vundle
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+call vundle#end()
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
 " vimawesome.com
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 Plugin 'scrooloose/nerdtree'
+Plugin 'ryanoasis/vim-devicons'
 Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'valloric/youcompleteme'
 Plugin 'scrooloose/syntastic'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'junegunn/fzf'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => NERDTree
+" vimawesome.com/plugin/nerdtree-red
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+" let g:NERDTreeDirArrowExpandable = '▸'
+" let g:NERDTreeDirArrowCollapsible = '▾'
+
+let g:NERDTreeShowHidden=1
+let g:webDevIconsOS='Manjaro'
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Airline
+" vimawesome.com/plugin/vim-airline-superman
+" vimawesome.com/plugin/vim-airline-themes
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme='violet'
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Syntastic
@@ -134,60 +201,32 @@ let g:syntasitc_dockerfile_checkers = ['dockerfile_lint']
 let g:syntastic_lua_checkers = ['']
 let g:syntastic_perl_checkers = ['']
 
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Solarized
+" vimawesome.com/plugin/vim-colors-solarized-ours
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 let g:solarized_termcolors = 256
 set background=dark
 colorscheme solarized
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Autocmds
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-" return to last edit position when opening files
-autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
-" delete trailing white space on save
-if has("autocmd")
-    autocmd BufWritePre *.txt,*.js,*.java,*.py,*.go,*.yml,*.yaml,*.json,*.sh :call CleanExtraSpaces()
-endif
-
-" NERDTree
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-
-" code autocompletion
-" autocmd FileType css  set omnifunc=csscomplete#CompleteCSS
-" autocmd FileType js   set omnifunc=javascriptcomplete#CompleteJS
-" autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-" autocmd FileType php  set omnifunc=phpcomplete#CompletePHP
-
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Code
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    endif
-    return ''
-endfunction
-
-fun! CleanExtraSpaces()
-    let save_cursor = getpos(".")
-    let old_query = getreg('/')
-    silent! %s/\s\+$//e
-    call setpos('.', save_cursor)
-    call setreg('/', old_query)
-endfun
 ```
 
 ==注意几点==
 
-1. youcompleteme 需要对应语言的编译环境，所以需要提前安装好
+1. youcompleteme 需要对应语言的编译环境，所以需要提前安装好。另外需要注意的一点是 youcompleteme 默认不支持以 root 安装
+
+   youcompleteme 和 autocmd 的区别就是会自动补全，不需要手动通过 `Ctrl+x` 来调用
 
 2. syntastic 需要安装对应的 lint 才能生效
 
    https://github.com/vim-syntastic/syntastic/blob/master/doc/syntastic-checkers.txt
+
+3. NERDTree 切换目录
+
+   ```
+   :cd /tmp
+   #注意这里不需要使用引号，直接输入指令即可
+   CD
+   ```
+
+   https://vi.stackexchange.com/questions/25520/nerdtree-cd-vs-cd
