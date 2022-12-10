@@ -213,15 +213,17 @@ colorscheme solarized
 
 ==注意几点==
 
-1. youcompleteme 需要对应语言的编译环境，所以需要提前安装好。另外需要注意的一点是 youcompleteme 默认不支持以 root 安装
+1. youcompleteme 需要对应语言的编译环境，所以需要提前安装好。另外需要注意的一点是 youcompleteme 默认不支持以 root 安装。youcompleteme 和 autocmd 的区别就是会自动补全，不需要手动通过 `Ctrl+x` 来调用
 
-   youcompleteme 和 autocmd 的区别就是会自动补全，不需要手动通过 `Ctrl+x` 来调用
+2. JS 补全可能会出现问题，如果提示需要 `.tern-config` 参考 https://vimawesome.com/plugin/youcompleteme#javascript-and-typescript-semantic-completion#JavaScript%20and%20TypeScript%20Semantic%20Completion
 
-2. syntastic 需要安装对应的 lint 才能生效
+   使用 TSServer 替代
+
+3. syntastic 需要安装对应的 lint 才能生效
 
    https://github.com/vim-syntastic/syntastic/blob/master/doc/syntastic-checkers.txt
 
-3. NERDTree 切换目录
+4. NERDTree 切换目录
 
    ```
    :cd /tmp
