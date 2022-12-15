@@ -6,7 +6,7 @@ https://www.openssl.org/docs/OpenSSLStrategicArchitecture.html
 
 ## Architecture
 
-OpenSSL主要有4个组件构成
+OpenSSL主要有4个组件构成。
 
 ### libcrypto
 
