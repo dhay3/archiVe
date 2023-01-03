@@ -84,7 +84,7 @@ Handshake phase(握手阶段)
 
    - Bob将B发给Alice
    - 计算秘密密钥K1如下：$K1=B^{x} \bmod n$
-   - 计算秘密密钥K2如下：$K2=A^{2}\bmod n$
+   - 计算秘密密钥K2如下：$K2=A^{y}\bmod n$
    -  K1=K2，因此Alice和Bob可以用其进行加解密
 
 5. Server Hello Done
