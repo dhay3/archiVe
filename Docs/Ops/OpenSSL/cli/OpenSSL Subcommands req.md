@@ -92,6 +92,8 @@ Distinguished Name 也叫 DN, 通常在生成 CSR 时需要提供用于描述证
 
   prints out the CSR in text format
 
+  CSR 的详细信息
+
 - `-noout`
 
   不输出密钥但是输出密钥中的详细信息
@@ -150,10 +152,10 @@ openssl req -new -key key.pem -out req.pem
 openssl req -newkey rsa:2048 -keyout key.pem -out req.pem
 
 #生成 self-signed root certificate
-openssl req -x509 -newkey rsa:2048 -keyout key.pem -out req.pem
+openssl req -x509 -newkey rsa:2048 -keyout fd.pem -out fd.crt
 
 #以非交互式生成 req.pem csr
-openssl req -newkey rsa:2048 -keyout key.pem -out req.pem -nodes -subj "/C=GB/L=London/O=Feisty Duck Ltd/CN=www.feistyduck.com"
+openssl req -newkey rsa:2048 -keyout key.pem -out fd.crt -nodes -subj "/C=GB/L=London/O=Feisty Duck Ltd/CN=www.feistyduck.com"
 
 #以非交互式生成 fd.crt 自签证书
 openssl req -x509 -newkey rsa:2048 -keyout key.pem -out fd.crt -nodes -subj "/C=GB/L=London/O=Feisty Duck Ltd/CN=www.feistyduck.com"

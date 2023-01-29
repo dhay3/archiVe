@@ -135,6 +135,20 @@ X.509 是数字证书的一种 ISO 格式，其中 X.509V3 是现在最广为流
 | EV   | 支持              | 不支持                                                   |                 |                                                         |
 | 举例 | www.barretlee.com | www.barretlee.com<br>www.xiaohuzige.com<br>www.barret.cc | *.barretlee.com | \*.barretlee.com <br>\*.xiaohuzige.com <br>\*.barret.cc |
 
+### Miscellaneous Terms in  Cert
+
+- DN
+
+  distingulished name
+
+  a set of values entered during enrollment and the creation of a CSR
+
+- CRL
+
+  certificate revocation list
+
+  可以理解成 blacklist of certificates that a CA revokes prior to their assigned expiration dates
+
 ## How Certificates come
 
 1. 首先申请人需要在本地生成一对 对称加密 密钥，或者复用现有的
@@ -166,7 +180,21 @@ X.509 是数字证书的一种 ISO 格式，其中 X.509V3 是现在最广为流
 
 ![2022-12-16_02-41](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221216/2022-12-16_02-41.3hpf70x75p34.webp)
 
-## pfx
+## PKCS
+
+publick key cryptography standard 是 PKI 体系中的一种格式为了方便在不同机器上交换和读取证书
+
+**PKCS #7 certificate(s)**   
+
+A complex format designed for the transport of signed or encrypted data, defined in RFC 2315. It’s usually seen with `.p7b` and `.p7c` extensions and can include the entire certificate chain as needed. This format is supported by Java’s `keytool` utility.    
+
+**PKCS #8 key**   
+
+The new default format for the private key store. PKCS #8 is  defined in RFC 5208. Should you need to convert from PKCS #8 to the  legacy format for whatever reason, use the `pkcs8` command.    
+
+**PKCS #12 (PFX) key and certificate(s)**   
+
+A complex format that can store and protect a server key along with an entire certificate chain. It’s commonly seen with `.p12` and `.pfx` extensions. This format is commonly used in Microsoft products, but is  also used for client certificates. These days, the PFX name is used as a synonym for PKCS #12, even though PFX referred to a different format a  long time ago (an early version of PKCS #12). It’s unlikely that you’ll  encounter the old version anywhere.    
 
 pfx 是 PKCS #12 ( public key cruptography standards #12 )在 windows 上的说法，是一种用于保存 X.509 证书文件的格式
 

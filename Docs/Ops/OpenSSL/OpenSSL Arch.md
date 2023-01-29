@@ -1,4 +1,4 @@
-# OpenSSL arch
+# OpenSSL Arch
 
 参考：
 
@@ -18,7 +18,7 @@ OpenSSL主要有4个组件构成。
 
 ### libssl
 
-依赖libcrypto，实现TLS和DTLS协议
+依赖 libcrypto，实现 TLS 和 DTLS 协议
 
 ### application
 

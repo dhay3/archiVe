@@ -158,13 +158,13 @@ u_str ESTAB  0      0                     @/tmp/.X11-unix/X0 30784              
 
 ## Filter
 具体查看man page
-Filter ::= [state STATE-FILTER] [EXPRESSION]
+`Filter ::= [state STATE-FILTER] [EXPRESSION]`
 
 ### State-filter
 
 state-filter 用于过滤 socket 的状态
 
-STATE-FILTER ::= [established | syn-sent | syn-recv | fin-wait-1 |  fin-wait-2 | time-wait | closed | close-wait | last-ack | listening | closing]
+`STATE-FILTER ::= [established | syn-sent | syn-recv | fin-wait-1 |  fin-wait-2 | time-wait | closed | close-wait | last-ack | listening | closing]`
 
 ```
 cpl in ~ λ ss -lnpt state LISTENING 
@@ -184,53 +184,57 @@ expression 用于过滤指定条件的 socket，同时支持通过逻辑符`&&`�
 
 EXPRESSION 可以是如下的值(具体查看man page)
 
-- {dst | src} [=]  HOST
+- `{dst | src} [=]  HOST`
 
-过滤指定源目HOST(HOST 一般为 IP)关联的socket
-```
-ubuntu@VM-12-16-ubuntu:~$ ss state listening  src 127.0.0.1
-Netid                  Recv-Q                  Send-Q                                   Local Address:Port                                      Peer Address:Port                  Process                  
-tcp                    0                       10                                           127.0.0.1:domain                                         0.0.0.0:*                                              
-tcp                    0                       4096                                         127.0.0.1:953                                            0.0.0.0:*                                              
-```
+  过滤指定源目HOST(HOST 一般为 IP)关联的socket
 
-- {dport | sport} [OP] [FAMILY] :PORT
+  ```
+  ubuntu@VM-12-16-ubuntu:~$ ss state listening  src 127.0.0.1
+  Netid                  Recv-Q                  Send-Q                                   Local Address:Port                                      Peer Address:Port                  Process                  
+  tcp                    0                       10                                           127.0.0.1:domain                                         0.0.0.0:*                                              
+  tcp                    0                       4096                                         127.0.0.1:953                                            0.0.0.0:*                                              
+  ```
 
-OP表示 operator，可以是算数逻辑符。==需要注意的一点是如果使用了 operator 两侧必须要有空格==，否则会报错`Error: an inet prefix is expected rather than...`
+- `{dport | sport} [OP] [FAMILY] :PORT`
 
-```
-ubuntu@VM-12-16-ubuntu:~$ ss -n state listening  sport = :53
-Netid                Recv-Q                Send-Q                                                Local Address:Port                                 Peer Address:Port                Process                
-tcp                  0                     10                                                       10.0.12.16:53                                        0.0.0.0:*                                          
-tcp                  0                     10                                                        127.0.0.1:53                                        0.0.0.0:*                                          
-tcp                  0                     4096                                                  127.0.0.53%lo:53                                        0.0.0.0:*                                          
-tcp                  0                     10                                   [fe80::5054:ff:fe49:561a]%eth0:53                                           [::]:*                                          
-tcp                  0                     10                                                            [::1]:53                                           [::]:*                                          
-```
-同时也需要注意另外一点，有些版本的 `ss` 必须指定 operator 否则同样会报错
+  OP表示 operator，可以是算数逻辑符。==需要注意的一点是如果使用了 operator 两侧必须要有空格==，否则会报错`Error: an inet prefix is expected rather than...`
+
+  这里的 sport 指的是 local address 对应的端口，dport 指的是 peer address 对应的端口
+
+  ```
+  ubuntu@VM-12-16-ubuntu:~$ ss -n state listening  sport = :53
+  Netid                Recv-Q                Send-Q                                                Local Address:Port                                 Peer Address:Port                Process                
+  tcp                  0                     10                                                       10.0.12.16:53                                        0.0.0.0:*                                          
+  tcp                  0                     10                                                        127.0.0.1:53                                        0.0.0.0:*                                          
+  tcp                  0                     4096                                                  127.0.0.53%lo:53                                        0.0.0.0:*                                          
+  tcp                  0                     10                                   [fe80::5054:ff:fe49:561a]%eth0:53                                           [::]:*                                          
+  tcp                  0                     10                                                            [::1]:53                                           [::]:*                                          
+  ```
+
+  同时也需要注意另外一点，有些版本的 `ss` 必须指定 operator 否则同样会报错
 
 ## Example
 
--  `ss -tlp`等价于`netstat -lpt` 
-```
-State  Recv-Q Send-Q Local Address:Port       Peer Address:PortProcess                                                                                                                                                             
-LISTEN 0      80         127.0.0.1:mysql           0.0.0.0:*    users:(("mysqld",pid=1154,fd=21))                                                                                                                                  
-LISTEN 0      128          0.0.0.0:ssh             0.0.0.0:*    users:(("sshd",pid=1017,fd=3))                                                                                                                                     
-LISTEN 0      244        127.0.0.1:postgresql      0.0.0.0:*    users:(("postgres",pid=1290,fd=4))
-```
+- `ss -tlp`等价于`netstat -lpt` 
 
--  `ss dst ipaddr`
-列出目标地址与本机打开的Socket 
-```
-root in ~ λ ss dst 115.233.222.34
-Netid          State           Recv-Q           Send-Q                      Local Address:Port                       Peer Address:Port
-tcp            ESTAB           0                0                           172.19.124.44:ssh                      115.233.222.34:32035
-tcp            ESTAB           0                0                           172.19.124.44:ssh                      115.233.222.34:64452
-tcp            ESTAB           0                160                         172.19.124.44:ssh                      115.233.222.34:64417
-tcp            ESTAB           0                0                           172.19.124.44:ssh                      115.233.222.34:27469
-tcp            ESTAB           0                0                           172.19.124.44:ssh                      115.233.222.34:32114
-```
+  ```
+  State  Recv-Q Send-Q Local Address:Port       Peer Address:PortProcess                                                                                                                                                             
+  LISTEN 0      80         127.0.0.1:mysql           0.0.0.0:*    users:(("mysqld",pid=1154,fd=21))                                                                                                                                  
+  LISTEN 0      128          0.0.0.0:ssh             0.0.0.0:*    users:(("sshd",pid=1017,fd=3))                                                                                                                                     
+  LISTEN 0      244        127.0.0.1:postgresql      0.0.0.0:*    users:(("postgres",pid=1290,fd=4))
+  ```
+- `ss dst ipaddr`
+  列出目标地址与本机打开的Socket 
 
+  ```
+  root in ~ λ ss dst 115.233.222.34
+  Netid          State           Recv-Q           Send-Q                      Local Address:Port                       Peer Address:Port
+  tcp            ESTAB           0                0                           172.19.124.44:ssh                      115.233.222.34:32035
+  tcp            ESTAB           0                0                           172.19.124.44:ssh                      115.233.222.34:64452
+  tcp            ESTAB           0                160                         172.19.124.44:ssh                      115.233.222.34:64417
+  tcp            ESTAB           0                0                           172.19.124.44:ssh                      115.233.222.34:27469
+  tcp            ESTAB           0                0                           172.19.124.44:ssh                      115.233.222.34:32114
+  ```
 - `ss -K`
 
   关闭指定 socket
