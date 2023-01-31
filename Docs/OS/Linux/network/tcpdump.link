@@ -8,7 +8,7 @@ https://en.wikipedia.org/wiki/Promiscuous_mode
 
 https://superuser.com/questions/925286/does-tcpdump-bypass-iptables
 
-pcap(3PCAP)
+man pcap(3PCAP)
 
 ## Digest
 
@@ -411,11 +411,13 @@ TCP header 通常 20 字节(octets)，除非指定了 TCP options。从 0 开始
 
 如果需要表示 SYN + ACK，那么可以使用`tcp[13] == 18` 表是 13th octect 的值是 `00010010 == 18`
 
-如果需要抓只含有某个标志位的包需要怎么办？这是就需要`&`操作(与计算)
+如果需要匹配含有某个标志位的包需要怎么办？这时就需要`&`操作(与计算)
 
-`tcp[13] & 2 == 2`，表示 13th octect 的值 & 2 的值 一定是 2，即表示 一定包含 SYN。==需要注意的一点&在shell中有特殊的含有(表示 async )，所有在 tcpdump 中需要将 filter expression 加上 single qutoed==。==同时抓 syn-ack 非常有助于对 TCP 异常的问题排查，例如 TCP 参数错误（通常都是由某几项 TCP options 导致，而 TCP options 都是在握手时协商预设的）导致连接异常，都是在 3 way-handshakes 中体现的==。同理的如果需要抓 RST 包，可以使用`tcp[13] & 4 == 4`
+`tcp[13] & 2 == 2`，表示 13th octect 的值 & 2 的值 一定是 2，即表示 一定包含 SYN。==需要注意的一点&在shell中有特殊的含有( 表示 async )，所有在 tcpdump 中需要将 filter expression 加上 single qutoed==。==同时抓 syn-ack 非常有助于对 TCP 异常的问题排查，例如 TCP 参数错误（通常都是由某几项 TCP options 导致，而 TCP options 都是在握手时协商预设的）导致连接异常，都是在 3 way-handshakes 中体现的==。同理的如果需要抓 RST 包，可以使用`tcp[13] & 4 == 4`
 
+如果需要只匹配含有某个标志位的包需要怎么办？这时就需要组合表达式。例如
 
+`tcp[13] & 2 == 2 and tcp[13] & 16 == 16` 就只会匹配含有 SYN 报文的，不会匹配含有 ACK 报文的
 
 ## Capture domain name packets
 
@@ -430,8 +432,6 @@ listening on wlp1s0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 22:17:13.733907 IP 192.168.2.194.52000 > 39.156.66.10.80: Flags [.], ack 1, win 502, length 0
 ...
 ```
-
-
 
 ## Tcpdump with iptables DROP
 
@@ -559,10 +559,10 @@ cpl in ~ λ ip -s link
 tcpdump -i ens33 host 192.168.80.200 && 192.168.80.100
 ```
 
-匹配包中TCPflags 含有 SYN 的
+匹配包中 TCP flags 只含有 SYN 的
 
 ```
-tcpdump -i any tcp[13] & 2 == 2
+tcpdump -i any 'tcp[13] & 2 == 2 and tcp[13] & 16 == 16'
 ```
 
 抓30秒的包

@@ -1,4 +1,4 @@
-# Diffie-Hellamn algrothim
+# Diffie-Hellman algrothim
 
 ref
 

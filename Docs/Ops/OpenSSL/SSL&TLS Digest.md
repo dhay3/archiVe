@@ -52,7 +52,7 @@ SSL certifacte 一般都是 X.509 certificates，在 SSL 中主要起校验 serv
 
 - Pre-master secret 
 
-  中文预主密钥 是通过 Key exchange 获取的，对应上节的第 2，5 步，对应 TLS 中的 client key exchange 和 server key exchange。可以直接理解成 DH 生成的 publickey
+  中文预主密钥 是通过 Key exchange 获取的，对应 [Diffie-Hellman algrothim#Cryptographic explations]() 的第 3，5 步，对应 TLS 中的 client key exchange 和 server key exchange。可以直接理解成 DH 生成的 publickey
 
 - Master secret 是在 pre-master key 基础上==加两个随机数==（在 clienthello 和 serverhello 中宣告的）生成的对称密钥，==不会在网络上传输==。也被称为 shared key
 
@@ -60,7 +60,7 @@ SSL certifacte 一般都是 X.509 certificates，在 SSL 中主要起校验 serv
   shared key = client_random + server_random + pre-master_secret
   ```
 
-  上节中的第 6，7 步，对应 TLS 中的 encrypted handshake message 是用来校验 master key 的
+  [Diffie-Hellman algrothim#Cryptographic explations]() 中第 6，7 步，对应 TLS 中的 encrypted handshake message 是用来校验 master key 的
 
 ## SSL/TLS handshake
 
