@@ -54,7 +54,7 @@ SSL certifacte 一般都是 X.509 certificates，在 SSL 中主要起校验 serv
 
   中文预主密钥 是通过 Key exchange 获取的，对应 [Diffie-Hellman algrothim#Cryptographic explations]() 的第 3，5 步，对应 TLS 中的 client key exchange 和 server key exchange。可以直接理解成 DH 生成的 publickey
 
-- Master secret 是在 pre-master key 基础上==加两个随机数==（在 clienthello 和 serverhello 中宣告的）生成的对称密钥，==不会在网络上传输==。也被称为 shared key
+- Master secret 是在 pre-master key 基础上==加两个随机数==（在 clienthello 和 serverhello 中宣告的）生成的对称密钥，使用该密钥对报文加密，==不会在网络上传输==。也被称为 shared key
 
   ```
   shared key = client_random + server_random + pre-master_secret
@@ -127,7 +127,7 @@ client 发送 ACK 报文，server 收到后发送 server certificate 给 client�
 
 ![2022-12-17_03-18](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221221/2022-12-17_03-18.4x4n6esato1s.webp)
 
-注意这里会回送 2 个证书，一个是 server 自己的证书，另一个是用于校验 server 证书的 CA 根证书
+注意这里会回送 2 个证书，一个是 server 自己的证书，另一个是用于标识校验 server 证书的 CA 根证书
 
 ### ServerKey exchange
 
@@ -143,7 +143,7 @@ client 发送 ACK 报文，server 收到后发送 server certificate 给 client�
 
 ### Clientkey exchange
 
-宣告使用 ECDH( Diffle-Hellman ) 算法同时宣告DH 算法生成的 Publickey (这里的公钥不是证书的，是通过 DH 算法计算出来的)
+宣告使用 ECDH( Diffle-Hellman ) 算法同时宣告DH 算法生成的 Publickey ( 这里的公钥不是证书的，是通过 DH 算法计算出来的 )
 
 ![2022-12-21_18-04](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221221/2022-12-21_18-04.33nbez4hzn0g.webp)
 

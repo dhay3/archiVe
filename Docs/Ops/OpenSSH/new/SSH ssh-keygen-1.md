@@ -8,7 +8,9 @@ https://man.openbsd.org/ssh-keygen
 
 OpenSSH authentication key utility
 
-`ssh-keygen` 用于 生成，管理以及转换 authentication keys for ssh（秘钥对）。在 version 7.6 之后默认使用 SSH2 生成 key，如果不指定生成的算法默认使用 RSA （RSA 原本是有专利的，但是专利过期了所以被开源使用）
+`ssh-keygen` 用于 生成，管理以及转换 authentication keys for ssh（秘钥对）
+
+在 version 7.6 之后默认使用 SSH2 生成 key，如果不指定生成的算法默认使用 RSA （RSA 原本是有专利的，但是专利过期了所以被开源使用）
 
 ### Certificates
 
@@ -106,4 +108,6 @@ OpenSSH authentication key utility
 - `-I certificate_identity`
 
   specify the key identity when singing a public key
+
+## Examples
 
