@@ -19,13 +19,13 @@ https://www.youtube.com/watch?v=OPG47_wT3XI
 >
 > ==路由器集合了拨号，AP，路由，交换机功能于一身==
 
-<img src="..\..\..\imgs\_Net\Snipaste_2020-10-08_10-40-11.png"/>
+<img src="..\..\..\Images\_Net\Snipaste_2020-10-08_10-40-11.png"/>
 
 ### #光猫路由模式
 
 > 这里的openWRT是无线AP，内置的openWRT
 
-<img src="..\..\..\imgs\_Net\Snipaste_2020-10-08_10-42-00.png"/>
+![Snipaste_2020-10-08_10-42-00](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230210/Snipaste_2020-10-08_10-42-00.1tzr7rq7n05c.webp)
 
 光猫路由模式下，网络里不会有第二个执行NAT功能的服务器，所以我们的openWRT服务器不应该具有NAT功能，==那么它只能是一台网关服务器，也就是一台旁路由（旁路网关）==。不具有NAT功能，只是用单一LAN，不使用WAN口
 
@@ -41,7 +41,7 @@ https://www.youtube.com/watch?v=OPG47_wT3XI
 
 **注意！！！**如果是千兆网卡，理论传输速度为1024Mbit/s == 128Mbyte/s，相差8倍
 
-<img src="..\..\..\imgs\_Net\Snipaste_2020-10-08_11-49-15.png"/>
+<img src="..\..\..\Images\_Net\Snipaste_2020-10-08_11-49-15.png"/>
 
 ==openWRT设备应该具有拨号与NAT功能==
 
@@ -56,9 +56,9 @@ https://www.youtube.com/watch?v=OPG47_wT3XI
   > LAN口和WAN口使用同一张网卡，无线AP LAN口连接光猫
   >
   > ==小主机只需要单网口==
-  
-<img src="..\..\..\imgs\_Net\Snipaste_2020-10-08_11-59-09.png"/>
-  
+
+<img src="..\..\..\Images\_Net\Snipaste_2020-10-08_11-59-09.png"/>
+
   ==openWRT设备应该具有拨号与NAT功能==，单臂路由是主路由的一种变形
 
 
@@ -72,9 +72,9 @@ https://www.youtube.com/watch?v=OPG47_wT3XI
   > 同样是在光猫桥接模式，交换机同样能被无线AP替代，无线AP的LAN口连接openWRT
 >
   > ==小主机单网口==
-  
-<img src="..\..\..\imgs\_Net\Snipaste_2020-10-08_12-16-32.png"/>
-  
+
+<img src="..\..\..\Images\_Net\Snipaste_2020-10-08_12-16-32.png"/>
+
   ==这里的openWRT应该是一台网关服务器，也就是旁路由==，不具备拨号和NAT
 
 ## 单臂路由和旁路由的区别
@@ -87,8 +87,8 @@ https://www.youtube.com/watch?v=OPG47_wT3XI
 
 - 单臂路由
 
-<img src="..\..\..\imgs\_Net\Snipaste_2020-10-08_12-34-48.png"/>
+<img src="..\..\..\Images\_Net\Snipaste_2020-10-08_12-34-48.png"/>
 
 - 旁路由
 
-<img src="..\..\..\imgs\_Net\Snipaste_2020-10-08_12-35-47.png"/>
+<img src="..\..\..\Images\_Net\Snipaste_2020-10-08_12-35-47.png"/>
