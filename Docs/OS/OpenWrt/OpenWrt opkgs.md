@@ -1,4 +1,4 @@
-# OpenWrt Packages Management - opkgs
+# OpenWrt  opkgs
 
 ref
 

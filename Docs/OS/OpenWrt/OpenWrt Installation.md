@@ -16,7 +16,7 @@ https://blog.csdn.net/zhangzejin3883/article/details/108904399
 
 根据需求选择对应的 firmware
 
-#### Official Way
+#### Official
 
 原生 OpenWrt 固件，无后门安全。大部分 翻墙 插件不能直接通过 opkg 下载，或者没有 ipk。下载原生 OpenWrt 参考下面内容操作
 
@@ -39,17 +39,17 @@ https://blog.csdn.net/zhangzejin3883/article/details/108904399
 
 这里千万不要选择 EFI 的，如果 CPU 不支持 EFI 启动的话，会导致刷机后无法正常进入系统
 
-### Lean's LEDE
+#### Lean's LEDE
 
 由国人开发的原生 OpenWrt 分支。通过编译开源的代码，可以制作高度客制化的固件，支持 翻墙 插件
 
-https://github.com/coolsnowwolf/lede
+具体参考 [OpenWrt LEDE firmware]()
 
-这里使用 WSL 编译
+#### right
 
-### right
+koolshare已死，恩山论坛找编译好的固件
 
-恩山论坛找编译好的固件
+https://www.right.com.cn/forum/forum.php
 
 ## Flash firmware
 
