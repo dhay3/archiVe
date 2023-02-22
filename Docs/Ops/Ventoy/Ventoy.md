@@ -24,7 +24,7 @@ ventoy 和 微PE 一样可以将需要的文件注入到 live OS 中，但是 ve
 
 https://www.ventoy.net/cn/plugin_injection.html
 
-如果是 Linux 的必须要按照如下方式注入
+如果是 Linux 的必须要按照如下方式注入。建议使用 home 目录 或者 不创建目录表示根目录，使用其他目录可能会失败
 
 https://www.ventoy.net/cn/doc_live_injection.html
 
@@ -51,7 +51,7 @@ G:.
 │  └─live-injection-1.0
 │      └─live-injection-1.0
 │          ├─sysroot
-│          │  └─tmp
+│          │  └─home
 │          └─internal
 │              └─distro
 │                  ├─arch
