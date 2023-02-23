@@ -14,13 +14,13 @@ Ventoy 就是一个用于解决这个问题的开源工具，除此外 ventoy �
 
 https://www.ventoy.net/en/doc_start.html
 
-## Openwrt
+## Boot Openwrt
 
 ventoy 默认不支持引导 Openwrt 的操作系统，如果需要引导参考
 
 https://www.ventoy.net/en/doc_start.html
 
-## injection
+## Injection
 
 ventoy 和 微PE 一样可以将需要的文件注入到 live OS 中，但是 ventoy 是通过脚本的方式注入，具体可以参考
 
@@ -29,6 +29,11 @@ https://www.ventoy.net/cn/plugin_injection.html
 如果是 Linux 的必须要按照如下方式注入。建议使用 home 目录 或者 不创建目录表示根目录，使用其他目录可能会失败
 
 https://www.ventoy.net/cn/doc_live_injection.html
+
+## Troubel Shooting
+
+1. 如果 ventoy 不能正常引导，需要将 BIOS 或者 UEFI 的 secure boot 置位 disable
+2. 如果 ventoy 引导后 GRUB 主题异常，需要有对应显示屏的 themes 或者将 resolution_fit 置位 1 自动选择匹配分辨率的主题
 
 ## DIY
 
