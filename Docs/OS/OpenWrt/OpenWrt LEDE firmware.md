@@ -18,7 +18,7 @@ OpenWrt LEDE 需要编译出符合自己的固件比较麻烦，且相关知识�
 
 ## Compile
 
-在编译固件前需要安装好编译需要的依赖，为了避免因为 OS 而导致编译失败，尽量采用 Debian 系的 OS。full-upgrade 以及依赖安装大概会占用 1.5 G 左右的空间，所以虚拟机的磁盘分区不能太小，以防止固件编译的时候磁盘空间不足。是否进行 full-upgrade 可以由自己决定
+在编译固件前需要安装好编译需要的依赖，为了避免因为 OS 而导致编译失败，尽量采用 Debian 系的 OS。full-upgrade 以及依赖安装大概会占用 1.5 G 左右的空间，所以虚拟机的磁盘分区不能太小，以防止固件编译的时候磁盘空间不足( ==实际至少需要 40 G 的磁盘空间== )。是否进行 full-upgrade 可以由自己决定
 
 ```
 sudo apt update -y
@@ -50,7 +50,7 @@ src-git kenzok8 https://github.com/kenzok8/openwrt-packages.git
 src-git kenzok8small https://github.com/kenzok8/small.git
 ```
 
-更新 feeds 插件列表并将 feeds 中的插件安装到本地用于编译。如果 feeds 更新了同样需要执行一遍这 2 个命令
+更新 feeds 插件列表并将 feeds 中的插件安装到本地用于编译。如果 feeds 更新了同样需要执行一遍这 2 个命令，否则对应的插件不会出现在 menuconfig 中
 
 ```
 ./scripts/feeds update -a
@@ -65,13 +65,11 @@ src-git kenzok8small https://github.com/kenzok8/small.git
 make menuconfig
 ```
 
-Luci 部分插件功能可以参考,
+Luci 部分插件功能可以参考
 
 https://www.right.com.cn/forum/thread-344825-1-2.html
 
-如果不想选择可以下载 [OpenWrt make menuconfig.conf]()  全包导入
-
-编译固件，时间根据选择的插件数而异，通常 1 - 2 小时甚至更长
+编译固件，时间根据选择的插件数而异，通常 1 - 2 小时甚至更长。==血的教训尽量别全选，如果需要 lede 库外的插件，需要先编译一遍 lede 库的，然后再编译 lede 库外的==
 
 ```
 make download -j$(nproc)

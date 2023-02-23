@@ -24,6 +24,8 @@ https://post.smzdm.com/p/a7dg5pko/
 
 [![单网口软路由配置方法，几分钟搞定单臂路由和旁路由](https://qnam.smzdm.com/202108/17/611b5e02a2f077333.jpg_e1080.jpg)](https://post.smzdm.com/p/a7dg5pko/pic_13/)
 
+## Configuration
+
  按照上图把线接好之后，在open WRT里选择网络中的接口选项，点击WAN口的修改。
 
 [![单网口软路由配置方法，几分钟搞定单臂路由和旁路由](https://qnam.smzdm.com/202108/17/611b5e0384078970.jpg_e1080.jpg)](https://post.smzdm.com/p/a7dg5pko/pic_14/)

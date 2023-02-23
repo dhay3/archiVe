@@ -47,23 +47,25 @@ https://blog.csdn.net/zhangzejin3883/article/details/108904399
 
 #### right
 
-koolshare已死，恩山论坛找编译好的固件
+koolshare 已死，[恩山](https://www.right.com.cn/forum/forum.php) 论坛找编译好的固件。新手推荐使用 高大全
 
-https://www.right.com.cn/forum/forum.php
+https://www.right.com.cn/forum/thread-7048868-1-1.html
 
 ## Flash firmware
 
-> 如果刷机后，连接显示屏不能正常显示，需要考虑一下显示屏是否兼容
+如果刷机后，连接显示屏不能正常显示，需要考虑一下显示屏是否兼容。尽量使用支持 VGA 口的显示屏
 
 ### Linux live stick plus dd
 
-官方推荐的方案是使用 Linux live stick ( iso 可以选择 finnix ) 写  drive，按照官方文档操作即可将硬盘盒分区写满。视频指路
+> 推荐使用 ventoy + ventoy injection plugin, 这样就不需要配置网络去下载固件了
+
+官方推荐的方案是使用 Linux live stick ( iso 可以选择 finnix ) 写  drive，按照官方文档操作即可将硬盘写满。参考视频指路
 
 https://www.youtube.com/watch?v=cOLn2H1FZEI
 
 ### WinPE plus physdiskwrite
 
-由于博主的小主 机不支持 2K HDMI 显示，手头没有 VGA 线，所以无法使用 Linux live stick 的方式
+由于测试时的小主机 不支持 2K HDMI 显示，手头没有 VGA 线和显示屏，所以无法使用 Linux live stick 的方式。
 
 这里使用 WinPE 工具 + [physdiskwrite](https://m0n0.ch/wall/physdiskwrite.php)( imagedisk,rufus 都可以 ) 的方式写入，然后使用 DiskGenius 扩展分区。具体可以参考
 
