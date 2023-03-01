@@ -59,17 +59,21 @@ https://www.right.com.cn/forum/thread-7048868-1-1.html
 
 > 推荐使用 ventoy + ventoy injection plugin, 这样就不需要配置网络去下载固件了
 
-官方推荐的方案是使用 Linux live stick ( iso 可以选择 finnix ) 写  drive，按照官方文档操作即可将硬盘写满。参考视频指路
+官方推荐的方案是使用 Linux live stick ( iso 可以选择 finnix ) 写  drive，按照官方文档操作即可但是不能将磁盘写满，需要手动扩展分区。参考视频指路
 
 https://www.youtube.com/watch?v=cOLn2H1FZEI
 
 ### WinPE plus physdiskwrite
 
-由于测试时的小主机 不支持 2K HDMI 显示，手头没有 VGA 线和显示屏，所以无法使用 Linux live stick 的方式。
+由于测试时的小主机 不支持 2K HDMI 显示，手头没有 VGA 兼容 VGA 的显示屏，所以无法使用 Linux live stick 的方式。
 
 这里使用 WinPE 工具 + [physdiskwrite](https://m0n0.ch/wall/physdiskwrite.php)( imagedisk,rufus 都可以 ) 的方式写入，然后使用 DiskGenius 扩展分区。具体可以参考
 
 https://blog.csdn.net/zhangzejin3883/article/details/108904399
+
+## Extend partition
+
+如果使用的是 WinPE plus physdiskwrite 的方式刷入固件，可以跳过此步骤
 
 ## Connection
 
