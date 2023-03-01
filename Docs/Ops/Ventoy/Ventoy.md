@@ -14,6 +14,16 @@ Ventoy 就是一个用于解决这个问题的开源工具，除此外 ventoy �
 
 https://www.ventoy.net/en/doc_start.html
 
+## Common ISO
+
+- 微PE
+- proxmax
+- ubuntu
+- centos
+- manjaro
+- openwrt
+- win7
+
 ## Boot Openwrt
 
 ventoy 默认不支持引导 Openwrt 的操作系统，如果需要引导参考
@@ -22,13 +32,21 @@ https://www.ventoy.net/en/doc_start.html
 
 ## Injection
 
-ventoy 和 微PE 一样可以将需要的文件注入到 live OS 中，但是 ventoy 是通过脚本的方式注入，具体可以参考
+> ventoy 目前不支持 mount，具体参考
+>
+> https://forums.ventoy.net/showthread.php?tid=130
+
+虽然 ventoy 不支持 mount，但是有一个注入功能，可以在 bootloader 引导后将脚本或者是工具注入到系统
+
+具体可以参考
 
 https://www.ventoy.net/cn/plugin_injection.html
 
 如果是 Linux 的必须要按照如下方式注入。建议使用 home 目录 或者 不创建目录表示根目录，使用其他目录可能会失败
 
 https://www.ventoy.net/cn/doc_live_injection.html
+
+如果 Bootloader 载入的是 微PE，可以不需要注入，微PE 会自动将 U 盘“挂载”
 
 ## Troubel Shooting
 
@@ -46,12 +64,15 @@ https://www.gnome-look.org/p/1569525
 目录层级如下
 
 ```
-.
 ├── injection
-├── ISO
+├── iso
 │   ├── Linux
+│   ├── Sundry
 │   └── Windows
 ├── System Volume Information
+├── tools
+│   └── rufus
+│       └── Rufus
 └── ventoy
     ├── live-injection-1.0
     │   └── live-injection-1.0
@@ -63,7 +84,7 @@ https://www.gnome-look.org/p/1569525
     │       │       └── rhel7
     │       └── sysroot
     │           └── home
-    └── thems
+    └── themes
         ├── reaper_1920x1080
         │   └── icons
         ├── reaper_2240x1400
@@ -169,7 +190,7 @@ terminal-box: "menu_bkg_*.png"
             "VTOY_MAX_SEARCH_LEVEL": "max"
         },
         {
-            "VTOY_DEFAULT_SEARCH_ROOT": "/ISO"
+            "VTOY_DEFAULT_SEARCH_ROOT": "/iso"
         },
         {
             "VTOY_DEFAULT_KBD_LAYOUT": "QWERTY_USA"
@@ -214,11 +235,11 @@ terminal-box: "menu_bkg_*.png"
         "tips":
         [
             {
-                "dir": "/ISO/Windows",
+                "dir": "/iso/Windows",
                 "tip": "This directory contains winxp/7/10 ISO"
             },
             {
-                "dir": "/ISO/Linux",
+                "dir": "/iso/Linux",
                 "tip": "This directory contains arch/manjaro/utuntu/kali/centos/finnix/void/openwrt ISO"
             }
         ]
@@ -226,56 +247,60 @@ terminal-box: "menu_bkg_*.png"
     "menu_alias":
     [
         {
-            "image": "/ISO/Linux/archlinux-2021.03.01-x86_64.iso",
+            "image": "/iso/Linux/archlinux-2021.03.01-x86_64.iso",
             "alias": "archlinux"
         },
         {
-            "image": "/ISO/Linux/CentOS-7-x86_64-DVD-1908.iso",
+            "image": "/iso/Linux/CentOS-7-x86_64-DVD-1908.iso",
             "alias": "centos7"
         },
         {
-            "image": "/ISO/Linux/finnix-124.iso",
+            "image": "/iso/Linux/finnix-124.iso",
             "alias": "finnix"
         },
         {
-            "image": "/ISO/Linux/kali-linux-2020.3-installer-amd64.iso",
+            "image": "/iso/Linux/kali-linux-2020.3-installer-amd64.iso",
             "alias": "kali202003"
         },
         {
-            "image": "/ISO/Linux/manjaro-kde-21.0.5-210519-linux510.iso",
+            "image": "/iso/Linux/manjaro-kde-21.0.5-210519-linux510.iso",
             "alias": "manjaro"
         },
         {
-            "image": "/ISO/Linux/openwrt5.4-gdq-20230218-x86-64-generic-squashfs-combined.img",
+            "image": "/iso/Linux/openwrt5.4-gdq-20230218-x86-64-generic-squashfs-combined.img",
             "alias": "openwrt5.4-gdq"
         },
         {
-            "image": "/ISO/Linux/openwrt-22.03.2-x86-64-generic-squashfs-combined.img",
-            "alias": "openwrt-official"
-        },
-        {
-            "image": "/ISO/Linux/ubuntu-20.04.2.0-desktop-amd64.iso",
+            "image": "/iso/Linux/ubuntu-20.04.2.0-desktop-amd64.iso",
             "alias": "ubuntu"
         },
         {
-            "image": "/ISO/Linux/void-live-x86_64-musl-20210218-enlightenment.iso",
+            "image": "/iso/Linux/void-live-x86_64-musl-20210218-enlightenment.iso",
             "alias": "void20210218"
         },
         {
-            "image": "/ISO/Windows/sc_winxp_pro_with_sp2.iso",
+            "image": "/iso/Windows/sc_winxp_pro_with_sp2.iso",
             "alias": "winxp-pro"
         },
         {
-            "image": "/ISO/Windows/cn_windows_10_consumer_editions_version_1909_updated_jan_2020_x64_dvd_47161f17.iso",
+            "image": "/iso/Windows/cn_windows_10_consumer_editions_version_1909_updated_jan_2020_x64_dvd_47161f17.iso",
             "alias": "win10"
         },
         {
-            "image": "/ISO/Windows/cn_windows_7_professional_with_sp1_x64_dvd_u_677031.iso",
+            "image": "/iso/Windows/cn_windows_7_professional_with_sp1_x64_dvd_u_677031.iso",
             "alias": "win7"
         },
         {
-            "image": "/ISO/WePE64_V2.2.iso",
+            "image": "/iso/Windows/WePE64_V2.2.iso",
             "alias": "WePE"
+        },
+        {
+            "image": "/iso/Sundry/gparted-live-1.5.0-1-amd64.iso",
+            "alias": "gparted"
+        },
+        {
+            "image": "/iso/Sundry/proxmox-ve_7.3-1.iso",
+            "alias": "proxmax"
         }
     ],
     "menu_class":
@@ -324,12 +349,8 @@ terminal-box: "menu_bkg_*.png"
     "injection":
     [
         {
-            "image": "/ISO/Linux/finnix-124.iso",
+            "image": "/iso/Linux/finnix-124.iso",
             "archive": "/injection/live_injection.tar.gz"
-        },
-        {
-            "image": "/ISO/WePE64_V2.2.iso",
-            "archive": "/injection/physdiskwrite-0.5.3.zip"
         }
     ]
 }
