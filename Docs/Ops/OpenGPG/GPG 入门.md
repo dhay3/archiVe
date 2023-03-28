@@ -8,6 +8,8 @@ https://blog.starryvoid.com/archives/348.html
 
 https://www.gnupg.org/documentation/manuals/gnupg/
 
+https://www.linode.com/docs/guides/gpg-keys-to-send-encrypted-messages/
+
 https://www.gnupg.org/documentation/manpage.html
 
 > 在linux中可以通过`man gpg2`来查看具体命令
@@ -77,7 +79,9 @@ lrwxrwxrwx.   1 root root          4 Aug 24 07:51 gpg -> gpg2
 
 > 管理密钥查看How to manage your keys
 
-使用`gpg --gen-key`来生成密匙，这里需要Passphrase用作私钥的密码。然后我们可以做一些随机动作(移动鼠标，敲键盘)，以生成一个随机数。默认生成的密钥对有效期为生成的当天，==我们可以通过`gpg --full-generate-key=`来指定生成的密钥对的有效期==
+可以使用 `--quick-generate-key`，`--generate-key`，`--full-generate-key` 来生成 GPG key
+
+这里使用`gpg --gen-key`来生成密匙，生成 GPG key 需要 Passphrase用作私钥的密码。然后我们可以做一些随机动作(移动鼠标，敲键盘)，以生成一个随机数。默认生成的密钥对有效期为生成的当天，==我们可以通过`gpg --full-generate-key=`来指定生成的密钥对的有效期==
 
 ```
 root@chz:~# gpg --gen-key
@@ -349,7 +353,96 @@ sub   2048R/8A08D086 2020-12-09
   [root@chz Desktop]# gpg -u E7BDD87346B4D623FB203FC6DFCFDF52F1627354 -r 52A645FB16733E1A3875EEC92ED4A52162256625 --encrypt  gpg.test
   ```
 
-## 签名与校验
+## 生成签名
+
+```
+root@v2:/home/ubuntu/test# gpg --sign data
+root@v2:/home/ubuntu/test# ls
+data  data.gpg
+```
+
+会生成一个 `.gpg` 后缀的文件( 包含原始文件和签名 )，默认以 binary 格式存储 
+
+```
+root@v2:/home/ubuntu/test# gpg --decrypt data.gpg
+this is a test message
+gpg: Signature made Sat 25 Mar 2023 05:44:13 PM CST
+gpg:                using RSA key CB66D424A9BE4DC5B9BAB4FD0FC2114BEEB4EBF8
+gpg: Good signature from "alice (this is a comment) <alice@yahoo.com>" [ultimate]
+```
+
+如果需要生成明文的文件，可以使用 `--clearsign` (无须和 `--sign` 一起使用)
+
+```
+root@v2:/home/ubuntu/test# gpg --clearsign data
+root@v2:/home/ubuntu/test# ls
+data  data.asc
+```
+
+会生成一个 `.asc` 后缀的文件( 包含原始文件中的内容和签名，以明文显示 )
+
+```
+root@v2:/home/ubuntu/test# cat data.asc
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+this is a test message
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAEBCgAdFiEEy2bUJKm+TcW5urT9D8IRS+606/gFAmQevX0ACgkQD8IRS+60
+6/jAIwwAgkmhf4BhmktBovGa4Hvdj4ZYU31/WtDwumckczExYerGWYX5cdFlYxWs
+V7M2hNKTNkHHl80HynawrLoTu3g6maFPLEunaPHzVgVQ0FRjrcP9KWhkwiFuOZpG
+hgj8c6CShLcFbSc9uLVgO1E80yjILxvyI04DkZmu8Ls5dQhEGndvmiUeQ3/5kwca
+HPR9/4cR1u4RqsHTUbX/3OxePD+Jrcz3ipW3rJZAgt9BSo33mtwFUfRlZ7UIRRTd
+sPbrKWh2ViuAJxB5wHPf+7og4ZTYREsCYKXGfIQeKRSjDpCQTuniniJ3C+gSe96S
+JIBJ5GRG//S1KlRLAnaxW31MFkGgtwzKmtuvon5SXrIFLDNSSS9Lt+z9V/H9d8Nt
+YXoF0Ovmptv+lz909pnjpD3z9nvyF1DDk1sCdI4PvA3SxWTP5+Mt63q9kv+NFIOV
+YPWGUA3hVbxQDEKMueON9+HF6aUMdOt1IFp72BDadSlOqht70Dr7CMpbsIdVe5EU
+Ev8Cbtzc
+=MN/S
+-----END PGP SIGNATURE-----
+```
+
+如果需要单独生成签名文件，可以使用 `--detach-sign`
+
+```
+root@v2:/home/ubuntu/test# gpg  --detach-sign --sign data
+```
+
+会生成一个 `.sig` 后缀的 binary 文件，表示签名
+
+```
+root@v2:/home/ubuntu/test# gpg --decrypt data.sig
+gpg: assuming signed data in 'data'
+gpg: Signature made Sat 25 Mar 2023 05:34:24 PM CST
+gpg:                using RSA key CB66D424A9BE4DC5B9BAB4FD0FC2114BEEB4EBF8
+gpg: Good signature from "alice (this is a comment) <alice@yahoo.com>" [ultimate]
+```
+
+如果需要以明文的方式存储签名，可以和 `--armor` 一起使用
+
+```
+root@v2:/home/ubuntu/test# gpg --armor --detach-sign --sign data
+root@v2:/home/ubuntu/test# ls
+data  data.asc
+root@v2:/home/ubuntu/test# cat data.asc
+-----BEGIN PGP SIGNATURE-----
+
+iQGyBAABCgAdFiEEy2bUJKm+TcW5urT9D8IRS+606/gFAmQewxsACgkQD8IRS+60
+6/jD5gv2JwZf50QprtDNq/inOVrgfIPl4IzrwkvSJuJuxwLAzTQeMLSV4GPD6S5H
+zTvVqCU4LKgudswbHi8A+b0qv8YtJd+B+LqoLYxyFnEw6mfl/94J6mjEehN/sn7k
+CdS5jcrBU+OPKFuIfDAtcUM7BMgh3y+pEejAcFNfUv4A9lYrWGYdjsfW7kYA3qF9
+tS/bEiF4kKBwSjfNmbmhwtELM5fzKdpFeEAl/ucxytZ9M+UwdFJsrTFqYmSRNnsm
+PvLB2ltpL13o8yPwEV8VVt2Z64UD9215plygh9dPY9512fhN0NCH/y7nuEbT/W8m
+yUpcOeTTsCIKt9xZ7E0fJ4YatVz00qME58hs65aj0nJSuIHmRE05oFi6GfN9AilI
+oVHFO2N75yNg/SUqQhMGTfeQNHBqRE55koNrsBYJE3fXl1PHnWuALJ6ktzo4CEw1
+AmvlJ2U2mKrP3hXtFcWk0zUGG4waCiH5/Y+ukDcF/CerdwvijnpDwsLmS4LmR5e8
+0/tbyNw=
+=q3qN
+-----END PGP SIGNATURE-----
+```
+
+## 校验签名
 
 > 如果没有指定`-u`发送者，默认使用`--default-key`，采用`--list-keys`显示的第一用户的私钥
 

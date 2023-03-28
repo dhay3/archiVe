@@ -61,6 +61,12 @@ fzf a command-line fuzzy finder
 
 ## Cautions
 
+### search position
+
+==fzf 默认从当前目录开始查询==
+
+例如 如果需要搜索 `libcrypto.so`，假设在当前用户的 HOME 目录下，默认 fzf 查不到，需要到根目录才能查询到
+
 ### search hidden files
 
 https://github.com/junegunn/fzf/issues/337
