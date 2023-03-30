@@ -148,9 +148,15 @@ cpl in /tmp λ diff file1 file2
 
   可以对比参考 #Output 部分
 
-  1. `-`表示deletion
-  2. `+`表示adding
-  3. `@@ -1,5 +1,6 @@`表示显示 file1 1,5 行闭区间，如果 file1 想要变成 file2 需要做 deletion 的操作；file2 1,6 行闭区间，如果 file2 想要变成 file1 需要做 deletion 的操作
+  `--- file1` 表示为需要对比的源文件
+
+  `+++ file2 ` 表示为对比文件
+
+  `@@ -1,5 +1,6 @@` 表示对比的内容行数；file1 为 1,5 闭区间，file2 为 1,6 闭区间
+
+  `-2 -1 -8` 表示在 file1 中存在，但是不在 file2 中不存在，file1 需要删除后才能变成 file2
+
+  `+3 +6 +7 +8` 表示在 file1 中不存在，但是在 file2 中存在，file1 需要添加后才能变成 file2
 
 - `-r | --recursive`
 
