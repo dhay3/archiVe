@@ -18,7 +18,12 @@ git branch [options] [branch]
 
 - `--list`
 
-  显示当前所有的 branches，如果 `git branch` 没有使用任何 arguments 默认会使用该参数
+  显示当前本地所有的 branches，如果 `git branch` 没有使用任何 arguments 默认会使用该参数
+
+
+- `-r | --remotes`
+
+  显示所有 remote tracking branches
 
 - `-d | --delete <branch>`
 
