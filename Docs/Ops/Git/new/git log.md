@@ -4,7 +4,7 @@ ref
 ## Digest
 syntax
 ```
-git log [options] 
+git log [options] [commits]
 ```
 git log 用于查看 commit 记录，==默认值只显示当前分支的 log==
 例如
@@ -51,6 +51,10 @@ Date:   Wed Mar 15 09:35:14 2023 +0000
     Merge pull request !2153 from yanghaoran/master
 ```
 ## Optional args
+
+- `--reflog`
+
+显示所有的引用记录 (==包括 `restore`或者 `reset` 的记录==)
 
 - `--all`
 
