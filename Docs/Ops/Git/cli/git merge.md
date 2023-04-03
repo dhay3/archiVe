@@ -213,3 +213,51 @@ root@v2:/home/ubuntu/test# git lg2
 当使用 `git merge` 或者 `git pull` 时，如果需要合并的部分有重叠 git 就会提示需要人工合并或者直接放弃合并的操作
 例如
 
+当前有两个分支 main 和 topic
+
+```
+(base) cpl in /tmp/test on topic λ git lg
+* 85048ef - (3 seconds ago) topic b - cyberPelican (HEAD -> topic)
+* 038f625 - (2 minutes ago) d - cyberPelican
+* 6e5f3ac - (3 minutes ago) c - cyberPelican
+| * 94715fe - (57 seconds ago) master b - cyberPelican (main)
+|/  
+* fa5e06f - (4 minutes ago) b - cyberPelican
+* b38d959 - (5 minutes ago) a - cyberPelican%
+```
+
+两个分支都有文件 b，但是里面的内容不同
+
+```
+(base) cpl in /tmp/test on topic λ cat b
+this is the topic b
+                                                                                                                                                         
+(base) cpl in /tmp/test on topic λ git checkout main 
+Switched to branch 'main'
+                                                                                                                                                         
+(base) cpl in /tmp/test on main λ cat b
+this is the master b
+```
+
+如果此时需要合并就会出现冲突
+
+```
+(base) cpl in /tmp/test on main λ git merge topic 
+Auto-merging b
+CONFLICT (content): Merge conflict in b
+Automatic merge failed; fix conflicts and then commit the result.
+                                                                                                                                                         
+(base) cpl in /tmp/test on main ● ● performing a merge λ
+```
+
+需要手动解决冲突
+
+```
+<<<<<<< HEAD
+this is the master b
+=======
+this is the topic b
+>>>>>>> topic
+```
+
+`<<<<<<<` 至 `=======` 是本端的内容，`=======` 至 `>>>>>>>` 是对端的内容即被合并的分支
