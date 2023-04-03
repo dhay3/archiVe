@@ -1,3 +1,7 @@
+ref
+
+https://support.typora.io/Shortcut-Keys/
+
 ### 快捷键
 
 ctrl + n 新建
@@ -9,6 +13,8 @@ ctrl + f 查找替换
 ctrl + / 源码模式
 
 ctrl + shift + l 左边导航栏
+
+ctrl + k 插入超链接
 
 ctrl + i 插入图片
 
