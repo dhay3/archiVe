@@ -1,5 +1,8 @@
+# git diff
+
 ref
 [https://git-scm.com/docs/git-diff](https://git-scm.com/docs/git-diff)
+
 ## Digest
 syntax
 ```
@@ -10,47 +13,56 @@ git diff [options] [path...]
 
 - `git diff [options] [path]`
 
-比较 staging area 和 lastest commit 
-```
-git diff filename
-```
+  比较 staging area 和 lastest commit
+
+  ```
+  git diff filename
+  ```
 
 - `git diff [options] --no-index <path> <path>`
 
-直接比较 working direcotry 中的文件
-```
-git diff filename1 filename2
-```
+  直接比较 working direcotry 中的文件
+
+  ```
+  git diff filename1 filename2
+  ```
 
 - `git diff [options] <commit> [path]`
 
-比较指定 commit 和 working direcotry 
-```
-git diff HEAD filename
-```
+  比较指定 commit 和 working direcotry 
+
+  ```
+  git diff HEAD filename
+  ```
 
 - `git diff [options] --cached [commit] [path]`
 
-比较 staging area 和指定的 commit，如果没有指定 commit 默认 HEAD，表示 HEAD 指针指向的记录
-```
-git diff --cached HEAD filename
-```
+  比较 staging area 和指定的 commit，如果没有指定 commit 默认 HEAD，表示 HEAD 指针指向的记录
+
+  ```
+  git diff --cached HEAD filename
+  ```
 
 - `git diff [options] <commit1>..<commit2>`
 
-对比 commit1 和 commit2 之间
-```
-git diff HEAD..eb0ec746d880aad712b11834d5a37b008ac2a960
-```
+  对比 commit1 和 commit2 之间
+
+  ```
+  git diff HEAD..eb0ec746d880aad712b11834d5a37b008ac2a960
+  ```
+
+需要提一嘴的是还有一个命令 `git difftool` 你可以将其理解成额外的 `git diff` 工具，一般可以配置一个 GUI 工具方便对比
+
 ## Optional args
 
 - `-s | --no-patch`
 
-suppress diff output，一般和 `git show`一起使用
+  suppress diff output，一般和 `git show`一起使用
 
 - `-w | --ignore-all-space`
 
-忽略对比空格数
+  忽略对比空格数
+
 ## Diff Output
 ```
 root@v2:/home/ubuntu/test# git diff --no-index file1 file2

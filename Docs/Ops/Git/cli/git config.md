@@ -139,15 +139,71 @@ subsection name 必须在 double quote 内
 
 ## Example
 
-​	这里的配置文件只列出常用的 key
+### 常用配置
 
 ```
 git config --global user.name 4liceh
 git config --global user.email 4@liceh.com
+
 git config --global core.editor vim
 git config --global core.autocrlf input
 git config --global core.ignoreCase true
+git config --global color.ui always
+
+#别名
+git config --global alias.br branch
+git config --global alias.co checkout
+git config --global alias.sw switch
+git config --global alias.st status
+git config --global alias.ci commit
+git config --global alias.lg1  "log --all --graph --format='format:%C(auto)%h - %C(bold green)(%ar)%C(reset) %d%n%s - %an'"
+git config --global alias.lg2  "log --all --graph --format='format:%C(auto)%h - %C(bold green)(%aD)%C(reset) %d%n%s - %an'"
+
+#使用 git difftool 自动调用 kdiff3
+git config --global diff.tool kdiff3
+# 使用 git diff 自动调用 kdiff3
+git config --global diff.external kdiff3
+#
+git config --global merge.tool kdiff3
+git config --global mergetool.kdiff3.trustExitCode false
+
+
+#分页
 git config --global core.pager less
+git config --global pager.branch false
+git config --global pager.tag false
+git config --global pager.log false
+git config --global pager.reflog false
+git config --global pager.diff false
+
+#密码保存策略
+git config --global credential.help cache
+git config --global credential.help store
+
+#gpg
+git config --global commit.gpgSign 1
+git config --global log.showSignature
+git config --global user.sigingKey
+
+git config --global commit.verbose 1
+
+#代理
+#git config --global  core.gitProxy
+#git config --global core.sshCommand
+
+git config --global init.defaultBranch main
+
+```
+
+### GUI 配置
+
+```
+git config --global user.name 4liceh
+git config --global user.email 4@liceh.com
+#设置 sublimetext 作为默认的 config editor
+git config --global core.editor subl
+git config --global core.autocrlf input
+git config --global core.ignoreCase true
 git config --global alias.br branch
 git config --global alias.co checkout
 git config --global alias.sw switch
@@ -155,9 +211,78 @@ git config --global alias.st status
 git config --global alias.ci commit
 git config --global color.ui always
 
-#merge
+#使用 git difftool 自动调用 kdiff3
+git config --global diff.tool kdiff3
+# 使用 git diff 自动调用 kdiff3
+git config --global diff.external kdiff3
+
+#
 git config --global merge.tool kdiff3
 git config --global mergetool.kdiff3.trustExitCode false
+
+
+#分页
+git config --global core.pager less
+git config --global pager.branch false
+git config --global pager.tag false
+git config --global pager.log false
+git config --global pager.reflog false
+git config --global pager.diff false
+
+#密码保存策略
+git config --global credential.help cache
+git config --global credential.help store
+
+#gpg
+git config --global commit.gpgSign 1
+git config --global log.showSignature
+git config --global user.sigingKey
+
+git config --global commit.verbose 1
+
+#代理
+#git config --global  core.gitProxy
+#git config --global core.sshCommand
+
+git config --global init.defaultBranch main
+
+```
+
+### for TUI
+
+​	这里的配置文件只列出常用的 key
+
+```
+git config --global user.name 4liceh
+git config --global user.email 4@liceh.com
+
+git config --global core.editor vim
+git config --global core.autocrlf input
+git config --global core.ignoreCase true
+git config --global alias.br branch
+git config --global alias.co checkout
+git config --global alias.sw switch
+git config --global alias.st status
+git config --global alias.ci commit
+git config --global color.ui always
+
+#使用 git difftool 自动调用 kdiff3
+git config --global diff.tool kdiff3
+# 使用 git diff 自动调用 kdiff3
+git config --global diff.external kdiff3
+
+#
+git config --global merge.tool kdiff3
+git config --global mergetool.kdiff3.trustExitCode false
+
+
+#分页
+git config --global core.pager less
+git config --global pager.branch false
+git config --global pager.tag false
+git config --global pager.log false
+git config --global pager.reflog false
+git config --global pager.diff false
 
 #密码保存策略
 git config --global credential.help cache

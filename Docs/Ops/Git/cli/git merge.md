@@ -1,8 +1,11 @@
+# git merge
+
 ref
 [https://git-scm.com/docs/git-merge](https://git-scm.com/docs/git-merge)
 [https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
 [https://www.atlassian.com/git/tutorials/using-branches/git-merge#:~:text=Fast%20Forward%20Merge,to%20the%20target%20branch%20tip.](https://www.atlassian.com/git/tutorials/using-branches/git-merge#:~:text=Fast%20Forward%20Merge,to%20the%20target%20branch%20tip.)
 [https://stackoverflow.com/questions/29673869/what-is-git-fast-forwarding](https://stackoverflow.com/questions/29673869/what-is-git-fast-forwarding)
+
 ## Digest
 syntax
 ```
@@ -111,13 +114,17 @@ a  b  c  d  e  f  g
 ```
 ## Optional args
 
+- `--abort`
+
+  取消当前的 merge 操作
+
 - `--commit | --no-commit`
 
-merge 的时候是否做 commit
+  merge 的时候是否做 commit
 
 - `--stat | --summary`
 
-merge 完成后是否显示 dffstat 
+  merge 完成后是否显示 dffstat 
 
 - `-v | --verbose`
 - `-S | --gpg-sign=keyid`
@@ -126,89 +133,221 @@ merge 完成后是否显示 dffstat
 不管是执行 `git merge` 还是 `git pull` 都会校验 local uncommitted changes 是否和 `git merge` 或者 `git pull` 内容出现重叠覆盖。如果出现重叠覆盖 git 不会做任何操作
 如果当前本地的 HEAD 指针和 remote HEAD 指针一致，就会提示 "Already up to date"
 ## Fast-Forward Merge
-当前需要 merge 的节点是当前节点的 ancestor 时，git 就会选择 Fast-Forward Merge。一般出现在 `git pull` 对 tracking 的分支做更新时出现
-简单的理解就是当前节点和需要合并的节点在一条线上时，git 会采用 Fast-Forward Merge，将 HEAD 指针指向更新后的节点
-但是还有一种特殊情况也会采用 Fast-Forward Merge
-假设现在有两个分支分别提交了一次
+当前需要被 merge 的 commit object 是当前 HEAD 指针指向的 commit object 的 ancestor 时，git 就会选择 Fast-Forward Merge。一般出现在 `git pull` 对 tracking 的分支做更新时出现
+简单的理解就是当前 commit object 和需要合并的 commit object 在一条线上时，git 会采用 Fast-Forward Merge，==将 HEAD 指针直接指向更新后的节点==。可以使用 `git log --graph --all --abbrev-commit` 来校验是否在一条线上
+
+假设现在有一个分支 master，提出了 a b 两个文件
+
 ```
-root@v2:/home/ubuntu/test# git add a
-root@v2:/home/ubuntu/test# git commit -m "a"
-[master (root-commit) 9462119] a
- 1 file changed, 1 insertion(+)
+(base) cpl in /tmp/test on master ● λ git add a b
+(base) cpl in /tmp/test on master ● λ git commit -m "a b"
+[master (root-commit) 2f0f9af] a b
+ 2 files changed, 7 insertions(+)
  create mode 100644 a
-root@v2:/home/ubuntu/test# git checkout -b topic
+ create mode 100644 b
+```
+a b 内容分别如下
+
+```
+(base) cpl in /tmp/test on master λ cat a 
+a
+(base) cpl in /tmp/test on master λ cat b
+1
+3
+5
+6
+8
+9
+```
+
+现在创建一个 topic 分支，修改文件 b，并 add commit
+
+```
+(base) cpl in /tmp/test on master λ git checkout -b topic
 Switched to a new branch 'topic'
-root@v2:/home/ubuntu/test# git add b
-root@v2:/home/ubuntu/test# git commit -m "b"
-[topic dbcdead] b
- 1 file changed, 1 insertion(+)
- create mode 100644 b
+(base) cpl in /tmp/test on topic λ cat b
+2
+4
+6
+8
+9
+(base) cpl in /tmp/test on topic ● λ git add b
+(base) cpl in /tmp/test on topic ● λ git commit -m "b2"
+[topic 5260ecb] b2
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 ```
-日志如下
+
+当前的状态如下
+
+```mermaid
+stateDiagram-v2
+ ab --> b2
+ HEAD --> topic
+ master --> ab
+ topic --> b2
 ```
-root@v2:/home/ubuntu/test# git lg1
-* dbcdead - (53 seconds ago) b - hl4ce (HEAD -> topic)
-* 9462119 - (2 minutes ago) a - hl4ce (master)
+
+现在 merge master 和 topic，这时 git 就会使用 fast-forward merge
+
 ```
-现在需要 merge master 和 topic，这时 git 就会使用 fast-forward merge
-```
-root@v2:/home/ubuntu/test# git checkout master
-Switched to branch 'master'
-root@v2:/home/ubuntu/test# git merge topic
-Updating 9462119..dbcdead
+(base) cpl in /tmp/test on master λ git merge topic 
+Updating 2f0f9af..5260ecb
 Fast-forward
- b | 1 +
- 1 file changed, 1 insertion(+)
- create mode 100644 b
+ b | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 ```
 这里也是只是将分支的指针移动了
 ```
-root@v2:/home/ubuntu/test# git lg1
-* dbcdead - (19 minutes ago) b - hl4ce (HEAD -> master, topic)
-* 9462119 - (19 minutes ago) a - hl4ce
+(base) cpl in /tmp/test on master λ git log --abbrev-commit --all --graph --oneline
+* 5260ecb (HEAD -> master, topic) b2
+* 2f0f9af a b
 ```
-但是目录内容以及改变了
+当前状态如下
+
+```mermaid
+stateDiagram-v2
+ ab --> b2
+ HEAD --> master
+ master --> b2
+ topic --> b2
 ```
-root@v2:/home/ubuntu/test# ls
-a  b
+
+但是目录和文件内容已经改变了
+
+```
+(base) cpl in /tmp/test on master λ ls
+ a   b
+(base) cpl in /tmp/test on master λ cat b
+2
+4
+6
+8
+9
 ```
 ## True Merge
-当前 HEAD 指针指向的分支 commit 和需要合并的分支 commit，不在一条线上，即出现 diverg。会采用 True Merge
-例如想要将 master 和 topic 分支对应的 commit 合并
+当前 HEAD 指针指向的 commit object 和需要合并的分支 commit object，不在一条线上，即出现 divergence。会采用 True Merge
+
+在上一个例子分别修改文件 b 并 commit 一次
+
 ```
-root@v2:/home/ubuntu/test# git lg1
-* c0ebb2e - (84 seconds ago) d - hl4ce (HEAD -> topic)
-| * f0ad174 - (2 minutes ago) c - hl4ce (master)
-|/  
-* 0c6f9e0 - (45 minutes ago) b - hl4ce
-* b4da5d7 - (45 minutes ago) a - hl4ce
-root@v2:/home/ubuntu/test# 
-```
-合并分支
-```
-root@v2:/home/ubuntu/test# git checkout master
-Switched to branch 'master'
-root@v2:/home/ubuntu/test# git merge topic
-Merge made by the 'recursive' strategy.
- d | 1 +
+ (base) cpl in /tmp/test on master λ cat b
+2
+4
+6
+8
+9
+edit-content from master branch
+(base) cpl in /tmp/test on master λ git add b
+(base) cpl in /tmp/test on master ● λ git commit -m "c"
+[master a1c4351] c
  1 file changed, 1 insertion(+)
- create mode 100644 d
+ (base) cpl in /tmp/test on topic λ cat b
+2
+4
+6
+8
+9
+edit-content from topic branch
+(base) cpl in /tmp/test on topic λ git add b
+(base) cpl in /tmp/test on topic ● λ git commit -m "d"
+[topic 0b86cc2] d
+ 1 file changed, 1 insertion(+)
 ```
-输出结果如下
+
+日志如下
+
 ```
-root@v2:/home/ubuntu/test# git lg2
-*   f624c02 - Mon, 3 Apr 2023 17:44:36 +0800 (32 seconds ago) (HEAD -> master)
-|\            Merge branch 'topic' - hl4ce
-| * c0ebb2e - Mon, 3 Apr 2023 17:42:34 +0800 (3 minutes ago) (topic)
-| |           d - hl4ce
-* | f0ad174 - Mon, 3 Apr 2023 17:42:01 +0800 (3 minutes ago)
-|/            c - hl4ce
-* 0c6f9e0 - Mon, 3 Apr 2023 16:59:26 +0800 (46 minutes ago)
-|           b - hl4ce
-* b4da5d7 - Mon, 3 Apr 2023 16:58:46 +0800 (46 minutes ago)
-            a - hl4ce
+(base) cpl in /tmp/test on topic λ git log --abbrev-commit --all --graph --oneline
+* 0b86cc2 (HEAD -> topic) d
+| * a1c4351 (master) c
+|/  
+* 5260ecb b2
+* 2f0f9af a b
 ```
-可以看到分支向前走了一个 commit 记录
+
+当面状态如下，在 b2 出现 divergence
+
+```mermaid
+stateDiagram-v2
+	b-->b2
+	b2-->c
+	b2-->d
+	HEAD-->topic
+	topic-->d
+	master-->c
+```
+
+现在想要将 master 和 topic 分支指针指向的 commit object 合并
+
+```
+(base) cpl in /tmp/test on topic λ git checkout master 
+Switched to branch 'master'
+                                                                                                                                                         
+(base) cpl in /tmp/test on master λ git merge topic 
+Auto-merging b
+CONFLICT (content): Merge conflict in b
+Automatic merge failed; fix conflicts and then commit the result.
+```
+这时可以看到 b 文件出现冲突，需要手动修改
+
+```
+(base) cpl in /tmp/test on master ● ● performing a merge λ cat b      
+2
+4
+6
+8
+9
+<<<<<<< HEAD
+edit-content from master branch
+=======
+edit-content from topic branch
+>>>>>>> topic
+(base) cpl in /tmp/test on master ● ● performing a merge λ vim b
+(base) cpl in /tmp/test on master ● ● performing a merge λ cat b      
+2
+4
+6
+8
+9
+edit-content from master and topic branch
+```
+
+修改完成后需要使用 add 并 commit，才完成真正的 merge
+
+```
+(base) cpl in /tmp/test on master ● ● performing a merge λ git add b
+(base) cpl in /tmp/test on master ● performing a merge λ git commit -m "merge master and topic"
+[master 042e4fb] merge master and topic
+```
+
+查看日志
+
+```
+(base) cpl in /tmp/test on master λ git log --abbrev-commit --all --graph --oneline
+*   042e4fb (HEAD -> master) merge master and topic
+|\  
+| * 0b86cc2 (topic) d
+* | a1c4351 c
+|/  
+* 5260ecb b2
+* 2f0f9af a b
+```
+
+可以看到分支向前走了一个 commit 记录，当前状态如下
+
+```mermaid
+stateDiagram-v2
+	e: merge master and topic
+	b-->b2
+	b2-->c
+	b2-->d
+	c -->e 
+	d -->e
+	HEAD-->master
+	topic-->d
+	master-->e
+```
+
 ## How Conflicts Are Presented
 当使用 `git merge` 或者 `git pull` 时，如果需要合并的部分有重叠 git 就会提示需要人工合并或者直接放弃合并的操作
 例如

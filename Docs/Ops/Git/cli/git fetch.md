@@ -1,6 +1,9 @@
+# git fetch
+
 ref
 [https://git-scm.com/docs/git-fetch](https://git-scm.com/docs/git-fetch)
 [https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes)
+
 ## Digest
 syntax
 ```
@@ -11,20 +14,20 @@ git fetch [options] [remote_alias]
 
 - `-j | --jobs <n>`
 
-fetch 时指定需要使用的子进程数 
+  fetch 时指定需要使用的子进程数 
 
 - `--dry-run`
 
-不实际 fetch，只测试
+  不实际 fetch，只测试
 
 - `-n | --no-tags`
 
-fetch 时不 fetch tags
+  fetch 时不 fetch tags
 
 - `-v | --verbose`
 
-fetch 时显示详情
+  fetch 时显示详情
 
 - `--depth=<depth>`
 
-和 `git clone` 的 `--depth` 含义相同
+  和 `git clone` 的 `--depth` 含义相同

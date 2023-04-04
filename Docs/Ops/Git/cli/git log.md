@@ -1,13 +1,17 @@
+# git log
+
 ref
 [https://git-scm.com/docs/git-log](https://git-scm.com/docs/git-log)
 [https://stackoverflow.com/questions/1057564/pretty-git-branch-graphs](https://stackoverflow.com/questions/1057564/pretty-git-branch-graphs)
+
 ## Digest
 syntax
 ```
 git log [options] [commits]
 ```
-git log 用于查看 commit 记录，==默认值只显示当前分支的 log==
+git log 用于查看 commit 记录，==默认只显示当前分支的 log==
 例如
+
 ```
 root@v2:/home/ubuntu/graphengine/.git# git log 
 commit 5c7fe0ef385aa555e55503a44d3b11ba95418e5b (HEAD -> master, origin/master, origin/HEAD)
@@ -32,8 +36,9 @@ Date:   Wed Mar 15 09:35:14 2023 +0000
     !2153 upgrade Ascend software package 15 Mar 23
     Merge pull request !2153 from yanghaoran/master
 ```
-`(HEAD -> master, origin/master, origin/HEAD)` 表示 local HEAD 指针指向 master 分支，同时指向 remote `origin/master, origin/HEAD` 
+`(HEAD -> master, origin/master, origin/HEAD)` 表示 HEAD 指针指向 master branch pointer，同时指向 remote `origin/master, origin/HEAD` pointer
 现在需要看从开始到 `upgrade ascend software package 22 mar 23` 的日志，可以使用对应的 commit hash 值
+
 ```
 root@v2:/home/ubuntu/test# git log 2cc4b3eb183a682f6b0fcec6cf96e20875795d8f
 commit 2cc4b3eb183a682f6b0fcec6cf96e20875795d8f
@@ -52,108 +57,126 @@ Date:   Wed Mar 15 09:35:14 2023 +0000
 ```
 ## Optional args
 
+- `--decorate`
+
+  显示 branch 的指针，还可以显示 remote branch 的指针
+
+  ```
+  root@v2:/home/ubuntu/gitlab# git log --format=oneline --decorate --abbrev-commit
+  358c589 (HEAD -> master, origin/master, origin/HEAD) Update README
+  a1208b0 (grafted) t1
+  ```
+
 - `--reflog`
 
-显示所有的引用记录 (==包括 `restore`或者 `reset` 的记录==)
+  显示所有的引用记录 (==包括 `restore`或者 `reset` 的记录==)
 
 - `--all`
 
-显示 log 时显示所有分支
+  显示 log 时显示所有分支
 
 - `--abbrev-commit`
 
-不显示完整的 commit hash，只显示唯一的最长子串
+  不显示完整的 commit hash，只显示唯一的最长子串
 
 - `-p | -u | --patch`
 
-查看 commit 日志的同时查看 diff 内容
-```
-root@v2:/home/ubuntu/gitlab# git log -p
-commit 7b7902de3e0e1ca4d944932074b2f5cbd20527b2 (HEAD -> master)
-Author: John Doe <qq@com>
-Date:   Thu Mar 30 11:51:48 2023 +0800
+  查看 commit 日志的同时查看 diff 内容
 
-    test
-
-diff --git a/test b/test
-index 493021b..7946e2c 100644
---- a/test
-+++ b/test
-@@ -1 +1,2 @@
- this is a test file
-+3333
-```
+  ```
+  root@v2:/home/ubuntu/gitlab# git log -p
+  commit 7b7902de3e0e1ca4d944932074b2f5cbd20527b2 (HEAD -> master)
+  Author: John Doe <qq@com>
+  Date:   Thu Mar 30 11:51:48 2023 +0800
+  
+      test
+  
+  diff --git a/test b/test
+  index 493021b..7946e2c 100644
+  --- a/test
+  +++ b/test
+  @@ -1 +1,2 @@
+   this is a test file
+  +3333
+  ```
 
 - `--pretty | --format [format]`
 
-pretty-print the commit logs
-format 的值可以是  oneline, short, medium, full, fuller, reference, email, raw 或者自定义的 format:<string>
+  pretty-print the commit logs
+  format 的值可以是  oneline, short, medium, full, fuller, reference, email, raw 或者自定义的 format:<string>
+
+
+- `--oneline`
+
+  等价与 `git log --format=oneline`
 
 - `-<number> | -n <number>`
 
-查看从当前指针指向的 commit log 前 number 条日志
+  查看从当前指针指向的 commit log 前 number 条日志
 
 - `--skip=<number>`
 
-从当前指针指向的 commit log 开始计算，跳过 number 条
+  从当前指针指向的 commit log 开始计算，跳过 number 条
 
 - `--since=<date>`
 
-`--after=<date>`
-`--until=<date>`
-`--before=<date>`
-按照逻辑查看指定日期的 commit log
+  `--after=<date>`
+  `--until=<date>`
+  `--before=<date>`
+  按照逻辑查看指定日期的 commit log
 
 - `--grep=<patter>`
 
-类似 grep 逻辑，过滤 commit 日志
+  类似 grep 逻辑，过滤 commit 日志
 
 - `-i | --regexp-ignore-case`
 
-一般和 `--grep` 一起使用，忽略大小写
+  一般和 `--grep` 一起使用，忽略大小写
 
 - `--merges`
 
-只显示 merge 的 commit log
+  只显示 merge 的 commit log
 
 - `--no-merges`
 
-commit log 中不包含 merge 的记录
+  commit log 中不包含 merge 的记录
 
 - `--graph`
 
-在左侧新增一列显示当前分支的 commit log 图表，如果需要显示所有分支的 log 需要和 `--all` 一起使用
-```
-root@v2:/home/ubuntu/test# git log --graph
-* commit a7edc9f013fe8def0b9f575397ca13560447f37c (iss53)
-| Author: root <johndoe@exmaple.com>
-| Date:   Wed Mar 29 22:00:21 2023 +0800
-| 
-|     test
-|   
-*   commit cfd2a15fb92d0a8b06d678d1f4291a65cbebaacc (origin/master, origin/HEAD)
-|\  Merge: cda6a6c 6488367
-| | Author: cyberPelican <62749885+dhay3@users.noreply.github.com>
-| | Date:   Tue Mar 28 21:20:38 2023 +0800
-| | 
-| |     Merge branch 'iss53'
-| | 
-| * commit 6488367b66852874ed1f7b15f45eae6a3a6ed94d (origin/iss53)
-| | Author: cyberPelican <62749885+dhay3@users.noreply.github.com>
-| | Date:   Tue Mar 28 21:00:01 2023 +0800
-| | 
-| |     iss53
-| | 
-* | commit cda6a6c43f90968dd884a2a7606c63b88b03f560
-|/  Author: cyberPelican <62749885+dhay3@users.noreply.github.com>
-|   Date:   Tue Mar 28 21:02:48 2023 +0800
-|   
-|       hotfix
-| 
-* commit 56b196e2a4a09ed5d4c7d086c82b304e76ffaf2a (tag: v1.2)
-| Author: Scott Chacon <schacon@gmail.com>
-| Date:   Mon Mar 17 21:52:11 2008 -0700
-```
+  在左侧新增一列显示当前分支的 commit log 图表，如果需要显示所有分支的 log 需要和 `--all` 一起使用
+
+  ```
+  root@v2:/home/ubuntu/test# git log --graph
+  * commit a7edc9f013fe8def0b9f575397ca13560447f37c (iss53)
+  | Author: root <johndoe@exmaple.com>
+  | Date:   Wed Mar 29 22:00:21 2023 +0800
+  | 
+  |     test
+  |   
+  *   commit cfd2a15fb92d0a8b06d678d1f4291a65cbebaacc (origin/master, origin/HEAD)
+  |\  Merge: cda6a6c 6488367
+  | | Author: cyberPelican <62749885+dhay3@users.noreply.github.com>
+  | | Date:   Tue Mar 28 21:20:38 2023 +0800
+  | | 
+  | |     Merge branch 'iss53'
+  | | 
+  | * commit 6488367b66852874ed1f7b15f45eae6a3a6ed94d (origin/iss53)
+  | | Author: cyberPelican <62749885+dhay3@users.noreply.github.com>
+  | | Date:   Tue Mar 28 21:00:01 2023 +0800
+  | | 
+  | |     iss53
+  | | 
+  * | commit cda6a6c43f90968dd884a2a7606c63b88b03f560
+  |/  Author: cyberPelican <62749885+dhay3@users.noreply.github.com>
+  |   Date:   Tue Mar 28 21:02:48 2023 +0800
+  |   
+  |       hotfix
+  | 
+  * commit 56b196e2a4a09ed5d4c7d086c82b304e76ffaf2a (tag: v1.2)
+  | Author: Scott Chacon <schacon@gmail.com>
+  | Date:   Mon Mar 17 21:52:11 2008 -0700
+  ```
+
 ## format:<string>
 format:<string> 被用在 `--format | --pretty` 按照 string 的格式输出 commit 日志。string 可用的值有 
 **_%H_**
@@ -231,20 +254,12 @@ ref names without the " (", ")" wrapping.
 
 例如
 ```
-root@v2:/home/ubuntu/gitlab# git log --format="format:%h %ae %cD %d"
-7b7902d qq@com Thu, 30 Mar 2023 11:52:11 +0800  (HEAD -> master)
-a7edc9f johndoe@exmaple.com Wed, 29 Mar 2023 22:00:21 +0800  (iss53)
-cfd2a15 62749885+dhay3@users.noreply.github.com Tue, 28 Mar 2023 21:20:38 +0800  (origin/master, origin/HEAD)
-cda6a6c 62749885+dhay3@users.noreply.github.com Tue, 28 Mar 2023 21:02:48 +0800 
-6488367 62749885+dhay3@users.noreply.github.com Tue, 28 Mar 2023 21:00:01 +0800  (origin/iss53)
-56b196e schacon@gmail.com Tue, 28 Mar 2023 17:24:33 +0800  (tag: v1.2)
-085bb3b schacon@gmail.com Fri, 17 Apr 2009 21:55:53 -0700 
-a11bef0 schacon@gmail.com Sat, 15 Mar 2008 10:31:28 -0700 
+git log --all --graph --format="format:%C(auto)%h - %C(bold green)(%ar)%C(reset) %d%n%s - %an"
+git log --all --graph --format="format:%C(auto)%h - %C(bold green)(%aD)%C(reset) %d%n%s - %an"
 ```
-可以参考 stackoverflow 上的配置
+可以将其写入配置文件快速使用
+
 ```
-[alias]
-lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)' --all
-lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
-lg = lg1
+git config --global alias.lg1  "log --all --graph --format='format:%C(auto)%h - %C(bold green)(%ar)%C(reset) %d%n%s - %an'"
+git config --global alias.lg2  "log --all --graph --format='format:%C(auto)%h - %C(bold green)(%aD)%C(reset) %d%n%s - %an'"
 ```

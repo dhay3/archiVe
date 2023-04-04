@@ -44,15 +44,16 @@ no changes added to commit (use "git add" and/or "git commit -a")
 
 - `--soft <commit>`
 
-回退到指定 commit ，但是不修改 index file 和 working direcotry 的状态。和 `git commit --amend` 类似，状态会回到 "changes to be committed"
+  回退到指定 commit ，但是不修改 index file 和 working direcotry 的状态。和 `git commit --amend` 类似，状态会回到 "changes to be committed"
 
 - `--mixed <commit>`
 
-回退到指定 commit ，修改 staging area 但是不修改 working directory 的状态，`git reset` 默认使用该模
+  回退到指定 commit ，修改 staging area 但是不修改 working directory 的状态，`git reset` 默认使用该模
 
 - `--hard <commit>`
 
-回退到指定 commit ，修改 staging area 和 working tree 的状态
+  回退到指定 commit ，修改 staging area 和 working tree 的状态
+
 ## Examples
 回撤 `git add` 操作
 ```

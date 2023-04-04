@@ -1,5 +1,8 @@
+# git status
+
 ref
 [https://git-scm.com/docs/git-status](https://git-scm.com/docs/git-status)
+
 ## Digest
 syntax
 ```
@@ -25,10 +28,10 @@ Untracked files:
 
 - `-s | --short`
 
-已 short-format 的格式出现文件的状态。
-其中 `M` 表示 modified，`A` 表示 added，`D` 表示 deleted，`R` 表示 renamed
+  已 short-format 的格式出现文件的状态。
+  其中 `M` 表示 modified，`A` 表示 added，`D` 表示 deleted，`R` 表示 renamed
 
 - `-v | --verbose`
 
-如果文件处于 modified 状态，还会显示修改的内容
+  如果文件处于 modified 状态，还会显示修改的内容
 

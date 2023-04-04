@@ -1,6 +1,9 @@
+# git restore
+
 ref
 [https://git-scm.com/docs/git-restore](https://git-scm.com/docs/git-restore)
 [https://git-scm.com/docs/git](https://git-scm.com/docs/git)
+
 ## Digest
 syntax
 ```
@@ -11,15 +14,16 @@ git restore [options] [files_path]
 
 - `-s | --source tree`
 
-指定回退到那个分支
+  指定回退使用那个分支
 
 - `-W | --worktree`
 
-指定需要 restore 文件的来源是 working direcotry，默认 
+  指定需要 restore 文件的来源是 working direcotry，默认 
 
 - `-S | --staged`
 
-指定需要 restore 文件的来源是 staging area
+  指定需要 restore 文件的来源是 staging area
+
 ## Exmaples
 假设不小心删除了 file1，这时我们就可以使用 `git restore` 来恢复 file1
 ```
@@ -39,4 +43,3 @@ nothing to commit, working tree clean
 root@v2:/home/ubuntu/test# ls
 file1  file2  file3
 ```
-

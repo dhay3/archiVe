@@ -1,5 +1,8 @@
+# git add
+
 ref
 [https://git-scm.com/docs/git-add](https://git-scm.com/docs/git-add)
+
 ## Digest
 syntax
 ```
@@ -10,11 +13,12 @@ git add [options] <pathspec...>
 
 - `-n | --dry-run`
 
-不实际添加文件到 staging area，只测试
+  不实际添加文件到 staging area，只测试
 
 - `-v | --verbose`
 
-输出添加到 staging area 的文件名，默认不输出
+  输出添加到 staging area 的文件名，默认不输出
+
 ## Examples
 ```
 #将当前目录以及子目录下的内容加入到 staging area

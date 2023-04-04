@@ -1,5 +1,8 @@
+# git clone
+
 ref
 [https://git-scm.com/docs/git-clone](https://git-scm.com/docs/git-clone)
+
 ## Digest
 syntax
 ```
@@ -51,63 +54,68 @@ root@v2:/home/ubuntu/graphengine# git branch --remote
 
 - `-o | --origin <name>`
 
-Instead of using the remote name `origin` to keep track of the upstream repository
-追踪的 remote repository 以 name 命名而不是默认的 origin 
+  Instead of using the remote name `origin` to keep track of the upstream repository
+  追踪的 remote repository 以 name 命名而不是默认的 origin 
 
 - `--no-tags`
 
-don't clone any tags
-不克隆 tags
+  don't clone any tags
+  不克隆 tags
 
 - `--depth <depth>`
 
-shallow clone with a history truncated to the specified number of commits
-浅克隆，克隆时按照 depth 克隆 log 条目( 也不会克隆 tags )，默认会带上 `--single-branch`。如果不想克隆 remote repository 其他分支，同时不想保留多余的 commit log 可以使用这个参数，可以有效的减少下载量
-```
-git clone --depth 1  https://gitee.com/mindspore/graphengine.git gra
-cd gra
-git log --oneline
-5c7fe0e (grafted, HEAD -> master, origin/master, origin/HEAD) !2154 upgrade ascend software package 22 mar 23 Merge pull request !2154 from yanghaoran/master
-```
-将 [https://gitee.com/mindspore/graphengine.git](https://gitee.com/mindspore/graphengine.git) 以浅克隆的方式 ( 只有最新一条的 log )到本地的 `gra` 目录
+  shallow clone with a history truncated to the specified number of commits
+  浅克隆，克隆时按照 depth 克隆 log 条目( 也不会克隆 tags )，默认会带上 `--single-branch`。如果不想克隆 remote repository 其他分支，同时不想保留多余的 commit log 可以使用这个参数，可以有效的减少下载量
+
+  ```
+  git clone --depth 1  https://gitee.com/mindspore/graphengine.git gra
+  cd gra
+  git log --oneline
+  5c7fe0e (grafted, HEAD -> master, origin/master, origin/HEAD) !2154 upgrade ascend software package 22 mar 23 Merge pull request !2154 from yanghaoran/master
+  ```
+
+  将 [https://gitee.com/mindspore/graphengine.git](https://gitee.com/mindspore/graphengine.git) 以浅克隆的方式 ( 只有最新一条的 log )到本地的 `gra` 目录
 
 - `-b | --branch <name>`
 
-从 remote repository 克隆所有的 branch，但是 create 和 check out 的分支是 name
-```
-root@v2:/home/ubuntu/gra# git clone -b release https://gitee.com/mindspore/graphengine.git
-Cloning into 'graphengine'...
-remote: Enumerating objects: 42312, done.
-remote: Counting objects: 100% (1118/1118), done.
-remote: Compressing objects: 100% (600/600), done.
-remote: Total 42312 (delta 590), reused 884 (delta 474), pack-reused 41194
-Receiving objects: 100% (42312/42312), 14.68 MiB | 5.78 MiB/s, done.
-Resolving deltas: 100% (32664/32664), done.
-root@v2:/home/ubuntu/gra# cd graphengine/
-root@v2:/home/ubuntu/gra/graphengine# git br -v
-* release ebd097ad !2151 headers for Ascend 7 Mar 23 Merge pull request !2151 from yanghaoran/release
-```
+  从 remote repository 克隆所有的 branch，但是 create 和 check out 的分支是 name
+
+  ```
+  root@v2:/home/ubuntu/gra# git clone -b release https://gitee.com/mindspore/graphengine.git
+  Cloning into 'graphengine'...
+  remote: Enumerating objects: 42312, done.
+  remote: Counting objects: 100% (1118/1118), done.
+  remote: Compressing objects: 100% (600/600), done.
+  remote: Total 42312 (delta 590), reused 884 (delta 474), pack-reused 41194
+  Receiving objects: 100% (42312/42312), 14.68 MiB | 5.78 MiB/s, done.
+  Resolving deltas: 100% (32664/32664), done.
+  root@v2:/home/ubuntu/gra# cd graphengine/
+  root@v2:/home/ubuntu/gra/graphengine# git br -v
+  * release ebd097ad !2151 headers for Ascend 7 Mar 23 Merge pull request !2151 from yanghaoran/release
+  ```
 
 - `--single-branch`
 
-只克隆单分支 , 不追踪 remote-tracking branches，可以和 `-b` 一起使用指定分支名
-```
+  只克隆单分支 , 不追踪 remote-tracking branches，可以和 `-b` 一起使用指定分支名
 
-root@v2:/home/ubuntu# git clone --single-branch https://gitee.com/mindspore/graphengine.git
-Cloning into 'graphengine'...
-remote: Enumerating objects: 36719, done.
-remote: Counting objects: 100% (7264/7264), done.
-remote: Compressing objects: 100% (1076/1076), done.
-remote: Total 36719 (delta 6455), reused 6536 (delta 6153), pack-reused 29455
-Receiving objects: 100% (36719/36719), 14.19 MiB | 24.72 MiB/s, done.
-Resolving deltas: 100% (28459/28459), done.
-root@v2:/home/ubuntu# cd graphengine/
-root@v2:/home/ubuntu/graphengine# git branch -v
-* master 5c7fe0ef !2154 upgrade ascend software package 22 mar 23 Merge pull request !2154 from yanghaoran/master
-root@v2:/home/ubuntu/graphengine# git branch --remote
-  origin/HEAD -> origin/master
-  origin/master
-```
+  ```
+  
+  root@v2:/home/ubuntu# git clone --single-branch https://gitee.com/mindspore/graphengine.git
+  Cloning into 'graphengine'...
+  remote: Enumerating objects: 36719, done.
+  remote: Counting objects: 100% (7264/7264), done.
+  remote: Compressing objects: 100% (1076/1076), done.
+  remote: Total 36719 (delta 6455), reused 6536 (delta 6153), pack-reused 29455
+  Receiving objects: 100% (36719/36719), 14.19 MiB | 24.72 MiB/s, done.
+  Resolving deltas: 100% (28459/28459), done.
+  root@v2:/home/ubuntu# cd graphengine/
+  root@v2:/home/ubuntu/graphengine# git branch -v
+  * master 5c7fe0ef !2154 upgrade ascend software package 22 mar 23 Merge pull request !2154 from yanghaoran/master
+  root@v2:/home/ubuntu/graphengine# git branch --remote
+    origin/HEAD -> origin/master
+    origin/master
+  ```
+
 ## Git URLS
 repository 的值可以是 Git URLS，例如
 
