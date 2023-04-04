@@ -155,6 +155,10 @@ git config --global alias.st status
 git config --global alias.ci commit
 git config --global color.ui always
 
+#merge
+git config --global merge.tool kdiff3
+git config --global mergetool.kdiff3.trustExitCode false
+
 #密码保存策略
 git config --global credential.help cache
 git config --global credential.help store
@@ -166,6 +170,7 @@ git config --global user.sigingKey
 
 git config --global commit.verbose 1
 
+#代理
 #git config --global  core.gitProxy
 #git config --global core.sshCommand
 
