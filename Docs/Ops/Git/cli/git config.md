@@ -144,11 +144,11 @@ subsection name 必须在 double quote 内
 ```
 git config --global user.name 4liceh
 git config --global user.email 4@liceh.com
-
 git config --global core.editor vim
 git config --global core.autocrlf input
 git config --global core.ignoreCase true
 git config --global color.ui always
+git config --global init.defaultBranch main
 
 #别名
 git config --global alias.br branch
@@ -156,20 +156,12 @@ git config --global alias.co checkout
 git config --global alias.sw switch
 git config --global alias.st status
 git config --global alias.ci commit
-git config --global alias.lg1  "log --all --graph --format='format:%C(auto)%h - %C(bold green)(%ar)%C(reset) %d%n%s - %an'"
-git config --global alias.lg2  "log --all --graph --format='format:%C(auto)%h - %C(bold green)(%aD)%C(reset) %d%n%s - %an'"
-
-#使用 git difftool 自动调用 kdiff3
-git config --global diff.tool kdiff3
-# 使用 git diff 自动调用 kdiff3
-git config --global diff.external kdiff3
-#
-git config --global merge.tool kdiff3
-git config --global mergetool.kdiff3.trustExitCode false
-
+git config --global alias.lg1  "log --all --graph --format='format:%C(auto)%h%C(reset) - %C(auto)(%ar)%C(reset) %C(bold white)%s%C(reset) - %C(auto)%an%C(reset) %C(auto)%d%C(reset)'"
+git config --global alias.lg2  "log --all --graph --format='format:%C(auto)%h%C(reset) - %C(auto)(%aD)%C(reset) %C(bold white)%s%C(reset) - %C(auto)%an%C(reset) %C(auto)%d%C(reset)'"
 
 #分页
 git config --global core.pager less
+git config --global pager.show false
 git config --global pager.branch false
 git config --global pager.tag false
 git config --global pager.log false
@@ -191,7 +183,6 @@ git config --global commit.verbose 1
 #git config --global  core.gitProxy
 #git config --global core.sshCommand
 
-git config --global init.defaultBranch main
 
 ```
 

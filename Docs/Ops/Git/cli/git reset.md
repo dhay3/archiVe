@@ -1,16 +1,24 @@
+# git reset
+
 ref
 [https://git-scm.com/docs/git-reset](https://git-scm.com/docs/git-reset)
+
 ## Digest
 syntax
 ```
 git reset [options] [commit]
 ```
-用于回退 commit，即将当前分支的指针指向指定的 commit
-或者是回退 staging area 中指定文件，即 `git add file_path` 的反向操作，等价于 `git restore --staged file_path`
+用于移动 HEAD 指针到对应的 commit object，或者是回退 staging area 和 working directory 中的内容
+
+也可以使用下面的命令来回退 staging area 中的内容
+
 ```
 git reset [options] [file_path]
 ```
+即 `git add file_path` 的反向操作，等价于 `git restore --staged file_path`
+
 例如
+
 ```
 root@v2:/home/ubuntu/test# git add file5
 root@v2:/home/ubuntu/test# git st
@@ -48,74 +56,158 @@ no changes added to commit (use "git add" and/or "git commit -a")
 
 - `--mixed <commit>`
 
-  回退到指定 commit ，修改 staging area 但是不修改 working directory 的状态，`git reset` 默认使用该模
+  mixed 是 reset 默认使用的模式，将  HEAD reset 到指定 commit object 时，还会 reset staging area 但是不会 reset working directory
 
 - `--hard <commit>`
 
   回退到指定 commit ，修改 staging area 和 working tree 的状态
 
-## Examples
-回撤 `git add` 操作
-```
-λ ~/lab/ master* git add a
-                                                                                                                                     
-λ ~/lab/ master* git st
-On branch master
+## mixed
 
-No commits yet
-
-Changes to be committed:
-  (use "git rm --cached <file>..." to unstage)
-
-        new file:   a
-
-                                                                                                                                     
-λ ~/lab/ master* git reset
-                                                                                                                                     
-λ ~/lab/ master* git st
-On branch master
-
-No commits yet
-
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-
-        a
-
-nothing added to commit but untracked files present (use "git add" to track)
-```
-假设现在需要回退到 a 对应的 commit 记录（回撤 `git commit` 操作），同时不修改已经创建并 commit 的文件
-```
-root@v2:/home/ubuntu/test# git lg2
-*   f624c02 - Mon, 3 Apr 2023 17:44:36 +0800 (32 seconds ago) (HEAD -> master)
-|\            Merge branch 'topic' - hl4ce
-| * c0ebb2e - Mon, 3 Apr 2023 17:42:34 +0800 (3 minutes ago) (topic)
-| |           d - hl4ce
-* | f0ad174 - Mon, 3 Apr 2023 17:42:01 +0800 (3 minutes ago)
-|/            c - hl4ce
-* 0c6f9e0 - Mon, 3 Apr 2023 16:59:26 +0800 (46 minutes ago)
-|           b - hl4ce
-* b4da5d7 - Mon, 3 Apr 2023 16:58:46 +0800 (46 minutes ago)
-            a - hl4ce
+mixed 是 reset 默认使用的模式，将  HEAD reset 到指定 commit object 时，还会 reset staging area 但是不会 reset working directory
 
 ```
-可以使用 `--soft` 参数
+(base) cpl in /tmp/test on master ● λ ls
+ a   b   c   d
+(base) cpl in /tmp/test on master λ git lg1
+* 8d455c9 - (3 seconds ago) d - 4liceh  (HEAD -> master)
+* 2adb676 - (34 seconds ago) c - 4liceh 
+* ed02c53 - (39 seconds ago) b - 4liceh 
+* bd537a2 - (46 seconds ago) a - 4liceh %
+(base) cpl in /tmp/test on master λ git reset ed02c53
+(base) cpl in /tmp/test on master ● λ git lg1
+* ed02c53 - (54 seconds ago) b - 4liceh  (HEAD -> master)
+* bd537a2 - (61 seconds ago) a - 4liceh %
+(base) cpl in /tmp/test on master ● λ ls
+ a   b   c   d
 ```
-root@v2:/home/ubuntu/test# git reset --soft b4da5d7
-root@v2:/home/ubuntu/test# ls
-a  b  c  d
-root@v2:/home/ubuntu/test# git status
+
+现在在 staging area 中添加一个 e，但是不做 commit
+
+```
+(base) cpl in /tmp/test on master λ git add e
+(base) cpl in /tmp/test on master ● λ git st
 On branch master
 Changes to be committed:
   (use "git restore --staged <file>..." to unstage)
-        new file:   b
+        new file:   e
+(base) cpl in /tmp/test on master ● λ ls
+ a   b   c   d   e
+```
+
+然后直接做 reset
+
+```
+(base) cpl in /tmp/test on master ● λ ls
+ a   b   c   d   e
+(base) cpl in /tmp/test on master ● λ git reset ed02c53  
+(base) cpl in /tmp/test on master ● λ git lg1          
+* ed02c53 - (21 minutes ago) b - 4liceh  (HEAD -> master)
+* bd537a2 - (22 minutes ago) a - 4liceh
+(base) cpl in /tmp/test on master ● λ git st
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        c
+        d
+        e
+```
+
+这里可以明显发现原本 staging area 中的 e 变成 untrack 的状态了，但是 working directory 中的内容没有改变
+
+## soft
+
+将  HEAD reset 到指定 commit object 时，但是不会 reset staging area（如果之前的这台是 added 就是 added） 和 working directory
+
+初始状态如下
+
+```
+(base) cpl in /tmp/test on master ● λ git lg1
+* 8d455c9 - (23 minutes ago) d - 4liceh  (HEAD -> master)
+* 2adb676 - (23 minutes ago) c - 4liceh 
+* ed02c53 - (23 minutes ago) b - 4liceh 
+* bd537a2 - (24 minutes ago) a - 4liceh
+(base) cpl in /tmp/test on master ● λ git st
+On branch master
+nothing to commit, working tree clean
+(base) cpl in /tmp/test on master ● λ ls
+ a   b   c   d
+(base) cpl in /tmp/test on master λ echo e > e
+(base) cpl in /tmp/test on master λ git add e
+(base) cpl in /tmp/test on master ● λ git st
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   e
+```
+
+执行 reset
+
+```
+(base) cpl in /tmp/test on master λ git reset --soft ed02c53
+(base) cpl in /tmp/test on master ● λ git lg1
+* ed02c53 - (24 minutes ago) b - 4liceh  (HEAD -> master)
+* bd537a2 - (24 minutes ago) a - 4liceh
+(base) cpl in /tmp/test on master ● λ git st
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
         new file:   c
         new file:   d
+        new file:   e
+(base) cpl in /tmp/test on master ● λ ls
+ a   b   c   d
 ```
-如果需要回退到 a 对应的 commit 记录，同时 working directory 也回撤到同记录时的内容，可以使用 `--hard`
+
+## Hard
+
+将  HEAD reset 到指定 commit object 时，会同时 reset staging area 和 working directory
+
+初始状态如下，文件 e 加入到 staging area，但是文件 f 没有
+
 ```
-root@v2:/home/ubuntu/test# git reset --hard b4da5d7
-HEAD is now at b4da5d7 a
-root@v2:/home/ubuntu/test# ls
-a
+(base) cpl in /tmp/test on master ● λ git lg1
+* 8d455c9 - (23 minutes ago) d - 4liceh  (HEAD -> master)
+* 2adb676 - (23 minutes ago) c - 4liceh 
+* ed02c53 - (23 minutes ago) b - 4liceh 
+* bd537a2 - (24 minutes ago) a - 4liceh
+(base) cpl in /tmp/test on master λ git st
+On branch master
+nothing to commit, working tree clean
+(base) cpl in /tmp/test on master λ ls  
+ a   b   c   d
+(base) cpl in /tmp/test on master λ echo e > e
+(base) cpl in /tmp/test on master λ echo f > f
+(base) cpl in /tmp/test on master λ git add e
+(base) cpl in /tmp/test on master ● λ git st
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   e
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        f
 ```
+
+执行 reset
+
+```
+(base) cpl in /tmp/test on master ● λ git reset --hard ed02c53
+HEAD is now at ed02c53 b
+(base) cpl in /tmp/test on master λ git lg1
+* ed02c53 - (41 minutes ago) b - 4liceh  (HEAD -> master)
+* bd537a2 - (41 minutes ago) a - 4liceh %
+(base) cpl in /tmp/test on master ● λ git st
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        f
+nothing added to commit but untracked files present (use "git add" to track)
+nothing to commit, working tree clean
+(base) cpl in /tmp/test on master ● λ ls
+ a   b   f
+```
+
+可以看到的一点是 working directory 改变了，但是不修改 unstaged 的文件，因为该文件并没有通过 `git commit` 加入到版本库中，也就不在 working directory 中
+

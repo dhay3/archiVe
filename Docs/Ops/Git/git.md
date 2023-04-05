@@ -68,7 +68,7 @@ Git 是一个提供 Version Control (VC) 功能的工具，例如大名鼎鼎的
 
 - Working Directory 工作区
 
-  是从 `.git` 目录中提取出来的文件对应某个版本
+  是从 `.git` 目录中提取出来的文件对应某个版本，注意 working directory 并不等价于你用 `ls` 命令看到目录。假如一个文件没有被假如到 staging area 即 unstaged 的状态，那么这个文件就不在 working directory 中 (因为文件并没有通过 `git commit` 的方式被加入版本库中)，`git reset --hard` 也就不会对该文件产生影响
 
 - Staging Area 暂存区
 
@@ -76,7 +76,7 @@ Git 是一个提供 Version Control (VC) 功能的工具，例如大名鼎鼎的
 
 - Git directory
 
-  也被称为 Repository，用于存储项目的 metadata。包含所有版本信息的指针索引
+  也被称为 Repository，用于存储项目的 metadata。包含所有版本信息的指针索引( 版本库 )
 
 ![Snipaste_2020-12-05_10-49-32](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-12-05_10-49-32.5g6xqy7mx0s0.png)
 

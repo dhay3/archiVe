@@ -254,12 +254,12 @@ ref names without the " (", ")" wrapping.
 
 例如
 ```
-git log --all --graph --format="format:%C(auto)%h - %C(bold green)(%ar)%C(reset) %d%n%s - %an"
-git log --all --graph --format="format:%C(auto)%h - %C(bold green)(%aD)%C(reset) %d%n%s - %an"
+git log --all --graph --format="format:%C(auto)%h%C(reset) - %C(auto)(%ar)%C(reset) %C(bold white)%s%C(reset) - %C(auto)%an%C(reset) %C(auto)%d%C(reset)"
+git log --all --graph --format="format:%C(auto)%h%C(reset) - %C(auto)(%aD)%C(reset) %C(bold white)%s%C(reset) - %C(auto)%an%C(reset) %C(auto)%d%C(reset)"
 ```
 可以将其写入配置文件快速使用
 
 ```
-git config --global alias.lg1  "log --all --graph --format='format:%C(auto)%h - %C(bold green)(%ar)%C(reset) %d%n%s - %an'"
-git config --global alias.lg2  "log --all --graph --format='format:%C(auto)%h - %C(bold green)(%aD)%C(reset) %d%n%s - %an'"
+git config --global alias.lg1  "log --all --graph --format='format:%C(auto)%h%C(reset) - %C(auto)(%ar)%C(reset) %C(bold white)%s%C(reset) - %C(auto)%an%C(reset) %C(auto)%d%C(reset)'"
+git config --global alias.lg2  "log --all --graph --format='format:%C(auto)%h%C(reset) - %C(auto)(%aD)%C(reset) %C(bold white)%s%C(reset) - %C(auto)%an%C(reset) %C(auto)%d%C(reset)'"
 ```

@@ -73,7 +73,25 @@ $ git add README test.rb LICENSE
 $ git commit -m 'Initial commit'
 ```
 
-那么 Git 就会创建一个 tree object, 包含 add 的三个文件作为子叶, 然后生成一个包含指向 tree object 指针的 commit object
+那么 Git 就会创建
+
+-  一个 tree object
+
+  lists the contents of the directory and specifies which file names are stored as which blobs
+
+  包含 blob pointers 指向当前目录的所有追踪的文件
+
+- 三个 blobs
+
+  each representing the contents of one of the three files
+
+  每一个 blob 中包含对应文件中的内容
+
+- 一个 commit object
+
+  with the pointer to that root tree and all the commit metadata
+
+  包含一个指向 tree object 的指针，以及其他的原数据
 
 ![A commit and its tree](https://git-scm.com/book/en/v2/images/commit-and-tree.png)
 
@@ -93,7 +111,7 @@ branch 其实就是一个指向 commit object 的 moveable pointer，只有当�
 $ git branch testing
 ```
 
-那么就会新增加一个 testing branch pointer
+那么就会新增加一个 testing branch pointer，指向当前 branch 的 latest commit object, 此时 branch working direcotry 中的内容和对应的 branch 中的一样
 
 ![Two branches pointing into the same series of commits](https://git-scm.com/book/en/v2/images/two-branches.png)
 
@@ -202,7 +220,7 @@ Switched to a new branch 'topic'
 
 ```mermaid
 stateDiagram-v2
-	a --> b
+	b --> a
 	master --> a
 	topic --> b
 	HEAD --> topic
@@ -234,7 +252,8 @@ Switched to branch 'master'
 
 ```mermaid
 stateDiagram-v2
-	a --> c
+	c --> a
+	b --> a
 	master --> a
 	topic --> b
 	HEAD --> master
