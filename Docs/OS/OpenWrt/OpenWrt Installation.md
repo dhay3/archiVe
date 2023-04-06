@@ -74,7 +74,7 @@ https://forum.openwrt.org/t/howto-resizing-root-partition-on-x86/140631
 
 koolshare 已死，[恩山](https://www.right.com.cn/forum/forum.php) 论坛找编译好的固件。新手推荐使用 高大全
 
-https://www.right.com.cn/forum/thread-7048868-1-1.html
+https://www.right.com.cn/forum/thread-8226979-1-1.html
 
 ## Flash firmware
 
@@ -98,6 +98,12 @@ dd -if=openwrt-x86-64-generic-squashfs-combined.img -of=/dev/sda
 
 推荐使用 ventoy + ventoy injection plugin 把需要写入的 ISO 文件注入,   这样就不需要配置网络去下载固件了
 
+如果需要在写盘是扩展分区参考方案一，推荐写盘方式
+
+https://dickies.myds.me:56789/st/routeos/1024/
+
+如果是 WinPE 写盘的，参考
+
 ### WinPE plus physdiskwrite
 
 写盘不一定要用  [physdiskwrite](https://m0n0.ch/wall/physdiskwrite.php)，imagedisk，rufus 都可以
@@ -112,15 +118,9 @@ physdiskwrite.exe -u openwrt-x86-64-generic-squashfs-combined.img
 
 ## Extend partition
 
-### Linux live stick plus dd
+如果是 overlay 的写盘完成后实际就不能做扩展分区的操作了，但是逻辑上可以新增分区替换到当前在使用的分区，参考方案二
 
-
-
-### WinPE plus physdiskwrite
-
-可以使用 DiskGenius 扩展分区，但是只支持 Bios 具体可以参考
-
-https://blog.csdn.net/zhangzejin3883/article/details/108904399
+https://dickies.myds.me:56789/st/routeos/1024/
 
 ## Connection
 
