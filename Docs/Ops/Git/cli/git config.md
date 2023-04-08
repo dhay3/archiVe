@@ -152,7 +152,6 @@ git config --global init.defaultBranch main
 
 #gpg
 git config --global commit.gpgSign 1
-git config --global push.gpgSign 1
 git config --global tag.gpgSign 1
 git config --global user.signingKey DFEBFAF653ED6ACCEEA7ADF1F3A82ABD5E016AC9 
 
@@ -191,7 +190,7 @@ git config --global difftool.trustExitCode false
 git config --global merge.tool kdiff3
 git config --global mergetool.prompt false
 git config --global mergetool.keepBackup false
-git config --global mergetool.trustExitCode false
+git config --global mergetool.keepTemporaries false
 ```
 
 ### 选择配置

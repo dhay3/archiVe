@@ -4,7 +4,10 @@ ref
 [https://git-scm.com/docs/git-reset](https://git-scm.com/docs/git-reset)
 
 ## Digest
+reset 时需要注意自己所处的分支
+
 syntax
+
 ```
 git reset [options] [commit]
 ```
@@ -210,4 +213,36 @@ nothing to commit, working tree clean
 ```
 
 可以看到的一点是 working directory 改变了，但是不修改 unstaged 的文件，因为该文件并没有通过 `git commit` 加入到版本库中，也就不在 working directory 中
+
+还有一种特殊的情况，假设当前的状态如下
+
+```
+(base) cpl in /tmp/test on main λ ls                      
+ a   b   e   f
+(base) cpl in /tmp/test on main λ git sw -
+Switched to branch 'topic'
+(base) cpl in /tmp/test on topic λ ls
+ a   b   c   d
+(base) cpl in /tmp/test on topic λ git lg1
+* 82e3551 - (3 minutes ago) f - cyberPelican  (main)
+* 1e8cd71 - (3 minutes ago) e - cyberPelican 
+| * b822af5 - (3 minutes ago) d - cyberPelican  (HEAD -> topic)
+| * 47bc052 - (3 minutes ago) c - cyberPelican 
+|/  
+* 3c6c505 - (3 minutes ago) b - cyberPelican 
+* 0b6ec6c - (4 minutes ago) a - cyberPelican
+```
+
+现在在不切换 branch 的情况下，直接使用如下命令
+
+```
+(base) cpl in /tmp/test on topic λ git reset --hard 82e3551
+```
+
+那么当前 branch 的 working directory 同样也会发生变化
+
+```
+(base) cpl in /tmp/test on topic λ ls
+ a   b   e   f
+```
 

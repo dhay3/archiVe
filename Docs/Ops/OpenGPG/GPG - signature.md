@@ -1,10 +1,19 @@
-GPG 最重要的一部分就是对文件签名
-假设现在有一个文件 file
+# GPG - signature
+
+ref
+[https://www.gnupg.org/gph/en/manual/x135.html](https://www.gnupg.org/gph/en/manual/x135.html)
+
+签名是 GPG 最重要的功能之一
+假设现在有一个文件 file，需要对其签名，逻辑上是使用私钥对对文件签名，然后用对应的公钥来校验签名
+
 ```
 root@v2:~# cat file
 this is a file gonna to be signed
 ```
+需要声明的一点是一般只有非对称签名没有对称签名，所以这里只介绍非对称签名的方式
+
 ## 二进制签名不分离
+
 现在需要对该文件使用 GPG 签名，就需要使用到 `-s | --sign` option
 ```
 root@v2:~# gpg --verbose -s file
@@ -95,4 +104,18 @@ J0DRwNmDBFUlnM5wrif+CXKPhup0nGh7VN1xzVuyX+juJ7tq2aZ1bxD0u3n+t0/S
 LtCaAvXzfz1YUhu5pO5ej8hxfHh2
 =rGd5
 -----END PGP SIGNATURE-----
+```
+这里的对称签名并不是传统意义上的对称签名，而是在非对称签名之上使用了额外的一个对称秘钥
+```
+root@v2:~# gpg -d file.gpg
+gpg: AES256 encrypted data
+gpg: encrypted with 1 passphrase
+this is a file gonna to be signed
+gpg: Signature made Fri 07 Apr 2023 05:52:20 PM CST
+gpg:                using RSA key 49801911B98422051F6AAA86A23605A6E42927AD
+gpg:                issuer "tester@qq.com"
+gpg: Good signature from "tester (this is a comment) <tester@qq.com>" [unknown]
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 4980 1911 B984 2205 1F6A  AA86 A236 05A6 E429 27AD
 ```

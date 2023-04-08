@@ -1,4 +1,10 @@
+# GPG - verify files
+
+ref
+[https://www.gnupg.org/faq/gnupg-faq.html#how_do_i_verify_signed_packages](https://www.gnupg.org/faq/gnupg-faq.html#how_do_i_verify_signed_packages)
+[https://www.gnupg.org/gph/en/manual/x135.html](https://www.gnupg.org/gph/en/manual/x135.html)
 现在需要对文件签名进行校验，不管是明文的还是 binary 的都能处理
+
 ## 签名不分离
 文件内容和签名不分离
 ```
@@ -22,7 +28,26 @@ hHMPuWmTxFH/DN+aa07ElGFL+/XCRJcfGn4bC11zdqovKevWKMZ1Qp1m0GvWi+My
 =hGiY
 -----END PGP SIGNATURE-----
 ```
-文件内容和签名不分离时，可以使用 `--verify <signature-file>` 来校验
+文件内容和签名不分离时，可以使用 `--verify <signature-file>` 来校验，当时需要注意的一点是去掉 `.asc` 后的文件名不能和被签名的文件名相同，否则就会校验失败。因为当前目录中有相同的文件名时，GPG 就认为当前的文件是一个分离的签名文，所以就有问题了
+```
+root@v2:~# gpg --verify file.asc
+gpg: Signature made Fri 07 Apr 2023 05:30:12 PM CST
+gpg:                using RSA key 49801911B98422051F6AAA86A23605A6E42927AD
+gpg: Good signature from "tester (this is a comment) <tester@qq.com>" [unknown]
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 4980 1911 B984 2205 1F6A  AA86 A236 05A6 E429 27AD
+gpg: WARNING: not a detached signature; file 'file' was NOT verified!
+root@v2:~# cp file.asc file.asc~
+root@v2:~# gpg --verify file.asc~
+gpg: Signature made Fri 07 Apr 2023 05:30:12 PM CST
+gpg:                using RSA key 49801911B98422051F6AAA86A23605A6E42927AD
+gpg: Good signature from "tester (this is a comment) <tester@qq.com>" [unknown]
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 4980 1911 B984 2205 1F6A  AA86 A236 05A6 E429 27AD
+```
+因为这种特殊的方式，所以在生成签名时 推荐采用 detach 签名
 ## 签名分离
 文件内容和签名分离
 ```
@@ -56,6 +81,16 @@ gpg: Good signature from "tester (this is a comment) <tester@qq.com>" [ultimate]
 ```
 root@v2:~# gpg --verify file.asc f
 gpg: Signature made Thu 06 Apr 2023 05:49:55 PM CST
+gpg:                using RSA key 49801911B98422051F6AAA86A23605A6E42927AD
+gpg:                issuer "tester@qq.com"
+gpg: Good signature from "tester (this is a comment) <tester@qq.com>" [ultimate]
+```
+也可以不使用任何参数只指定分离的签名文件，GPG 会自己推测使用的命令
+```
+root@v2:~# gpg file.asc
+gpg: WARNING: no command supplied.  Trying to guess what you mean ...
+gpg: assuming signed data in 'file'
+gpg: Signature made Fri 07 Apr 2023 01:50:40 PM CST
 gpg:                using RSA key 49801911B98422051F6AAA86A23605A6E42927AD
 gpg:                issuer "tester@qq.com"
 gpg: Good signature from "tester (this is a comment) <tester@qq.com>" [ultimate]

@@ -165,6 +165,26 @@ gh repo unarchive [<repository>] [flags]
 - `--yes`
 
 skip the confirmation prompt
+### Clone
+syntax
+```
+gh repo clone <repository> [<directory>] [-- <gitflags>...]
+```
+用于克隆 repository，如果需要指定额外的 `git clone` 的参数，需要在 `--` 之后
+```
+λ ~/ gh repo clone dhay3/gitlab lab -- --depth=1
+Cloning into 'lab'...
+remote: Enumerating objects: 6, done.
+remote: Counting objects: 100% (6/6), done.
+remote: Compressing objects: 100% (5/5), done.
+remote: Total 6 (delta 0), reused 2 (delta 0), pack-reused 0
+Unpacking objects: 100% (6/6), done.
+```
+#### Optional args
+
+- `-u | --upstream-remote-name <string>`
+
+指定 remote repository 的名字
 ### Fork
 syntax
 ```
