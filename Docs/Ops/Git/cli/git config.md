@@ -142,22 +142,18 @@ subsection name 必须在 double quote 内
 ### 常用配置
 
 ```
-git config --global user.name cyberPelican
+git config --global user.name cyberpelican
 git config --global user.email 62749885+dhay3@users.noreply.github.com
 git config --global core.editor vim
 git config --global core.autocrlf input
 git config --global core.ignoreCase true
 git config --global color.ui always
 git config --global init.defaultBranch main
+```
 
-#gpg
-git config --global commit.gpgSign 1
-git config --global tag.gpgSign 1
-git config --global user.signingKey DFEBFAF653ED6ACCEEA7ADF1F3A82ABD5E016AC9 
+### 别名配置
 
-
-
-#别名
+```
 git config --global alias.br branch
 git config --global alias.co checkout
 git config --global alias.sw switch
@@ -165,8 +161,11 @@ git config --global alias.st status
 git config --global alias.ci commit
 git config --global alias.lg1  "log --all --graph --format='format:%C(auto)%h%C(reset) - %C(auto)(%ar)%C(reset) %C(bold white)%s%C(reset) - %C(auto)%an%C(reset) %C(auto)%d%C(reset)'"
 git config --global alias.lg2  "log --all --graph --format='format:%C(auto)%h%C(reset) - %C(auto)(%aD)%C(reset) %C(bold white)%s%C(reset) - %C(auto)%an%C(reset) %C(auto)%d%C(reset)'"
+```
 
-#分页
+### 分页配置
+
+```
 git config --global core.pager less
 git config --global pager.show false
 git config --global pager.branch false
@@ -174,10 +173,14 @@ git config --global pager.tag false
 git config --global pager.log false
 git config --global pager.reflog false
 git config --global pager.diff false
+```
 
-#密码保存策略
-git config --global credential.helpr  'cache --timeout 3600'
-git config --global credential.helpr store 
+### GPG 配置
+
+```
+git config --global commit.gpgSign 1
+git config --global tag.gpgSign 1
+git config --global user.signingKey  66427E8522336403BB6EECECB9CDF0D02A147E49
 ```
 
 ### 额外配置
@@ -202,4 +205,8 @@ git config --global core.sshCommand
 
 #日志
 git config --global log.showSignature 1
+
+#密码保存策略，二选一
+git config --global credential.helpr  'cache --timeout 3600'
+git config --global credential.helpr store 
 ```

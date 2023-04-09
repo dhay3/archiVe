@@ -1,5 +1,9 @@
 # GPG - Custom GPG key
 
+ref
+
+https://gist.github.com/mcattarinussi/834fc4b641ff4572018d0c665e5a94d3
+
 首先使用 `--full-gen-key` 来生成初始的 GPG key，并且不想要 passphrase
 
 ```

@@ -1,3 +1,5 @@
+# gh config
+
 ref
 [https://cli.github.com/manual/gh_config](https://cli.github.com/manual/gh_config)
 和 git 一样，gh 也有一个工具用于配置，目前允许的参数有

@@ -1,6 +1,9 @@
+# gh auth
+
 ref
 [https://cli.github.com/manual/gh_auth](https://cli.github.com/manual/gh_auth)
 用于 gh 和 git 认证的一系列子命令
+
 ## Status
 syntax
 ```

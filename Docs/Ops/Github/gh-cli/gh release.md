@@ -1,8 +1,11 @@
+# gh release
+
 ref
 [https://cli.github.com/manual/gh_release](https://cli.github.com/manual/gh_release)
 管理 github release
 github release 和 tag 的区别
 [https://stackoverflow.com/questions/18506508/whats-the-difference-between-tag-and-release](https://stackoverflow.com/questions/18506508/whats-the-difference-between-tag-and-release)
+
 ## Query Subcommands
 ### List
 syntax

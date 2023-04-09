@@ -1,6 +1,9 @@
+# gh search
+
 ref
 [https://cli.github.com/manual/gh_search](https://cli.github.com/manual/gh_search)
 默认所有 github 上所有的内容，不仅限于当前的用户
+
 ## Repos
 syntax
 ```

@@ -1,6 +1,9 @@
+# gh gpg-key
+
 ref
 [https://cli.github.com/manual/gh_gpg-key](https://cli.github.com/manual/gh_gpg-key)
 用于管理 github 上的 GPG key，需要 `admin:gpg_key` 权限
+
 ## Add
 syntax
 ```
