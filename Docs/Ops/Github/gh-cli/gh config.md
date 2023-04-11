@@ -34,7 +34,14 @@ $ gh config set editor "code --wait"
 $ gh config set git_protocol ssh --host github.com
 $ gh config set prompt disabled
 ```
+如果想要将内容输出的 stdout 可以使用如下命令
+
+```
+gh config set pager 'less -FX'
+```
+
 ## Get
+
 用于获取值
 ```
 $ gh config get git_protocol

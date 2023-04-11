@@ -47,7 +47,16 @@ gh search repos [<query>] [flags]
 #等价,同样需要注意转译
 λ ~/ gh search repos stars:\>10000 forks:\>10000 in:name linux
 ```
+
+
+```
+λ ~/ gh search repos user:torvalds in:name linux
+```
+
+
+
 ## Commits
+
 syntax
 ```
 gh search commits [<query>] [flags]
