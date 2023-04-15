@@ -16,13 +16,13 @@ gh issue list [flags]
 
 显示当前 repository  的 issues
 
-可以使用 github issues 搜索的语法
+可以使用 github issues 查询语法
 
 https://docs.github.com/en/search-github/searching-on-github/searching-issues-and-pull-requests
 
 ### Optional args
 
-- `-A`
+- `-A | --author <string>`
 
   按照 author 过滤
 
@@ -34,22 +34,52 @@ https://docs.github.com/en/search-github/searching-on-github/searching-issues-an
 
   显示最多的条目
 
+- `-s | --state <string>`
+
+  按照 issue 的状态过滤，`{open|closed|all}`
+
 - `-S | --search <query>`
 
-  使用 issues 搜索语法
+  如果需要查询 issues，就必须使用该参数，可以使用 github issues 查询语法
+
+- `-R | --repo <[HOST/]OWNER/REPO>`
+
+- `-w | --web`
+
+### Examples
+
+```
+gh issue list -R cli/cli -S pager 
+gh issue list -R cli/cli -s closed -S pager
+gh issue list -R cli/cli -s closed -l bug -S pager
+```
+
+## view
+
+syntax
+
+```
+gh issue view {<number> | <url>} [flags]
+```
+
+用于查看 issue 的详情
+
+### Optional args
+
+- `-c`
+
+  显示 issue 的 comments
+
+- `-w | --web`
+
+  在 browser 中打开当前的 issue
 
 - `-R | --repo <[HOST/]OWNER/REPO>`
 
 ### Examples
 
 ```
-(base) cpl in ~/hugo λ gh issue list -R cli/cli -S pager 
-
-Showing 4 of 4 issues in cli/cli that match your search
-
-#1727  PAGER + Cygwin = partial output                                             bug, windows, p3, needs-investigation, help wanted  about 1 month ago
-#6463  When upgrading an extension, print information about changes since the ...  enhancement                                         about 5 months ago
-#6179  Prioritize PR check name/context over URI                                   enhancement, help wanted                            about 5 months ago
-#1980  Better document per-host configuration                                      enhancement, core                                   about 1 year ago
+gh issue view -R cli/cli 6658
+gh issue view -R cli/cli 6658 --web
 ```
 

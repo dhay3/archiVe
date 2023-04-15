@@ -35,17 +35,17 @@ Targets   : 无
 
 ### -Q | --query
 
-查询已经安装的pkg，如果没有指定pkg，默认查询所有安装的pkg
+查询==已经安装==的pkg，如果没有指定pkg，默认查询所有安装的pkg
 
-- -c | --changelog
+- `-c | --changelog`
 
   查看包的changeLog
 
-- -i 
+- `-i `
 
   查看pkg的详细信息，`-q` show less info for query and search 
 
-- -o | --owns
+- `-o | --owns`
 
   查看某一个文件是否属于某一个包
 
@@ -54,7 +54,7 @@ Targets   : 无
   /usr/bin/ncat is owned by nmap 7.92-1
   ```
 
-- -g | --gropus
+- `-g | --gropus`
 
   列出一个group下的所有pkg
 
@@ -69,7 +69,7 @@ Targets   : 无
   gnome gvfs-smb
   ```
 
-- -l | --list
+- `-l | --list`
 
   查看pkg安装的所有内容(ps. 查看文件路径)
 
@@ -80,7 +80,7 @@ Targets   : 无
   nmap /usr/bin/ncat
   ```
 
-- -m | -n
+- `-m | -n`
 
   `-m`查看不是通过sync dbs安装的pkg(ps. not offical repo installed pkg，==即从AUR安装的==)，`-n`查看通过sync dbs安装的pkg
 
@@ -91,7 +91,7 @@ Targets   : 无
   nmap 7.92-1
   ```
 
-- -s | --search regexp
+- `-s | --search regexp`
 
   从pkg name和description中查找符合正则的包，通常和`-q`一起使用，但不能和`-m`一起使用，且正则必须有引号
 
@@ -103,7 +103,7 @@ Targets   : 无
       Provides an API to the Linux IEEE1394 (FireWire) driver
   ```
 
-- -u
+- `-u`
 
   list packages can be upgraded
 
@@ -113,15 +113,15 @@ Targets   : 无
   thunderbird 91.3.2-1 -> 91.4.0-0.1
   ```
 
-- -t
+- `-t`
 
   列出不被需要的pkg
 
-- -d | --deps
+- `-d | --deps`
 
   列出所有被作为denpends的pkg
 
-- -k | --check
+- `-k | --check`
 
   ==校验包的完整性，使用`-kk`校验的更完善==
 
@@ -134,7 +134,6 @@ Targets   : 无
   firefox: 100 total files, 1 altered file
   ```
 
-  
 
 ### -S | --sync
 
@@ -144,7 +143,7 @@ sync form remote server 。和apt一样如果一个package存在于多个pkg中�
 
 `pacman -S "bash>=3.2"`
 
-- -i | --info
+- `-i | --info`
 
   查看pkg的详细信息，可以使用`-ii`查看更详细的信息
 
@@ -170,7 +169,7 @@ sync form remote server 。和apt一样如果一个package存在于多个pkg中�
   Validated By    : MD5 Sum  SHA-256 Sum  Signature
   ```
 
-- -l | --list
+- `-l | --list`
 
   查看某个repo(也可以多个)能安装的package
 
@@ -178,11 +177,11 @@ sync form remote server 。和apt一样如果一个package存在于多个pkg中�
   cpl in ~/Desktop λ pacman -Sl community
   ```
 
-- -c | changelog
+- `-c | changelog`
 
   删除pacman保存的cache(下载完成pacman会保存cache)
 
-- -s | --search
+- `-s | --search`
 
   从remote server上查看指定pkg，可以使用`-q`只输出关键信息
 
@@ -190,11 +189,11 @@ sync form remote server 。和apt一样如果一个package存在于多个pkg中�
   cpl in /etc/pacman.d λ pacman -Ssq firefox
   ```
 
-- -u | --sysupgrade
+- `-u | --sysupgrade`
 
   升级==所有==到达生命周期的pkg(有可用新package就会更新)，依赖会自动解析，使用`-uu`可以downgrades。如果想要只更新单个包不用带任何参数
 
-- -y | --refresh
+- `-y | --refresh`
 
   更新pkg db，通常和`-u`一起使用(==更新所有的pkg==)
 
@@ -212,23 +211,23 @@ sync form remote server 。和apt一样如果一个package存在于多个pkg中�
 
 删除pkg，默认不会删除配置文件(和`apt-get remove`)类似，所有的配置文件以`.pacsave`结尾。使用`--nosave`等价于`apt-get purne`。
 
-- -c
+- `-c`
 
   删除pkg时，删除depends(==所有的依赖==)
 
-- -n | --nosave
+- `-n | --nosave`
 
   ==删除pkg时同时删除配置文件==
 
-- -s
+- `-s`
 
   删除pkg中不被==其他包==需要的depends
 
-- -u 
+- `-u `
 
   删除pkg(==本包==)不再需要的depends
 
-- -d
+- `-d`
 
   删除依赖
 
@@ -293,6 +292,14 @@ Server=https://archive.archlinux.org/repos/2014/03/30/$repo/os/$arch
 ```
 
 然后在运用`pacman -Sy python-distro`
+
+### -F | --file
+
+查看指定文件属于那个包
+
+- `-y | --refresh`
+
+  更新pkg db
 
 ## options
 
@@ -391,4 +398,8 @@ https://bbs.archlinux.org/viewtopic.php?id=67729
 https://forum.manjaro.org/t/symbol-lookup-error/73596
 
 可能是没有更新完全导致的，使用`pacman -Syu`更新所有包即可，或是更新未完成的包
+
+## Examples
+
+
 

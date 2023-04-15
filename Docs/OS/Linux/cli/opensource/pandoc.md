@@ -12,9 +12,7 @@ syntax：
 
 `pandoc [options] [input-file]...`
 
-pandoc 是一个 Haskell 写的格式转换工具，也是 Haskell 内嵌的 lib
-
-例如 Markdown 转 norff，Markdown 转 html 等。具体可以参考官网
+pandoc 是一个 Haskell 写的格式转换工具，也是 Haskell 内嵌的 lib 。支持例如 Markdown 转 norff，Markdown 转 html 等。具体可以参考官网
 
 pandoc 默认会将转换的文件分成 fragment，如果需要将文档转成 standalone ，需要使用 `-s` 或者 `--standalone`
 
@@ -74,7 +72,7 @@ iconv -t utf-8 input.txt | pandoc | iconv -f utf-8
 
 ## Exmaple
 
-将从 stdin 读取的 html 格式的内容，转换成 markdown 并在 stdout 输出
+将从 stdin 读取的 html 格式的内容，转换成 markdown 并在 stdout 输出。如果在 Linux，需要使用 ctrl + D 发送指定的 POSIX signale 告诉 pandoc 停止并执行转化。如果在 windows 上可以使用 ctrl + Z
 
 ```
 pandoc -r html -w markdown
@@ -85,15 +83,23 @@ pandoc -r html -w markdown
 </ul>
 ```
 
-如果在 Linux，需要使用 ctrl + D 发送指定的 POSIX signale 告诉 pandoc 停止并执行转化。如果在 windows 上可以使用 ctrl + Z
+读取 pandoc.md 文件并转成 html 格式输出到 stdout 
 
 ```
 pandoc -w html pandoc.md
 ```
 
-读取 pandoc.md 文件并转成 html 格式输出到 stdout 
+可以使用 `-o` 写到指定文件
 
 ```
 pandoc -w html -o pandoc.html pandoc.md
 ```
+
+也可以不使用 `-r` 或者 `-w` 来标识文件类型，pandoc 会自动识别
+
+```
+pandoc  -o pandoc.html pandoc.md
+```
+
+
 

@@ -23,7 +23,7 @@ ro: repo
 se: search
 ```
 
-## set
+## uset
 
 syntax
 
@@ -62,8 +62,24 @@ gh alias delete <alias>
 
 用于删除 alias
 
+### Examples
+
+删除指定的 alias
+
 ```
 gh alias delete co
 ✓ Deleted alias co; was pr checkout
 ```
 
+删除所有的 alias
+
+```
+(base) cpl in ~/hugo/themes λ gh alias list | awk -F : '{print($1)}' | xargs -i gh alias delete {}
+✓ Deleted alias iss; was issue
+✓ Deleted alias login; was auth login
+✓ Deleted alias logout; was auth logout
+✓ Deleted alias ro; was repo
+✓ Deleted alias rov; was repo view
+✓ Deleted alias se; was search
+✓ Deleted alias st; was auth status
+```
