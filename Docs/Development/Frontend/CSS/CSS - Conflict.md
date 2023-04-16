@@ -1,4 +1,4 @@
-# CSS - Cascade Specificity
+# CSS - Conflict
 
 在 CSS 中不同的 selector 可能会选中在同一个 HTML 元素，但是 selector 对应的 ruleset 内容不同
 
