@@ -1,8 +1,4 @@
-# CSS Functions
-
-ref
-
-https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps/How_CSS_is_structured
+# CSS - Functions
 
 > 具体 function 查看 MDN references 部分
 
@@ -44,3 +40,10 @@ https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps/How_CSS_is_struct
 <style>
 <div class="box"></div>
 ```
+
+
+
+**references**
+
+1. https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps/How_CSS_is_structured
+
