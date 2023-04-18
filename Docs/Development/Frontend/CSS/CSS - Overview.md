@@ -11,6 +11,7 @@ Cascading Style Sheets 简称 CSS，中文也被称为层叠样式。可以通�
 CSS 是 rule-based 语言，语法如下
 
 ![image](https://intranetproxy.alipay.com/skylark/lark/0/2023/png/23156369/1681463869053-ce81eaec-1d3a-4c97-a0f5-ba21ec336909.png#clientId=u11e18562-e6d8-4&from=paste&id=ua91f08e5&originHeight=480&originWidth=850&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=none&taskId=u612a1b31-df21-4e4d-9b1b-d2a4dcb8fae&title=)
+
 上图的结构被称为 CSS ruleset，由 2 部分组成
 
 1. Selector
