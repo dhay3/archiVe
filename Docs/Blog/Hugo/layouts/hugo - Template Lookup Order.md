@@ -1,6 +1,4 @@
-references
-
-1. [https://gohugo.io/templates/lookup-order/](https://gohugo.io/templates/lookup-order/)
+# hugo - Template Lookup Order
 
 当 hugo 渲染页面时，会按照特定的顺序选择 layouts 中的 template 作为渲染的模板。具体查看官方文档
 ## Regular pages
@@ -50,3 +48,7 @@ references
 18. layouts/_default/list.html
 
 
+
+**references**
+
+1. [https://gohugo.io/templates/lookup-order/](https://gohugo.io/templates/lookup-order/)

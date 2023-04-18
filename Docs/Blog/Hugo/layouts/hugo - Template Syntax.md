@@ -1,8 +1,4 @@
-references
-
-1. [https://gohugo.io/templates/introduction/](https://gohugo.io/templates/introduction/)
-2. [https://pkg.go.dev/text/template#pkg-overview](https://pkg.go.dev/text/template#pkg-overview)
-3. [https://cloud.tencent.com/developer/article/1683688](https://cloud.tencent.com/developer/article/1683688)
+# hugo - Template Syntax
 
 hugo 使用 go template 的语法来构建 template
 ## Go template
@@ -678,3 +674,11 @@ hugo template 在 go template 的基础上实现了自己的一些特殊功能
 ```
 {{ template "_internal/opengraph.html" . }}
 ```
+
+
+
+**references**
+
+1. [https://gohugo.io/templates/introduction/](https://gohugo.io/templates/introduction/)
+2. [https://pkg.go.dev/text/template#pkg-overview](https://pkg.go.dev/text/template#pkg-overview)
+3. [https://cloud.tencent.com/developer/article/1683688](https://cloud.tencent.com/developer/article/1683688)

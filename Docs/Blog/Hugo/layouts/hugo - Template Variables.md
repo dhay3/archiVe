@@ -1,7 +1,4 @@
-reference
-
-1. [https://gohugo.io/templates/introduction/](https://gohugo.io/templates/introduction/)
-2. [https://gohugo.io/variables/page/](https://gohugo.io/variables/page/)
+# hugo - Template Variables
 
 ### Page Variables
 hugo 中的每一个 template 都会传入一个 `Page` 对象，即 `Page` 对象就是 `{{.}}`，这样我们就可以通过 go template 的语法来获取对应的值
@@ -62,3 +59,30 @@ the description of  the page
 
 当前文章的，前一篇文章
 
+## Site Variables
+
+hugo 中的全局变量，一部分是 built-in 的，一部分是被定义在 site configuration (默认为 `config.toml` ) 中的变量
+
+- `.Site.AllPages`
+
+  array of all pages
+
+- `.Site.BaseURL`
+
+  对应 site configuration 中的 baseURL
+
+- `.Site.BuildDrafts`
+
+  对应 site configuratoin 中的 buildDrafts
+
+- `.Site.Data`
+
+
+
+
+
+**reference**
+
+1. [https://gohugo.io/templates/introduction/](https://gohugo.io/templates/introduction/)
+2. [https://gohugo.io/variables/page/](https://gohugo.io/variables/page/)
+3. https://gohugo.io/variables/site/

@@ -1,6 +1,4 @@
-references
-
-1. [https://gohugo.io/templates/homepage/](https://gohugo.io/templates/homepage/)
+# hugo - Homepage Template
 
 homepage 作为站点特殊的页面，hugo 也支持使用单独的 template
 ## Example
@@ -58,3 +56,10 @@ title: "how to build a site by hugo"
   </main>
 {{ end }}
 ```
+
+
+
+**references**
+
+1. [https://gohugo.io/templates/homepage/](https://gohugo.io/templates/homepage/)
+

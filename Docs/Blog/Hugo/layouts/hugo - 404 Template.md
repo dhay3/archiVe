@@ -1,6 +1,4 @@
-refernece
-
-1. [https://gohugo.io/templates/404/](https://gohugo.io/templates/404/)
+# hugo - 404 Template
 
 hugo 也支持为 404 页面提供 template，模板内容需要存储在 `layouts/404.html`
 例如 `layouts/404.html`
@@ -13,3 +11,9 @@ hugo 也支持为 404 页面提供 template，模板内容需要存储在 `layou
   </main>
 {{ end }}
 ```
+
+
+
+**referneces**
+
+1. [https://gohugo.io/templates/404/](https://gohugo.io/templates/404/)

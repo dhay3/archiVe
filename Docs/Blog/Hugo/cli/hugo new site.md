@@ -1,6 +1,4 @@
-reference
-
-1. [https://gohugo.io/commands/hugo_new_site/](https://gohugo.io/commands/hugo_new_site/)
+# hugo new site
 
 syntax
 ```
@@ -20,3 +18,7 @@ Just a few more steps and you're ready to go:
    with "hugo new <SECTIONNAME>/<FILENAME>.<FORMAT>".
 3. Start the built-in live server via "hugo server".
 ```
+
+reference
+
+1. [https://gohugo.io/commands/hugo_new_site/](https://gohugo.io/commands/hugo_new_site/)

@@ -1,11 +1,8 @@
 # hugo - Archetypes
-refernece
-
-1. [https://gohugo.io/content-management/archetypes/](https://gohugo.io/content-management/archetypes/)
-
 Archetypes 是 content 的 template，即当使用 `hugo new` 创建站点的文章时，会自动使用该目录中对应的 template
 template 中包含预设的 front matter ( 和 content 中的 front matter 不同，template 中的 front matter 可以使用 hugo variables/functions )以及其他的一些内容。如果当前 `archetypes` 中没有对应的 template，且配置了 template ，默认也会有查看对应 themes 中的 `archetypes`目录
 例如，在配置文件中配置了 `mytheme` , 并且使用了如下命令
+
 ```
 hugo new posts/mypost.md
 ```
@@ -58,3 +55,12 @@ content
         ├── bio.md
         └── index.md
 ```
+
+
+
+**refernece**
+
+1. [https://gohugo.io/content-management/archetypes/](https://gohugo.io/content-management/archetypes/)
+
+
+

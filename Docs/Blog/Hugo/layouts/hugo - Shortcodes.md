@@ -1,6 +1,4 @@
-references
-
-1. [https://gohugo.io/templates/shortcode-templates/](https://gohugo.io/templates/shortcode-templates/)
+# hugo - Shortcodes
 
 shortcode 是可以重复利用的 snippets ，可以理解是迷你 template，存储在 `layouts/shortcodes` 目录下
 ## Example
@@ -50,3 +48,7 @@ shortcode wrapper {{.inner}} shortcode wrapper
 shortcode wrapper this is the content of post1 shortcode wrapper 
 ```
 假如 `{{<myshortcode>}}...{{</myshortcode>}}` 中有类似 Markdown 的语法，是不会被渲染，需要通过 `{{% myshortcode %}}...{{% /myshortcode %}}` 方式
+
+**references**
+
+1. [https://gohugo.io/templates/shortcode-templates/](https://gohugo.io/templates/shortcode-templates/)

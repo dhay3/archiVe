@@ -1,8 +1,6 @@
-references
+# hugo - Path break down
 
-1. [https://gohugo.io/content-management/organization/](https://gohugo.io/content-management/organization/)
-2. [https://gohugo.io/templates/section-templates/](https://gohugo.io/templates/section-templates/)
-3. [https://gohugo.io/content-management/urls/](https://gohugo.io/content-management/urls/)
+
 
 hugo 通常会按照 `content` 目录下的阶级生成对应的 URL，例如 `content/posts/post-1.md` 会生成 `https://example.org/posts/post-1/`
 ## Example
@@ -113,3 +111,11 @@ url: /articles/my-first-article
 如果没有设置 url，URL 是 `exmaple.com/posts/post-1`。设置如上 url 后，URL 为 `exmaple.com/articles/my-first-article`
 
 如果同时设置了 url 和 slug，url 优先级更高
+
+
+
+**references**
+
+1. [https://gohugo.io/content-management/organization/](https://gohugo.io/content-management/organization/)
+2. [https://gohugo.io/templates/section-templates/](https://gohugo.io/templates/section-templates/)
+3. [https://gohugo.io/content-management/urls/](https://gohugo.io/content-management/urls/)

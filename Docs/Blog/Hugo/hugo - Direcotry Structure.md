@@ -1,6 +1,4 @@
-reference
-
-1. [https://gohugo.io/getting-started/directory-structure/](https://gohugo.io/getting-started/directory-structure/)
+# hugo - Directory Structure
 
 当使用 `hugo new site example` 时，会创建如下的目录结构
 ```
@@ -51,3 +49,7 @@ example/
 存储站点使用的主题 template
 
 
+
+**references**
+
+1. [https://gohugo.io/getting-started/directory-structure/](https://gohugo.io/getting-started/directory-structure/)

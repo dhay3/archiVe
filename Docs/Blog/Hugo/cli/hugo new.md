@@ -1,6 +1,4 @@
-reference
-
-1. [https://gohugo.io/commands/hugo_new/](https://gohugo.io/commands/hugo_new/)
+# hugo new
 
 syntax
 ```
@@ -12,3 +10,7 @@ hugo new [path] [flags]
 - `-k | --kind string`
 
 指定创建的文章类型
+
+**reference**
+
+1. [https://gohugo.io/commands/hugo_new/](https://gohugo.io/commands/hugo_new/)

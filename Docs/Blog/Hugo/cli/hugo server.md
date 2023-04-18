@@ -1,6 +1,5 @@
-reference
+# hugo server
 
-1.  [https://gohugo.io/commands/hugo_server/](https://gohugo.io/commands/hugo_server/)
 ## Digest
 syntax
 ```
@@ -86,3 +85,10 @@ expired 的内容也会被编译
 ```
 hugo server -p 80 --bind 0.0.0.0
 ```
+
+
+
+**reference**
+
+1.  [https://gohugo.io/commands/hugo_server/](https://gohugo.io/commands/hugo_server/)
+

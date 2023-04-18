@@ -1,6 +1,4 @@
-reference
-
-1. [https://gohugo.io/templates/base/](https://gohugo.io/templates/base/)
+# hugo - Base Template
 
 hugo 除了支持 list template 和 single template 外，还支持一种特殊的 template - base template，为所有的 template 提供 template。可以将其抽象成接口
 例如定义了一个 base template `_default/baseof.html` 内容如下
@@ -72,3 +70,9 @@ hugo 除了支持 list template 和 single template 外，还支持一种特殊�
   </body>
 ```
 这里并没有输出 `<h1>part in block main</h1>`，因为 `_default/baseof.html` 中的`{{block "main"}}...{{end}}` 中的内容，会被 `{{define "main"}}...{{end}}` 中的内容 override
+
+
+
+**references**
+
+1. [https://gohugo.io/templates/base/](https://gohugo.io/templates/base/)

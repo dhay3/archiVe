@@ -1,9 +1,11 @@
-reference
-[https://gohugo.io/getting-started/configuration/](https://gohugo.io/getting-started/configuration/)
+# hugo - Confiuration
+
+
 也被称为 site configuration
 除了使用单一的配置文件 `config.toml`，还可以使用 `configDir`( 默认 `config/` ) 来存储所有的配置文件。在 `configDir` 中的每一个配置文件，可以通过文件名来标识不同模块。例如 `languages.toml` 配置就对应语言的模块
 配置文件同时支持 3 种格式，`yaml`，`toml` 以及 `json`
 假设当前目录如下
+
 ```
 ├── config
 │   ├── _default
@@ -27,6 +29,9 @@ reference
 
 这里还需要注意的一点是 `hugo server` 默认使用的环境的是 development，`hugo` 默认使用的是 production
 ## Common Directives
+
+> 可以通过 `.Site` 的方式来获取对应 directives 的值
+
 有如下的 directives
 
 - baseURL
@@ -116,3 +121,8 @@ google analytics tacking ID
 - permanlnks
 ## Custom Directives
 
+
+
+**reference**
+
+1. [https://gohugo.io/getting-started/configuration/](https://gohugo.io/getting-started/configuration/)

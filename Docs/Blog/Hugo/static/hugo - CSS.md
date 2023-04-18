@@ -1,6 +1,6 @@
-references
+# hugo - CSS
 
-1. [https://hugo-mini-course.netlify.app/sections/styling/custom/](https://hugo-mini-course.netlify.app/sections/styling/custom/)
+
 
 ## Static Directory
 `static` 是 hugo 中特殊的一个目录，存储在改目录下的内容。可以通过 `/` 的方式来获取
@@ -67,3 +67,7 @@ body {
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
 ```
 如果在 base template 中引入 CSS，那么也会被其他 template 继承，在其他 template 不需要显示的引入 CSS一样能使用对应的 CSS
+
+**references**
+
+1. [https://hugo-mini-course.netlify.app/sections/styling/custom/](https://hugo-mini-course.netlify.app/sections/styling/custom/)

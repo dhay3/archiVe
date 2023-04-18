@@ -1,8 +1,7 @@
-refernce
+# hugo
 
-1. [https://gohugo.io/getting-started/usage/](https://gohugo.io/getting-started/usage/)
-2. [https://gohugo.io/commands/hugo/](https://gohugo.io/commands/hugo/)
-3. [https://discourse.gohugo.io/t/whats-the-difference-between-hugo-and-hugo-server/4742](https://discourse.gohugo.io/t/whats-the-difference-between-hugo-and-hugo-server/4742)
+
+
 ## Digest
 syntax
 ```
@@ -79,3 +78,11 @@ expired 的内容也会被编译
 ## hugo vs hugo server
 `hugo` 用于生成站点的静态内容，存储在 `public` 目录下。而 `hugo server` 并不会直接生成静态内容到 `public` 目录下，而是会直接运行一个 webserve
 所以我们可以使用 `hugo` 来生成静态内容，然后可以使用类似 nginx 的 webserver 来做转发 ，如果使用 `hugo server` 我们可以省去大量的配置
+
+
+
+**refernces**
+
+1. [https://gohugo.io/getting-started/usage/](https://gohugo.io/getting-started/usage/)
+2. [https://gohugo.io/commands/hugo/](https://gohugo.io/commands/hugo/)
+3. [https://discourse.gohugo.io/t/whats-the-difference-between-hugo-and-hugo-server/4742](https://discourse.gohugo.io/t/whats-the-difference-between-hugo-and-hugo-server/4742)

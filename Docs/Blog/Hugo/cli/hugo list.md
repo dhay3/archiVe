@@ -1,6 +1,4 @@
-reference
-
-1. [https://gohugo.io/commands/hugo_list/](https://gohugo.io/commands/hugo_list/)
+# hugo list
 
 syntax
 ```
@@ -19,3 +17,9 @@ hugo list [type]
 - `hugo list future`
 
 查看当前站点 future 的内容
+
+
+
+**reference**
+
+1. [https://gohugo.io/commands/hugo_list/](https://gohugo.io/commands/hugo_list/)

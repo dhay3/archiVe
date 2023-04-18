@@ -1,7 +1,5 @@
 # hugo - Front matter
-reference
 
-1. [https://gohugo.io/content-management/front-matter/](https://gohugo.io/content-management/front-matter/)
 
 Front matter 是描述 content file 的元数据，可以被 template 通过 go template 的语法调用，支持如下几种格式
 
@@ -75,3 +73,9 @@ myvar: "this var is defined by me"
 <h1>{{.Params.myvar}}</h1>
 ```
 那么最后在 hugo 的渲染下会变成 `<h1>this var is defined by me</h1>`
+
+
+
+**reference**
+
+1. [https://gohugo.io/content-management/front-matter/](https://gohugo.io/content-management/front-matter/)
