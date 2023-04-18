@@ -2,14 +2,91 @@
 
 > 具体 function 查看 MDN references 部分
 
-如果 property’s value 是 simple keywords or numeric values, 通常支持 function
+## var
+
+用于调用自定义的变量
+
+syntax
+
+```
+var(<custom-property-name>,[fallback-value])
+```
+
+- custom-property-name
+
+  自定义的变量名
+
+- fallback-value
+
+  如果自定义变量的值无效，使用该值
+
+例如
+
+```
+:root {
+  --main-bg-color: pink;
+}
+
+body {
+  background-color: var(--main-bg-color);
+}
+```
+
+上述即 `background-color` 的值就是 `--main-bg-color` 的值
+
+## url
+
+用于调用 url，一般用在 `background` 或者 `background-image`
+
+syntax
+
+```
+url(<URI>)
+```
+
+例如
+
+```
+background-image: url("star.gif");
+```
+
+## attr
+
+用于获取选中元素对应的属性
+
+syntax
+
+```
+attr(<attr-name>)
+```
+
+例如
+
+```
+[data-foo]::before {
+  content: attr(data-foo) " ";
+}
+---
+<p data-foo="hello">world</p>
+```
+
+## repeat
+
+
 
 ## calc
 
-表示计算大小
+使用该函数可以进行数学计算
+
+syntax
 
 ```
-<style>
+calc(<arg1> operator <arg2>)
+```
+
+例如
+
+```
 .outer {
   border: 5px solid black;
 }
@@ -20,28 +97,11 @@
   background-color: rebeccapurple;
   color: white;
 }
-<style>
+---
 <div class="outer"><div class="box">The inner box is 90% - 30px.</div></div>
 ```
 
-## rotate
-
-一般用于 transform property, 表示旋转
-
-```
-<style>
-.box {
-  margin: 30px;
-  width: 100px;
-  height: 100px;
-  background-color: rebeccapurple;
-  transform: rotate(0.8turn);
-}
-<style>
-<div class="box"></div>
-```
-
-
+例如上述 `.inner` 的 `width` 的值就是 `width(.outer)*90%-30px`
 
 **references**
 

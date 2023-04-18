@@ -16,7 +16,7 @@ CSS 是 rule-based 语言，语法如下
 
 1. Selector
 
-   属性选择器
+   选择器
 
 2. Declaration
 
@@ -24,7 +24,7 @@ CSS 是 rule-based 语言，语法如下
 
       - Property
 
-        属性选择器 选中的 HTML element 对应的属性
+        选中的 HTML element 对应的属性
 
       - Property Value
 

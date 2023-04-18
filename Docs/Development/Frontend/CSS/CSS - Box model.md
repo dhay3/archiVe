@@ -1,9 +1,9 @@
-CSS - Box model
+# CSS - Box model
 
 在 CSS 中将所有的 HTML 元素抽象成 Boxes，根据 Boxes 默认的显示特性，分为两类
 
-1. block boxes
-2. inline boxes
+1. block elements 对应 block boxes
+2. inline elements 对应 inline boxes
 ## Display
 在了解 Box model 前，需要了解一下 Boxes 的显示特性。每一个 Box 都有默认的显示特性，特性不同，Box 的显示方式不同。可以通过元素的 `display` 来手动设定
 根据针对的对象不同，分为两类
