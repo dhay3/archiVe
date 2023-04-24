@@ -1,9 +1,5 @@
 # git remote
 
-ref
-
-https://git-scm.com/docs/git-remote
-
 ## Digest
 
 syntax
@@ -18,13 +14,21 @@ git remote [options] | [[subcommand] [options]]
 
 ### add
 
-用于添加 remote repository 例如
+syntax
+
+```
+git remote [options] add <name> <remote repository>
+```
+
+用于添加 `<remote repository>` , 本地可以直接通过 `<name>` 来调用 `<remote repository>` 。可以理解成取别名
+
+例如
 
 ```
 git remote add origin https://github.com/github/gitignore.git
 ```
 
-就会添加 `https://github.com/github/gitignore.git` remote repository。本地以 origin 做为 remote repository alias
+就会添加 `https://github.com/github/gitignore.git` remote repository。本地通过 origin 来调用 remote repository
 
 - `-f`
 
@@ -104,4 +108,9 @@ git remote set-url origin https://github.com/github/linux.git
   or      https://github.com/github/gitignore.git (push)
   ```
 
-  
+
+
+
+**references**
+
+1. https://git-scm.com/docs/git-remote

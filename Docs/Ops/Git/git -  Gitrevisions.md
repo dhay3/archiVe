@@ -1,4 +1,4 @@
-# gitrevisions
+# git - Gitrevisions
 
 https://git-scm.com/docs/gitrevisions
 
