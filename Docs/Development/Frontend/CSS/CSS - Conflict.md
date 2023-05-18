@@ -151,7 +151,7 @@ else
 
 在 CSS 中还有一个特殊的用法 -- `!important`，比 inline style 优先级高，是 CSS 中优先级最高的
 
-例如，针对同一个元素使用 class selector 和 id selector 并声明使用不同的颜色
+例如，针对==同一个元素==使用 class selector 和 id selector 并声明使用不同的颜色
 
 ```
 .class {

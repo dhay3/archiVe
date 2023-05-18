@@ -87,7 +87,7 @@ tcpdump 后会抓包结束后显示抓包的数量
 
 - `-D | --list-interfaces`
 
-  print the list of the network interfaces available on the system and on which tcpdumo can capture packets
+  print the list of the network interfaces available on the system and on which tcpdump can capture packets
 
 - `-L | --list-data-link-types`
 

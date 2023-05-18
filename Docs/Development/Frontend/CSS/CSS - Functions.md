@@ -103,7 +103,56 @@ calc(<arg1> operator <arg2>)
 
 例如上述 `.inner` 的 `width` 的值就是 `width(.outer)*90%-30px`
 
+## has
+
+一般用在 selectore 中，选中 parent elements 或者是 sibling elements
+
+syntax
+
+```css
+:has(<relative-selector-list>) {
+  /* ... */
+}
+```
+
+例如
+
+```css
+/* Selects an h1 heading with a
+paragraph element that immediately follows
+the h1 and applies the style to h1 */
+h1:has(+ p) {
+  margin-bottom: 0;
+}
+```
+
+会选中一个 `h1` element, 其子元素的第一个元素是 `p`
+
+## not
+
+一般用于 selector 中，表示选择的 elements 不能包含 not 中的内容
+
+syntax
+
+```css
+:not(<complex-selector-list>) {
+  /* ... */
+}
+```
+
+例如
+
+```
+div:not(.div2){
+	color: red;
+}
+---
+<div class="div1">div1</div>
+<div class="div2">div2</div>
+```
+
+只在选中不包含 `class="div2"` 的元素，即 `<div class="div1">div1</div>`
+
 **references**
 
 1. https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps/How_CSS_is_structured
-

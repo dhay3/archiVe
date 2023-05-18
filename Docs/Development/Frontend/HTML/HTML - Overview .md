@@ -30,13 +30,11 @@ element 也可以包含额外的信息用于描述 element, 被称为 attributes
 
 attribute 需要满足如下条件
 
-1. a space between it and the elemetn name or the previous attribute, if the element already has one or more attributes
-
-   以空格分隔
+1. a space between it and the elemetn name or the previous attribute, if the element already has one or more attributes (值以空格分隔)
 
 2. the attribute name followed by an equal sign
 
-3. the attribute value wrapped by opening and closing quatation marks
+3. the attribute value wrapped by opening and closing quatation marks (值需要在引号内，但是不区分单双引号)
 
 ### Nesting elements
 
@@ -48,7 +46,7 @@ elements 可以被内嵌（nesting），例如
 
 ### Void elements
 
-一些 elements 可以没有 content， 也不需要 closing tag，这些 elements 被称为 void elements，例如`<img>`
+一些 elements 可以没有 content， 也不需要 closing tag，这些 elements 被称为 void elements，例如`<img>`，`<input>`
 
 ```html
 <img src="images/firefox-icon.png" alt="My test image" />

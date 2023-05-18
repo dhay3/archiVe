@@ -41,4 +41,3 @@ git pull [options] [repository] [remote_branch...]
 ## Optional args
 
 具体参数可以参考 `git fetch` 和 `git merge` 或 `git rebase`
-

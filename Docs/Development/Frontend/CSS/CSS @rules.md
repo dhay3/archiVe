@@ -1,10 +1,6 @@
 # CSS @rules
 
-ref
 
-https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps/How_CSS_is_structured
-
-https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule
 
 ## Digest
 
@@ -30,6 +26,18 @@ https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule
 
   include an external stylesheet
 
+- `@font-face`
+
+  describe an external font to be download
+
+- `@keyframes`
+
+  describe the a custom CSS animation
+
+- `@media`
+
+  a conditional rule that will apply its content if the device meets the criteria of the condition
+
 ## Nested
 
 ```
@@ -54,3 +62,11 @@ body {
 ```
 
 if the browser viewport is wider than 30em, blue will be  apply to the body’s background-color
+
+
+
+**referneces**
+
+[^1]:https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps/How_CSS_is_structured
+[^2]: https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule
+

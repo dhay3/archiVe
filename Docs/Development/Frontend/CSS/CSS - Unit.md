@@ -22,10 +22,10 @@ CSS 有一些相对长度的单位
 
 | Unit       | Relative to                                                  |
 | ---------- | ------------------------------------------------------------ |
-| `em`       | Font size of ==the parent==, in the case of typographical properties like        `font-size`, and font size of the element itself, in the case of other properties        like `width`. |
+| `em`       | Font size of ==the parent==, in the case of typographical properties like `font-size`, and font size of the element itself, in the case of other properties like `width`. |
 | `ex`       | x-height of the element's font.                              |
 | `ch`       | The advance measure (width) of the glyph "0" of the element's font. |
-| `rem`      | Font size of the root element.                               |
+| `rem`      | Font size of the root element. root element 一般指的是 `<html>` |
 | `lh`       | Line height of the element.                                  |
 | `rlh`      | Line height of the root element. When used on the `font-size` or `line-height` properties of the root element, it refers to the properties' initial value. |
 | `vw`       | 1% of the viewport's width.                                  |

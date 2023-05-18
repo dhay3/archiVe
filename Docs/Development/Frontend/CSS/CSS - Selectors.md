@@ -74,7 +74,7 @@ ID 选择器，按照标签的 `id` 属性匹配。ID 全局唯一，否则错�
 ### Class selector
 类选择器，按照标签的 `class` 属性匹配。`class` 属性的值可以是单值，也可以是列表 (以空格分隔)
 
-`.className` 会选中`<element class="className">` 或者 `<element class="className ...">`，即只要 `class` 属性的值包含 `className` 即可
+`.className` 会选中 `<element class="className">` 或者 `<element class="className ...">`，即只要 `class` 属性的值包含 `className` 即可
 例如
 
 ```
@@ -83,6 +83,16 @@ ID 选择器，按照标签的 `id` 属性匹配。ID 全局唯一，否则错�
 }
 ```
 会选中 `p2` 和 `p3`
+
+有一种特殊的情况，假设 class name 中包含空格
+
+例如
+
+```
+<p class=" test-class">this is a test message</p>
+```
+
+在 CSS 中会自动去掉 class name 的前导和后导空格，所以只需要使用 `.test-class` 就可以选中上述元素
 
 ### Atrribute selector
 
@@ -196,7 +206,7 @@ ID 选择器，按照标签的 `id` 属性匹配。ID 全局唯一，否则错�
 
 > 具体可以参考 MDN Pseudo-classes reference 部分
 
-pseudo-class 也被称为伪类，用于表示处于特殊状态的 HTML 元素
+pseudo-class 也被称为伪类，用于表示处于特殊状态的 HTML 元素，可以将其想象成新加一个 class
 
 伪类选择器，即当选中的 HTML 元素处于指定状态时生效，通过 `:pseudo-class` 方式来指定伪类
 
@@ -212,6 +222,14 @@ a:hover {
 上述表示当 `a` HTML element 处于 hover 状态时，颜色改成红色
 
 常见的 pseudo-class selectors 有
+
+- `:has(selector)`
+
+  选中元素包含指定的 selector
+
+- `:not(selector)`
+
+  选中元素不包含指定的 selector
 
 - `:last-child`
 
@@ -241,9 +259,9 @@ a:hover {
 
 > 具体可以参考 MDN Pseudo-elements reference 部分
 
-pseudo-element 也被称为伪元素，功能和 pseudo-class 类似，但是 pseudo-element 就好像是一个新的 HTML 元素
+pseudo-element 也被称为伪元素，功能和 pseudo-class 类似，但是 pseudo-element 就好像是选中元素内的一个新 HTML 元素 ( 意味着有独立的 box model )
 
-伪元素选择器，即选中的 HTML 元素内像有一个匹配的伪元素，为该元素添加层叠样式，通过 `::pseudo-element` 方式来指定 (早的时候也可以用 `:pseudo-element` 的方式来指定)
+伪元素选择器，即为选中的 HTML 元素内( 这也表示了 `<input>` 不能很好的使用这些伪元素选择器，因为 `<input>` 是一个 void element )添加一个伪元素，为该元素添加层叠样式。通过 `::pseudo-element` 方式来指定选中的 HTML 元素 (早的时候也可以用 `:pseudo-element` 的方式来指定)
 
 ```
 article p::first-line {
@@ -311,6 +329,7 @@ article p::first-line {
 
 basic selectors 之间可以互相组合，例如
 
+- `.class1.class2.class3`
 - `p[attr*=value],div`
 - `#id[attr~=value] p`
 - `.class[attr]::after`
@@ -324,19 +343,59 @@ basic selectors 之间可以互相组合，例如
     d1
     <span class="s1">s1<span class="s2">s2</span></span>
     <span class="s3">s3</span>
+    <span class="s4 s5">s45</span>
+    <div a1="v1" a2="v2">d2</div>
     <div class="d3">d3</div>
 </div>
 <div class="d2">d2</div>
 <div>d3</div>
 ```
+为了方便表述，以下内容等价
+
+- `d1 == <div class="d1">d1</div>`
+- `s1 == <span class="s1">s1</span>`
+- `s2 == <span class="s2">s2</span>`
+- `s3 == <span class="s3">s3</span>`
+- `s45 == <span class="s4 s5">s45</span>`
+- `d2 == <div a1="v1" a2="v2">d2</div>`
+- `d3 == <div class="d3">d3</div>`
+
 这里只两两组合实际可以任意个数的组合
+
+### classes selector
+
+`.className1.className2`
+
+选中同时包含 `.className1` 和 `.className2` 的元素，逻辑与
+
+例如 如下表示选中同时包含 `s4` class 和 `s5` class 的元素，即 `s45`
+
+```
+.s4.s5 {
+	color: red;
+}
+```
+
+### attribute selectors selector
+
+`[attr1=value1][attr2=value2]`，逻辑与
+
+选中同时含有 `attr1=value1` 和 `attr2=value2` 的元素
+
+例如 如下表示选中同时包含 `a1=v1` 和 `a2=v2` 的元素，即 `d2`
+
+```
+[attr1="value1"][attr2="value2"] {
+	color: red;
+}
+```
 
 ### descendant selector
 
 `selector1 selector2`
 
 选中匹配 selector1 元素下，所有匹配 selector2 的 selector1 ==子孙元素==
-例如 如下表示选中 `div` 下子孙级的 `span`，即为 `<span>s1<span>s2</span></span>` 和`<span class="s3">s3</span>`
+例如 如下表示选中 `div` 下子孙级的 `span`，即 `s1`, `s2`, `s3`, `s45`
 
 ```
 div span {
@@ -347,29 +406,30 @@ div span {
 
 `selector1, selector2`
 
-选中匹配 selector1 元素，和匹配 selector2 的元素
-例如 如下表示选择 `<div class="d2">` 和 `<span class="s1">s1</span>`
+选中匹配 selector1 元素，或匹配 selector2 的元素，逻辑或
+
+例如 如下表示选中包含 `d3` class 或 包含 `s1` class 的元素，即 `d3` 和 `s1`
 
 ```
-.d2,.s1 {
+.d3,.s1 {
 	color: red;
 }
 ```
-但是上述 `<span class="s2">s2</span>` 的样式也会修改。因为是 `<span class="s3">s3</span>` 的子孙元素，在 CSS 中子孙 CSS 样式会继承祖先元素的
+但是上述 `s2` 的样式也会修改。因为是 `s1` 的子孙元素，在 CSS 中子孙元素的 CSS 样式会继承祖先元素的(这个逻辑不一定对，具体需要看元素和样式)
 
 ### child selector
 
 `selector1>selector2`
 
 选中匹配 selector1 元素下匹配 selector2 且是 selector1 的==子元素==
-例如 如下表示选中 `div` 下所有子 `span` 元素，即 `<span class="s1">s1</span>` 和 `<span class="s3">s3</span>`，这里不会匹配 `s2` 是因为不是直接的子元素，是子孙元素
+例如 如下表示选中 `div` 下所有子 `span` 元素，即 `s1`, `s3`, `s45`。这里不会匹配 `s2` 是因为不是直接的子元素，是子孙元素
 
 ```
 div>span {
 	color: red;
 }
 ```
-但是上述 `<span class="s2">s2</span>` 的样式也会修改。因为是 `<span class="s3">s3</span>` 的子孙元素，在 CSS 中子孙 CSS 样式会继承祖先元素的
+但是上述 ``s2` 的样式也会修改。因为是 `s1` 的子孙元素，在 CSS 中子孙 CSS 样式会继承祖先元素的
 
 ### adjacent sibling selector
 
@@ -377,7 +437,7 @@ div>span {
 
 选中匹配 selector1 元素之后，匹配 selector2 所有元素( sibling )的第一个元素
 
-例如 如下表示选中 `<span class="s3">s3</span>`
+例如 如下表示选中包含 `s1` class 的元素之后的第一个 `span` ，即 `s3`
 
 ```
 .s1 + span {
@@ -388,9 +448,9 @@ div>span {
 
 `selector1 ~ selector2`
 
-选中匹配 selector1 元素之，匹配 selector2 所有元素( siblings )
+选中匹配 selector1 元素之后，匹配 selector2 所有元素( siblings )
 
-例如 如下表示选中 `<div class="d2">d2</div> ` 和 `<div>d3</div>`
+例如 如下表示选中  `div` 之后的所有 `div`, 即 `d2` 和 `d3`
 
 ```
 div ~ div {
@@ -419,3 +479,4 @@ div ~ div {
 5. https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements
 6. https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators
 7. [https://www.ruanyifeng.com/blog/2009/03/css_selectors.html](https://www.ruanyifeng.com/blog/2009/03/css_selectors.html)
+8. https://stackoverflow.com/questions/2587669/can-i-use-a-before-or-after-pseudo-element-on-an-input-field
