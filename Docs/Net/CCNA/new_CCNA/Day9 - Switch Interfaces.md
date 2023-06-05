@@ -1,18 +1,70 @@
 # Day9 - Switch Interfaces
 
-## Full/Half Duplex
+
+
+## Duplex
+
+Duplex 双工分两种
+
+- Half duplex
+- Full duplex
 
 ### Half duplex (半双工)
 
-The device cannot send and receive data at the same time. If it is receiving a frame, it must wait before sending a frame
+通信的两个或者多个参与者之间，数据传输只能在一个方向上进行，而不能同时进行双向传输。当其中的一个参与者发送数据时，其他的参与者必须等待接收完成后才能发送自己的数据
 
-在现代的网络架构中一般不存在 Half duplex，过去常见的设备 Hub 就是一个半双工的设备
+> 例如 walkie-talkies(对讲机)，一个人在说话时，其他人只能接收
 
-假设 PC1 需要发包到 PC2, PC3 需要发包到 PC1。因为 Hub 会 Flood 所有的报文到所有的端口，所以报文到连接 PC2 的端口时，就会有冲突，PC2 不会收到任意一个报文
+在现代的网络拓扑中一般不会使用 Half duplex 设备，但是早期使用的 **Hub(会将收到的报文，flood 到除接收端口外的所有端口，不管报文是几层的)** 就是一个半双工设备，现在 PC1/PC2/PC3 通过 Hub 互联
+
+![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-02_14-49.1ekt9lmqjudc.webp)
+
+当 PC1 需要发送报文到 PC2
+
+1. 因为 PC1 发送报文，所以 PC2 和 PC3 只能处于接受状态，不能发送报文
+2. 报文到了 Hub 会 flood 到除接收端口外的所有端口，即和 PC2/PC3 互联的端口 
+3. 因为 PC3 MAC 不匹配，所以会丢弃报文，PC2 MAC 匹配所以回报文
+4. 因为 PC2 回报文，所以 PC1 和 PC3 只能处于接受状态，不能发送报文
+5. 回报文到了 Hub 会 flood 到除接收端口外的所有端口，即和 PC1/PC3 互联的端口
+6. 因为 PC3 MAC 不匹配，所以会丢弃报文，PC1 MAC 匹配，所以报文到了 PC1
+
+> Half duplex 并不是指对应的设备(例如 Hub)在同一时间内只能接受或者是发送报文，Half duplex 指的是一种通信模型
+>
+> ==即同一时间 Half duplex 网络上只可以有一个发送者，发送一个方向的传输数据==
+
+### Full duplex (全双工)
+
+通信的两个或者多个参与者之间，数据传输可以在两个方向上进行，发送方和接收方可以同时发送和接收数据(无需监听网络是否空闲)，而不需要等待对方的响应
+
+以上图拓扑为例(将 Hub 换成 Switch)，PC1 需要发送报文到 PC2
+
+PC1 发送报文时，PC2 和 PC3 也可以发送报文，无须处于接收状态等待 PC1 的报文
+
+## Collision Domain
+
+> 在 Half-Duplex 和 Full-Duplex 中都会出现 Collision Domain
+
+*The term **collision domain** is used to describe a part of a network where packet collisions can  occur. Packet collisions occur when two devices on a shared network segment **send** packets simultaneously. The colliding packets must be  discarded and sent again, which reduces network efficency.*
+
+在 Half Duplex 的情况下，网络上只可以有一个发送者发送一个方向的传输数据。那么就需要互联的设备监听网络是否“空闲”，如果网络“空闲”就可以发送数据包。但是这样就会有一个问题，那就是多台设备同时判断网络为“空闲”，这样就不能保证只有一个方向或者是只有一个发送者。他们的信号会相互干扰，导致信息的损坏或者是丢失
+
+例如在同一时间 PC1 需要发包到 PC2, PC3 需要发包到 PC1，两个报文同时到了 Hub
 
 ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230523/2023-05-23_21-04.5zrjo8zqmjk0.webp)
 
-这种情况所在的组网也被称为 Collision domain (冲突域)，一般通过 CSMA/CD 来解决
+因为 Hub 会 Flood 所有的报文到除接收端口外的所有的端口，所以就会将从 PC1 和 PC3 收到的报文同时 flood 到和 PC1 互联的端口
+
+Hub 不会将报文排序发送，而会同时发送到 PC1，这样就会有冲突，PC2 并不会完好无损的收到 PC1 和 PC3 的报文
+
+所以 PC1 和 PC3 会重新发送报文
+
+这种情况所在的组网也被称为 Collision domain[^Collision domain] (冲突域)，一般通过 CSMA/CD 来解决
+
+> 需要注意的一点是
+>
+> Hub 所在的整个组网都是一个 Collision Domain
+>
+> 而 Switch 每一个端口所组成的 link 就是一个 Collision Domain
 
 #### CSMA/CD
 
@@ -22,10 +74,6 @@ Carrier Sense Multiple Access with Collision Detection (CSMA/CD)
 - If a collision does occur, the device sends a jamming(拥塞) signal to inform the other devices that a collsion happened
 - Each device will wait a random period of time before sending frames again
 - The process repeats 
-
-### Full duplex (全双工)
-
-The device can send and receive data at the same time. It does not have to wait
 
 ## Speed/Duplex autonegotiation
 
@@ -173,7 +221,7 @@ GigabitEthernet0/0 is down, line protocol is down (notconnect)
 
 - 0 frame
 
-  Frames that have an incorrect format (due to an error)
+  Frames that have an incorrect format (due to an error，不符合 IEEE 标准的畸形报文)
 
 - 0 input errors
 
@@ -188,3 +236,4 @@ GigabitEthernet0/0 is down, line protocol is down (notconnect)
 **references**
 
 [^jeremy’s It Lab]:https://www.youtube.com/watch?v=cCqluocfQe0&list=PLxbwE86jKRgMpuZuLBivzlM8s2Dk5lXBQ&index=16
+[^Collision domain]:https://www.uokirkuk.edu.iq/science/images/2019/Lectures_download/Dr.Ahmed_chalack/lecture_8.pdf
