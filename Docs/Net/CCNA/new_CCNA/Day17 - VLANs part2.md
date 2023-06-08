@@ -175,7 +175,7 @@ The range of VLANs(1-4094) is divided into two sections
 
 当然也需要为每一个 子接口 单独配置一个 3 层的 IP 地址
 
-如果收到的 2 层帧包含 VLAN 10 就会从 interface g0/0.10 入，如果 2 层帧需要发送到 VLAN 10 就会从 interface g0/0.20 出，同理 g0/0.20, g0/0.30
+如果收到的 2 层帧包含 VLAN 10 就会从 interface g0/0.10 入，如果 2 层帧需要发送到 VLAN 10 就会从 interface g0/0.10 出，同理 g0/0.20, g0/0.30
 
 假设 VLAN 10 中的一台机器需要访问 VLAN 30 中的一台机器
 
@@ -183,7 +183,7 @@ The range of VLANs(1-4094) is divided into two sections
 
 1. 因为不在一个段,首先会做 ARP request 找 GW MAC
 2. ARP request 到达 SW2 G0/2 因为入口是 VLAN10，所以 SW2 只会广播到 VLAN10 中所有的设备，同时记录入向 MAC 到自己的 MAC address table,因为 SW G0/1 是一个 trunk port,通过该端口发送的会带上 VLAN tag
-3. 因为收到的 ARP request 有 VLAN10 tag，所以会从逻辑子接口 G0/0.10 入，回 ARP reply，到 SW2，并记录对应的入向 MAC 到自己的 MAC address table，以及 ARP table
+3. 因为收到的 ARP request 有 VLAN10 tag，所以会从 R1 逻辑子接口 G0/0.10 入，回 ARP reply(有 VLAN10 tag)，到 SW2，并记录对应的入向 MAC 到自己的 MAC address table，以及 ARP table
 4. ARP reply 到 SW2，unicast 到 VLAN10 中发报文的机器
 5. VLAN10 发报文的机器通过 SW2 转发到 R1，查路由(这里省略 R1 ARP request,实际需要做)，转发到 G0/0.30 并打上 VLAN30 tag 到 SW2
 6. SW2 de-encapsulation，查 MAC 并转发到 SW1，同时打上 VLAN30 tag

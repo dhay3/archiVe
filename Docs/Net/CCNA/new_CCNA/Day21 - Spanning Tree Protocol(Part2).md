@@ -78,6 +78,8 @@
 
 ### Foward Delay Timer
 
+> 如果是大型的网络结构，STP 网络结构改变，收敛会比较慢，所以需要有足够的时间以确保不会出现 2 层环
+
 在 Listening 或者是 Learning 状态下的时间，所以从 blocking 到 fowarding 一共需要 30 秒 (15 + 15)
 
 ### Max Age Timer
@@ -182,6 +184,8 @@ If an interface with BPDU Guard enabled receives a BPDU from another switch, the
 
 可以使用 `spanning-tree bpduguard enable` 来开启端口 BPDU Guard 功能
 
+> BPDU Guard 会自动关闭端口，需要先使用 `shutdown` 然后 `no shutdown` 来开启端口
+
 ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_21-40.173eyfa1ta9s.webp)
 
 也可以使用 `spanning-tree portfast bpduguard enable default` 来为所有的 access mode ports 开启 bpduguard 功能 
@@ -234,7 +238,149 @@ Cisco 的所有设备默认都会开启 rapid-pvst，但是如果想要修改 ST
 
 ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_22-17.45wj74nxpwe8.webp)
 
+## LAB
 
+![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_23-05.6anj531bxudc.webp)
+
+```
+SW2>en
+SW2#sh sp
+VLAN0001
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    32769
+             Address     0001.4301.4B81
+             This bridge is the root
+             Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32769  (priority 32768 sys-id-ext 1)
+             Address     0001.4301.4B81
+             Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  20
+
+Interface        Role Sts Cost      Prio.Nbr Type
+---------------- ---- --- --------- -------- --------------------------------
+Fa0/1            Desg FWD 19        128.1    P2p
+Fa0/2            Desg FWD 19        128.2    P2p
+Fa0/3            Desg FWD 19        128.3    P2p
+
+VLAN0002
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    32770
+             Address     0001.4301.4B81
+             This bridge is the root
+             Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32770  (priority 32768 sys-id-ext 2)
+             Address     0001.4301.4B81
+             Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  20
+
+Interface        Role Sts Cost      Prio.Nbr Type
+---------------- ---- --- --------- -------- --------------------------------
+Fa0/1            Desg FWD 19        128.1    P2p
+Fa0/2            Desg FWD 19        128.2    P2p
+Fa0/3            Desg FWD 19        128.3    P2p
+```
+
+> 看 Root ID 和 Bridge ID 部分，如果 Priority 和 MAC 都相同，说明当前设备是 root bridge
+>
+> 即 SW2 是 root bridge
+
+```
+SW1#sh spanning-tree 
+VLAN0001
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    32769
+             Address     0001.4301.4B81
+             Cost        19
+             Port        3(FastEthernet0/3)
+             Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32769  (priority 32768 sys-id-ext 1)
+             Address     0060.2F90.D14A
+             Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  20
+
+Interface        Role Sts Cost      Prio.Nbr Type
+---------------- ---- --- --------- -------- --------------------------------
+Fa0/1            Altn BLK 19        128.1    P2p
+Fa0/3            Root LRN 19        128.3    P2p
+Fa0/2            Desg LRN 19        128.2    P2p
+
+VLAN0002
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    32770
+             Address     0001.4301.4B81
+             Cost        19
+             Port        3(FastEthernet0/3)
+             Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32770  (priority 32768 sys-id-ext 2)
+             Address     0060.2F90.D14A
+```
+
+Role 对应端口角色通过 `show spanning-tree` 可以查看
+
+- Desg 对应 designated port
+- Root 对应 root port
+- Altn 对应 non-designated port(blocking port)
+
+各端口对应角色如下
+
+```
+SW2
+VLAN 1 2
+fa0/1 Fa0/2 Fa0/3 desg
+
+SW1
+VLAN 1 2
+fa0/3 root
+f0/1 non-desg
+f0/2 desg
+
+SW3
+VLAN 1 2
+fa0/3 fa0/1 desg
+fa0/2 root
+
+SW4
+VLAN 1
+fa0/2 non-desg
+fa0/1 root 
+VLAN 2
+fa0/2 non-desg
+fa0/1 root
+fa0/3 desg 
+```
+
+配置 primary root 和 secondary root
+
+```
+SW1(config)#spanning-tree vlan 1 root primary 
+SW1(config)#spanning-tree vlan 2 root secondary 
+
+SW2(config)#spanning-tree vlan 1 root secondary
+SW2(config)#spanning-tree vlan 2 root primary 
+```
+
+修改端口 cost
+
+```
+SW4(config-if)#spanning-tree vlan 1 cost 100
+```
+
+修改端口 port priority
+
+```
+SW1(config-if)#spanning-tree vlan 1 port-priority 240
+```
+
+配置 PortFast 和 BPDU Guard
+
+```
+SW3(config-if)#spanning-tree portfast 
+SW3(config-if)#spanning-tree bpduguard enable 
+```
 
 **references**
 

@@ -347,4 +347,4 @@ SW 默认使用 `switchport mode dynamic auto`，所以会开启 DTP, 在使用 
 
 **references**
 
-[^jeremy’s IT Lab]:https://www.youtube.com/watch?v=JtQV_0Sjszg&list=PLxbwE86jKRgMpuZuLBivzlM8s2Dk5lXBQ&index=36
+[^jeremy’s IT Lab]:https://www.youtube.com/watch?v=JtQV_0Sjszg&list=PLxbwE86jKRgMpuZuLBivzlM8s2Dk5lXBQ&index=36l

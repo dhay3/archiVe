@@ -362,6 +362,8 @@ SW1 有两路径和 SW3 互联，端口分别为 G0/1 和 G0/2。G0/1 的序号�
 
 2. It will only give up its position if it receives a ‘superior’ BPDU(lower bridge ID).
 
+   > 这里不管什么情况，只要 Switch 没有收到较优的 BPDU 就会认为自己就是 root bridge
+
    One switch is elected as the root bridge. All ports on the root bridge are designated ports(forwarding state). 
 
    > root bridge 判断逻辑如下
@@ -420,7 +422,7 @@ SW1 有两路径和 SW3 互联，端口分别为 G0/1 和 G0/2。G0/1 的序号�
 
    > designated port(blocking port) in remainging collision domain
    >
-   > a b 分别为 2 台 SW 的两个端口
+   > a b 分别为 2 台 SW 的两个端口(也可以是一台 SW 两个端口，例如中间通过 hub 互联，hub 互联的整个网络就是一个 collision domain)
 
    ```
    if cost(a to root_bridge) < cost(a to root_bridge) then:
@@ -436,6 +438,13 @@ SW1 有两路径和 SW3 互联，端口分别为 G0/1 和 G0/2。G0/1 的序号�
      else if a.bridge_id > b.bridge_id then:
      		a = blocking_port
    			b = designated_port
+     else if a.bridge_id == b.bridge_id then:
+     		if a.port_id < b.port_id then:
+     			a = designated_port
+     			b = blocking_port
+         else a.port_id > b.prot_id then:
+         	a = blocking_port
+         	b = designated_port
    ```
 
 4. Once the topology has converged(网络拓扑发生改变) and all switches agree on the root bridge, only the root bridge sends BPDUs
