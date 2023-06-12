@@ -330,6 +330,8 @@ DSW2(config-if-range)#channel-group 2 mode on
 ### 0x04
 
 > 这里只需要对 port-channel 声明 no switchport 即可
+>
+> 一定要使用 `ip routing` 否则 route table 显示为空
 
 #### DSW1
 
