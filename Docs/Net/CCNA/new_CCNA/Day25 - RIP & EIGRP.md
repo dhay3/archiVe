@@ -267,7 +267,7 @@ R1 想要访问 PC1, 因为 via R2 的路由是 preferred route，所以 metric 
 
 红色就是 Feasible Distance(FD)
 
-蓝色就是 Reported Distance(RD)
+蓝色就是 Reported Distance(RD),也被称为 Advertised Distance
 
 如果通过 `show ip eigrp topology` 查看所有的 eigrp route
 
