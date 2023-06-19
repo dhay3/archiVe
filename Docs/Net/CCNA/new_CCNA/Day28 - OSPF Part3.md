@@ -831,7 +831,31 @@ Reply from 8.8.8.8: bytes=32 time=16ms TTL=252
 
 ### 0x05
 
-Examine the LSDB. What LSAs are present?
+#### Examine the LSDB. What LSAs are present?
+
+使用 `show ip ospf database` 来查看 LSDB
+
+```
+R4#show ip ospf database 
+            OSPF Router with ID (192.168.245.2) (Process ID 1)
+
+                Router Link States (Area 0)
+
+Link ID         ADV Router      Age         Seq#       Checksum Link count
+192.168.245.2   192.168.245.2   1450        0x8000000c 0x0043bd 3
+192.168.245.1   192.168.245.1   1450        0x80000008 0x004685 3
+203.0.113.1     203.0.113.1     1450        0x80000005 0x00828b 1
+192.168.34.1    192.168.34.1    752         0x8000000c 0x008ffd 3
+192.168.12.1    192.168.12.1    66          0x80000006 0x00ea84 3
+
+                Net Link States (Area 0)
+Link ID         ADV Router      Age         Seq#       Checksum
+192.168.245.3   203.0.113.1     1450        0x80000003 0x002c82
+
+                Type-5 AS External Link States
+Link ID         ADV Router      Age         Seq#       Checksum Tag
+0.0.0.0         203.0.113.1     1215        0x80000002 0x00d0c2 1
+```
 
 **referenes**
 

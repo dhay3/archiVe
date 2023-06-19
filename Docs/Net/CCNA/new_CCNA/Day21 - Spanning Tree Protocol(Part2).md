@@ -196,7 +196,7 @@ If an interface with BPDU Guard enabled receives a BPDU from another switch, the
 
 If you enable root guard on an interface, even if it receives a superior BPDU(lower bridge ID) on that interface, the switch will not accept the new switch as the root bridge. The interface will be disable
 
-顾名思义就是方式 root bridge 被篡改
+顾名思义就是防止 root bridge 被篡改
 
 ### Loop Guard
 
