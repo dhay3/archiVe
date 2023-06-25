@@ -124,7 +124,9 @@ link-local address 通常被用在如下几个场景
 
 PC1 需要访问 PC2，R1/2/3/4 上均只有 link-local address(可以使用 `ipv6 enable` 来自动生成 link-local address，而无需通过手动配置端口 IPv6 地址来生成 link-local address)
 
-这时 PC1 的报文是可以通过 R1/2/3/4 正常到 PC2 的，但是在 R1 上并不能 ping  通 R2/3/4，因为 link-local address 只能用在同 subnet 中
+这时 PC1 的报文是可以通过 R1/2/3/4 正常到 PC2 的，但是在 R1 上并不能 ping 通 
+
+R3/R4 任意一个 link-local address，但是可以 ping 通 R2 和 R1 互联的接口地址，因为 link-local address 只能用在同 subnet 中
 
 ## Multicast addresses
 
@@ -144,11 +146,11 @@ PC1 需要访问 PC2，R1/2/3/4 上均只有 link-local address(可以使用 `ip
 
   IPv6 使用 FF00::/8 for multicast
 
-虽然 IPv6 没有 broadcast address 不支持 broadcast，但是可以通过 mutlicast address 中的 FF02::1 来实现 broadcast
+虽然 IPv6 没有 broadcast address 不支持 broadcast，但是可以通过 mutlicast address 中的 FF02::1 来实现 “broadcast”
 
 ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_16-43.2y63dnja9uv4.webp)
 
-> 这里 IPv6 address 都是 Link-local multicast address
+> 这里 IPv6 address 都是 Link-local scope multicast address
 >
 > 不要将 Link-local multicast address 和 Link-local address 混淆
 >
