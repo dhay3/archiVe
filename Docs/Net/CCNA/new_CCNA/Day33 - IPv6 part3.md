@@ -384,6 +384,8 @@ L   FF00::/8 [0/0]
 
 配置 R1
 
+这里大写的地址是 R2 s0/0/0 对应的 link-local address
+
 ```
 R1(config)#ipv6 route 2001:db8:0:3::/64 2001:db8:0:13::2
 R1(config)#ipv6 route 2001:db8:0:3::/64 s0/0/0 FE80::20B:BEFF:FED7:4901 200
@@ -391,12 +393,22 @@ R1(config)#ipv6 route 2001:db8:0:3::/64 s0/0/0 FE80::20B:BEFF:FED7:4901 200
 
 配置 R3
 
+这里大写的地址是 R2 s0/0/1 对应的 link-local address
+
 ```
 R3(config)#ipv6 route 2001:db8:0:1::/64 2001:db8:0:13::1
 R3(config)#ipv6 route 2001:db8:0:1::/64 s0/0/0 FE80::20B:BEFF:FED7:4901 200
 ```
 
+> 这里还可以发现 R2 s0/0/0 s0/0/1 link-local address 是相同的
+>
+> 即 link-local address 可以在不通接口间共用
+
 配置 R2
+
+这里第一个大写的地址是 R1 s0/0/0 对应的 link-local address
+
+这里第二个大写的地址是 R2 s0/0/0 对应的 link-local address
 
 ```
 R2(config)#ipv6 route 2001:db8:0:3::/64 s0/0/1 FE80::290:2BFF:FECC:A101
@@ -424,7 +436,21 @@ L   2001:DB8:0:13:202:4AFF:FE23:E202/128 [0/0]
 
 只能看见一条 static route
 
-如果想要验证 via R2 是 backup route，可以关闭 R1 G0/1 来测试，这是再查看 R1 routing table 并测试
+可以看一下 tracert 的结果
+
+```
+C:\>tracert 2001:DB8:0:3:240:BFF:FE69:9B18
+
+Tracing route to 2001:DB8:0:3:240:BFF:FE69:9B18 over a maximum of 30 hops: 
+
+  1   0 ms      0 ms      0 ms      2001:DB8:0:1::1
+  2   0 ms      0 ms      0 ms      2001:DB8:0:13::2
+  3   0 ms      0 ms      0 ms      2001:DB8:0:3:240:BFF:FE69:9B18
+```
+
+这里可以看到回包的分别是 R1 G0/0 和 R3 G0/0
+
+如果想要验证 via R2 是 backup route，可以关闭 R1 G0/1 或者直接删除 R1 R3 互联的 link 来测试，这是再查看 R1 routing table 并测试
 
 ```
 
@@ -437,6 +463,21 @@ S   2001:DB8:0:3::/64 [200/0]
 L   FF00::/8 [0/0]
      via Null0, receive
 ```
+
+同样的也可以使用 tracert 来观察
+
+```
+C:\>tracert 2001:DB8:0:3:240:BFF:FE69:9B18
+
+Tracing route to 2001:DB8:0:3:240:BFF:FE69:9B18 over a maximum of 30 hops: 
+
+  1   0 ms      0 ms      0 ms      2001:DB8:0:1::1
+  2   *         *         *         Request timed out.
+  3   37 ms     1 ms      6 ms      2001:DB8:0:3::1
+  4   0 ms      1 ms      0 ms      2001:DB8:0:3:240:BFF:FE69:9B18
+```
+
+这里可以发现第 2 条超时了，因为第二跳对应 R2 s0/0/0 并没有配置 IPv6 address，而是使用了 link-local address，因为 PC1 的 IP 不在一个 subnet 中所以不通
 
 **referneces**
 

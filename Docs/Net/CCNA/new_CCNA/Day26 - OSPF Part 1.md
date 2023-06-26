@@ -228,6 +228,8 @@ Area0 = Backbond area
 
 让 router 指定端口停止发送 OSPF hello 的信息，但是 neighbors 任然是可以收到该端口对应的 network route
 
+> 因为只有 router 之间会发送 OSFP hello，所以该命令通常用在和 end host 互联的 interface 上
+
 ### Advertise a default route into OSPF
 
 例如 R1 配置如下
@@ -446,7 +448,7 @@ R4(config-router)#network 10.0.24.0 0.0.0.3 area 0
 R4(config-router)#network 192.168.4.0 0.0.0.255 area 0
 ```
 
-这里并不需要使用 `network 203.0.113.0 0.0.0.3 area 0` 来宣告 R1 和 ISPR1 之间的网段，因为即使在 OSPF 中的 router 不知道这条路由，也能通过 R1 出公网
+这里并不需要使用 `network 203.0.113.0 0.0.0.3 area 0` 来宣告 R1 和 ISPR1 之间的网段，因为即使在 OSPF 中的 router 不知道这条路由，也能通过 R1 出公网，只需要学到能到 R1 的路由即可
 
 可以使用 `show ip protocol` 来查看 R1 G3/0 是否加入到 OSPF network 中
 
