@@ -1,4 +1,4 @@
-# Day19 - DTP/VTP
+# Day19 - DTP & VTP
 
 > DTP/VTP 已经不在 CCNA 200-301 考试提纲中了，但是还是有必要了解一下
 
@@ -87,6 +87,8 @@ A switchport in `dynamic desirable` mode will actively try to form a trunk with 
 ## VTP
 
 VLAN Trunking Protocol
+
+VTP 同样也是思科独有的协议
 
 VTP allows you to configure VLANs on a central VTP server switch, and other switches(VTP clients) will synchronize their VLAN database to the server
 

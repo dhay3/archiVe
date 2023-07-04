@@ -262,6 +262,10 @@ if source IP == 192.168.1.0/24 then
 
 如果需要使用 Standard Named ACLs 可以使用 `ip access-list standard <acl-name>` 会进入 standard name ACL config mode
 
+> Standard Named ACLs 也可以通过这种方式来配置
+>
+> `ip access-list standard <acl-number>`
+
 然后可以使用 `[entry-number] {deny | permit} ip wildcard-mask` 来配置 ACE，entry-number 可以不指定会自动按照输入的命令先后顺序赋值，对应判断 ACE 的先后顺序
 
 > entry-number，默认以 10 递增，从 10 开启，也可以手动指定 ACE 使用的具体值
@@ -363,7 +367,7 @@ if source IP == 192.168.1.0/24 then
 
 - This improves the efficiency of processing the ACL
 
-  > 主要就是为了提高处理 ACL 的效率
+  > 主要就是为了提高处理 ACL 的效率，逻辑上按照 10 20 30 40 50 来过滤规则，但是实际上按照 30 10 20 40 50 来过滤规则
 
 - It does not change the effect of the ACL
 
