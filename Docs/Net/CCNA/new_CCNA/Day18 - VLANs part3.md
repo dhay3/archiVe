@@ -47,6 +47,8 @@ R1(config-if)#ip add 192.168.1.62 255.255.255.192
 
 ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230530/2023-05-30_19-50.59o772an29vk.webp)
 
+> subinterface G0/0.20 G0/0.30 同样需要配置，只是去掉了 G0/0.10 的配置，表示 VLAN10 为 Native VLAN
+
 ## Layer3(Multilayer) Switches
 
 在之前的课程中使用的都是 Layer2 Switches,但是现在还有一种 Switches 叫做 Layer3 Switches，用以下图例表示

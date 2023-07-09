@@ -234,7 +234,60 @@ community 使用 Jeremy1
 
 ## LAB
 
+![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_15-11.2l295nvmk03k.webp)
 
+### 0x01
+
+Configure the following SNMP communities on R1
+
+read-only:Cisco1
+
+read/write:Cisco2
+
+```
+R1(config)#snmp-server community Cisco1 ro
+R1(config)#snmp-server community Cisco2 rw
+```
+
+在 packettracer 中只能配置这两条命令，所以这里仅仅使用默认的 SNMPv1
+
+### 0x02
+
+Use SNMP ‘Get’ messages via the MIB browser on PC1 to check the following
+
+Desktop -> MIB 然后选择 Advanced 按照下面截图配置
+
+![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_15-21.o3kziy8smts.webp)
+
+Read Community 对应 ro Cisco1
+
+Write Community 对应 rw Cisco2
+
+1. How long has R1 been running(system uptime)
+
+![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_15-24.69udwr0z20ow.webp)
+
+2. What is the currently configured hostname on R1
+
+![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_15-25.2ek0b0r6nbwg.webp)
+
+3. How many interfaces does R1 have
+
+![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_15-26.3z07gdtusagw.webp)
+
+4. What are those interfaces
+
+![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_15-27.3gr5n714e3eo.webp)
+
+如果需要看 interfaceName，需要使用 ifDescr
+
+### 0x03
+
+Use an SNMP ‘Set’ message from PC1 to change the hostname of R1
+
+![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_15-29.4tj2cq28dqf4.webp)
+
+这里的 datatype 必须和需要设置的值的 type 相同，点击 OK 后还需要点击 GO 才会生效
 
 **references**
 
