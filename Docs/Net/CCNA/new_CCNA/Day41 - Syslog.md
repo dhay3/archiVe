@@ -58,13 +58,13 @@ Syslog messages 会出现在几个位置
 
    用于配置输出小于指定等级日志到 console line
 
-2. `R1(config)#logging monitor <severity>`
+   2. `R1(config)#logging monitor <severity>`
 
-   用于配置输出小于指定等级日志到 vty
+      用于配置输出小于指定等级日志到 vty
 
-   使用这条命令还不能将日志输出到 vty，在 vty 连接设备后还需要使用 `R1#terminal monitor` 日志才能正常输出到 vty
+      使用这条命令还不能将日志输出到 vty，在 vty 连接设备后还需要使用 `R1#terminal monitor` 日志才能正常输出到 vty(在 PC 上使用)
 
-   只要连接设备，每次都需要使用这个命令
+      只要连接设备，每次都需要使用这个命令，即只针对 session 有效
 
 3. `R1(config)#logging buffered [size] <severity>`
 
@@ -205,41 +205,90 @@ R1(config)#int g0/1
 R1(config-if)#no shutdown
 ```
 
-这里并不会显示因为如下配置
+这里并不会将 Syslog message 输出到 VTY，因为是远程连接的，默认需要使用 `terminal monitor` 来允许 Syslog message 输出到 VTY
+
+Enable logging to the VTY lines for the ==current session==
 
 ```
-!
-line vty 0 4
- login local
- transport input telnet
-line vty 5 15
- login local
- transport input telnet
-!
+R1(config-if)#do terminal monitor
 ```
 
-Enable logging to the VTY lines for the current session
-
-```
-
-```
-
-> 在 packet tracer 中没有 `logging monitor` 命令
+> 在 packet tracer 中没有 `logging monitor` 命令，但是默认开启将 Sys
 
 ### 0x03
 
 Enable logging to the buffer, and configure the buffer size to 8192 bytes
 
-```
+默认不会开启 buffer logging，可以使用 `show logging` 来查看
 
 ```
+R1(config)#do show logging
+Syslog logging: enabled (0 messages dropped, 0 messages rate-limited,
+          0 flushes, 0 overruns, xml disabled, filtering disabled)
+No Active Message Discriminator.
+No Inactive Message Discriminator.
+    Console logging: level debugging, 3 messages logged, xml disabled,
+          filtering disabled
+    Monitor logging: level debugging, 3 messages logged, xml disabled,
+          filtering disabled
+    Buffer logging:  disabled, xml disabled,
+          filtering disabled
+```
+
+如果需要开启 logging buffer 需要使用如下命令
+
+```
+R1(config)#logging buffered 8192
+```
+
+默认 buffer logging 为 debug
+
+```
+R1(config)#do show logging
+Syslog logging: enabled (0 messages dropped, 0 messages rate-limited,
+          0 flushes, 0 overruns, xml disabled, filtering disabled)
+No Active Message Discriminator.
+No Inactive Message Discriminator.
+    Console logging: level debugging, 3 messages logged, xml disabled,
+          filtering disabled
+    Monitor logging: level debugging, 3 messages logged, xml disabled,
+          filtering disabled
+    Buffer logging:  level debugging, 0 messages logged, xml disabled,
+          filtering disabled
+    Logging Exception size (4096 bytes)
+    Count and timestamp logging messages: disabled
+    Persistent logging: disabled
+No active filter modules.
+ESM: 0 messages dropped
+    Trap logging: level informational, 3 message lines logged
+Log Buffer (8192 bytes):
+```
+
+`Trap logging: level informational` 可以得出发送到 remote server 的日志等级为 informational 以上的
 
 ### 0x04
 
 Enable logging to the syslog server SRV1 with a level of debugging
 
 ```
+R1(config)#logging 192.168.1.100
+R1(config)#logging trap debugging 
+```
 
+同样的也可以使用 `show logging ` 来查看配置是否准确
+
+```
+R1(config)#do show logging
+ESM: 0 messages dropped
+    Trap logging: level debugging, 3 message lines logged
+        Logging to 192.168.1.100  (udp port 514,  audit disabled,
+             authentication disabled, encryption disabled, link up),
+             0 message lines logged,
+             0 message lines rate-limited,
+             0 message lines dropped-by-MD,
+             xml disabled, sequence number disabled
+             filtering disabled
+Log Buffer (8192 bytes):
 ```
 
 **references**
