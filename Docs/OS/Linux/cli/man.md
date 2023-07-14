@@ -114,7 +114,7 @@ man pages 一般以 nroff（在 GNU 体系中一般是 groff） 的格式存储�
 
    expresssion is postional
 
-   一般表示必不可缺的参数
+   一般表示必不可缺的参数，==这个不是标准的==
 
 ## mandb
 

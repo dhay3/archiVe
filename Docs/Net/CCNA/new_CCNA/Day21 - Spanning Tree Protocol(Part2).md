@@ -152,7 +152,7 @@ STP 还有一些 toolkits 用于增强某些特质
 
 ### Portfast
 
-Portfast 解决了和 PC 或者 Router 互联的端口，状态必须要从 Listening 到 Learning 然后才能到 Forwarding 的问题
+Portfast 解决了==和 PC 或者 Router 互联的端口==，状态必须要从 Listening 到 Learning 然后才能到 Forwarding 的问题
 
 一共需要花费 30 秒，但是和 PC 或者 Router 互联，即使有环对整个网络拓扑来说也是没有问题的，因为只是增加 PC 或者是 Router 的负载
 
@@ -172,11 +172,11 @@ Portfast 解决了和 PC 或者 Router 互联的端口，状态必须要从 List
 
 ### BPDU Guard
 
-使用 portfast 会有一个问题，那就是当网络拓扑改变了，交换机连的不再是 PC 或者是 Router，而是另外一台 Switch
+使用 portfast 会有一个问题，那就是当网络拓扑改变了，交换机连的不再是 PC 或者是 Router，而是另外一台 Switch(直接将和 PC 或者是 Router 互联的链路接到交换机上)
 
 ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_21-43.5vh94ew064u8.webp)
 
-因为 portfast ，红框中的端口直接是 forwarding 的不，这样就会有环
+因为 portfast ，红框中的端口还是 forwarding 的，这样就会有环
 
 > portfast 并不是安全的，为了避免这种情况，可以使用 BPDU Guard
 

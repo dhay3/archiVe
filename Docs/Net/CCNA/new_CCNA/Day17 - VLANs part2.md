@@ -12,8 +12,6 @@ Engineering 部门划分在 VLAN10，HR 部门划分在 VLAN20,Sales 部门划�
 
 这里 VLAN 30 访问 VLAN 10 同样需要经过 router，只有 VLAN 10 访问另外一个 VLAN 10 不需要经过 router
 
-
-
 ## What is a trunk port
 
 在小型的网络拓扑中只需要用几个 VLAN 对应几个 access port 来连接 switches 或者 routers。但是在大型的网络拓扑中如果一个接口分配给一个 VLAN，明显太浪费接口了，而且通常 router 的接口都比较少，还不够 VLAN 用
@@ -133,7 +131,7 @@ The range of VLANs(1-4094) is divided into two sections
 
   需要使用 `switchport trunk encapsulation dot1q` 来指定使用 dot1q 协议，才可以使用 `switchport mode trunk`
 
-- `show interface trunk`
+- `show interfaces trunk`
 
   来查看所有的 trunk port
 

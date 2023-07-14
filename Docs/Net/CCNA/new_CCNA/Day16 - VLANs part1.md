@@ -191,7 +191,7 @@ Src MAC: R1 MAC
 
 ## LAB
 
-这里以及手动接线了，不需要
+这里已经手动接线了，不需要
 
 ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-26_16-42.1du872hag2ww.webp)
 
