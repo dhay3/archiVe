@@ -47,6 +47,8 @@ PCP 也被称为 CoS(Class of Service)
 
 ### DSCP
 
+> DSCP 值默认 0，需要为特定的流量类型手动设置值，并不是默认的流量类型就会使用特定的 DSCP 值
+
 在 IPv4 报文头中有一部分被称为 ToS byte(8 bits)
 
 ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-13_18-16.1ap6vl6zqdc0.webp)
