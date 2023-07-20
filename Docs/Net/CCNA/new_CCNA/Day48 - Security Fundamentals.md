@@ -225,7 +225,9 @@ AAA servers 通常支持两种 AAA 协议
 
    例如门禁卡、指纹锁
 
+## LAB
 
+https://www.youtube.com/watch?v=EBs47-0ZD-A&list=PLxbwE86jKRgMpuZuLBivzlM8s2Dk5lXBQ&index=94
 
 **references**
 
