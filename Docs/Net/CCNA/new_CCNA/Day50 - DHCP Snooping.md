@@ -118,11 +118,13 @@ DHCP snooping 会区分是从 DHCP server 来的报文还是从 DHCP client 来�
          Match = forward, mismatch = discard
 
          > Source MAC 和 CHADDR 都可以被 spoofing，所以这并不是完美的
+         >
+         > 所以如果 attacker 做 dhcp flood 是不能被有效识别的
 
       2. Release/Decline messages, check if the packet’s source IP address and the receiving interface match the entry in the DHCP snooping binding table
 
          Match = forward, mismatch = discard
-
+      
          > 当一个 client 成功地从 DHCP server 租借了一个 IP 地址，会在 DHCP snooping binding table 中添加一条记录
 
 ## DHCP snooping configuration
@@ -157,9 +159,137 @@ DHCP snooping 会区分是从 DHCP server 来的报文还是从 DHCP client 来�
 
 假设现在 Attacker 伪装 192.168.100.10 发送了 release dhcp message 告诉 dhcp server 需要释放地址，因为是 untrusted port 过来的所以会校验 IP 地址以及报文的入接口是否匹配 dhcp snooping binding table 中的值，如果匹配就转发，如果不匹配就丢弃
 
-## Rate limiting
+![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230727/2023-07-27_20-13.1a4ey14unxa8.png)
 
+### Rate limiting
 
+DHCP snooping can limit the rate at which DHCP messages are allowed to enter an interface. If the rate of DHCP messages crosses the configured limit, the interface is err-disabled(Like with port security, the interface can be manually re-enabled, or automatically re-enabled with errdisable recovery)
+
+> 上面方式并不能有效的处理 DHCP flooding(因为 attacker  可以伪造 Source MAc 和 CHADDR)，而通过 rate limiting 就可以在一定程度上缓解 flooding
+
+![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230727/2023-07-27_20-35.3xrp8zc50jcw.webp)
+
+开启 rate limiting 非常简单，只需要对想要限流的端口使用 `SW1(config-if)#ip dhcp snooping limit rate <num>` 表示每秒允许接受多少个 DHCP 报文(不仅仅是 Discover)。如果超过设定的值，端口就会进入 errdisable 状态，同时输出 syslog
+
+如果想要将因为 rate limiting 而进入 errdisable 的端口重新启用，和 port security 一样可以通过 `SW1(config)#errdisable recovery cause dhcp-rate-limit` 来自动启用
+
+![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230727/2023-07-27_20-43.5i00tlhgsow0.webp)
+
+上图表示因为 dhcp rate-limit 而导致端口进入 errdisable 的，会在 300 秒后将端口执行 `shutdown` 和 `no shutdown` 命令
+
+### no ip dhcp snooping information option
+
+information option 也被称为 DHCP relay agent information option(option 82)
+
+*It provides additional information about which DHCP relay agent received the client’s message, on which interface, in which VLAN, etc*
+
+DHCP relay agents 可以对收到的 client’s DHCP messages 增加 Option82
+
+但是如果开启了 DHCP snooping, 思科交换机也会对收到的 client’s DHCP messages 增加 Option82，即使交换机(3 层交换机)并不是一个 DHCP relay agent
+
+而思科的交换机默认会丢弃从 untrusted ports 过来的 Option82 DHCP messages
+
+![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230727/2023-07-27_20-58.77rj1aafbk0.webp)
+
+所以在此拓扑图中想要 PC1 - 3 DHCP 正常，就需要使用 `SW1(config-if)#no ip dhcp snooping information option` 来关闭交换机指定添加 DHCP Option82 的功能
+
+但是即使对 SW1 使用了 `no ip dhcp snooping information option` R1 还是不能正常收到 PC 发送过来的 Discover，因为 SW2 会为从 SW1 过来的 DHCP messages 加上 Option82
+
+当 R1 收到后仍然会丢弃这些报文，因为并不是从 DHCP relay agent 来的
+
+![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230727/2023-07-27_21-32.6aupwmgvgsxs.webp)
+
+所以 SW2 同样也需要使用 `no ip dhcp snooping information option`
+
+## Command summary
+
+![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230727/2023-07-27_21-39.6mh3cqzwftvk.webp)
+
+## LAB
+
+![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230727/2023-07-27_21-46.1q9uf8n461vk.webp)
+
+### 0x01
+
+Configure R1 as a DHCP server
+
+Exclude 192.1681.1 - 192.168.1.9 from the pool
+
+Default gateway: R1
+
+```
+R1(config)#ip dhcp excluded-address 192.168.1.1 192.168.1.9
+R1(config)#ip dhcp pool POOL 
+R1(dhcp-config)#network 192.168.1.0 255.255.255.0
+R1(dhcp-config)#default-router 192.168.1.1
+```
+
+还需要将 PC 的分配模式修改成 DHCP，然后通过 `show ip dhcp binding` 来查看是否生效
+
+```
+R1(config)#do show ip dhcp bind
+IP address       Client-ID/              Lease expiration        Type
+                 Hardware address
+192.168.1.10     0001.6432.B922           --                     Automatic
+```
+
+### 0x02
+
+Configure DHCP snooping on SW1 and SW2
+
+Configure the uplink interfaces as trusted ports
+
+```
+SW2(config)#ip dhcp snooping 
+SW2(config)#ip dhcp snooping vlan  1
+SW2(config)#int g0/1
+SW2(config-if)#ip dhcp snooping trust 
+
+SW1(config)#ip dhcp snooping 
+SW1(config)#ip dhcp snooping vlan  1
+SW1(config)#int g0/2
+SW1(config-if)#ip dhcp snooping trust 
+```
+
+配置完成后将 PC2 分配方式配置成 DHCP 来校验
+
+### 0x03
+
+Use ipconfig /renew on PC2 to get an IP address
+
+这里会失败，因为没有启用 option82，还需要使用如下命令
+
+```
+SW2(config)#no ip dhcp snooping information option 
+SW1(config)#no ip dhcp snooping information option 
+```
+
+使用 `show ip dhcp snooping binding` 来校验
+
+```
+SW2(config)#do show ip dhcp snooping binding
+MacAddress          IpAddress        Lease(sec)  Type           VLAN  Interface
+------------------  ---------------  ----------  -------------  ----  -----------------
+00:60:70:DB:6A:23   192.168.1.11     86400       dhcp-snooping  1     FastEthernet0/2
+Total number of bindings: 1
+
+SW1(config)#do show ip dhcp snoop bind
+MacAddress          IpAddress        Lease(sec)  Type           VLAN  Interface
+------------------  ---------------  ----------  -------------  ----  -----------------
+00:60:70:DB:6A:23   192.168.1.11     86400       dhcp-snooping  1     GigabitEthernet0/1
+Total number of bindings: 1
+```
+
+PC2
+
+```
+C:\>ipconfig /renew
+
+   IP Address......................: 192.168.1.11
+   Subnet Mask.....................: 255.255.255.0
+   Default Gateway.................: 192.168.1.1
+   DNS Server......................: 0.0.0.0
+```
 
 **references**
 

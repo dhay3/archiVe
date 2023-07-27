@@ -65,7 +65,7 @@ Port Security 是思科交换机上的一个安全功能
 
 ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_14-28.3eau1me63aio.webp)
 
-让端口开启 port security 的功能很简单，值需要使用 `SW1(config-if)#switchport port-security [mac-address <address>]`  即可(添加 mac-address 参数表示手动指定 authorized MAC)
+让端口开启 port security 的功能很简单，只需要使用 `SW1(config-if)#switchport port-security [mac-address <address>]`  即可(添加 mac-address 参数表示手动指定 authorized MAC)
 
 但是需要注意的是，==只有显式的声明 switchport 是 access mode 或者是 trunk mode 才可以(默认开启 DTP 是不支持，所以会报错)==
 
@@ -281,7 +281,7 @@ Sticky learning: Disabled
 
 Aging time: 1 hour
 
-因为默认链路开启 DTP，所以需要显式的声明为 access mode
+因为默认链路开启 DTP，所以需要显式的声明为 access mode 否则会报错
 
 ```
 SW1(config)#int range f0/1-3
