@@ -189,7 +189,7 @@ DHCP relay agents 可以对收到的 client’s DHCP messages 增加 Option82
 
 而思科的交换机默认会丢弃从 untrusted ports 过来的 Option82 DHCP messages
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230727/2023-07-27_20-58.77rj1aafbk0.webp)
+![ ](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230727/2023-07-27_20-58.77rj1aafbk0.webp)
 
 所以在此拓扑图中想要 PC1 - 3 DHCP 正常，就需要使用 `SW1(config-if)#no ip dhcp snooping information option` 来关闭交换机指定添加 DHCP Option82 的功能
 

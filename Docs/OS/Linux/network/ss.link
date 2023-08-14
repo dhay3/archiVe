@@ -1,13 +1,5 @@
 # Linux ss
 
-参考：
-[https://einverne.github.io/post/2013/01/ss-command-socket-statistics.html](https://einverne.github.io/post/2013/01/ss-command-socket-statistics.html)
-[https://man7.org/linux/man-pages/man8/ss.8.html](https://man7.org/linux/man-pages/man8/ss.8.html)
-
-https://wangchujiang.com/linux-command/c/ss.html
-
-https://phoenixnap.com/kb/ss-command
-
 ## Digest
 
 syntax：`ss [options] [filter]`
@@ -19,6 +11,14 @@ u_str ESTAB  0      0                                      * 176285             
 u_str ESTAB  0      0                                      * 32936                * 31884        
 u_str ESTAB  0      0                     @/tmp/.X11-unix/X0 30784                * 30037
 ```
+`ss` 在 `iproute2` 封包内
+
+```
+(base) cpl in ~ λ pacman -F ss
+core/iproute2 6.2.0-2 [installed]
+    usr/bin/ss
+```
+
 ## Columns
 
 一般 ss 会显示如下几个字段
@@ -51,6 +51,8 @@ u_str ESTAB  0      0                     @/tmp/.X11-unix/X0 30784              
 
 由于版本不同，以下有些参数可能不同
 
+> 如果没有使用 `-l`, `-a` 默认显示 non-listening socket(例如 TCP 中处于 Established 的连接)
+
 - `-O | --online`
 
   以一行显示socket
@@ -82,7 +84,7 @@ u_str ESTAB  0      0                     @/tmp/.X11-unix/X0 30784              
   只展示正在监听的套接字 ，缺省参数
 
 - `-a,--all`
-  展示正在监听和没有监听的套接字，如果指定`-t`参数只展示ESTABLISHED的socket 
+  展示正在监听和没有监听的套接字 
 
 - `-t|-u`
   tcp或udp使用的套接字 
@@ -251,4 +253,10 @@ EXPRESSION 可以是如下的值(具体查看man page)
   Ncat: Software caused connection abort.
   ```
 
-  
+
+**references**
+
+1. [https://einverne.github.io/post/2013/01/ss-command-socket-statistics.html](https://einverne.github.io/post/2013/01/ss-command-socket-statistics.html)
+2. https://man7.org/linux/man-pages/man8/ss.8.html](https://man7.org/linux/man-pages/man8/ss.8.html)
+3. https://wangchujiang.com/linux-command/c/ss.html
+4. https://phoenixnap.com/kb/ss-command
