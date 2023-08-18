@@ -190,7 +190,7 @@ Area0 = Backbond area
 
   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_13-39.47s9ydc2e1mo.webp)
 
-  红框中的四台 router 对应的接口分别为 192.168.1.1/2/3/4, 因为 192.168.1.1/2/3 都在 area0，但是 192.168.1.4 在 area1，所以这个拓扑是不行的
+  红框中的四台 router 对应的接口分别为 192.168.1.1/2/3/4, 因为 192.168.1.1/3/4 都在 area0，但是 192.168.1.2 在 area1，所以这个拓扑是不行的
 
 ## Basic OSPF Configuration
 
@@ -272,7 +272,7 @@ Area0 = Backbond area
      >
      > *for a short time and won’t be able to forward traffic to those destinations*
      >
-     > 这里必须选择 yes 否则不会生效
+     > 这里必须选择 yes 否则不会生效'
 
   2. Highest IP address on a loopback interface second
 

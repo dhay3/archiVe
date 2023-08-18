@@ -354,7 +354,7 @@ SW1 有两路径和 SW3 互联，端口分别为 G0/1 和 G0/2。G0/1 的序号�
 
 上面说了 designated port 和 root port,但是还没有说处于 blocking 状态的接口叫什么
 
-和 HUB 不一样，Switch 之间互联的 link 都是一个 collision domain 
+和 HUB 不一样，Switch 之间互联的 link 都是一个 collision domain ,每一个 collision domain 至少有一个 designated port，剩下的就是 blocking port
 
 ### The process of STP
 

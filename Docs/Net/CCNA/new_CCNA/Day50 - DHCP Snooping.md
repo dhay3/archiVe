@@ -75,7 +75,7 @@ PC1 想要通过 DHCP 获取 IP 地址，R1 是实际的 DHCP 服务器，在同
 
 ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_22-23.54jryt13ecu8.webp)
 
-同时 PC1 会回送 DECLINE 到 R1 表示不会采取 R1 的 offer，因为 Attacker 的 offer 先到，在完成 DORA 后，PC1 获得 Attacker 提供的信息，IP 为 172.16.1.10，默认官网为 172.16.1.2(即为 Attacker 的地址)
+同时 PC1 会回送 DECLINE 到 R1 表示不会采取 R1 的 offer，因为 Attacker 的 offer 先到，在完成 DORA 后，PC1 获得 Attacker 提供的信息，IP 为 172.16.1.10，默认网关为 172.16.1.2(即为 Attacker 的地址)
 
 ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_22-25.2xq54yqcr9a8.webp)
 
@@ -293,4 +293,4 @@ C:\>ipconfig /renew
 
 **references**
 
-1. [^https://www.youtube.com/watch?v=qYYeg2kz1yE&list=PLxbwE86jKRgMpuZuLBivzlM8s2Dk5lXBQ&index=97]
+1. [^https://www.youtube.com/watch?v=qYYeg2kz1yE&list=PLxbwE86jKRgMpuZuLBivzlM8s2Dk5lXBQ&index=97]	

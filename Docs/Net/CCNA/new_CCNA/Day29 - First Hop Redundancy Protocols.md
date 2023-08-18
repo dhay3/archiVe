@@ -238,7 +238,7 @@ else if a.priority == b.priority then:
 		b = active
 ```
 
-上面还是了 `standy <group number> preempt` 来让 R1 做抢占式成为 active router
+上面还使用了 `standy <group number> preempt` 来让 R1 做抢占式成为 active router
 
 例如
 
