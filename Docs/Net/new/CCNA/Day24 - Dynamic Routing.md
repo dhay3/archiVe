@@ -227,7 +227,7 @@ IGP 协议的 AD 值，可以参考下表
 
 ## Route selection
 
-路由选择的规则如下(不考虑 the longest prefix)
+==这里的 Route selection 只表示那条 route 应该加入到 routing table==，并不是表示 Router 收到报文后，使用那条 route(如果需要判断使用那条 route，只有一个标准即 the longest prefix)
 
 > 左 AD 右 metric，先比 AD 后比 metric，等价 ECMP 
 

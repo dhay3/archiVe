@@ -14,6 +14,8 @@
 
 2. 这时会使用 ARP，对应的 ARP request 报文为
 
+   > 注意这里的 Src/Dst IP 并不是 3 层 IP header 中的，而是 ARP header 中的
+
    Src IP: 192.168.1.1
 
    Dst IP: 192.168.1.254
@@ -88,7 +90,7 @@
 
 ​		并将 Src IP 和 Src MAC 记录到自己的 ARP table 中
 
-10. R1 收到 ARP reply，并将 Dst MAC 和 Dst IP 记录到自己的 ARP table 中，并发送报文
+10. R1 收到 ARP reply，并将 Dst MAC 和 Dst IP 记录到自己的 ARP table 中，并发送报文，==这里 Src MAC 会变为发送报文接口对应的 MAC==
 
     Src IP: 192.168.12.1
 

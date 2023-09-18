@@ -166,7 +166,7 @@ Birdge ID 长得类似下图
 
 > 这里的 MAC address 对应 Switch MAC[^STP Switch MAC address] 是 SWitch 的一个唯一标识符
 >
-> 逻辑上 Switch 并不需要 MAC address，但是 STP 需要 MAC address 来决定 root bridge，所以一般的 Switch 都会有一个 MAC 来代指设备本身，并不是每一个端口都有 MAC，这个 MAC 是和设备相关且固定的
+> 逻辑上 Switch 设备本身并不需要 MAC address，但是 STP 需要 MAC address 来决定 root bridge，所以一般的 Switch 都会有一个 MAC 来代指设备本身
 
 *The default bridge priority is 32768 on all switches, so by default the MAC address is used as the tie-breaker(lowest MAC address becames the root bridge)*
 

@@ -92,6 +92,10 @@ Eth trailer 只包含一部分 FCS (Frame check sequence)
 
 但是目前 SW1 并不知道 Dest MAC address .0002 的“位置”，所以往 SW1 除从报文来的端口(这里即 F0/1)外的所有的端口发送一个 Unknown Unicast frame(Flood 中文也叫做泛洪)。报文到达 PC3 时，因为 MAC address 不匹配 Dest MAC address 所以会被丢弃
 
+> 因为对应的报文中有详细的 Destination MAC address，不是广播地址，这也被称为 Unicast
+>
+> 但是不知道对应的 MAC 需要通过那个端口转发，所以被称为 unknown Unicast
+
 ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230519/2023-05-19_10-45.73c0wpbi4mww.webp)
 
 因为 PC2 MAC address 匹配 Dest MAC address .0002，所以会回包。当回包报文到达 SW1 时，因为没有 .0002 Source MAC address 的信息，同样会记录 MAC address .0002 是从那个端口( 即 F0/2 )学过来的。因为 Dest MAC address 在 MAC table 中有对应的记录，所以不会 Flood 会直接转发(Forward，也被称为 Known Unicast frame)到 F0/1
@@ -240,8 +244,6 @@ ARP Request 中包含如下信息
 如果需要查看 Cisco Router 中的 ARP table，可以使用 `show arp`
 
 如果需要删除 Cisco Router 中的 ARP table，可以使用
-
-
 
 ## Ping
 

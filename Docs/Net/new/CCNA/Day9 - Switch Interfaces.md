@@ -15,7 +15,9 @@ Duplex 双工分两种
 
 > 例如 walkie-talkies(对讲机)，一个人在说话时，其他人只能接收
 
-在现代的网络拓扑中一般不会使用 Half duplex 设备，但是早期使用的 **Hub(会将收到的报文，flood 到除接收端口外的所有端口，不管报文是几层的)** 就是一个半双工设备，现在 PC1/PC2/PC3 通过 Hub 互联
+在现代的网络拓扑中一般不会使用 Half duplex 设备，但是早期使用的 **Hub(会将收到的报文，flood 到除接收端口外的所有端口，不管报文是几层的)** 就是一个工作在半双工下的网络设备
+
+假设现在 PC1/PC2/PC3 通过 Hub 互联
 
 ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-02_14-49.1ekt9lmqjudc.webp)
 

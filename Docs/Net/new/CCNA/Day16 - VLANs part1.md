@@ -7,13 +7,13 @@
 *A LAN is a group of devices(PCs, servers, routers, switches, etc.) in a single location(home, office, etc.)*
 
 - A LAN is a single broadcast domain, including all devices in that broadcast domain
-- A broadcast domain is the group of devices which will receive a broadcast frame (destination MAC FFFF.FFFF.FFFF) sent by any one of the members
+- A broadcast domain is the group of devices which will receive a broadcast frame (destination MAC FFFF.FFFF.FFFF 二层广播帧) sent by any one of the members
 
 ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-26_14-16.499n6m8xki80.webp)
 
 例如上图就有 4 个 boardcast domain(也对应这 4 个 LAN)
 
-可以明显看出 boardcast domain 是通过 Router 来划分的。因为 Router 在收到 Dst MAC FFFF.FFFF.FFFF 的报文时，并不会和 Switch 一样转发到除接受端口外的所有端口
+可以明显看出 boardcast domain 是通过 Router 来划分的。因为 Router 在收到 Dst MAC FFFF.FFFF.FFFF 的报文时，并不会和 Switch 一样转发到除接受端口外的所有端口，即 Router 不会广播报文
 
 ## Why needs VLAN
 

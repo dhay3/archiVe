@@ -239,6 +239,8 @@ IPv6 和 IPv4 routing 逻辑上相同，但是有几点细节有区别
 
    Only the exit interface is specified
 
+   > 逻辑上是和当前 router 直联的，但是实际并不是
+
    对应的命令为 `ipv6 route destination/prefix-length exit-intereface`
 
    例如 `ipv6 route 2001:db8:0:3::/64 g0/0`
