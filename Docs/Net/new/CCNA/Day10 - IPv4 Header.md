@@ -1,6 +1,6 @@
 # Day10 - IPv4 Header
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-24_13-45.6dgun3aapk3k.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-24_13-45.6dgun3aapk3k.webp)
 
 ## Version
 

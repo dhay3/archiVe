@@ -2,7 +2,7 @@
 
 以如下拓扑为例
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-29_16-03.6vql9jubyqrk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-29_16-03.6vql9jubyqrk.webp)
 
 Engineering 部门划分在 VLAN10，HR 部门划分在 VLAN20,Sales 部门划分在 VLAN30，SW1 和 SW2 之间通过 2 个 access port 建立连接，橙色的是 VLAN10,紫色的是 VLAN30
 
@@ -22,7 +22,7 @@ Engineering 部门划分在 VLAN10，HR 部门划分在 VLAN20,Sales 部门划�
 
 VLAN 10 中的一台机器，想要访问另外一个 VLAN 10 中的一台机器
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-29_16-12.46574qsnoy80.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-29_16-12.46574qsnoy80.webp)
 
 现在有一个问题
 
@@ -44,7 +44,7 @@ VLAN 10 中的一台机器，想要访问另外一个 VLAN 10 中的一台机器
 - ISL(Inter-Switch Link) 是思科独有的协议，现在已过时
 - IEEE 802.1q(dot1q) 是标准公认的协议
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-29_16-22.2b9unrcos20w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-29_16-22.2b9unrcos20w.webp)
 
 dot1q 会在原始的 2 层帧头 Source 和 Type/Length 之间添加一个 802.1Q 的字段
 
@@ -56,7 +56,7 @@ dot1q 会在原始的 2 层帧头 Source 和 Type/Length 之间添加一个 802.
 
 ### dot1q tag
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-29_16-27.56wy4u6e9a0w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-29_16-27.56wy4u6e9a0w.webp)
 
 #### TPID
 
@@ -97,7 +97,7 @@ The range of VLANs(1-4094) is divided into two sections
 
 > 大多数交换机都支持这两个部分，但是一些比较老的设备不支持 Extended VLANs
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-29_16-41.1j61a3220tvk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-29_16-41.1j61a3220tvk.webp)
 
 当 SW2 接受到 VLAN10 内的机器发送的报文后；会根据是否是广播报文，选择转发或者是广播到 VLAN10 接口，出向 trunk 接口会加上 VLAN10 tag
 
@@ -115,11 +115,11 @@ The range of VLANs(1-4094) is divided into two sections
 
 现在 VLAN10 的一台机器想和 VLAN10 的另外一台机器通信，当报文到达 SW2 时因为是 VLAN10 和 Native VLAN 相同，所以 SW2 不会对出向的报文加上 VLAN10 tag；当报文到达 SW1 时，因为收到的报文没有 VLAN tag，所以会认为是 Native VLAN，所以会直接转包到 VLAN10 内的另外一台机器或者是广播
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-29_16-53.2hjmnzxitxog.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-29_16-53.2hjmnzxitxog.webp)
 
 现在将 SW1 的 Native VLAN 配置成 30，当报文到达 SW1 时因为没有 VLAN tag，所以会认为是 Native VLAN，所以会转发到 VLAN30，但是 VLAN30 中并不包含实际想要访问 VLAN 10 中的机器，所以显然就不会转发直接丢包
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-29_16-59.2e1at7art94w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-29_16-59.2e1at7art94w.webp)
 
 ## Trunk Configuration
 
@@ -127,7 +127,7 @@ The range of VLANs(1-4094) is divided into two sections
 
   将当前端口转换为 trunk port，但是如果交换机支持 ISL 和 dot1q 两种 VLAN 协议，直接使用可能会有问题
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-29_17-06.183crtufqmbk.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-29_17-06.183crtufqmbk.webp)
 
   需要使用 `switchport trunk encapsulation dot1q` 来指定使用 dot1q 协议，才可以使用 `switchport mode trunk`
 
@@ -135,7 +135,7 @@ The range of VLANs(1-4094) is divided into two sections
 
   来查看所有的 trunk port
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-29_17-10.87wflnuubg0.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-29_17-10.87wflnuubg0.webp)
 
   - mode on 表示端口是手动配置的 trunk port
   - Encapsulation 802.1q 表示端口使用 dot1q 协议
@@ -147,7 +147,7 @@ The range of VLANs(1-4094) is divided into two sections
 
   配置当前 trunk 接口允许通过的 VLAN
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-29_17-17.13kw0ehligu8.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-29_17-17.13kw0ehligu8.webp)
 
 - `switchport trunk allowed vlan add|remove <vlan-id>`
 
@@ -161,7 +161,7 @@ The range of VLANs(1-4094) is divided into two sections
 
 你可能已经注意到了上面的例子中 R1 和 SW2 是通过 1 个接口互联的。如果需要使用这种拓扑，就需要使用 Router on a stick(ROAS)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-29_17-33.238grvqumigw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-29_17-33.238grvqumigw.webp)
 
 将和 SW2 互联的 R1 G0/0 分成 3 个 subinterfaces(子接口)，subinterface number 可以不用和 VLAN id 相同，但是为了方便阅读一般设置成和 VLAN id 相同
 
@@ -169,7 +169,7 @@ The range of VLANs(1-4094) is divided into two sections
 - G0/0.20 对应 VLAN20
 - G0/0.30 对应 VLAN30
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-29_17-40.6ztw54yvolfk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-29_17-40.6ztw54yvolfk.webp)
 
 当然也需要为每一个 子接口 单独配置一个 3 层的 IP 地址
 
@@ -177,7 +177,7 @@ The range of VLANs(1-4094) is divided into two sections
 
 假设 VLAN 10 中的一台机器需要访问 VLAN 30 中的一台机器
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-29_17-54.2scnfm6b654.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-29_17-54.2scnfm6b654.webp)
 
 1. 因为不在一个段,首先会做 ARP request 找 GW MAC
 2. ARP request 到达 SW2 G0/2 因为入口是 VLAN10，所以 SW2 只会广播到 VLAN10 中所有的设备，同时记录入向 MAC 到自己的 MAC address table,因为 SW G0/1 是一个 trunk port,通过该端口发送的会带上 VLAN tag
@@ -199,7 +199,7 @@ The range of VLANs(1-4094) is divided into two sections
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-29_20-05.v16t6oil140.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-29_20-05.v16t6oil140.webp)
 
 这里需要注意 SW1 和 SW2 之间互联的 trunk port，并不需要 VLAN20
 

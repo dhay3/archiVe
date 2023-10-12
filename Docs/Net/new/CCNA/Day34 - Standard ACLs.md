@@ -31,7 +31,7 @@ Access Control Lists(ACLs)
 
 例如如下拓扑
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_11-25.1p2wxj1n74yo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_11-25.1p2wxj1n74yo.webp)
 
 需要满足如下条件
 
@@ -61,7 +61,7 @@ if source IP == any then:
 
 假设现在在 R1 G0/2 outbound 上配置 ACL
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_12-01.4v1f12ngasjk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_12-01.4v1f12ngasjk.webp)
 
 1. PC3 访问 10.0.1.100 过 R1 G0/2 因为是 inbound 不会使用 ACL 过滤报文
 2. R1 G0/0 outbound 到 SRV1 没有 ACL 所以也不会过滤报文
@@ -72,7 +72,7 @@ if source IP == any then:
 
 假设现在在 R1 G0/2 inbound 是配置 ACL
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_12-07.40j8xzz3rojk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_12-07.40j8xzz3rojk.webp)
 
 1. PC3 访问 10.0.1.100 过 R1 G0/2 因为是 inbound 所以会使用 ACL 过报文，source IP address 192.168.2.1 匹配 ACE2 所以 deny 直接丢弃报文
 2. 虽然 PC1/PC2 可以访问 SRV1 也是满足条件的，但是 PC1/2 到 SRV1 不经过 R1 G0/2 outbound，ACL 也就不会被使用，所以还不是最佳的
@@ -81,7 +81,7 @@ if source IP == any then:
 
 R2 G0/1 outbound 和 R2 G0/0 inbound 是最佳的选择
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_12-15.zypwvflc9ps.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_12-15.zypwvflc9ps.webp)
 
 1. PC3 访问 10.0.1.100 到 R2 G0/0 inbound 没有 ACL 所以不会使用 ACL 过滤报文
 2. 通过 R2 G0/1 outbound 转发会按照 ACL 过滤报文，source IP 192.168.2.100 匹配 ACE2，所以 deny，报文被丢弃
@@ -102,7 +102,7 @@ if source IP == 192.168.2.0/24 then:
 	deny
 ```
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_14-03.uc6gfw2ut9c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_14-03.uc6gfw2ut9c.webp)
 
 现在 router 收到 src 10.0.0.1 dst 1.1.1.1 的报文，没有匹配到 ACL 中的任意一条 ACE， router 会怎么做？
 
@@ -157,17 +157,17 @@ router 会 deny 对应的报文，这一动作被称为 Implicit deny
 
 除此外，还可以使用 `access-list 1 deny host 1.1.1.1` 来表示匹配 32 bit mask IP，等价于上面的 2 个命令
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_14-19.4nw168fo0xkw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_14-19.4nw168fo0xkw.webp)
 
 > 如果想要配置非 32 bit mask 的就只能用第一种的方式
 
 如果想要一条规则配置所有的 IP，可以使用例如 `access-list 1 permit any` 等价与 `access-list 1 permit 0.0.0.0 255.255.255.255`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_14-26.68h5k2c6r2bk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_14-26.68h5k2c6r2bk.webp)
 
 假设使用了如下配置
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_14-29.5jnhtlxsmj5s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_14-29.5jnhtlxsmj5s.webp)
 
 我们就可以使用 `show access-lists` 来查看
 
@@ -183,7 +183,7 @@ router 会 deny 对应的报文，这一动作被称为 Implicit deny
 
 如果需要将 ACL 应用到 interface 上可以使用 `ip access-group <number> {in | out}`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_14-55.3szl3syefzy8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_14-55.3szl3syefzy8.webp)
 
 ##### ACL remark
 
@@ -191,7 +191,7 @@ ACL remark 类似注释，没有实际的效果，只为 ACL 其注释提示的�
 
 可以使用 `access-list <number> remark <remark>` 命令来配置
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_14-25.4j387tqjsjcw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_14-25.4j387tqjsjcw.webp)
 
 > remark 部分的 \# hash 并不是并要的
 
@@ -199,7 +199,7 @@ ACL remark 类似注释，没有实际的效果，只为 ACL 其注释提示的�
 
 例如下面拓扑
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_15-04.dron03a9mhs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_15-04.dron03a9mhs.webp)
 
 需要满足如下条件
 
@@ -217,7 +217,7 @@ if source IP == 192.168.1.0/24 then
 
 因为 192.168.2.0/24 和 192.168.1.0/24 都通过 R1 互联，所以配置 R1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_15-07.650zoob8s51c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_15-07.650zoob8s51c.webp)
 
 1. `access-list 1 permit 192.168.1.1`
 
@@ -243,7 +243,7 @@ if source IP == 192.168.1.0/24 then
 
 现在 PC1 ping PC3
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_15-27.10i7rivq42ww.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_15-27.10i7rivq42ww.webp)
 
 1. 入报文到 R1 G0/1 inbound 因为没有应用 ACL，所以不会检查 ACL
 2. R1 查看路由表转发到 G0/2
@@ -252,7 +252,7 @@ if source IP == 192.168.1.0/24 then
 
 现在 PC2 ping PC3
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_15-36.70mg3vons1z4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_15-36.70mg3vons1z4.webp)
 
 1. 入报文到 R1 G0/1 inbound 因为没有应用 ACL，所以不会检查 ACL
 2. R1 查看路由表转发到 G0/2
@@ -270,17 +270,17 @@ if source IP == 192.168.1.0/24 then
 
 > entry-number，默认以 10 递增，从 10 开启，也可以手动指定 ACE 使用的具体值
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_15-47.499u9vcr2b9c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_15-47.499u9vcr2b9c.webp)
 
 和 Standard Numbered ACLs 一样，也可以使用 `show access-lists`，`show ip access-lists` 来查看配置的 ACL，另外也可以使用 `show running-config | section access-list` 来查看 ACL 整个部分
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_15-49.d8hf6gjehrk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_15-49.d8hf6gjehrk.webp)
 
 ##### Example
 
 例如如下拓扑
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_15-54.35bks3qaxtkw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_15-54.35bks3qaxtkw.webp)
 
 需要满足如下条件
 
@@ -309,7 +309,7 @@ if source IP == 192.168.1.0/24 then
 
 条件 1 配置在 R2 G0/2, 条件 2345 配置在 R2 G0/1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_16-08.1vk2sgvhu4u8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_16-08.1vk2sgvhu4u8.webp)
 
 1. `ip access-list standard TO_10.0.2.0/24`
 
@@ -359,7 +359,7 @@ if source IP == 192.168.1.0/24 then
 
 如果这时使用 `show ip access-lists` 来查看配置的 ACL
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_16-24.a1ruaceryc8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_16-24.a1ruaceryc8.webp)
 
 这里可以看到命令输入的顺序和 `show ip access-lists` 显示的不一样
 
@@ -377,7 +377,7 @@ if source IP == 192.168.1.0/24 then
 
 现在 PC2 ping SRV1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_16-35.622qy6qtgl4w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_16-35.622qy6qtgl4w.webp)
 
 1. 入报文到 R2 G0/1 inbound 因为没有应用 ACL，所以不会检查 ACL
 2. R2 查看路由表转发到 G0/1
@@ -387,13 +387,13 @@ if source IP == 192.168.1.0/24 then
 
 ### quiz3
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_16-43.3jrrgaomig5c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_16-43.3jrrgaomig5c.webp)
 
 ==每一个接口只一个方向只能应用一个 ACL，后面应用的 ACL 会覆盖之前的==，所以这里实际使用的是 ACL 10
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-26_17-02.29yhnoyx29q8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-26_17-02.29yhnoyx29q8.webp)
 
 ### 0x01
 

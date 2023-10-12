@@ -12,7 +12,7 @@
 
   例如
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_20-57.381co7mwg9fk.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_20-57.381co7mwg9fk.webp)
 
   橙色的部分为 downlink 因为针对每台设备而言离 end hosts 更近，每个过来的 DHCP 报文都会被检查是否合理
 
@@ -20,7 +20,7 @@
 
   例如
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_21-04.uaenhx11klc.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_21-04.uaenhx11klc.webp)
 
   1. PC1 发送 DHCP Discover 到 SW1 downlink 端口就会校验报文是否合法
   2. 如果通过，由 SW1 uplink 端口转发到 SW2 downlink 端口
@@ -30,7 +30,7 @@
 
   如果 DHCP 报文判断不合法，就会在 downlink port 被丢弃
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_21-09.7h5uxn2e89vk.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_21-09.7h5uxn2e89vk.webp)
 
 ## DHCP attacks
 
@@ -42,7 +42,7 @@
 
 An attacker uses spoofed MAC addresses to flood DHCP Discover messages. The target server’s DHCP pool becomes full, resulting in a denial-of-service to other devices
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_21-12.25ihiiwo8vs0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_21-12.25ihiiwo8vs0.webp)
 
 在 DHCP 中存储实际的 source MAC address 是 CHADDR 字段
 
@@ -65,23 +65,23 @@ A spurious DHCP server replies to clients’ DHCP Discover messages and assigns 
 
 PC1 想要通过 DHCP 获取 IP 地址，R1 是实际的 DHCP 服务器，在同一个 LAN 中有一个攻击者伪装成 DHCP 服务器
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_22-01.39wzvu2gln28.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_22-01.39wzvu2gln28.webp)
 
 首先 PC1 会发送 DHCP discover，因为是 3 层目的是 255.255.255.255 所以会被广播到整个 LAN，所以 Attacker 和 DHCP server 都能收到 PC1 发送过来的 DHCP Discover
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_22-21.2fn00c4mlu4g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_22-21.2fn00c4mlu4g.webp)
 
 假设现在 Attacker 回送的 offer 先比 DHCP server 回送的 offer 找到 PC1，那么 PC1 就会使用 Attacker 提供的信息
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_22-23.54jryt13ecu8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_22-23.54jryt13ecu8.webp)
 
 同时 PC1 会回送 DECLINE 到 R1 表示不会采取 R1 的 offer，因为 Attacker 的 offer 先到，在完成 DORA 后，PC1 获得 Attacker 提供的信息，IP 为 172.16.1.10，默认网关为 172.16.1.2(即为 Attacker 的地址)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_22-25.2xq54yqcr9a8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_22-25.2xq54yqcr9a8.webp)
 
 所以如果 PC1 想要发送流量到公网，就会先到网关即 Attacker，这样 Attacker 就可以针对报文做监听或者是修改报文的操作
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_22-28.4be8yr0vszy8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_22-28.4be8yr0vszy8.webp)
 
 ## DHCP Messages
 
@@ -131,11 +131,11 @@ DHCP snooping 会区分是从 DHCP server 来的报文还是从 DHCP client 来�
 
 例如配置成如下拓扑
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_20-57.381co7mwg9fk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_20-57.381co7mwg9fk.webp)
 
 需要使用如下命令
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_23-27.1m93phijlc4g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_23-27.1m93phijlc4g.webp)
 
 - `SW2(config)#ip dhcp snooping`
 
@@ -151,7 +151,7 @@ DHCP snooping 会区分是从 DHCP server 来的报文还是从 DHCP client 来�
 
 可以使用 `show ip dhcp snooping binding` 来查看 dhcp snooping binding table
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_23-23.2jnn6gysgww0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_23-23.2jnn6gysgww0.webp)
 
 这里可以看到 192.168.100.10 - 12 都是成功租借的地址，所以记录在 dhcp snooping binding table 中
 
@@ -159,7 +159,7 @@ DHCP snooping 会区分是从 DHCP server 来的报文还是从 DHCP client 来�
 
 假设现在 Attacker 伪装 192.168.100.10 发送了 release dhcp message 告诉 dhcp server 需要释放地址，因为是 untrusted port 过来的所以会校验 IP 地址以及报文的入接口是否匹配 dhcp snooping binding table 中的值，如果匹配就转发，如果不匹配就丢弃
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230727/2023-07-27_20-13.1a4ey14unxa8.png)
+![](https://github.com/dhay3/image-repo/raw/master/20230727/2023-07-27_20-13.1a4ey14unxa8.png)
 
 ### Rate limiting
 
@@ -167,13 +167,13 @@ DHCP snooping can limit the rate at which DHCP messages are allowed to enter an 
 
 > 上面方式并不能有效的处理 DHCP flooding(因为 attacker  可以伪造 Source MAc 和 CHADDR)，而通过 rate limiting 就可以在一定程度上缓解 flooding
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230727/2023-07-27_20-35.3xrp8zc50jcw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230727/2023-07-27_20-35.3xrp8zc50jcw.webp)
 
 开启 rate limiting 非常简单，只需要对想要限流的端口使用 `SW1(config-if)#ip dhcp snooping limit rate <num>` 表示每秒允许接受多少个 DHCP 报文(不仅仅是 Discover)。如果超过设定的值，端口就会进入 errdisable 状态，同时输出 syslog
 
 如果想要将因为 rate limiting 而进入 errdisable 的端口重新启用，和 port security 一样可以通过 `SW1(config)#errdisable recovery cause dhcp-rate-limit` 来自动启用
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230727/2023-07-27_20-43.5i00tlhgsow0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230727/2023-07-27_20-43.5i00tlhgsow0.webp)
 
 上图表示因为 dhcp rate-limit 而导致端口进入 errdisable 的，会在 300 秒后将端口执行 `shutdown` 和 `no shutdown` 命令
 
@@ -189,7 +189,7 @@ DHCP relay agents 可以对收到的 client’s DHCP messages 增加 Option82
 
 而思科的交换机默认会丢弃从 untrusted ports 过来的 Option82 DHCP messages
 
-![ ](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230727/2023-07-27_20-58.77rj1aafbk0.webp)
+![ ](https://github.com/dhay3/image-repo/raw/master/20230727/2023-07-27_20-58.77rj1aafbk0.webp)
 
 所以在此拓扑图中想要 PC1 - 3 DHCP 正常，就需要使用 `SW1(config-if)#no ip dhcp snooping information option` 来关闭交换机指定添加 DHCP Option82 的功能
 
@@ -197,17 +197,17 @@ DHCP relay agents 可以对收到的 client’s DHCP messages 增加 Option82
 
 当 R1 收到后仍然会丢弃这些报文，因为并不是从 DHCP relay agent 来的
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230727/2023-07-27_21-32.6aupwmgvgsxs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230727/2023-07-27_21-32.6aupwmgvgsxs.webp)
 
 所以 SW2 同样也需要使用 `no ip dhcp snooping information option`
 
 ## Command summary
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230727/2023-07-27_21-39.6mh3cqzwftvk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230727/2023-07-27_21-39.6mh3cqzwftvk.webp)
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230727/2023-07-27_21-46.1q9uf8n461vk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230727/2023-07-27_21-46.1q9uf8n461vk.webp)
 
 ### 0x01
 

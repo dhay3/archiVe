@@ -61,11 +61,11 @@ Routing Information Protocol(RIP) 是基于 Distance vetcor IGP(uses routing-by-
 
 假设有如下拓扑，使用 RIP 来配置路由
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_13-54.7l50xlev603k.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_13-54.7l50xlev603k.webp)
 
 R1 配置如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_13-55.1bx09pqg5l6o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_13-55.1bx09pqg5l6o.webp)
 
 - `router rip`
 
@@ -131,25 +131,25 @@ default route 比较特殊
 
 例如下图，为 R1 添加了一条默认路由 via 203.0.113.2
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_18-29.a8v25855xsg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_18-29.a8v25855xsg.webp)
 
 现在需要使用 RIP 告诉 R2/R3/R4 这条默认路由，可以使用 `default-information originate` 命令来宣告默认路由
 
 使用上述命令后，那么 R4 的 routing table 如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_18-31.s5eoy2u53b4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_18-31.s5eoy2u53b4.webp)
 
 这里 R4 会添加两条往 0.0.0.0 的路由，即使 R3 - R4 和 R1 - R2 中间链路的带宽不一样，因为 RIP metric 只会考虑 hop，并不考虑链路带宽
 
 可以使用 `show ip protocols` 来查看当前使用的 dynamic routing
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_21-06.7bnnfzavhdhc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_21-06.7bnnfzavhdhc.webp)
 
 还可以使用 `maximum-paths <number>` 来修改，ECMP 最多拥有的路由条数
 
 或者是使用 `distance <ad>` 来修改当前协议的 AD 值
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_21-06_1.4bzwsrn2q6ww.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_21-06_1.4bzwsrn2q6ww.webp)
 
 ## EIGRP
 
@@ -169,11 +169,11 @@ Enhanced Interior Gateway Routing Protocol(EIGRP) 是思科独有的协议
 
 假设有如下拓扑，使用 EIGRP 来配置路由
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_13-54.7l50xlev603k.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_13-54.7l50xlev603k.webp)
 
 R1 配置如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_21-16.3cc1egkp3oxs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_21-16.3cc1egkp3oxs.webp)
 
 - `router eigrp 1`
 
@@ -215,17 +215,17 @@ R1 配置如下
 
   > 可以使用加 wildcard mask 的方式
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_21-32.7c095z6ns7ls.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_21-32.7c095z6ns7ls.webp)
 
   如果接口是 172.16.1.14，使用了 `network 172.16.1.0 0.0.0.15`,因为 172.16.1.14 在 172.16.1.15 范围内那么 172.16.1.14 对应的接口会自动加入 EIGRP
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_21-34.p9mkoxfemz4.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_21-34.p9mkoxfemz4.webp)
 
   如果使用了 `network 172.16.1.0 0.0.0.7` 就不会把 172.16.1.14 对应的接口加入到 EIGRP，因为 172.16.1.14 不在 172.16.1.7 内
 
 同样的和 RIP 一样，也可以使用 `show ip protocols` 来查看 EIGRP 相关的信息
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_21-46.ixs4nokxmq8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_21-46.ixs4nokxmq8.webp)
 
 这里可以看到一个比较特殊的东西 Router ID，按照下面顺序的因素来选择具体使用那个 Router ID
 
@@ -239,7 +239,7 @@ R1 配置如下
 
 如果 route 是通过 EIGRP 学来的，会以 D 来标识
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_21-52.coeauung07s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_21-52.coeauung07s.webp)
 
 其中的 metric 部分明显是大于 RIP 的，因为 EIGRP 衡量 metric 的方式和 RIP 不同
 
@@ -257,13 +257,13 @@ $$
 
 例如
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_22-58.2ry6pz8wckqo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_22-58.2ry6pz8wckqo.webp)
 
 R1 想要访问 PC1, 因为 via R2 的路由是 preferred route，所以 metric 就是 R2 F1/0 - R4 F1/0 bandwidth(因为其他链路互联的接口均为 gigabit, 而 R2 f1/0 和 R4  f1/0 是 fastethernet) 加上 R1 to PC1 via R2 所有链路的时延(这里的时延并不是通过 ICMP 来计算的，实际的 delay 是根据 interface bandwidth 来决定的)
 
 在 EIGRP 中还有两个名词，关联 metric
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_23-04.3cu966ufds1s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_23-04.3cu966ufds1s.webp)
 
 红色就是 Feasible Distance(FD)
 
@@ -281,7 +281,7 @@ P 192.168.4.0/24, 1 successors, FD is 28672
 
 了解 feasible distance 和 reported distance 是为了了解另外两个名词
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_23-09.5u6aarf584xs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_23-09.5u6aarf584xs.webp)
 
 > feasible successor 需要满足一个条件，就是 feasible successor 的 reported distance 要比 successor 的 feasible distance 小
 >
@@ -291,7 +291,7 @@ P 192.168.4.0/24, 1 successors, FD is 28672
 
 ### EIGRP Unequal-Cost Load-Balancing
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_23-21.3ryd7gdx2zgg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_23-21.3ryd7gdx2zgg.webp)
 
 在 EIGRP 中是通过 variance 值来改变 load balancing 方式的，如果 variance 值为 1 就表示只是用 ECMP (默认使用 variance 1)
 
@@ -301,7 +301,7 @@ P 192.168.4.0/24, 1 successors, FD is 28672
 
 > 对需要添加 unequal-cost load balancing 的设备使用
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_23-26.75fqsbitw4g0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_23-26.75fqsbitw4g0.webp)
 
 例如上图
 
@@ -315,7 +315,7 @@ via 10.0.13.2 是 feasible successor
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_22-34.7c152gm6aha8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_22-34.7c152gm6aha8.webp)
 
 ### 0x01
 

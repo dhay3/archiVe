@@ -92,7 +92,7 @@ Non-terminal symbols 由一个或者多个 terminal symbols 组成
 
 可以将 non-terminal symbol 和 terminal symbol 的关系想象成从下往上的树结构
 
-![2021-08-12_12-22](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/2021-08-12_12-22.4oq5txwzat20.png)
+![2021-08-12_12-22](https://github.com/dhay3/image-repo/raw/master/20210601/2021-08-12_12-22.4oq5txwzat20.png)
 
 ## EBNF
 

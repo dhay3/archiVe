@@ -18,7 +18,7 @@ MITMA 逻辑上的流程具体如下：
 
 假设现在 A 和 B 需要通信
 
-![Snipaste_2020-08-25_17-57-00](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221214/Snipaste_2020-08-25_17-57-00.1rrb6vapcvsw.webp)
+![Snipaste_2020-08-25_17-57-00](https://github.com/dhay3/image-repo/raw/master/20221214/Snipaste_2020-08-25_17-57-00.1rrb6vapcvsw.webp)
 
 - 首先 A 会发送一串信息给 B 表明自己的身份
 

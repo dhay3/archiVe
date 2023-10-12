@@ -18,11 +18,11 @@ IPv6 和 MAC address 一样都使用 Hexadecimal
 - Decimal 也被称为 Base 10 (在十进制中每 bit 只能是 0-9 9 个数字，所以也被称为 base 10)使用 0d 来标识
 - Hexadecimal 也被称为 Base 16 (在十六进制中每 bit 只能是 0-F 16个数字，所以也被称为 base 16)使用 0x 来标识
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-20_14-56.44w3noporkqo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-20_14-56.44w3noporkqo.webp)
 
 > 如果一个数字 10 没有标识是 0b/0d/0x 是分辨不出具体的值的
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-20_14-57.4shjtjl7emtc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-20_14-57.4shjtjl7emtc.webp)
 
 > 注意在 Binary 列中，部分数字有 leading 0，实际在表示二进制数时可以不需要 leading 0
 >
@@ -72,17 +72,17 @@ there simply aren’t enough IPv4 address available
 
   这几乎是一个天文数字，完全可以满足现在的需求
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-20_16-27.5m0v2wpvf3wg.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-20_16-27.5m0v2wpvf3wg.webp)
 
 - An IPv6 address is written in hexadecimal
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-20_16-28.6zdcmsht44g0.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-20_16-28.6zdcmsht44g0.webp)
 
   > 显然如果用 binary 或者是 decimal 来表示 IPv6 地址太复杂了
 
   IPv6 会以 16 bits 为一组
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-20_16-45.5tme9ojdq2rk.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-20_16-45.5tme9ojdq2rk.webp)
 
   且 IPv6 直接会使用 slash notation 来表示 network portion，在 Cisco 设备中也可以直接使用 slash 的方式来表示 subnet mask，无需使用 dotted decimal subnet mask
 
@@ -94,13 +94,13 @@ there simply aren’t enough IPv4 address available
 
   例如红框中的前导 0 可以被直接删除
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-20_16-52.xmmqhd2uokw.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-20_16-52.xmmqhd2uokw.webp)
 
 - Consecutive(连续的) quartets(这里指的就是以 : 分隔的部分) of all 0s can be replaced with a double colon(::)
 
   例如红框中有 4 个连续的 0000，是可以直接使用 :: 替换
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-20_16-54.5yjj6wg20dc0.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-20_16-54.5yjj6wg20dc0.webp)
 
   为什么可以这样来划分呢？因为我们知道 IPv6 是按照 16 bits 划分为 8 个 quartets 的，所以我们可以按照剩余非 :: 部分的 quartets 部分，就可以推算出全零 quartets 的个数。例如上图中的 2001:0DB8::0080:34BD 就可以推出全零 quartets 部分为 4 个
 
@@ -108,7 +108,7 @@ there simply aren’t enough IPv4 address available
   >
   > 需要注意的一点是，这条规则在 IPv6 address 中只能被使用一次
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-20_17-09.6epnhdi9dji8.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-20_17-09.6epnhdi9dji8.webp)
 
   因为你不能判断每一个 :: 到底有多少个 quartets of 0
 
@@ -116,15 +116,15 @@ there simply aren’t enough IPv4 address available
 
   > 0000 去掉 leading 0 就是 0
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-20_17-12.5y9vh3zy3b4.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-20_17-12.5y9vh3zy3b4.webp)
 
 理所当然，我们可以组合这两个简写的方式
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-20_17-07.2ekzr3hlb2ps.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-20_17-07.2ekzr3hlb2ps.webp)
 
 下面几个例子加强一下理解
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-21_18-21.5vmgzq5nsyyo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-21_18-21.5vmgzq5nsyyo.webp)
 
 ==在 RFC 5952 中有几条规则==
 
@@ -134,7 +134,7 @@ there simply aren’t enough IPv4 address available
 
 4. Hexadecimal characters abcdef must be written using lower-case, not upper-case ABCDEF
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_19-59.5ykwtfrf5cao.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_19-59.5ykwtfrf5cao.webp)
 
 > 即使在 Cisco 的设备上 IPv6 地址显示的也是大写的，但是为了按照标准尽量使用小写的 IPv6 地址
 
@@ -149,7 +149,7 @@ IPv4 可以 shorten address，当然也可以 expand address
 
 下面几个例子加强一下理解
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-21_18-33.43f128xxmadc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-21_18-33.43f128xxmadc.webp)
 
 ## IPv6 prefix
 
@@ -158,7 +158,7 @@ IPv4 可以 shorten address，当然也可以 expand address
 - 64 - 48 = 16 bits 用做子网划分
 - 128 - 64 = 64 bits 用做 host portion
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-21_18-47.tlw0qmt5xuo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-21_18-47.tlw0qmt5xuo.webp)
 
 例如
 
@@ -168,7 +168,7 @@ IPv4 可以 shorten address，当然也可以 expand address
 
 所以 network portion 就是 2001:DB8:8B00:1::/64
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-21_18-49.qctd81fwv4g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-21_18-49.qctd81fwv4g.webp)
 
 300D:00F2:0B34:2100:0000:0000:1200:0001/56
 
@@ -180,7 +180,7 @@ IPv4 可以 shorten address，当然也可以 expand address
 
 实际上应该为 300D:F2:B34:2100::/56，如果是上面的在扩展 IPv6 时地址就会变成 300D:F2:B34:0021::/56 显然和原始的地址不一样
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-21_18-54.4fmkmdu3ps74.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-21_18-54.4fmkmdu3ps74.webp)
 
 2001:0D88:8B00:0001:FB89:017B:0020:0011/93
 
@@ -196,15 +196,15 @@ IPv4 可以 shorten address，当然也可以 expand address
 
 所以 network portion 就是 2001:D88:8B00:1:FB89:178::/56
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-21_19-00.2iljdmfifdds.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-21_19-00.2iljdmfifdds.webp)
 
 下面几个例子加强一下理解
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_13-42.3z7ao8tnejr4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_13-42.3z7ao8tnejr4.webp)
 
 ## Configuring IPv6 addresses
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_13-50.t5twj7j59f.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_13-50.t5twj7j59f.webp)
 
 > 这里使用 2001:db8 是保留地址，类似与 IPv4 中的私网地址
 
@@ -220,17 +220,17 @@ IPv4 可以 shorten address，当然也可以 expand address
 
 配置完接口之后和 IPv4 类似，可以通过 `show  ipv6 interface brief` 来查看接口的信息
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_13-56.3hviz0l8fb5s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_13-56.3hviz0l8fb5s.webp)
 
 这里可以看到除了红框外手动配置的 IPv6 地址外，还有类似 IPv6 的地址
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_13-58.1usltgixf7ls.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_13-58.1usltgixf7ls.webp)
 
 这些被称为 **link-local addresses**，在端口配置了 IPv6 addresses 后会自动配置在对应的端口上
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_14-45.35wnci47vveo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_14-45.35wnci47vveo.webp)
 
 ### 0x01
 

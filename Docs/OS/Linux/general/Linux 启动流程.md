@@ -11,7 +11,7 @@ graph LR
 
 操作系统接管硬件以后，首先读入 /boot 目录下的内核文件。
 
-![Snipaste_2020-10-28_12-27-59](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221127/Snipaste_2020-10-28_12-27-59.2w5mgxvfz8lc.webp)
+![Snipaste_2020-10-28_12-27-59](https://github.com/dhay3/image-repo/raw/master/20221127/Snipaste_2020-10-28_12-27-59.2w5mgxvfz8lc.webp)
 
 以我的电脑为例，`/boot` 目录下面大概是这样一些文件：
 
@@ -34,7 +34,7 @@ vmlinuz-3.10.0-1062.el7.x86_64
 
 内核文件加载以后，就开始运行第一个程序 `/sbin/init`，它的作用是初始化系统环境。
 
-![Snipaste_2020-10-28_12-29-38](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221127/Snipaste_2020-10-28_12-29-38.4ogex4xk2dts.webp)
+![Snipaste_2020-10-28_12-29-38](https://github.com/dhay3/image-repo/raw/master/20221127/Snipaste_2020-10-28_12-29-38.4ogex4xk2dts.webp)
 
 由于init是第一个运行的程序，它的进程编号（pid）就是1。其他所有进程都从它衍生，都是它的子进程。
 
@@ -93,7 +93,7 @@ initdefault的值是2，表明系统启动时的运行级别为2。如果需要�
 
 Linux的解决办法，==就是七个 /etc/rcN.d 目录里列出的程序，都设为链接文件，指向另外一个目录 /etc/init.d ，真正的启动脚本都统一放在这个目录中。==init进程逐一加载开机启动程序，其实就是运行这个目录里的启动脚本。
 
-![Snipaste_2020-10-28_12-44-18](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221127/Snipaste_2020-10-28_12-44-18.3kjfiahf8000.webp)
+![Snipaste_2020-10-28_12-44-18](https://github.com/dhay3/image-repo/raw/master/20221127/Snipaste_2020-10-28_12-44-18.3kjfiahf8000.webp)
 
 下面就是链接文件真正的指向。
 
@@ -133,7 +133,7 @@ $ sudo /etc/init.d/apache2 restart
 
 开机启动程序加载完毕以后，就要让用户登录了。
 
-![Snipaste_2020-10-28_12-47-10](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221127/Snipaste_2020-10-28_12-47-10.4zlk1mk4gygw.webp)
+![Snipaste_2020-10-28_12-47-10](https://github.com/dhay3/image-repo/raw/master/20221127/Snipaste_2020-10-28_12-47-10.4zlk1mk4gygw.webp)
 
 一般来说，用户的登录方式有三种：
 
@@ -153,7 +153,7 @@ $ sudo /etc/init.d/apache2 restart
 
 所谓shell，简单说就是命令行界面，让用户可以直接与操作系统对话。用户登录时打开的shell(图形化界面打开的shell是non-loginshell)，就叫做login shell。
 
-![Snipaste_2020-10-28_12-50-09](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221127/Snipaste_2020-10-28_12-50-09.559vb0yncykg.webp)
+![Snipaste_2020-10-28_12-50-09](https://github.com/dhay3/image-repo/raw/master/20221127/Snipaste_2020-10-28_12-50-09.559vb0yncykg.webp)
 
 Debian默认的shell是[Bash](http://zh.wikipedia.org/wiki/Bash)，它会读入一系列的配置文件。上一步的三种情况，在这一步的处理，也存在差异。
 
@@ -176,7 +176,7 @@ Debian默认的shell是[Bash](http://zh.wikipedia.org/wiki/Bash)，它会读入�
 
 ==用户进入操作系统以后，常常会再手动开启一个shell。这个shell就叫做 non-login shell，==意思是它不同于登录时出现的那个shell。（`/etc/profile`或是`~/.profile`配置的环境变量同样会生效）
 
-![Snipaste_2020-10-28_12-53-49](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221127/Snipaste_2020-10-28_12-53-49.50jiyuog4xs0.webp)
+![Snipaste_2020-10-28_12-53-49](https://github.com/dhay3/image-repo/raw/master/20221127/Snipaste_2020-10-28_12-53-49.50jiyuog4xs0.webp)
 
 non-login shell的重要性，不仅在于它是用户最常接触的那个shell，==还在于它会读入用户自己的bash配置文件 ~/.bashrc。==大多数时候，我们对于bash的定制，都是写在这个文件里面的。
 

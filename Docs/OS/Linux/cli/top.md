@@ -528,7 +528,7 @@ minor page faults delta
 
 ## config
 
-![2022-02-24_23-46](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220224/2022-02-24_23-46.2jvf71r4shk0.png)
+![2022-02-24_23-46](https://github.com/dhay3/image-repo/raw/master/20220224/2022-02-24_23-46.2jvf71r4shk0.png)
 
 ```
 cpl in ~/.config/procps λ cat toprc 

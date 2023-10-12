@@ -8,7 +8,7 @@ Command-line interface(CLI) is the interface you use to configure Cisco devices
 
 ## How to connect to a Cisco device?
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230518/2023-05-18_19-42.5uf1rys0j5a8.png)
+![](https://github.com/dhay3/image-repo/raw/master/20230518/2023-05-18_19-42.5uf1rys0j5a8.png)
 
 如果需要连接 Cisco 设备，可以通过 console 口
 
@@ -19,17 +19,17 @@ Command-line interface(CLI) is the interface you use to configure Cisco devices
 
 RJ45 口，连接的线缆大概张这样，一头是 RJ45，一头是 DB9，也被称为 ==rollover cable==
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230518/2023-05-18_19-47.56t3w27x4o3k.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230518/2023-05-18_19-47.56t3w27x4o3k.webp)
 
 但是现在大多数笔记本或者是 PC 都不支持 DB9 串行口了，所以栏需要转接器
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230518/2023-05-18_19-51.3mgjw8srz6io.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230518/2023-05-18_19-51.3mgjw8srz6io.webp)
 
 ## Mode
 
 有 3 种 Mode
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230518/2023-05-18_21-04.3t3pzcr5e35s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230518/2023-05-18_21-04.3t3pzcr5e35s.webp)
 
 ### User EXEC Mode
 
@@ -37,7 +37,7 @@ RJ45 口，连接的线缆大概张这样，一头是 RJ45，一头是 DB9，也
 
 默认
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230518/2023-05-18_19-59.bjj8y6b88tc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230518/2023-05-18_19-59.bjj8y6b88tc.webp)
 
 - User EXEC mode is very limimted
 
@@ -51,7 +51,7 @@ RJ45 口，连接的线缆大概张这样，一头是 RJ45，一头是 DB9，也
 
 需要使用 `enable` 命令进入
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230518/2023-05-18_20-02.opmzyt35c9c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230518/2023-05-18_20-02.opmzyt35c9c.webp)
 
 - Provides complete access to view the device’s configuration, restart the device, etc
 
@@ -69,7 +69,7 @@ RJ45 口，连接的线缆大概张这样，一头是 RJ45，一头是 DB9，也
 
 需要使用 `configure terminal` 进入
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230518/2023-05-18_20-22.6j2b3tauqbcw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230518/2023-05-18_20-22.6j2b3tauqbcw.webp)
 
 ## Configuration file
 

@@ -4,7 +4,7 @@
 
 默认通过 console port 登录思科设备(console line)执行命令并不需要密码，但是你也可以手动为 console line 配置密码
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_10-48.3dwr5h5074e8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_10-48.3dwr5h5074e8.webp)
 
 1. `R1(config)#line console 0`
 
@@ -22,7 +22,7 @@
 
 你也可以手动指定用户名，只有指定的用户使用了指定的密码才能可以使用 console line
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_10-54.wd1jdie5tn4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_10-54.wd1jdie5tn4.webp)
 
 1. `R1(config)#username <uname> secrect <password>`
 
@@ -54,13 +54,13 @@
 
 以如下拓扑为例
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_11-18.hoah62rphnk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_11-18.hoah62rphnk.webp)
 
 PC2 是网络管理员的主机，需要通过 PC2 对整个网络拓扑中的设备进行配置
 
 交换机需要使用如下配置
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_11-21.c3tgj77f86o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_11-21.c3tgj77f86o.webp)
 
 1. `SW1(config)#interface valn<vlan-id>`
 
@@ -88,7 +88,7 @@ Telnet 报文均以明文显示，所以安全系数很低
 
 例如如下报文 10.0.0.2 telnet 10.0.0.1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_11-34.erx39aw5148.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_11-34.erx39aw5148.webp)
 
 10.0.0.1 回送 password 要求 10.0.0.2 输入密码，10.0.0.2 输入的密码以明文显示
 
@@ -98,7 +98,7 @@ Telnet 报文均以明文显示，所以安全系数很低
 
 如果需要让设备开启允许 telnet 登录的功能，需要使用如下命令
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_11-55.3ysff8zq7oow.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_11-55.3ysff8zq7oow.webp)
 
 1. `SW1(config)#enable secret <password>`
 
@@ -134,7 +134,7 @@ Telnet 报文均以明文显示，所以安全系数很低
 
    可选，将 ACL 应用在 VTY 0 15 上
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_12-06.3y0k9sxv2934.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_12-06.3y0k9sxv2934.webp)
 
 这里 R2 ping SW1 SVI 同样是放行的，只有在使用 telnet 时(dport 为 23)时 R2 不能访问 SW1 对应 `transport input telnet` 逻辑
 
@@ -150,7 +150,7 @@ SSH 主要有两种协议 SSHv1 和 SSHv2, 如果设备同时支持 SSHv1 和 SS
 
 SSH 报文摘要如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_13-12.2swga29srqrk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_13-12.2swga29srqrk.webp)
 
 Encrypted Packet 对应加密的 message 部分
 
@@ -162,13 +162,13 @@ Encrypted Packet 对应加密的 message 部分
 
    必须配置 hostname 否则不能生成 RSA keys
 
-   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_13-56.40z3n4bmv98g.webp)
+   ![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_13-56.40z3n4bmv98g.webp)
 
 2. Configure DNS domain name
 
    必须配置 domain name 否则不能生成 RSA keys
 
-   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_13-56.40z3n4bmv98g.webp)
+   ![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_13-56.40z3n4bmv98g.webp)
 
 > 实际上可以直接为 key pair 指定名字，这个不在 CCNA 考试范围内，所以不介绍
 
@@ -187,13 +187,13 @@ Encrypted Packet 对应加密的 message 部分
 
 在配置 SSH 前可以使用 `SW1#show version` 来查看对应设备的 IOS 是否支持 SSH
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_13-15_1.60fuwi42bnk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_13-15_1.60fuwi42bnk.webp)
 
 如果 IOS 支持 SSH，一般 IOS images name 中会包含 K9。例如这里设备对应的 IOS 名为 vios_12-ADVENTERPRISEK9-M
 
 除此外还可以使用 `SW1#show ip ssh` 来查看当前设备是否支持 SSH
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_13-15.tdipyrp9jk0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_13-15.tdipyrp9jk0.webp)
 
 - `SSH Disabled - version 1.99`
 
@@ -205,7 +205,7 @@ Encrypted Packet 对应加密的 message 部分
 
 如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_13-32.38cdog7bhc74.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_13-32.38cdog7bhc74.webp)
 
 - `SW(config)#ip domain name jeremysitelab.com`
 
@@ -227,7 +227,7 @@ Encrypted Packet 对应加密的 message 部分
 
 在 enable SSH(生成 RSA 密钥对) 后，还需要应用 SSH，和配置 telnet 登录类似
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_13-42.29r3t09yhq9s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_13-42.29r3t09yhq9s.webp)
 
 1. `SW1(config)#enable secret <password>`
 
@@ -295,17 +295,17 @@ password 和 secret 有什么区别呢？
 
 ## Command Summary
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_14-04.3lffjkswfxj4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_14-04.3lffjkswfxj4.webp)
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_14-13.b1t7bontcs0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_14-13.b1t7bontcs0.webp)
 
 ### 0x01
 
 Connect Laptop 1 to SW2’s console port to perform the following configurations
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_14-22.1l6b3e64dexs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_14-22.1l6b3e64dexs.webp)
 
 拓扑连接后选中 laptop 中的 desktop terminal 连接 SW1
 

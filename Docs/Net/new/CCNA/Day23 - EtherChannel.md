@@ -4,7 +4,7 @@
 
 有如下拓扑
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_15-49.2qxr6ijifdz4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_15-49.2qxr6ijifdz4.webp)
 
 其中的两台交换机角色为
 
@@ -24,7 +24,7 @@ ASW1 和 DSW1 互联的链路一定会出现拥塞，因为链路带宽远小于
 
 在 ASW1 和 DSW1 之间增加了一条 link
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_15-56.1veygrghgqow.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_15-56.1veygrghgqow.webp)
 
 *The connection to DSW1 is still congested. I’ll add more links*
 
@@ -32,7 +32,7 @@ ASW1 和 DSW1 互联的链路一定会出现拥塞，因为链路带宽远小于
 
 但是只增加一条 link 显然是不够的，所以增加到 4 条
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_15-59.1aycj7wik0dc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_15-59.1aycj7wik0dc.webp)
 
 逻辑上 4 条 link 总带宽 4 Gbps 大于 3.5 Gbps，所以问题解决了吗？
 
@@ -44,7 +44,7 @@ ASW1 和 DSW1 互联的链路一定会出现拥塞，因为链路带宽远小于
 
 实际上还是只有 1 Gbps，因为 STP 的原因，为了防止 broadcast storm，ASW1 只会有一个端口可以转发正常的流量
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_16-08.6ys6irnigps0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_16-08.6ys6irnigps0.webp)
 
 ## What is Etherchannel
 
@@ -54,7 +54,7 @@ Etherchannel 就是解决上面这个问题的
 
 Etherchannel 通常使用一个椭圆将 links 划为逻辑上的一条 link
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_16-17.5x5exq8zb5ds.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_16-17.5x5exq8zb5ds.webp)
 
 - EtherChannel groups multiple interfaces togather to act as a single interface
 
@@ -62,7 +62,7 @@ Etherchannel 通常使用一个椭圆将 links 划为逻辑上的一条 link
 
   所以不会导致 2 层环，所以上面这个例子中就有 4 Gbps 的带宽，这点可以使用 `show spanning-tree` 来校验
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_21-57.1ekwt7tgaogw.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_21-57.1ekwt7tgaogw.webp)
 
   这里可以看到只有一个逻辑上的接口 Po1
 
@@ -70,7 +70,7 @@ Etherchannel 通常使用一个椭圆将 links 划为逻辑上的一条 link
 
 使用了 Etherchannel 流量转发如下图
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_16-24.5g907k4e2gao.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_16-24.5g907k4e2gao.webp)
 
 - Some other names for an EtherChannel are
 
@@ -110,7 +110,7 @@ Etherchannel 通常使用一个椭圆将 links 划为逻辑上的一条 link
 
 有如下拓扑
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_16-42.4oe1uq4a054w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_16-42.4oe1uq4a054w.webp)
 
 > 注意实际 end hosts(SRV1, printer) 不会和 DSW 连接，应该需要和 ASW 连接
 
@@ -133,7 +133,7 @@ Etherchannel 通常使用一个椭圆将 links 划为逻辑上的一条 link
 
 或者每次从 PC2 到 PR1 的报文都走 ASW G0/1 转发到 DSW1 因为 Source MAC 和 Destination 都固定
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_16-58.4p9r8xp4m29s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_16-58.4p9r8xp4m29s.webp)
 
 Etherchannel load balances 是基于 flows 的(理解成 TCP follow)，同一个 flow 只会从相同的链路发送
 
@@ -144,7 +144,7 @@ Etherchannel load balances 是基于 flows 的(理解成 TCP follow)，同一个
 
 可以使用 `show etherchannel load-balance` 来查看当前设备使用的 load-balance 决定因素
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_17-03.3jynkxj3udc0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_17-03.3jynkxj3udc0.webp)
 
 上图就表示由 Source IP 和 Dstination IP 决定
 
@@ -152,7 +152,7 @@ Etherchannel load balances 是基于 flows 的(理解成 TCP follow)，同一个
 
 可以使用 `port-channel load-balance <inputs>` 来修改 load balancing 的决定因素
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_17-05.25z4kglf9u3k.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_17-05.25z4kglf9u3k.webp)
 
 上图就会使用 src-dst-mac 决定 etherchannel 使用那个端口来转发报文
 
@@ -174,17 +174,17 @@ Etherchannel load balances 是基于 flows 的(理解成 TCP follow)，同一个
 
 可以使用 `show etherchannel summary` 来查看 etherchannel 的信息
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_21-51.1ndyrblspgqo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_21-51.1ndyrblspgqo.webp)
 
 SU 的含义看 code legend 部分，例如上述就表示 Port channel 1 是一个 2 层正在使用的中的逻辑口
 
 (P) 表示是 port channel 聚合的口
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_21-54.4a275cduudts.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_21-54.4a275cduudts.webp)
 
 如果需要查看 port channel 具体使用的 mode 是什么，可以使用 `show etherchannel port-channel`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_21-56.6adzazb0fyps.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_21-56.6adzazb0fyps.webp)
 
 例如上图中，port channel 中的端口均为 Active mode
 
@@ -192,7 +192,7 @@ SU 的含义看 code legend 部分，例如上述就表示 Port channel 1 是一
 
 可以使用 `channel-group <number> mode desireable` 或者 `channel-group <number> mode auto` 来配置 PAgP, 其中 mode auto 和 mode desirable 只适用于 PAgP
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_21-13.6shpp9izs2kg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_21-13.6shpp9izs2kg.webp)
 
 互联的两端端口需要配置成指定的状态，才会启用 Etherchannel(PAgP)，如下
 
@@ -210,7 +210,7 @@ active mode = desirable mode
 
 passive mode = auto mode
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_21-36.4lmsfyz40tk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_21-36.4lmsfyz40tk.webp)
 
 互联的两端端口需要配置成指定的状态，才会启用 Etherchannel(LACP)，如下
 
@@ -224,7 +224,7 @@ active + active = Etherchannel
 
 同样和 PAgP 类似，但是只能使用 on mode
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_21-40.3c6x2rpq7atc.webp) 
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_21-40.3c6x2rpq7atc.webp) 
 
 *On mode only works with on mode(on + desirable or on + active will not work)*
 
@@ -236,7 +236,7 @@ active + active = Etherchannel
 
 可以使用 `int port-channel <channel-group-number>` 来配置对应的 port-channel
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_21-46.7jbxvt6rfczk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_21-46.7jbxvt6rfczk.webp)
 
 ## Cautions for EtherChannel
 
@@ -251,13 +251,13 @@ active + active = Etherchannel
 
 有如下拓扑
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_22-01.77mt6mfomb9c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_22-01.77mt6mfomb9c.webp)
 
 使用 Layer3 Switch(都使用了`no switch port`) 替代了 Layer2 Switch，那么就没有 2 层环，也就不需要使用 STP(因为 Router 并不会广播)，也就不存在 blocking port, 例子中 ASW1 和 DSW1 直接的链路带宽可以达到 4 Gbps，但是这样需要为每一个互联的 3 层口配置一个 IP，显然太麻烦了
 
 同样我们还可以给 3 层口配置 EtherChannel
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_22-11.4yg3qaxkgqo0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_22-11.4yg3qaxkgqo0.webp)
 
 > 这里需要为加入 Etherchannel 的端口声明 `no switchport` 
 >
@@ -265,11 +265,11 @@ active + active = Etherchannel
 
 如果使用了 `sh etherchannel summary` 就可以看到对应的端口显示为 3 层 port-channel
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_22-13.13x3jz12mvkw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_22-13.13x3jz12mvkw.webp)
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_22-23.6gyvv2pum8ao.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_22-23.6gyvv2pum8ao.webp)
 
 ### 0x01
 

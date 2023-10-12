@@ -59,7 +59,7 @@ SW1(config-if)#switchport trunk native vlan 100
 
 我们使用下面一个例子，R1到R4表示四台Host，他们的e0/0分别设定成192.168.1.1/24 至 192.168.1.4/24
 
-![Snipaste_2021-08-16_16-42-17](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211130/Snipaste_2021-08-16_16-42-17.42zv5s5nt740.png)
+![Snipaste_2021-08-16_16-42-17](https://github.com/dhay3/image-repo/raw/master/20211130/Snipaste_2021-08-16_16-42-17.42zv5s5nt740.png)
 
 ```
 hostname R1
@@ -114,7 +114,7 @@ R1#ping 192.168.1.2
 
 现在把R1和R2 放进VLAN10，把R3和R4放进VLAN20。换句话，我们要把SW1的e0/0和 e0/1 设定VLAN 10，然后把e0/2 和 e0/3设定成VLAN20
 
-![Snipaste_2021-08-11_20-17-25](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211130/Snipaste_2021-08-11_20-17-25.2y91paxd4o00.png)
+![Snipaste_2021-08-11_20-17-25](https://github.com/dhay3/image-repo/raw/master/20211130/Snipaste_2021-08-11_20-17-25.2y91paxd4o00.png)
 
 
 
@@ -268,7 +268,7 @@ VLAN Tag 是 Switch 在收到Packet时为他加上一个标识，目的是让pac
 
 switch之间需要传送这些VLAN Tag，我们需要把switch 与 switch 之间的Link设定成Trunk，因为只有Trunk Link 才可以容纳不同的VLAN。设定Trunk Link的方法有很多。==在这只使用Static 设定==，即强制使其成为Trunk Link
 
-![Snipaste_2021-08-30_19-28-02](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211130/Snipaste_2021-08-30_19-28-02.46up6yql0yi0.png)
+![Snipaste_2021-08-30_19-28-02](https://github.com/dhay3/image-repo/raw/master/20211130/Snipaste_2021-08-30_19-28-02.46up6yql0yi0.png)
 
 设定方法不复杂，首先需要确认两只switch都已经建立需要处理的VLAN，留意VLAN ID必须相同，==VLAN名称可以不同==
 
@@ -385,7 +385,7 @@ R1#ping 192.168.1.2
 
 如果在Trunk Link 进行packet Capture 的会清楚看到VLAN ID
 
-![Snipaste_2021-08-11_20-17-25](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211130/Snipaste_2021-08-11_20-17-25.9qqtepd6lis.png)
+![Snipaste_2021-08-11_20-17-25](https://github.com/dhay3/image-repo/raw/master/20211130/Snipaste_2021-08-11_20-17-25.9qqtepd6lis.png)
 
 ### Allowed VLAN
 
@@ -589,11 +589,11 @@ vlan 在划分广播域的同时也限制了不同VLAN间的2层通信，但是�
 
 1. 多臂路由，官方没有这种定义，同样也是一种连接模型
 
-   ![2022-06-16_13-46](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220616/2022-06-16_13-46.15ko38h5yvj4.webp)
+   ![2022-06-16_13-46](https://github.com/dhay3/image-repo/raw/master/20220616/2022-06-16_13-46.15ko38h5yvj4.webp)
 
 2. 单臂路由(router on a stick)，只是一种连接模型，
 
-   ![2022-06-16_13-42](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220616/2022-06-16_13-42.5cut7yngubg0.webp)
+   ![2022-06-16_13-42](https://github.com/dhay3/image-repo/raw/master/20220616/2022-06-16_13-42.5cut7yngubg0.webp)
 
 3. 使用VLANif
 

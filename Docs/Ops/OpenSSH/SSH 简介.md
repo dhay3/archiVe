@@ -30,7 +30,7 @@ Linux所有的发行版，都使用OpenSSH，我们可以通过`-V`参数来查�
 
 或是通过wireshark捕捉数据包查看客户端和服务端对应的版本
 
-![Snipaste_2020-12-16_22-14-49](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2020-12-16_22-14-49.5k89qclrdd40.png)
+![Snipaste_2020-12-16_22-14-49](https://github.com/dhay3/image-repo/raw/master/20210601/Snipaste_2020-12-16_22-14-49.5k89qclrdd40.png)
 
 ```
  ┌─────( root)─────(~) 

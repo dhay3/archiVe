@@ -370,7 +370,7 @@ tcpdump 根据协议不同输出的内容的也不同
 
 ### TCP Flag Filter
 
-![Snipaste_2020-08-25_00-39-07](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220719/Snipaste_2020-08-25_00-39-07.4kvfcqtsrsow.webp)
+![Snipaste_2020-08-25_00-39-07](https://github.com/dhay3/image-repo/raw/master/20220719/Snipaste_2020-08-25_00-39-07.4kvfcqtsrsow.webp)
 
 ```
 0                            15                              31

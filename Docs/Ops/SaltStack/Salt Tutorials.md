@@ -11,7 +11,7 @@ documentation -> tutorials
 ## Install
 参考
 [https://docs.saltproject.io/en/getstarted/fundamentals/install.html](https://docs.saltproject.io/en/getstarted/fundamentals/install.html)
-![Snipaste_2021-08-16_16-42-17](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220223/Snipaste_2021-08-16_16-42-17.43ff85s9osy0.webp)
+![Snipaste_2021-08-16_16-42-17](https://github.com/dhay3/image-repo/raw/master/20220223/Snipaste_2021-08-16_16-42-17.43ff85s9osy0.webp)
 vagrant 镜像启动后，会启动 3 台机器，1 台 master，2 台 minion
 ```
 D:\salt\salt-vagrant-demo-master\salt-vagrant-demo-master>echo %cd%
@@ -78,7 +78,7 @@ minion2:
 
 salt 在执行命令时会通过execution model，拆分成两个 worker thread
 minion在收到命令后会去找 test module（source code in slat/moudles），调用rand_sleep function，提供 120 作为参数
-![Snipaste_2021-08-30_19-28-02](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220223/Snipaste_2021-08-30_19-28-02.29mrtnf0tvok.webp)
+![Snipaste_2021-08-30_19-28-02](https://github.com/dhay3/image-repo/raw/master/20220223/Snipaste_2021-08-30_19-28-02.29mrtnf0tvok.webp)
 ### Target
 [https://docs.saltproject.io/en/getstarted/fundamentals/targeting.html](https://docs.saltproject.io/en/getstarted/fundamentals/targeting.html)
 具体可以参考man page target options
@@ -115,7 +115,7 @@ _To solve this, SaltStack configuration management lets you create a re-usable c
 > A file with an SLS extension that contains one or more state declarations.
 
 State file 通常使用 YAML 文件来描述，多组或一组 command 组成，可以看成docker 中的 service
-![Snipaste_2021-11-03_15-27-49](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220223/Snipaste_2021-11-03_15-27-49.1mgvq2irtxeo.webp)
+![Snipaste_2021-11-03_15-27-49](https://github.com/dhay3/image-repo/raw/master/20220223/Snipaste_2021-11-03_15-27-49.1mgvq2irtxeo.webp)
 可以在宿主机vagrant的镜像文件中编辑(`/salt-vagrant-demo-master/slatstack/salt`)，或者在镜像的`/srv/salt`中编辑
 ```
 install_network_packages:
@@ -385,7 +385,7 @@ sync directory using lftp:
 ```
 ## Ordering
 在salt中是按照文件中记录的顺序执行命令的
-![Snipaste_2021-12-08_09-38-21](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220223/Snipaste_2021-12-08_09-38-21.13dp8f4o8e40.webp)
+![Snipaste_2021-12-08_09-38-21](https://github.com/dhay3/image-repo/raw/master/20220223/Snipaste_2021-12-08_09-38-21.13dp8f4o8e40.webp)
 先执行formula1(先执行id1，再执行id2)，再执行formula2(先执行id3，在执行id4)
 可以使用`salt 'minion1' state.show_sls examples`来看state file中执行的具体顺序，example 表示state file
 ## JINJA

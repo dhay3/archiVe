@@ -12,9 +12,9 @@ https://www.diffen.com/difference/LAN_vs_WAN
 
 ## 0x1 Terms
 
-![2022-04-10_21-55](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220410/2022-04-10_21-55.29s6s7hr7rk0.webp)
+![2022-04-10_21-55](https://github.com/dhay3/image-repo/raw/master/20220410/2022-04-10_21-55.29s6s7hr7rk0.webp)
 
-![2022-04-10_22-24](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220410/2022-04-10_22-24.6vuml2tjej40.webp)
+![2022-04-10_22-24](https://github.com/dhay3/image-repo/raw/master/20220410/2022-04-10_22-24.6vuml2tjej40.webp)
 
 ### LAN
 

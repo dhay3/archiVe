@@ -15,13 +15,13 @@
 
 例如下图
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-14_17-48.50t9weazcry8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-14_17-48.50t9weazcry8.webp)
 
 假设 R4 需要发包到 R1，Dst IP 为 10.0.13.1，如果这时 R1 G1/0 因为端口的原因导致链路 down 了，因为 via R3 的路由是 preferred route，那么 R4 就不能发包到 R1 G1/0
 
 如果 R1 使用了 loopback，R4 使用 R1 loopback 地址作为目的 IP，并且 R4 有到 R1 loopback 的路由(这里需要使用 dynamic routing protocol，如果使用了 static route 指定了一定要走 R3 那么还是有问题)，即使 G1/0 端口有问题， R1 同样可以通过 via R2 的方式到 R1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-14_17-53.648j9k630dq8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-14_17-53.648j9k630dq8.webp)
 
 但是如果 R1 G0/0 也有问题，那么 R4 就不能正常到 R1 了，即使 R1 loopback interface 加入到了 dynamic protocol network，因为 loopback 只是虚拟的接口，实际还是通过 router 的物理接口走的
 
@@ -73,7 +73,7 @@ OSPF networks types 指的是 OSPF neighbors 之间的连接(connection)类型�
 
   例如下图
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-15_13-46.63ma5uj93vgg.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-15_13-46.63ma5uj93vgg.webp)
 
   以 R1 为例子，在 10.0.1.0/24 subnet 中是 DR；而在 192.1681.0/30 subnet 中，假设 R2 是 DR，那么 R1 是 BDR
 
@@ -95,13 +95,13 @@ OSPF networks types 指的是 OSPF neighbors 之间的连接(connection)类型�
 
 下图中，假设 R1 router ID 1.1.1.1, R2 router ID 2.2.2.2, etc
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-15_13-53.6klxv4kihoxs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-15_13-53.6klxv4kihoxs.webp)
 
 那么在 R1 - R2 subnet 中 R2 是 DR；R2/3/4/5 subnet 中 R5 是 DR，R4 router ID 第 2 高所以 R4 是 BDR，剩下的 R2/3 都是 DROther
 
 如果在 R5 中使用 `show ip ospf interface g0/0`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-15_13-58.25eucxxkawgw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-15_13-58.25eucxxkawgw.webp)
 
 - `State DR`
 
@@ -121,7 +121,7 @@ OSPF networks types 指的是 OSPF neighbors 之间的连接(connection)类型�
 
 对比一下 R2
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-15_14-01.1en2smor4tr4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-15_14-01.1en2smor4tr4.webp)
 
 - `State DROTHER`
 
@@ -137,13 +137,13 @@ OSPF networks types 指的是 OSPF neighbors 之间的连接(connection)类型�
 
 所有 interface ospf priority 默认都为 1，如果想要手动修改可以使用 `ip ospf priority <priority>` 命令
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-15_14-05.2o4j840gixa8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-15_14-05.2o4j840gixa8.webp)
 
 > *if you set the OSPF interface priority 0, the router CANNOT be the DR/DBR for the subnet*
 
 如果使用了上面的命令，现在看一下 R2 `show ip ospf int g0/0`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-15_14-08.6flcvkvrrjls.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-15_14-08.6flcvkvrrjls.webp)
 
 逻辑上 R2 g0/0 的 priority 现在应该是最大的，在 R2/3/4/5 中，R2 应该是 DR；但是这里任然显示 R2 是 DROther，即使 priority 已经显示为 255
 
@@ -151,11 +151,11 @@ OSPF networks types 指的是 OSPF neighbors 之间的连接(connection)类型�
 
 如果这时在 R5 使用 `clear ip ospf process` 让 OSPF reset，并使用 `show ip ospf neighbor`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-15_14-13.3urvsp3ri0g0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-15_14-13.3urvsp3ri0g0.webp)
 
 拓扑类似下图
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-15_14-35.15htayrjkio0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-15_14-35.15htayrjkio0.webp)
 
 会发现只有 R2(2.2.2.2) 和 R4(2.2.2.2) OSPF state 是 Full
 
@@ -171,7 +171,7 @@ OSPF networks types 指的是 OSPF neighbors 之间的连接(connection)类型�
 >
 > 同时也说明了
 >
-> ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-15_14-45.13uu0yr55d7k.webp)
+> ![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-15_14-45.13uu0yr55d7k.webp)
 >
 > 1. Down -> 2-way State 是建立 OSPF neighbors
 > 2. Exstart -> Full 是交换 LSAs，只会在 DR/BDR 中
@@ -186,11 +186,11 @@ OSPF networks types 指的是 OSPF neighbors 之间的连接(connection)类型�
 
 假设不区分 DR/BDR/DROther，每台 Router 都会发送 LSAs，流量拓扑类似下图
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-15_14-39.6z69ewuxufwg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-15_14-39.6z69ewuxufwg.webp)
 
 如果区分了 DR/BDR/DROther，只有 DR 和 BDR 会相发送 LSAs，那么拓扑就会如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-15_14-40.54f8wqmi66m8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-15_14-40.54f8wqmi66m8.webp)
 
 大大的减少了网络中的流量，但是每台 Router 一样可以收到 LSAs
 
@@ -198,15 +198,15 @@ OSPF networks types 指的是 OSPF neighbors 之间的连接(connection)类型�
 
 除了上面使用的 `show ip ospf neighbor` 或者是 `show ip ospf interface <interface-id>` 来查看 router 是否是 DR/BDR/DROther 外，还可以使用 `show ip ospf interface brief` 来查看
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-15_14-51.352m7n2acg3k.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-15_14-51.352m7n2acg3k.webp)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-15_14-35.15htayrjkio0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-15_14-35.15htayrjkio0.webp)
 
 `Nbrs F/C` 其中的 F 表示当前接口 Full state neighbors 的数量，这里能和 R3 DROther 形成 full state 的只有 R4 DR 和 R2 BDR；其中的 C 表示当前接口所有状态 neighbors 的数量，这里有 R2/4/5
 
 上面显示的 `Nbrs F/C` 部分，在 `show ip ospf interface <interface-id>` 中出现下图红框中
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-15_14-55.32gdxhr8leio.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-15_14-55.32gdxhr8leio.webp)
 
 #### Point-to-Point
 
@@ -220,11 +220,11 @@ OSPF networks types 指的是 OSPF neighbors 之间的连接(connection)类型�
 
 例如下图，R1 和 R2 使用了 Serial connection 构成 Point-to-Point type
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-15_15-46.14r88fw21duo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-15_15-46.14r88fw21duo.webp)
 
 如果这时在 R2 上使用 `show ip ospf neighbor`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_16-16.1qluvj88fr6o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_16-16.1qluvj88fr6o.webp)
 
 可以看到 R1 并不是 DR/DBR/DROTher，因为 R1 - R2 subnet 是 Point-to-Point type
 
@@ -232,7 +232,7 @@ OSPF networks types 指的是 OSPF neighbors 之间的连接(connection)类型�
 
 Serial interfaces 和普通的 Ethernet interfaces(RJ45) 不同，下图就是 serial interfaces
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-15_15-54.42sryj16qww0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-15_15-54.42sryj16qww0.webp)
 
 长得非常像 VGA 口
 
@@ -240,7 +240,7 @@ Serial interfaces 和普通的 Ethernet interfaces(RJ45) 不同，下图就是 s
 
 假设现在 R1 和 R2 互联的接口都是 serial interface
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-15_15-56.4jh0h4fa9lhc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-15_15-56.4jh0h4fa9lhc.webp)
 
 在 Serial connection 中，两端的角色不同
 
@@ -250,7 +250,7 @@ Serial interfaces 和普通的 Ethernet interfaces(RJ45) 不同，下图就是 s
 
   > 只有 DCE 才可以使用这个命令，DCE 是由端口自己决定的，可以使用 `show controller <interface-id>` 来查看
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-15_16-01.5yli32z720lc.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-15_16-01.5yli32z720lc.webp)
 
   > Ethernet connection 使用 `speed` 命令来修改端口的速率，而 Serial connection 使用 `clock rate <number>` 来修改
 
@@ -258,27 +258,27 @@ Serial interfaces 和普通的 Ethernet interfaces(RJ45) 不同，下图就是 s
 
 使用 `show interface` 命令看一下对应 serial interface 的信息
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_16-04.1u7msnn2ijb4.png)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_16-04.1u7msnn2ijb4.png)
 
 > The default encapsulation on a serial interface is HDLC
 
 现在将默认的 encapsulation 从 HDLC 改为 PPP
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_16-07.3q30mnvffykg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_16-07.3q30mnvffykg.webp)
 
 > 需要注意的是，如果需要将链路的改为 PPP，需要两端都使用 `encapsulation ppp`，否则 link state 就会显示为 down
 
 R1/2 互联的端口配置如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_16-09.6ewn5msydojk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_16-09.6ewn5msydojk.webp)
 
 可以使用 `show controllers <interface-id>` 来查看本端是 DCE 还是 DTE
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_16-13.2t2gi7ezhtmo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_16-13.2t2gi7ezhtmo.webp)
 
 #### Broadcast VS Point-to-Point
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_16-24.1s9q20o3s18g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_16-24.1s9q20o3s18g.webp)
 
 > 因为 Non-broadcast network type 不在 CCNA 的范围内这里做简单的介绍
 >
@@ -288,7 +288,7 @@ R1/2 互联的端口配置如下
 
 除了使用对应的接口来改变 OSPF network type，还是通过 `ip ospf network <type>` 来手动设置 subnet network type
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_16-20.48siem2w8m0w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_16-20.48siem2w8m0w.webp)
 
 那么为啥要手动来配置 subnet network type 呢？
 
@@ -313,19 +313,19 @@ Router 相互需要组成 OSPF neighbors 需要满足下面的条件
 
 互联的接口 area number 需要一致
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_16-27.291w0pvdyym.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_16-27.291w0pvdyym.webp)
 
 上图中 R1 G0/0 所在的 network 和 R2 G0/0 所在的 network area number 不一致，所以不能构成 OSPF neighbors，所以使用 `show ip ospf ne` 显示为空
 
 修改成相同的 area number 后，就可以正常建立 OSPF neighbors
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_16-30.16nd6406id1c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_16-30.16nd6406id1c.webp)
 
 ### Interfaces must be in the same subnet
 
 互联的端口必须在一个子网
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_16-32.4h4xaql3udq8.webp) 
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_16-32.4h4xaql3udq8.webp) 
 
 上图中 R1 G0/0 192.168.1.1/30 通过 `network 192.168.1.0 0.0.0.3 area 0` 宣告出去，R2 G0/0 192.168.2.2/30 通过 `network 192.168.2.0 0.0.0.3 area 0` 宣告出去，因为两台 router 接口 IP 不在同一个 subnet 所以不能构成 OSPF neighbors
 
@@ -333,7 +333,7 @@ Router 相互需要组成 OSPF neighbors 需要满足下面的条件
 
 将两台 Router 的端口 IP 都配置在一个 subnet,后就可以正常构成 OSPF neighbors
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_16-38.3cp8e46rpps0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_16-38.3cp8e46rpps0.webp)
 
 > 这里即使 network 宣告的不一样，但是包含自己对应互联的端口 IP，也一样能构成 OSPF neighbors
 >
@@ -343,7 +343,7 @@ Router 相互需要组成 OSPF neighbors 需要满足下面的条件
 
 router OSPF 进程必须是正常的
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_16-42.5ov9kmkapzi8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_16-42.5ov9kmkapzi8.webp)
 
 在 router 上 OSPF 进程是可以通过 `shutdown` 来关闭的，如果关闭后就不能正常构成 OSPF neighbors，可以使用 `no shutdown` 来重新启动 OSPF 进程
 
@@ -355,7 +355,7 @@ router OSPF 进程必须是正常的
 
 下图中并没有为 R1/2 设置 loopback，R1 router ID 使用 R0/0 192.168.1.1，R2 router ID 使用 G0/0 192.168.1.2
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_16-52.y0ezsaapg8g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_16-52.y0ezsaapg8g.webp)
 
 这是通过 `router-id 192.168.1.1` 来修改 R2 router id，并使用 `clear ip ospf process` 来让 router id 生效
 
@@ -363,7 +363,7 @@ router OSPF 进程必须是正常的
 
 可以通过 `no router-id` 来删除手动设置的 router id，使用默认的规则来生成 router id
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_16-58.o1pmxbpnlxc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_16-58.o1pmxbpnlxc.webp)
 
 这里可以看到删除了手动设置的 router id 后，使用默认的规则生成的 router 192.168.1.2 就可以和 R1 正常建立 OSPF neighbors
 
@@ -377,7 +377,7 @@ hello 和 dead timers 值必须要一样
 
 > 虽然在 Broadcast network type 和 Point-to-Point network type 中 hello 和 dead timer 默认都为 10 和 40，但是也可以手动修改
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_17-06.fpeaer8lylk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_17-06.fpeaer8lylk.webp)
 
 这里通过 `ip ospf hello-interval 5` 将 R2 的 hello timer 修改成 5，通过 `ip ospf dead-interval 20` 将 R2 的 dead timer 修改成 20；因为 R1 没有修改过，R1 hello timer 为 10，R1 dead timer 为 40；因为都不匹配，所以不能构成 OSPF neighbors
 
@@ -389,7 +389,7 @@ hello 和 dead timers 值必须要一样
 
 在 OSPF 中还可以配置 authentication password，只有 password 相同，才可以构成 OSPF neighbors
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_17-12.6w5933glifg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_17-12.6w5933glifg.webp)
 
 - `ip osfp authentication-key jeremy`
 
@@ -401,7 +401,7 @@ hello 和 dead timers 值必须要一样
 
 这里 R1 没有配置 authentication password，因为不匹配，所以就不能构成 OSPF neighbors，OSPF neighbor table 就为空
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_17-16.2ixcqqkv0bsw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_17-16.2ixcqqkv0bsw.webp)
 
 这里取消了 R2 OSPF authentication，因为都为空，所以可以构成 OSPF neighbors
 
@@ -413,7 +413,7 @@ hello 和 dead timers 值必须要一样
 
 可以通过 `ip mtu <number>` 来修改 router MTU，这里改成 1400 (Ethernet 默认 MTU 为 1500)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_17-21.50b24o2reyyo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_17-21.50b24o2reyyo.webp)
 
 这里即使修改了 MTU，OSPF neighor 状态还是会显示为 full state，但是其实 R1 和 R2 之间已经不能通过 OSPF 交换 LSAs 了。在 dead timer 后，状态会变为 down，后从 OSPF neighbor table 中删除对应的条目
 
@@ -421,11 +421,11 @@ hello 和 dead timers 值必须要一样
 
 然后会一直重复输出下面的内容
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_17-27.1dof250m75pc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_17-27.1dof250m75pc.webp)
 
 可以使用 `no ip mtu` 来删除手动配置的 MTU，使用默认的 1500 MTU
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_17-33.2qam6bq5eem8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_17-33.2qam6bq5eem8.webp)
 
 在删除手动配置的 MTU 后，就可以看到 neighbors 变为 full state
 
@@ -435,11 +435,11 @@ hello 和 dead timers 值必须要一样
 
 这里配置了 R2 loopback0 2.2.2.2，并将 loopback0 加入到 OSPF 中，同时将 G0/0 从 broadcast 改为 point-to-point type；而 R1 G0/0 还是使用默认的 broacast type
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_17-35.5p225o6tbv5s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_17-35.5p225o6tbv5s.webp)
 
 这里可以可以看到，虽然 R2 显示 R1 还是 full state，但是因为使用了 point-to-point，这里 router 的角色变成了 `-` 表示空。在 R2 上看不到什么异常，上 R1 看一下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230615/2023-06-15_17-41.1tdp7ex8f7c0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230615/2023-06-15_17-41.1tdp7ex8f7c0.webp)
 
 这里可以发现，R1 显示 R2 任然是 full state，逻辑上 OSPF 应该是正常的。但是仔细观察，可以发现 R1 并没有 2.2.2.2 的路由，即使 R2 宣告了
 
@@ -453,7 +453,7 @@ hello 和 dead timers 值必须要一样
 
 在之前的例子，R4 使用 `default-information originate` 宣告默认路由
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-16_13-43.601e57la860w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-16_13-43.601e57la860w.webp)
 
 - The OSPF LSDBs is made up of LSAs
 
@@ -467,7 +467,7 @@ hello 和 dead timers 值必须要一样
 
 我们可以通过 `show  ip ospf database` 来查看 LSDB 中的 LSA
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-16_14-02.6cw695imud1c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-16_14-02.6cw695imud1c.webp)
 
 > 在 OSPF network 中每台机器的 LSDB 都相同，所以无需区分那一台
 
@@ -500,7 +500,7 @@ hello 和 dead timers 值必须要一样
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-16_15-29.4yvnsl7v8nls.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-16_15-29.4yvnsl7v8nls.webp)
 
 ### 0x01
 

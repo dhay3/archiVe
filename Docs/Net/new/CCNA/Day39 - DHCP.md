@@ -10,11 +10,11 @@
 - In small networks(such as home networks) the router typically acts as the DHCP server for hosts in the LAN
 - In larger networks, the DHCP server is usually a Windows/Linux server
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_18-46.4j9puir40xy.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_18-46.4j9puir40xy.webp)
 
 Windows 中的 Obtain an IP addres automatically 和 Obtain DNS server address automatically 就是通过 DHCP 来获取的，也可以使用 `ipconfig /all` 来查看 DHCP 的功能是否启用
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_18-49.2n218vkl83y8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_18-49.2n218vkl83y8.webp)
 
 如果是手动配置 IP 的，这里会显示 No
 
@@ -44,15 +44,15 @@ Windows 中的 Obtain an IP addres automatically 和 Obtain DNS server address a
 
 如果需要手动提前释放 IP，可以使用 `ipconfig /release`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_19-02.5oyt6l1e58n4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_19-02.5oyt6l1e58n4.webp)
 
 逻辑上类似下图
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_19-02_1.ko3xeen0lqo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_19-02_1.ko3xeen0lqo.webp)
 
 下图为 192.168.0.167 告诉 DHCP server 192.168.0.1 需要释放通过 DHCP 获取的 IP 对应的报文
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_19-11.6yomwuz1d2ps.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_19-11.6yomwuz1d2ps.webp)
 
 - DHCP 默认使用 UDP 67 作为 sport，UDP 68 作为 dport
 - client IP address 表示 client 会被分配的 IP
@@ -62,7 +62,7 @@ Windows 中的 Obtain an IP addres automatically 和 Obtain DNS server address a
 
 如果需要重新获取 DHCP 分配的 IP，可以使用 `ipconfig /renew`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_19-43.95ywh5hhte8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_19-43.95ywh5hhte8.webp)
 
 这个过程包含 4 部分
 
@@ -70,11 +70,11 @@ Windows 中的 Obtain an IP addres automatically 和 Obtain DNS server address a
 
 用于发现 DHCP 服务器
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_19-44.25cdqqa7sa80.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_19-44.25cdqqa7sa80.webp)
 
 报文如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_21-06.1h59qtczha00.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_21-06.1h59qtczha00.webp)
 
 这里可以看到 2 层帧报文 Destination MAC 是 ff:ff:ff:ff:ff:ff，这是 2 层广播地址，会被 Switch 广播到所有互联的设备
 
@@ -96,11 +96,11 @@ Windows 中的 Obtain an IP addres automatically 和 Obtain DNS server address a
 
 用于向 PC 反馈建议使用的 IP
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_21-34.448ddukbgt34.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_21-34.448ddukbgt34.webp)
 
 报文如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_21-38.23u4lz88wdz4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_21-38.23u4lz88wdz4.webp)
 
 Router 发现自己是 DHCP 后，就会发送一个 unicast 报文，目的 MAC 是 PC(通过 DHCP Discover 学习到的)
 
@@ -119,7 +119,7 @@ Router 发现自己是 DHCP 后，就会发送一个 unicast 报文，目的 MAC
 
 PC 向 DHCP server 要求使用具体某个 IP
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_21-53.25ffmmbhhzwg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_21-53.25ffmmbhhzwg.webp)
 
 在一个广播域中可能有多台 DHCP 服务器，所有的 DHCP 服务器在收到 DHCP discover 时，都会回送 DHCP offer，PC 究竟使用了那个 DHCP 服务器发送的 DHCP offer 呢？
 
@@ -127,7 +127,7 @@ PC 向 DHCP server 要求使用具体某个 IP
 
 报文如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_22-07.1sbzl1z2y8dc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_22-07.1sbzl1z2y8dc.webp)
 
 23 层地址和 DHCP discover 中的还是一样，因为 PC 这时没有采用任何一个 DHCP offer 中提供的 IP，因为是广播地址，所以广播域中的所有 DHCP server 都会收到 DHCP request
 
@@ -137,11 +137,11 @@ PC 向 DHCP server 要求使用具体某个 IP
 
 表示 DHCP server 确认 PC 可以使用 DHCP offer 中提供的 IP,一旦 PC 收到这个报文，就会自动配置 IP
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_22-11.6oyhmhknhcw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_22-11.6oyhmhknhcw.webp)
 
 报文如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_22-13.23we4zrrqf1c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_22-13.23we4zrrqf1c.webp)
 
 这里可以看到和 DHCP offer 中一样，也会使用 unicast，但是实际同样通过 boot flag 也可以做 broadcast
 
@@ -151,7 +151,7 @@ PC 向 DHCP server 要求使用具体某个 IP
 
 方向以及是否是关播或单播参考下图
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_22-15.6vau43ffylj4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_22-15.6vau43ffylj4.webp)
 
 > 如果是 release DHCP IP，是 unicast
 
@@ -163,17 +163,17 @@ PC 向 DHCP server 要求使用具体某个 IP
 
 如果需要解决这个问题，需要让 router 变为 DHCP relay agent, 这样 router 就会将 client 发送过来的 broadcast DHCP messages 转为 unicast DHCP messages 发送给 centralized DHCP server
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_22-26.24vxryvkqpgg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_22-26.24vxryvkqpgg.webp)
 
 ## DHCP server Configuration
 
 假设拓扑如下，需要将 R1 配置成 DHCP server
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-05_16-14.2k9zia5t7vk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-05_16-14.2k9zia5t7vk.webp)
 
 需要使用如下命令
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-05_16-23.36x9z6xa8c8w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-05_16-23.36x9z6xa8c8w.webp)
 
 - `ip dhcp excluded-address <start address> <end address>`
 
@@ -207,21 +207,21 @@ PC 向 DHCP server 要求使用具体某个 IP
 
 Router 配置完成后，可以使用 `R1#show ip dhcp binding` 来查看 IP 分配的情况
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-05_16-26.5grbixeb9ts0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-05_16-26.5grbixeb9ts0.webp)
 
 PC1 `ipconfig /all` 信息如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-05_16-27.51asuvuigq2o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-05_16-27.51asuvuigq2o.webp)
 
 ## DHCP Relay Agent Configuration
 
 假设拓扑如下，R1 需要配置成 DHCP relay agent
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-05_16-29.5ik3xvo0t5kw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-05_16-29.5ik3xvo0t5kw.webp)
 
 配置如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-05_16-33.3twro5xy39og.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-05_16-33.3twro5xy39og.webp)
 
 - `ip helper-address <dhcp server address>`
 
@@ -233,13 +233,13 @@ PC1 `ipconfig /all` 信息如下
 
 假设拓扑如下，需要让 R2 g0/1 IP 自动由 DHCP server 分配
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-05_16-37.3l4w9de7a35s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-05_16-37.3l4w9de7a35s.webp)
 
 > R2 g0/0 任然是需要手动配置的
 
 配置如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-05_16-40.13l6n9rkvt40.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-05_16-40.13l6n9rkvt40.webp)
 
 - `ip address dhcp`
 
@@ -247,11 +247,11 @@ PC1 `ipconfig /all` 信息如下
 
 ## Command Summary
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-05_16-41.3mdp3mjdxv40.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-05_16-41.3mdp3mjdxv40.webp)
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-05_16-43.4varryzp1ibk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-05_16-43.4varryzp1ibk.webp)
 
 ### 0x01
 

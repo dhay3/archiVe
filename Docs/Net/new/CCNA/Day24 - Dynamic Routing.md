@@ -4,11 +4,11 @@
 
 有如下拓扑
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-09_13-58.6fjs5tnpvcsg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-09_13-58.6fjs5tnpvcsg.webp)
 
 ==主要要关注 R1==, 在没有配置任何路由的情况下，R1 上的 routing table 如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-09_14-00.4x5x9ipal43k.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-09_14-00.4x5x9ipal43k.webp)
 
 只有 2 种类型的 Route
 
@@ -18,7 +18,7 @@ Local Route ∈ Hot route
 
 现在每台 Router 都配置 Dynamic Routing 
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-09_14-03.4b5okozaclj4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-09_14-03.4b5okozaclj4.webp)
 
 那么 
 
@@ -30,13 +30,13 @@ R1 的 routing table 如上
 
 假设现在 R4 G0/0 down 了
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-09_14-08.3hzkazcrwq2o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-09_14-08.3hzkazcrwq2o.webp)
 
 那么 R1 就会将 192.168.4.0/24 和 10.0.24.0/30 路由删掉
 
 如果所有的 Router 都没有配置 Dynamic Routing，但是为 R1 单独配置了一条 192.168.4.0/24 的路由
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-09_14-12.44wzk5pdltfk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-09_14-12.44wzk5pdltfk.webp)
 
 当 R4 G0/0 down 掉，R1 对应 192.168.4.0/24 的路由不会自动删除，所以仍然会将流量通过 route 转发，因为 R2 G1/0 - R4 G0/0 link down，所以就会丢包
 
@@ -44,7 +44,7 @@ R1 的 routing table 如上
 
 因为 Dynamic Routing 会自动删除失效的路由，所以应该需要配置 backup route
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-09_14-17.1wlhs03iaiu8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-09_14-17.1wlhs03iaiu8.webp)
 
 在 R4 G0/0 正常的情况下，使用了 Dynamic Routing，可以看到 R1 只增加了一条 192.168.4.0/24 via 10.0.12.2 (R2 G0/0)的路由
 
@@ -58,7 +58,7 @@ R1 的 routing table 如上
 
 现在手动 down 掉 R4 G0/0
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-09_14-19.1ecn2167j2qo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-09_14-19.1ecn2167j2qo.webp)
 
 R1 上对应 192.168.4.0/24 via 10.0.12.2 的路由就会被自动删除，然后增加一条 192.168.4.0/24 via 10.0.13.2(R3 G0/0) 的路由
 
@@ -84,7 +84,7 @@ Dynamic Routing 协议可以分为两大类
 
    Used to share routes between different autonomous systems
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-09_14-32.74jn7o2b70n4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-09_14-32.74jn7o2b70n4.webp)
 
 例如上图中
 
@@ -98,7 +98,7 @@ Company A 和 ISP A， ISP A 和 ISP B, ISP B 和 Company B 之间互相通过 E
 >
 > used by each protocol to share route information and determin the best  route to each destination 
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-09_14-39.2vihgyh7kfsw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-09_14-39.2vihgyh7kfsw.webp)
 
 EGP 只使用 Path Vector Algorithm，在现在的网络中只有一种就是 BGP
 
@@ -123,7 +123,7 @@ EGP 只使用 Path Vector Algorithm，在现在的网络中只有一种就是 BG
 
 *Called ‘distance vector’ because the routers only learn the ‘distance’ (metric) and ‘vector’ (direction, the next-hop router) of each route*
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_09-54.1hd1rxgilxvk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_09-54.1hd1rxgilxvk.webp)
 
 ### Link state routing protocol
 
@@ -143,11 +143,11 @@ router‘s route table 只会含有最优的路由，如果使用 dynamic routin
 
 引用上面的例子，逻辑上 R1 到 192.168.4.0/24 的路由有 2 条，via R2 和 via R3，但是因为 via R3 互联的链路是 fastethernet，而 via R2 互联的链路是 gigabitethernet，所以 via R2 的路由要优于 via R3 的路由(实际还是比较 metric)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_10-17.6g04kz8scjuo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_10-17.6g04kz8scjuo.webp)
 
 现在将 R3 和 R4 互联的链路变成 gigabitethernet，那么那条才是最优的路由呢？
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_10-22.4ngh3xw5se0w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_10-22.4ngh3xw5se0w.webp)
 
 实际上两条路由都会被 R1 学到
 
@@ -155,7 +155,7 @@ router‘s route table 只会含有最优的路由，如果使用 dynamic routin
 
 > 要求 相同协议，相同目的地址，相同 metric
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_10-38.2mocj5i0qykg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_10-38.2mocj5i0qykg.webp)
 
 上图中，黄框表示两条路由均使用 OSPF，红框表示两条路由 metric 均相同为 3，蓝框表示 AD(administrative distance)
 
@@ -165,11 +165,11 @@ router‘s route table 只会含有最优的路由，如果使用 dynamic routin
 >
 > 但是 static route 并不使用 metric 来衡量路由的优劣
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_10-36.14fpi56l5iow.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_10-36.14fpi56l5iow.webp)
 
 协议不同，metric 衡量的方式也不同，具体可以参考下表
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_10-41.1o1sksebzdfk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_10-41.1o1sksebzdfk.webp)
 
 RIP,只以 hop 来计算 metric，一跳就是 one hop，不管互联的 link 是 fastethernet 还是 gigabitethernet 或者是 ten gigabitethernet
 
@@ -177,7 +177,7 @@ OSPF 以链路带宽来计算 metric
 
 例如下面这个拓扑
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_11-02.4527fgggy4hs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_11-02.4527fgggy4hs.webp)
 
 - RIP
 
@@ -205,7 +205,7 @@ OSPF 以链路带宽来计算 metric
 
 IGP 协议的 AD 值，可以参考下表
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_11-21.31oteve0hqkg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_11-21.31oteve0hqkg.webp)
 
 所以前面的那个问题，显然会使用 OSPF 对应的那条协议
 
@@ -217,7 +217,7 @@ IGP 协议的 AD 值，可以参考下表
 
 例如下图中就修改 10.0.0.0/8 static route AD 值为 100
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_11-43.3ac280x391vk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_11-43.3ac280x391vk.webp)
 
 *By changing the AD of a static route, you can make it less preferred than routes learned by a dynamic routing protocol to the same destination(make sure the AD is higher than the routing protocol’s AD)*
 
@@ -249,7 +249,7 @@ else if a.protocol.AD == b.protocol.AD then:
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230609/2023-06-12_13-31.1xtwftm28bgg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230609/2023-06-12_13-31.1xtwftm28bgg.webp)
 
 ### 0x01
 

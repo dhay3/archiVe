@@ -200,15 +200,15 @@ Internet  192.168.80.2            1   c402.7c2b.0010  ARPA   FastEthernet0/0
 
 只能在R1 f0/0上抓到和arp相关的两个包
 
-![2022-04-08_01-58](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220408/2022-04-08_01-58.55trbuvsptc0.webp)
+![2022-04-08_01-58](https://github.com/dhay3/image-repo/raw/master/20220408/2022-04-08_01-58.55trbuvsptc0.webp)
 
 第一个包向 L2 广播地址 ff:ff:ff:ff:ff:ff 发送广播包，报文内容为源IP/MAC，目的IP/MAC(目前还不知道目的MAC所以是00:00:00:00:00:00)。==LAN中所有的host(包括同LAN中的router或者L3 switch)都可以收到广播地址发送的arp请求==
 
-<img src="https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220408/2022-04-08_01-59.79rwo9u3kso0.webp" alt="2022-04-08_01-59" style="zoom:80%;" />
+<img src="https://github.com/dhay3/image-repo/raw/master/20220408/2022-04-08_01-59.79rwo9u3kso0.webp" alt="2022-04-08_01-59" style="zoom:80%;" />
 
 第二个包是目的IP的端口返回的，告诉192.168.80.1，192.168.80.2的MAC是 c4:02:7c:2b:00:10。同时192.168.80.2所在的机器会把192.168.80.1对应的MAC记录在neighbor table中
 
-<img src="https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220408/2022-04-08_01-59_1.3vtarrsqlla0.webp" alt="2022-04-08_01-59_1" style="zoom:80%;" />
+<img src="https://github.com/dhay3/image-repo/raw/master/20220408/2022-04-08_01-59_1.3vtarrsqlla0.webp" alt="2022-04-08_01-59_1" style="zoom:80%;" />
 
 
 
@@ -250,11 +250,11 @@ Success rate is 80 percent (4/5), round-trip min/avg/max = 64/85/92 ms
 
 R1 f0/0 口抓包只会显示和上个例子中相同的数据包，因为在这个例子中192.168.80.2也是网关，所以在比较目的IP和当前IP不是一个LAN的情况下，是会向广播地址询问网关的MAC
 
-![2022-04-08_01-58](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220408/2022-04-08_01-58.55trbuvsptc0.webp)
+![2022-04-08_01-58](https://github.com/dhay3/image-repo/raw/master/20220408/2022-04-08_01-58.55trbuvsptc0.webp)
 
 然后由网关继续递归（这里只有一跳就到达了）
 
-![2022-04-08_02-35](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220408/2022-04-08_02-35.75gtrjq1r900.webp)
+![2022-04-08_02-35](https://github.com/dhay3/image-repo/raw/master/20220408/2022-04-08_02-35.75gtrjq1r900.webp)
 
 R1并不会记录R3 f0/1 的MAC，因为ARP只能在LAN中使用
 

@@ -20,7 +20,7 @@ Simple Network Management Protocol(SNMP) 是一个标准的 IEEE 协议，通过
 
 例如下面拓扑，SRV1 是 NMS，R1 SW1 均为 Managed Devices
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-06_13-37.5pniwj6v61vk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-06_13-37.5pniwj6v61vk.webp)
 
 如果使用了 SNMP 会出现如下结果
 
@@ -28,25 +28,25 @@ Simple Network Management Protocol(SNMP) 是一个标准的 IEEE 协议，通过
 
    假设 SW1 G0/1 端口 down 或者 up，SW1 会通过 SNMP 把对应的信息发送到 NMS
 
-   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-06_13-43.1ke5b45c7qf4.webp)
+   ![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-06_13-43.1ke5b45c7qf4.webp)
 
 2. The NMS can ask the managed devices for information about their current status
 
    例如 NMS 会主动问 R1 的 CPU 使用率
 
-   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-06_13-42.7j2hlcdgxam8.webp)
+   ![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-06_13-42.7j2hlcdgxam8.webp)
 
 3. The NMS can tell the managed devices to change aspects of their configuration
 
    假设 R1 G0/1 接口地址为 203.0.113.1, NMS 可以要求 R1 G0/1 接口地址变为 203.0.113.1
 
-   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-06_13-44.2d0kmyghce9s.webp)
+   ![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-06_13-44.2d0kmyghce9s.webp)
 
 ## SNMP Components
 
 上面的拓扑可以抽象成如下几个组件
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-06_13-46.3ivgsfvlpojk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-06_13-46.3ivgsfvlpojk.webp)
 
 > SNMP Agent uses UDP 161 port
 >
@@ -80,11 +80,11 @@ Simple Network Management Protocol(SNMP) 是一个标准的 IEEE 协议，通过
 
 SNMP OID 是以层级表示的，例如
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-06_13-59.5xz8ze52f1fk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-06_13-59.5xz8ze52f1fk.webp)
 
 前一部分数字是后一部分数字的父级(类似 json path)，整个 OID 代表 sysName
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-06_14-01.6yqsw9ncxrls.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-06_14-01.6yqsw9ncxrls.webp)
 
 如果 SRV1 向 SW1 需求 OID .1.3.6.1.2.1.1.5 的值，SW1 就会回送 OID 对应的值 sysName SW1 到 SRV1
 
@@ -114,7 +114,7 @@ SNMP 起源于 1988 年，有很多不同版本的 SNMP，目前使用的最广�
 
 NMS 或者 managed devics 会发送如下 NMS messages
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-06_14-10.1b610s2bzwow.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-06_14-10.1b610s2bzwow.webp)
 
 Read/Write classes 是从 NMS 发送到 managed devices 的
 
@@ -132,7 +132,7 @@ Read class messages 中可以包含如下几种 messages
 
    例如 SRV1 发送 Get 问 SW1 G0/1 端口的状态 
 
-   ![https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-06_14-16.6qpt6tsc0xs0.webp](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-06_14-16.6qpt6tsc0xs0.webp)
+   ![https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-06_14-16.6qpt6tsc0xs0.webp](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-06_14-16.6qpt6tsc0xs0.webp)
 
 2. GetNext
 
@@ -158,7 +158,7 @@ A request sent from the manager to the agent to change the value of one or more 
 
 例如 SRV1 告诉 SW1 把 host name 改成 SW10 就需要通过 Set messages
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-06_14-24.4a7t73va5br4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-06_14-24.4a7t73va5br4.webp)
 
 ### Notification
 
@@ -170,7 +170,7 @@ Notification class messages 中包含 2 种 message
 
    例如当 SW1 G0/0 端口 down 了就会发送 Trap message 到 SRV1
 
-   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-06_14-32.1omkidz47qbk.webp)
+   ![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-06_14-32.1omkidz47qbk.webp)
 
 2. Inform
 
@@ -188,11 +188,11 @@ Notification class messages 只包含 1 种 message 就是 Response，除了发�
 
 有如下拓扑，PC1 是 NMS,R1 是 managed device
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-06_14-39.3gkd25elxxa8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-06_14-39.3gkd25elxxa8.webp)
 
 使用如下配置
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-06_14-43.2a1cgdiuw4w0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-06_14-43.2a1cgdiuw4w0.webp)
 
 1. `snmp-server community Jeremy1 ro`
 
@@ -216,11 +216,11 @@ Notification class messages 只包含 1 种 message 就是 Response，除了发�
 
 例如现在 R1 G0/1 linkdown 就会发送 trap message
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-06_14-49.4q3hqzni9ocg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-06_14-49.4q3hqzni9ocg.webp)
 
 报文详情如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-06_14-50.6t6wtttijzs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-06_14-50.6t6wtttijzs.webp)
 
 报文的 variable-bindings 对应 OIDs
 
@@ -234,7 +234,7 @@ community 使用 Jeremy1
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_15-11.2l295nvmk03k.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-06_15-11.2l295nvmk03k.webp)
 
 ### 0x01
 
@@ -257,7 +257,7 @@ Use SNMP ‘Get’ messages via the MIB browser on PC1 to check the following
 
 Desktop -> MIB 然后选择 Advanced 按照下面截图配置
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_15-21.o3kziy8smts.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-06_15-21.o3kziy8smts.webp)
 
 Read Community 对应 ro Cisco1
 
@@ -265,19 +265,19 @@ Write Community 对应 rw Cisco2
 
 1. How long has R1 been running(system uptime)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_15-24.69udwr0z20ow.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-06_15-24.69udwr0z20ow.webp)
 
 2. What is the currently configured hostname on R1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_15-25.2ek0b0r6nbwg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-06_15-25.2ek0b0r6nbwg.webp)
 
 3. How many interfaces does R1 have
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_15-26.3z07gdtusagw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-06_15-26.3z07gdtusagw.webp)
 
 4. What are those interfaces
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_15-27.3gr5n714e3eo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-06_15-27.3gr5n714e3eo.webp)
 
 如果需要看 interfaceName，需要使用 ifDescr
 
@@ -285,7 +285,7 @@ Write Community 对应 rw Cisco2
 
 Use an SNMP ‘Set’ message from PC1 to change the hostname of R1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_15-29.4tj2cq28dqf4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-06_15-29.4tj2cq28dqf4.webp)
 
 这里的 datatype 必须和需要设置的值的 type 相同，点击 OK 后还需要点击 GO 才会生效
 

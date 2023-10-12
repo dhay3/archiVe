@@ -15,7 +15,7 @@ Dynamic NAT 通过 NAT pool 来定义可以使用的 inside global addresses
 
 例如
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_11-21.fgfpzl8ou0w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_11-21.fgfpzl8ou0w.webp)
 
 虽然被称为 Dynamic NAT，但是实际上还是一对一
 
@@ -37,15 +37,15 @@ Dynamic NAT 通过 NAT pool 来定义可以使用的 inside global addresses
 
 100.0.0.1 - 10 都被分配了，这时 192.168.0.98 需要出公网，就不能分配 NAT 地址，Router 就会==丢弃==这个报文
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_11-49.36ds4jr2m6kg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_11-49.36ds4jr2m6kg.webp)
 
 当 192.168.0.167 数据传输完，地址次的 100.0.0.1 变为可用的状态，这时如果 192.168.0.98 想要出公网就会 SNAT 成 100.0.0.1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_11-52.2lg8i73srn40.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_11-52.2lg8i73srn40.webp)
 
 ## Dynamic NAT Configuration
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_12-07.3v3p5uk8t8n4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_12-07.3v3p5uk8t8n4.webp)
 
 - `R1(config)#int <interface-id>`
 
@@ -73,7 +73,7 @@ Dynamic NAT 通过 NAT pool 来定义可以使用的 inside global addresses
 
 这时使用 `show ip nat translations` 来查看 NAT table
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_12-23.5x4mkw3lkw00.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_12-23.5x4mkw3lkw00.webp)
 
 其中第 3 第 6 行表示只要从 inside local 来就会 SNAT 成 inside global，如果期间没有流量默认 24 消失会清空，其余部分是 dynamic entries，一分钟没有流量就会自动从 NAT table 中清空
 
@@ -81,7 +81,7 @@ Dynamic NAT 通过 NAT pool 来定义可以使用的 inside global addresses
 
 看一下 `R1#show ip nat statistics`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_12-34.39dso06j7934.webp) 
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_12-34.39dso06j7934.webp) 
 
 可以看到 6 dynamic 表示 NAT table 中一共有 6 条 entries, 4 extended 表示 dynamic entries
 
@@ -95,7 +95,7 @@ Dynamic NAT 通过 NAT pool 来定义可以使用的 inside global addresses
 
 例如
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_12-47.5evh83d61wxs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_12-47.5evh83d61wxs.webp)
 
 1. PC1 192.168.0.167 使用 port 54321 访问 8.8.8.8:53，同时 PC2 192.168.0.168 使用 port 54321 访问 8.8.8.8:53
 2. R1 会将 PC1 发送过来的报文源地址 NAT 成 100.0.0.1:54321，将 PC2 发送过来的报文源地址 NAT 成 100.0.0.1:543322(这个端口一般随机)
@@ -123,7 +123,7 @@ else
 
 ### PAT Configuration
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_12-58.5xn8j244djb4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_12-58.5xn8j244djb4.webp)
 
 和 Dynamic NAT 的配置类似，只有一点不同
 
@@ -133,7 +133,7 @@ else
 
 看一下 `show ip nat translations` 和 `show ip nat statistics` 的信息
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_13-02.4zkys7y415hc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_13-02.4zkys7y415hc.webp)
 
 这里并没有类似 `---...` 的 entries，因为 PAT 是一对多的关系，不存在 Staic NAT 和 Dynamic NAT 中一对一的关系，所以只会显示 dynamic entries
 
@@ -143,21 +143,21 @@ else
 
 使用 `R1(config)#ip nat inside source list <num> interface <interface-id> overload` 命令，指定 inside global 地址为 interface g0/0 的 IP，同时启用 PAT
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_13-07.mq938yizozk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_13-07.mq938yizozk.webp)
 
 例如
 
 PC1/2 想要出公网就会使用 R1 G0/0 接口的 IP 203.0.113.1 作为 SNAT 地址
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_13-09.3fem3sj4xgqo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_13-09.3fem3sj4xgqo.webp)
 
 ## Command Summary
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_13-11.53jxozv11wg0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_13-11.53jxozv11wg0.webp)
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_13-26.3siy1ub0tsxs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_13-26.3siy1ub0tsxs.webp)
 
 ### 0x01
 

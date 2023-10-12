@@ -25,13 +25,13 @@ solid-state hybrid drive 简称 SSD，中文叫固态硬盘
 
 SATA SSD 使用和 HHD 一样的SATA(Serial Advanced Technology Attachment)接口，所以体积会比较大2.5inch。读写速率通常在450-550MB/s左右
 
-![Samsung-850-EVO-SSD](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Samsung-850-EVO-SSD.4fh5n1lv3660.jpg)
+![Samsung-850-EVO-SSD](https://github.com/dhay3/image-repo/raw/master/20210601/Samsung-850-EVO-SSD.4fh5n1lv3660.jpg)
 
 ### mSATA or Mini-SATA SSD
 
 使用mSATA接口，小巧通常被用在laptop，速度和SATA SSD差不多，但是价格贵一点。
 
-![Transcend-mSATA-SSD](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Transcend-mSATA-SSD.8vq89iht4io.jpg)
+![Transcend-mSATA-SSD](https://github.com/dhay3/image-repo/raw/master/20210601/Transcend-mSATA-SSD.8vq89iht4io.jpg)
 
 ### NGFF SSD
 
@@ -39,13 +39,13 @@ NGFF(Next Generation Form Factor) SSD，也被称为M.2 SSD，使用M.2接口（
 
 速率和SATA3.0 SSD 和 mSATA SSD差不多，但是同时有SATA和mSATA的优点
 
-![Samsung-860-EVO-M](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Samsung-860-EVO-M.2-SSD-2.7eiu9rh2xyw0.jpg)
+![Samsung-860-EVO-M](https://github.com/dhay3/image-repo/raw/master/20210601/Samsung-860-EVO-M.2-SSD-2.7eiu9rh2xyw0.jpg)
 
 ### NVME M.2 SSD
 
 NVME  M.2 SSD（使用PCIe mini card物理接口） 是目前市面上速度最快的SSD，同样使用M.2接口，但是使用NVMe协议。读写速度大约在3500到3000MB/s，价格相对较贵。主板需要支持NVME才行
 
-![Samsung-960-EVO-M](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Samsung-960-EVO-M.2-SSD-NVMe-2.6vdlcbexduk0.jpg)
+![Samsung-960-EVO-M](https://github.com/dhay3/image-repo/raw/master/20210601/Samsung-960-EVO-M.2-SSD-NVMe-2.6vdlcbexduk0.jpg)
 
 ## SSD VS HDD
 

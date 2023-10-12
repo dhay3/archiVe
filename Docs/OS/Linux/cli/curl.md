@@ -768,7 +768,7 @@ http://example.com/archive[1996-1999]/vol[1-4]/part{a,b,c}.html
 
 ## Timing
 
-![](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220417/2022-04-17_22-05.75xnwr9nn780.webp#crop=0&crop=0&crop=1&crop=1&id=xcRJ6&originHeight=957&originWidth=1145&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
+![](https://github.com/dhay3/image-repo/raw/master/20220417/2022-04-17_22-05.75xnwr9nn780.webp#crop=0&crop=0&crop=1&crop=1&id=xcRJ6&originHeight=957&originWidth=1145&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
 
 ## Exit code
 > man `/exit codes`

@@ -52,7 +52,7 @@ SSH 是一个协议簇，为了方便理解将其拆解成 3 层
 
   没看明白。。
 
-![2023-01-31_17-29](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230131/2023-01-31_17-29.2zk7mni15f7k.webp)
+![2023-01-31_17-29](https://github.com/dhay3/image-repo/raw/master/20230131/2023-01-31_17-29.2zk7mni15f7k.webp)
 
 ## Uses
 
@@ -92,7 +92,7 @@ OpenSSH 是 SSH 的 implementations 之一, 主要用于远程加密登录。由
 
 以 30.131.92.34 SSH password authentication 到 43.142.57.183 为例( public authentication 结果可能不尽相同 )
 
-![2023-01-31_16-03](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230131/2023-01-31_16-03.6r9i4iwwp4w0.webp)
+![2023-01-31_16-03](https://github.com/dhay3/image-repo/raw/master/20230131/2023-01-31_16-03.6r9i4iwwp4w0.webp)
 
 ### Connection Request/Connection Ackownledged
 
@@ -116,7 +116,7 @@ server 宣告自己使用的 SSH 协议以及系统，格式为
 
 client 宣告默认使用的 key exchange algo，例如下图，表示默认使用 `curve25519-sha256` 作为 key exchange algo  。以及支持的 key exchange algo, key algo( server 支持的对称加密 algo ), encryption algo, compression algo
 
-![2023-01-31_16-20](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230131/2023-01-31_16-20.5y9vbjwfi6o.webp)
+![2023-01-31_16-20](https://github.com/dhay3/image-repo/raw/master/20230131/2023-01-31_16-20.5y9vbjwfi6o.webp)
 
 ### Server Key Exchange Init
 
@@ -128,7 +128,7 @@ server 宣告( 这里也可以理解成 reply )默认使用的 key exchange algo
 
 client 宣告 key exchange ( 一般使用 DH, 这里使用 ECDH ) 的 公钥, encryption algo, compression algo
 
-![2023-01-31_16-54](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230131/2023-01-31_16-54.1tb8l15d3obk.webp)
+![2023-01-31_16-54](https://github.com/dhay3/image-repo/raw/master/20230131/2023-01-31_16-54.1tb8l15d3obk.webp)
 
 ### Server algo Key Exchange Reply & New Keys
 
@@ -136,7 +136,7 @@ client 宣告 key exchange ( 一般使用 DH, 这里使用 ECDH ) 的 公钥, en
 
 server 宣告 key exhcnage ( 一般使用 DH, 这里使用 ECDH ) 的 公钥
 
-![2023-01-31_16-57](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230131/2023-01-31_16-57.6l8ooqke5wg0.webp)
+![2023-01-31_16-57](https://github.com/dhay3/image-repo/raw/master/20230131/2023-01-31_16-57.6l8ooqke5wg0.webp)
 
 ### (Server New Keys)Client New Keys
 

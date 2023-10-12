@@ -14,6 +14,6 @@ https://www.jianshu.com/p/6ae0142d5f3a
 
 HUB 集线器，用于把多个 network 集成一个network，工作在 Layer 1。没有内存存储数据且只能在一个时间内处理一个方向的数据(==半双工==)
 
-![2021-08-26_01-24](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/2021-08-26_01-24.4lal881naio0.png)
+![2021-08-26_01-24](https://github.com/dhay3/image-repo/raw/master/20210601/2021-08-26_01-24.4lal881naio0.png)
 
 ==不具备交换机 MAC 学习的功能，所以他会把收到的所有数据包转发到除了自己这个端口外的所有端口。从而造成 packet collision，影响网络性能。==从2011年后就陆续被 switch 取代了。

@@ -30,15 +30,15 @@ $reference\ bandwidth \div interface\ bandwidth$
 
 R3 f2/0 cost 为 1，因为 100/100 = 1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_17-46.32dxb99mlts0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_17-46.32dxb99mlts0.webp)
 
 R3 G0/0 cost 也为 1，因为 100/1000 < 1，向上取整为 1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_17-49.4su1zx9f096o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_17-49.4su1zx9f096o.webp)
 
 显然的这种方式来计算 OSFP cost 显然是不合理的，所以 reference bandwidth 也是可以通过命令 `R1(config-router)# auto-cost reference-bandwidth <megabits-per-sencond>` 来修改的
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_17-51.4n9s2i9accxs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_17-51.4n9s2i9accxs.webp)
 
 *You  should configure a reference bandwidth greater than the fastest links in your network(to allow for future upgrades)*
 
@@ -48,7 +48,7 @@ R3 G0/0 cost 也为 1，因为 100/1000 < 1，向上取整为 1
 
 ### Example
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_18-00.6nbtatgh8em8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_18-00.6nbtatgh8em8.webp)
 
 例如上图，使用了 `auto-cost reference-bandwidth 100000`，现在 R1 需要访问 192.168.4.0/24 这个段。那么 OSPF cost 如下
 $$
@@ -58,7 +58,7 @@ $$
 
 > *Loopback interfaces have a cost of 1(Not matter the reference-bandwidth)*
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_18-07.jq1gjijcs74.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_18-07.jq1gjijcs74.webp)
 
 那么 OSPF cost 如下
 $$
@@ -66,13 +66,13 @@ $$
 $$
 可以看一下 R1 在未修改 reference bandwidth 之前的路由表
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_18-09.16q0vk7rzjb4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_18-09.16q0vk7rzjb4.webp)
 
 这里可以观察到 OSPF 会引入 2 条 ECMP 路由，via R2 和 via R3，因为对应 reference  bandwidth 100 来说，两条 route cost 都为 3 
 
 对比一下修改了 reference bandwidth 到 100000 后，R1 的路由表
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_18-14.4d374wdd9vnk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_18-14.4d374wdd9vnk.webp)
 
 这里就可以看到只会引入一条 via R2 的路由，因为对应 via R3 的路由 cost 为 $100(R1\ G1/0)+1000(R3\ F2/0)+100(R4\ G1/0)=1200$
 
@@ -84,7 +84,7 @@ $$
 
 除了 `auto-cost reference-bandwidth <megabits-per-sencond>` 这种间接的方式来修改 interface cost 外，还可以通过 `ip ospf cost <cost>` 的方式来直接修改 interface cost
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_18-23.5cgj90824oe8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_18-23.5cgj90824oe8.webp)
 
 ### bandwidth
 
@@ -96,7 +96,7 @@ $$
 
 *The bandwidth is just a value that is used to calculate OSPF cost, EIGRP metric,etc*
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_18-33.2czvtnzvuvnk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_18-33.2czvtnzvuvnk.webp)
 
 > 注意 bandwidth 命令 number 使用的 unit 是 kilobits，而 reference-bandwidth 命令 number 使用的 unit 是 megabits
 
@@ -120,7 +120,7 @@ $$
 
 如果需要查看每个接口的 OSPF cost，除了使用 `show ip ospf interface <interface-id>` 外，还可以使用 `show ip ospf interface br` 来查看
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-14_10-18.3lohnlxh8ikg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-14_10-18.3lohnlxh8ikg.webp)
 
 ## OSPF Neighbors
 
@@ -148,7 +148,7 @@ neighbors 是 OSPF 中重要的一个概念。只有 routers 成为 neighbors，
 6. Loading
 7. Full
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-14_11-45.1ue4qvepmqo0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-14_11-45.1ue4qvepmqo0.webp)
 
 - 前 3 种状态为构建两台 router 之间的 adjacency 关系，即 becomes neighbors
 - 后 4 种状态为交换两台 router 之间的 LSDB 中的 LSAs 信息，即 Exchange LSAs
@@ -157,7 +157,7 @@ neighbors 是 OSPF 中重要的一个概念。只有 routers 成为 neighbors，
 
 假设 R2 G0/0 已经加入到 OSPF network，现在 R1 G0/0 加入到了 OSPF network 中
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-14_10-33.7iolsefrmfls.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-14_10-33.7iolsefrmfls.webp)
 
 首先 R1 会发送 OSPF hello message 到 OSPF multicast address 224.0.0.5
 
@@ -174,7 +174,7 @@ hello message 中主要包含几个字段
 
 现在 R2 收到了从 R1 发来的 OSPF hello message
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-14_10-51.4hc7ltudzczk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-14_10-51.4hc7ltudzczk.webp)
 
 R2 会将 R1 对应的信息加入到自己的 OSPF neighbor table 中，同时在 R2 OSPF neigbor table 中 R1 的状态标识为 init
 
@@ -186,7 +186,7 @@ R2 会将 R1 对应的信息加入到自己的 OSPF neighbor table 中，同时�
 
 在 R2 收到 R1 发来的 hello message 进入 init state 之后
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-14_10-59.2obbgu8e046.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-14_10-59.2obbgu8e046.webp)
 
 R2 会发送一个 hello messge，包含 the RID of both routers(R1 和 R2)
 
@@ -204,7 +204,7 @@ R2 会发送一个 hello messge，包含 the RID of both routers(R1 和 R2)
 
 两台 routers 都进入 2-way state 后
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-14_11-14.6l13qyrbq3k0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-14_11-14.6l13qyrbq3k0.webp)
 
 会开始准备交换对方的 LSDB 信息，在此之前，双方会协商那台 router 是 master，那台是 slave
 
@@ -218,7 +218,7 @@ RID 值大的那台 router 会成为 Master，RID 值小的那台 router 会成�
 
 在决定那台 Router 是 Master 还是 Slave 后
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-14_11-16.k66sh54k5v4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-14_11-16.k66sh54k5v4.webp)
 
 Routers 通过含有各自 LSDB 中的 LSAs 基本信息的 DBDs 交换信息，对比决定需要对方的那条 LSA 的详细信息
 
@@ -226,7 +226,7 @@ Routers 通过含有各自 LSDB 中的 LSAs 基本信息的 DBDs 交换信息，
 
 在确定需要对方那条 LSA 详细信息之后
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-14_11-23.7h7ttsfkho8w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-14_11-23.7h7ttsfkho8w.webp)
 
 > 这里只展示了 R1 做  LSR 的过程，实际 R2 也会做一样的
 
@@ -242,7 +242,7 @@ Routers 通过含有各自 LSDB 中的 LSAs 基本信息的 DBDs 交换信息，
 
 在两台 Routers 都收到了对方的 LSAck 后
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-14_11-34.6sfqt30nk9s0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-14_11-34.6sfqt30nk9s0.webp)
 
 两台 Router 会将自己的 OSPF neighbor table 对方的条目，变为 full state
 
@@ -258,11 +258,11 @@ Routers 通过含有各自 LSDB 中的 LSAs 基本信息的 DBDs 交换信息，
 
 在 OSPF states 之间的变化过程中，需要发送的 OSPF message 一共有 5 种
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-14_12-05.6dhjgdo81mkg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-14_12-05.6dhjgdo81mkg.webp)
 
 ## OSPF show command
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-14_13-41.1uq577o9s2w0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-14_13-41.1uq577o9s2w0.webp)
 
 可以使用 `show ip ospf neighbor` 来查看当前 router OSPF neighbor 相关的信息
 
@@ -306,15 +306,15 @@ Routers 通过含有各自 LSDB 中的 LSAs 基本信息的 DBDs 交换信息，
 
 OSPF 可以使用 network 命令，将在指定 IP 范围的 interface 加入 OSPF network 中外，还可以通过 `ip ospf <process-id> area <number>` 的方式，将端口显示声明加入到 OSPF 中的
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-14_14-53.3z13cudu6ncw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-14_14-53.3z13cudu6ncw.webp)
 
 另外除了使用 `passive-interface <interface-id>` 来让指定的端口变为 passive 外，还可以使用 `passive-interface default` 来让所有的端口变为 passive，然后使用 `no passive-interface <interface-id>` 来让指定端口不再 passive
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-14_14-55.24fapysecmo0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-14_14-55.24fapysecmo0.webp)
 
 如果是通过上述的方法直接将端口加入到 OSPF 中，在 `show ip protocols` 中输出的内容会和使用 network 命令加入到 OSPF 中的有区别
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-14_14-57.6co74skriruo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-14_14-57.6co74skriruo.webp)
 
 Routing for Network 部分是空的，Routing on interfaces Configured Explicitly 部分会显示非通过 network 命令直接加入到 OSPF 的接口
 

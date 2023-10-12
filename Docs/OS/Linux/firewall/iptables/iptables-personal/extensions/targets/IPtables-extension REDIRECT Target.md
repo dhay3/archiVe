@@ -18,7 +18,7 @@ It redirects the packet to the machine itself by changing the destination IP to 
 
 以 192.168.1.1 访问 192.168.5.2 为例子
 
-![2022-11-11_01-08](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221110/2022-11-11_01-08.3insanea9j9c.webp)
+![2022-11-11_01-08](https://github.com/dhay3/image-repo/raw/master/20221110/2022-11-11_01-08.3insanea9j9c.webp)
 
 labos-3 配置规则
 

@@ -10,7 +10,7 @@ https://www.juniper.net/documentation/en_US/junos-space-apps/network-director3.7
 
 在一个区域内可以有多个WLAN共存，每个WLAN需要一个唯一的ID，service set ID(SSID)。SSID保证数据包在正确的WLAN中，即使当WLAN出现重叠。作为普通的WLAN user，你只需要关注SSID。提供authentication就可以连接到该WLAN
 
-![2021-06-07_23-58](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/2021-06-07_23-58.6d00h3q8lrk0.png)
+![2021-06-07_23-58](https://github.com/dhay3/image-repo/raw/master/20210601/2021-06-07_23-58.6d00h3q8lrk0.png)
 
 ## BSSID
 
@@ -18,7 +18,7 @@ https://www.juniper.net/documentation/en_US/junos-space-apps/network-director3.7
 
 在一个WLAN中可能存在多个access points(无线ap)，为了保证数据包发送到正确的access point，所以需要用一个ID来区分access point，basic service set identifier(BSSID)。可以理解为access point的MAC地址。
 
-![2021-06-07_23-59](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/2021-06-07_23-59.61ndyax6uns0.png)
+![2021-06-07_23-59](https://github.com/dhay3/image-repo/raw/master/20210601/2021-06-07_23-59.61ndyax6uns0.png)
 
 > tips
 >

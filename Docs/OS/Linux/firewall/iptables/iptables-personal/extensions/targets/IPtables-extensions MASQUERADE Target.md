@@ -30,7 +30,7 @@ https://www.zsythink.net/archives/1764
 
 以 192.168.1.1 访问 192.168.5.2 自动 SNAT 成 labos-3   eth0 配置的 IP 为例
 
-![2022-11-11_00-26](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221110/2022-11-11_00-26.77dy5jt8no1s.webp)
+![2022-11-11_00-26](https://github.com/dhay3/image-repo/raw/master/20221110/2022-11-11_00-26.77dy5jt8no1s.webp)
 
 ### Lab1
 

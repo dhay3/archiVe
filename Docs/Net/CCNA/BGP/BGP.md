@@ -22,7 +22,7 @@ Peers利用TCP 179 port沟通，分为external BGP（EBGP）和internal BGP（EB
 
 做如下一个简单的例子
 
-![2021-11-30_22-23](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211130/2021-11-30_22-23.8bu7di38hvw.png)
+![2021-11-30_22-23](https://github.com/dhay3/image-repo/raw/master/20211130/2021-11-30_22-23.8bu7di38hvw.png)
 
 
 
@@ -253,7 +253,7 @@ BGP: 192.168.23.2 rcvd OPEN w/ remote AS 65501
 
 因为Loopback Interface永远都是UP的，而且Neighbor之间可以通过IGP来寻找到达Loopback的路径，这比起使用Interface IP 来作neighbor address来得灵活一点，也减少了因为Interface down而令BGP table不稳定的概率
 
-![Snipaste_2021-08-11_20-17-25](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211201/Snipaste_2021-08-11_20-17-25.5fbfg5re3r40.png)
+![Snipaste_2021-08-11_20-17-25](https://github.com/dhay3/image-repo/raw/master/20211201/Snipaste_2021-08-11_20-17-25.5fbfg5re3r40.png)
 
 以图2为例子，假设R2、R3及R4正在运行OSPF，如果R2连到R3的IBGP connection是使用R3 e0/1 interface IP。那么当R3 e0/1 因为某些原因而Down的话，IBGP便会断开
 
@@ -371,7 +371,7 @@ Neighbor        V    AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
 
 有时候，两个Router中间可能有其他网络设备使两个BGP Neighbors 不能直接连接，很大几率是firewall。==因为连接其他AS的位置一般是Network的边缘（Edge）。企业或组织通常会安装防火墙以保证安全。==遇到这种情况可以使用`ebgp multihop`来是两个Router连接
 
-![Snipaste_2021-08-11_20-17-25](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211207/Snipaste_2021-08-11_20-17-25.3okrhas59fs0.png)
+![Snipaste_2021-08-11_20-17-25](https://github.com/dhay3/image-repo/raw/master/20211207/Snipaste_2021-08-11_20-17-25.3okrhas59fs0.png)
 
 设定好R1和R2的IP Address，各加入一条static route 把路径指向Firewall，可以使用一支router来模拟firewall
 

@@ -34,7 +34,7 @@ BIOS 和 EFI 也被称为固件，因为其程序直接被刷在 motherboad 上 
 
 Basic Input/Output System 简称 BIOS 也被称为 Legacy BIOS
 
-![Snipaste_2021-03-10_11-35-45](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230214/Snipaste_2021-03-10_11-35-45.36v0g0rzwvpc.webp)
+![Snipaste_2021-03-10_11-35-45](https://github.com/dhay3/image-repo/raw/master/20230214/Snipaste_2021-03-10_11-35-45.36v0g0rzwvpc.webp)
 
 由 16 汇编语言开发
 
@@ -52,11 +52,11 @@ UEFI的所有信息存储在以`.efi`文件中(binary)，而不是存储在固�
 
 - linux
 
-![Snipaste_2021-03-10_11-16-44](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230214/Snipaste_2021-03-10_11-16-44.47njszmw0dc0.webp)
+![Snipaste_2021-03-10_11-16-44](https://github.com/dhay3/image-repo/raw/master/20230214/Snipaste_2021-03-10_11-16-44.47njszmw0dc0.webp)
 
 - windows
 
-  ![Snipaste_2021-03-10_11-17-47](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230214/Snipaste_2021-03-10_11-17-47.3twdhkkpcncw.webp)
+  ![Snipaste_2021-03-10_11-17-47](https://github.com/dhay3/image-repo/raw/master/20230214/Snipaste_2021-03-10_11-17-47.3twdhkkpcncw.webp)
 
 `.efi`文件存储在一个特殊的分区EFI System Partition(ESP)
 

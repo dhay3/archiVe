@@ -28,18 +28,18 @@
 
 PCP 也被称为 CoS(Class of Service)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-13_18-04.4jphbk32ng5c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-13_18-04.4jphbk32ng5c.webp)
 
 一共 3 bit 最大的值为 8，不同的值对应的流量类型不同
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-13_18-07.11k4h5568q9s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-13_18-07.11k4h5568q9s.webp)
 
 因为 PCP 只在 dot1q 报文头中，所以支持出现在如下的 connections 中
 
 1. trunk links
 2. access links with a voice VLAN
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-13_18-11.3c5qjhuxg18g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-13_18-11.3c5qjhuxg18g.webp)
 
 即上图中红色的链路，PH1/2 和 SW1/2 匹配第二种 connection，SW1 - SW2 和 SW1 - R1 匹配第一种 connection
 
@@ -51,19 +51,19 @@ PCP 也被称为 CoS(Class of Service)
 
 在 IPv4 报文头中有一部分被称为 ToS byte(8 bits)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-13_18-16.1ap6vl6zqdc0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-13_18-16.1ap6vl6zqdc0.webp)
 
 即红框中部分，由 DSCP 和 ECN 组成
 
 早的时候 ToS byte 并不是由 DSCP 和 ECN 组成的，而是由如下部分组成
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-13_18-18.5tflontvfvr4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-13_18-18.5tflontvfvr4.webp)
 
 实际只有 3 bits IPP 来其划分流量的功能，最大只能有 8 种
 
 而现在的 ToS byte
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-13_18-19.6nbtaund4lts.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-13_18-19.6nbtaund4lts.webp)
 
 使用 DSCP 来划分流量，一共占了 6 bits，最大 64 种，所以可以提供对流量划分细粒度更小的判断
 
@@ -90,7 +90,7 @@ DSCP 中只要注意几个值的集合
 
 > QoS 配置并不是 CCNA 考试中的内容，这边只做简单的介绍
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-14_09-59.7joqp2cozxxc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-14_09-59.7joqp2cozxxc.webp)
 
 - `R1(config)#class-map <map name>`
 
@@ -102,7 +102,7 @@ DSCP 中只要注意几个值的集合
 
 ##### DF/EF
 
-###### ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-14_10-03.4vdq49fnxu68.webp)
+###### ![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-14_10-03.4vdq49fnxu68.webp)
 
 DF 对应 DSCP 0
 
@@ -120,13 +120,13 @@ DF 和 EF 比较好理解，AF 有点特殊
 
 *Higher class = more priority*
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-14_10-07.5bxj4foi6rnk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-14_10-07.5bxj4foi6rnk.webp)
 
 X 部分值为 Class 部分的 decimal, Y 部分值为 Drop Precedence 部分
 
 例如
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-14_10-09.5u0kpgcigum8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-14_10-09.5u0kpgcigum8.webp)
 
 就表示 AF11,对应 DSCP 10
 
@@ -136,13 +136,13 @@ X 部分值为 Class 部分的 decimal, Y 部分值为 Drop Precedence 部分
 
 所以按照 AF class 以及 drop precedence 的规则，可以得出 AF41 是最优的，对应 DSCP 值 34，AF13 是最差的，对应 DSCP 14
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-14_10-16.3afb763dvhog.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-14_10-16.3afb763dvhog.webp)
 
 ##### CS
 
 CS 是用于兼容 IPP 的，所以只能占用 3 bits
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-14_10-29.1p43guzwtlfk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-14_10-29.1p43guzwtlfk.webp)
 
 如果需要将 CSX 转为 DSCP，直接将 X 乘以 8 即可
 
@@ -169,7 +169,7 @@ RFC 4954 是用于规范以及建议 DSCP 值使用的，其中规定
 
 > PCP 和 DSCP 可以同时使用
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-14_10-55.509vldz7pf28.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-14_10-55.509vldz7pf28.webp)
 
 PH1 发送 voice traffic EF/CoS5 到 SW1，因为是 trust boundaries,SW1 会发送报文改成 DF/CoS0(这里 SW 也会对 3 层报文中的 DSCP 做改动吗？)，到 R1 发送只会有 DF(因为 CoS 只在 VLAN 中)
 
@@ -179,7 +179,7 @@ PH1 发送 voice traffic EF/CoS5 到 SW1，因为是 trust boundaries,SW1 会发
 
 *This is done vai configuration on the switch port connected to the IP phone*
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-14_11-06.1q1rg3mse1d.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-14_11-06.1q1rg3mse1d.webp)
 
 PH1 发送 traffic voice EF/CoS5 到 SW1 发送仍然会是 EF/CoS5，而 PC2 发送过来的 data traffic 虽然 DSCP 值是 EF，但是过了 trusted boundary 就会变成 DF
 
@@ -201,7 +201,7 @@ Prioritization allows the scheduler to give certain queues more priority than ot
 
 ingress traffic 到 router，会先做路由判断，然后做 classification，由 classification 决定将报文放到接口的那个 queue 中，然后有 scheduler 决定使用那个 queue
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-14_11-35.39ldlxdj5ry8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-14_11-35.39ldlxdj5ry8.webp)
 
 常用的 scheduling methods 有
 
@@ -214,7 +214,7 @@ ingress traffic 到 router，会先做路由判断，然后做 classification，
 
 例如 scheduler 会先取 60% 权重的 queue，然后取 15% 权重，然后 10% 权重的，以此循环
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-14_12-00.4ssrx1b1po1s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-14_12-00.4ssrx1b1po1s.webp)
 
 但是对于 voice/video traffic 来言是不适合使用(含有) round-robin scheduling 的，因为即使 queue wighted 最高还是需要做轮询的操作，这无疑会增加 delay 和 jitter
 
@@ -228,7 +228,7 @@ ingress traffic 到 router，会先做路由判断，然后做 classification，
 
 例如 使用了 LLQ，红色的 queue 被指定为 strict priority queue，一旦这个 queue 中有报文，scheduler 就会调度这个 queue，直到这个 queue 中没有报文为止
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-14_11-56.5zcz24feflz4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-14_11-56.5zcz24feflz4.webp)
 
 如果 strict priority queue 中一直有报文，就会导致一个问题，会让其他 queue 中的报文得不到处理。我们可以通过 *Policing* 来解决这个问题
 
@@ -250,7 +250,7 @@ shaping 和 policing 都被用于控制流量的速率
 
 这里有一个问题，为什么需要限制流量的速率
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-14_12-15.us4p6btrl6o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-14_12-15.us4p6btrl6o.webp)
 
 假设 Customer router 和 ISP router 直连，端口为 gigabyteEthernet，逻辑上最大能到 1Gbps，但是 Customer 只向 ISP 付了 300 mbps 带宽的钱，所以 ISP 在 g0/0 inbound 配置了 policing 来限制 Customer 的流量带宽到 300 mbps
 
@@ -260,7 +260,7 @@ shaping 和 policing 都被用于控制流量的速率
 
 > 注意 QoS 的配置并不在 CCNA 范围内
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-14_12-27.xe2chtqoiv4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-14_12-27.xe2chtqoiv4.webp)
 
 Configure the following QoS settings on R1 and apply them outbound on interface G0/0/0
 
@@ -272,7 +272,7 @@ Configure the following QoS settings on R1 and apply them outbound on interface 
 
 在测试前先看一下 PC1 ping SRV1(jeremysitlab.com) 的报文中 DSCP 的值是多少
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-14_12-51.40adx6ecl4e8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-14_12-51.40adx6ecl4e8.webp)
 
 在 R1 上可以看到报文的 DSCP 值为 0，即 DF
 

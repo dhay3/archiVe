@@ -2,7 +2,7 @@
 
 ## STP Port States
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_19-47.4o1qrjxkbdds.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_19-47.4o1qrjxkbdds.webp)
 
 ### Blocking
 
@@ -50,27 +50,27 @@
 
 上述内容可以精简成下表，Stable/Transitional 表示状态是否处于中间态
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_20-12.1js6u72kcy8w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_20-12.1js6u72kcy8w.webp)
 
 ## STP Timers
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_20-14.2x8imudgkdkw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_20-14.2x8imudgkdkw.webp)
 
 ### Hello Timer
 
 在初始的状态下，所有的 Switch 都会认为自己是 root bridge，然后往自己所有的端口发送 STP Hello BPDU
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_20-17.34kw5y3a8h6o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_20-17.34kw5y3a8h6o.webp)
 
 但是一旦确认了每个 Switch 在 STP 中的角色，只有 root bridge 会发送 Hello BPDUs
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_20-19.422dz7n1dvls.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_20-19.422dz7n1dvls.webp)
 
 然后除 root bridge 外的其他 Swtiches 会 forwarding Hello BPDUs
 
 > 只有 designated port 会转发 Hello BPDUs，non-designated port 或者是 root port 都不会转发 Hello BPDUs
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_20-21.rmwadq64ryo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_20-21.rmwadq64ryo.webp)
 
 并更新 root cost, neighbor bridge ID, neighbor port ID 等
 
@@ -88,7 +88,7 @@
 
 以下面的拓扑为例，主要关注 SW2 G0/1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_20-52.1a34v1w9nkcg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_20-52.1a34v1w9nkcg.webp)
 
 当 SW1 和 SW2 之间的链路正常的情况下
 
@@ -98,7 +98,7 @@
 4. 突然 SW1 和 SW2 之间的链路出现了问题
 5. SW2 G0/1 不能收到 BPDUs 了，Max Age 到 0，就会重新评估整个 STP 拓扑中的 root bridge, 以及各种端口
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_21-01.6kam81h7gwao.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_21-01.6kam81h7gwao.webp)
 
 > 这里的 50 秒，是 20（Max Age，重新评估） + 15 + 15  
 >
@@ -110,7 +110,7 @@
 
 看一下 BPDU 报文
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_21-04.26p4dbqmppq8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_21-04.26p4dbqmppq8.webp)
 
 - Dst: PVST+ (01:00:0c:cc:cc:cd)
 
@@ -166,7 +166,7 @@ Portfast 解决了==和 PC 或者 Router 互联的端口==，状态必须要从 
 
 可以使用 `spanning-tree portfast` 来开启端口 portfast 的功能
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_21-31.4hzqsgchwww0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_21-31.4hzqsgchwww0.webp)
 
 也可以使用 `spanning-tree portfast default` 来为所有的 access mode ports(只会对 access mode 有效， 对 trunk mode 没有任何效果) 开启 portfast 的功能
 
@@ -174,7 +174,7 @@ Portfast 解决了==和 PC 或者 Router 互联的端口==，状态必须要从 
 
 使用 portfast 会有一个问题，那就是当网络拓扑改变了，交换机连的不再是 PC 或者是 Router，而是另外一台 Switch(直接将和 PC 或者是 Router 互联的链路接到交换机上)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_21-43.5vh94ew064u8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_21-43.5vh94ew064u8.webp)
 
 因为 portfast ，红框中的端口还是 forwarding 的，这样就会有环
 
@@ -186,7 +186,7 @@ If an interface with BPDU Guard enabled receives a BPDU from another switch, the
 
 > BPDU Guard 会自动关闭端口，需要先使用 `shutdown` 然后 `no shutdown` 来开启端口
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_21-40.173eyfa1ta9s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_21-40.173eyfa1ta9s.webp)
 
 也可以使用 `spanning-tree portfast bpduguard enable default` 来为所有的 access mode ports 开启 bpduguard 功能 
 
@@ -206,29 +206,29 @@ If you enable loop guard on an interface, even if the interface stops receiving 
 
 Cisco 的所有设备默认都会开启 rapid-pvst，但是如果想要修改 STP 模式，可以使用下面的命令
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_21-55.10xdncai3w6o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_21-55.10xdncai3w6o.webp)
 
 在下面的拓扑中默认 SW1 应该会是 root bridge，但是我们也可以通过手动的方式来指定 SW3 为 root bridge，SW2 为 secondary bridge
 
 > 当 root bridge 失效时，secondary bridge 会上升为 root bridge
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_21-57.740jjg7ynvgg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_21-57.740jjg7ynvgg.webp)
 
 可以使用 `spanning-tree vlan <vlan-id> root primary` 来指定 root bridge
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_22-01.o6c8jyf1f8w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_22-01.o6c8jyf1f8w.webp)
 
 可以使用 `spanning-tree vlan <vlan-id> secondary ` 来指定 secondary bridge
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_22-04.3kdbqpyxm2o0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_22-04.3kdbqpyxm2o0.webp)
 
 使用上述的命令后拓扑如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_22-08.d7090l5kgkw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_22-08.d7090l5kgkw.webp)
 
 只会对 VLAN1 生效，如果现在有一个 VLAN2，那么对应的 priority ID 以及 root bridge 选择都会是默认的
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_22-10.6lg2jks2yo74.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_22-10.6lg2jks2yo74.webp)
 
 因为在不同的 VLAN 中 STP 拓扑的结构不同，这也被称为 **STP loading-balancing**
 
@@ -236,11 +236,11 @@ Cisco 的所有设备默认都会开启 rapid-pvst，但是如果想要修改 ST
 
 同样的 port priority(port id) 可以通过 `spanning-tree vlan <vlan-id> port-priority <number>` 来修改
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_22-17.45wj74nxpwe8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_22-17.45wj74nxpwe8.webp)
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_23-05.6anj531bxudc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_23-05.6anj531bxudc.webp)
 
 ```
 SW2>en

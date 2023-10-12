@@ -14,7 +14,7 @@ Open Shortest Path First是一个基于链路状态(Link-State Routing Protocol)
 
 ## Router Type
 
-![2021-11-08_23-24](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211108/2021-11-08_23-24.18o156168r1c.png)
+![2021-11-08_23-24](https://github.com/dhay3/image-repo/raw/master/20211108/2021-11-08_23-24.18o156168r1c.png)
 
 ### Internal Router
 
@@ -40,7 +40,7 @@ LSA中包含几项信息：LSA由谁传送出来、连着的是什么network、�
 
 LSA有不同的类型，用下面的一个例子说明
 
-![2021-11-24_00-30](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211123/2021-11-24_00-30.62tmmwf8jrg0.png)
+![2021-11-24_00-30](https://github.com/dhay3/image-repo/raw/master/20211123/2021-11-24_00-30.62tmmwf8jrg0.png)
 
 每只router都预设了loopback interface
 
@@ -402,7 +402,7 @@ OSPF external type 1(E1)，E1达到network的Cost包含external metric 和 inter
 
 OSPF external type 2(E2)，E2到达network的Cost只包含external metric，不含internal cost(到达ASBR的cost)
 
- ![Snipaste_2021-08-11_20-17-25](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211203/Snipaste_2021-08-11_20-17-25.1h7j96xxd44g.png)
+ ![Snipaste_2021-08-11_20-17-25](https://github.com/dhay3/image-repo/raw/master/20211203/Snipaste_2021-08-11_20-17-25.1h7j96xxd44g.png)
 
 
 
@@ -552,7 +552,7 @@ router越多connnection就越多，ospf会在这些router中选一个DR（design
 
 DR和BDR之间有竞选算法，priority较高会成为该网段的DR，第二高的会成为BDR。如果priority相同，router id较高者会成为DR
 
-![2021-11-23_23-21](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211123/2021-11-23_23-21.6t9hahc8n040.png)
+![2021-11-23_23-21](https://github.com/dhay3/image-repo/raw/master/20211123/2021-11-23_23-21.6t9hahc8n040.png)
 
 可以看下面一个实验
 
@@ -715,7 +715,7 @@ cost = 10000 0000（100MB）/ bandwidth pbs
 
 例如：现在需要计算从R1到3.3.3.3的cost
 
-![Snipaste_2021-08-11_20-17-25](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211202/Snipaste_2021-08-11_20-17-25.2tlnpet7vs40.png)
+![Snipaste_2021-08-11_20-17-25](https://github.com/dhay3/image-repo/raw/master/20211202/Snipaste_2021-08-11_20-17-25.2tlnpet7vs40.png)
 
 可以使用`show interface eth0/0 | include BW`来查看端口的bandwidth
 
@@ -885,7 +885,7 @@ R7(config-router)#neighbor 192.168.23.2 cost 999
 
 根据 自动/手动Neighbor、是否DR选举、10,40/30,120 Timer设定这三大元素，Cisco router把不同的设定组合归纳为5中模式，我们把这玩意称为Network Type
 
-![2021-11-25_22-20](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211123/2021-11-25_22-20.v60hfqvsywg.png)
+![2021-11-25_22-20](https://github.com/dhay3/image-repo/raw/master/20211123/2021-11-25_22-20.v60hfqvsywg.png)
 
 ### auto detect neighbor/ manually input neighbor
 
@@ -899,7 +899,7 @@ OSPF是你用Multicast自动发现Neighbor的，换句话说，如果网络不�
 
 可以使用一个Multipoint Non-Broadcast 的 Frame Relay Network来做示范
 
-![Snipaste_2021-08-11_20-17-25](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211202/Snipaste_2021-08-11_20-17-25.feuzlb0cngo.png)
+![Snipaste_2021-08-11_20-17-25](https://github.com/dhay3/image-repo/raw/master/20211202/Snipaste_2021-08-11_20-17-25.feuzlb0cngo.png)
 
 ```
 hostname R1
@@ -1047,7 +1047,7 @@ Ethernet0/0 is up, line protocol is up
 
 ### Route Type
 
-![Snipaste_2021-08-11_20-17-25](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211203/Snipaste_2021-08-11_20-17-25.66adryfxyz00.png)
+![Snipaste_2021-08-11_20-17-25](https://github.com/dhay3/image-repo/raw/master/20211203/Snipaste_2021-08-11_20-17-25.66adryfxyz00.png)
 
 为R1同时提供四条能够到达6.6.6.6而Metric相同的Route
 
@@ -1237,7 +1237,7 @@ O       6.6.6.6 [110/21] via 192.168.15.5, 00:00:00, Ethernet0/3
 
 在同一个Route Type下，OSPF会选择Metric较少的放进Route Table。只需要把network内的所有Intrfaces都放进一个Area中，这样，全部路径都是Intra-area Route，然后在R1把Interface设定成不同Cost
 
-![Snipaste_2021-08-11_20-17-25](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211203/Snipaste_2021-08-11_20-17-25.4d9liw4my8g0.png)
+![Snipaste_2021-08-11_20-17-25](https://github.com/dhay3/image-repo/raw/master/20211203/Snipaste_2021-08-11_20-17-25.4d9liw4my8g0.png)
 
 ```
 R1(config)#interface ethernet 0/0
@@ -1300,7 +1300,7 @@ Virtual Link的概念非常简单，就是把两个实体上分离的Area相连�
 
 ### 接驳至Area0
 
-![Snipaste_2021-08-11_20-17-25](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211203/Snipaste_2021-08-11_20-17-25.36xv87jzgi00.png)
+![Snipaste_2021-08-11_20-17-25](https://github.com/dhay3/image-repo/raw/master/20211203/Snipaste_2021-08-11_20-17-25.36xv87jzgi00.png)
 
 以上图为例，==Area20没有连接至Area0，就算把所有OSPF配置好，R1与R2都不会收到Area20的Route==
 
@@ -1368,7 +1368,7 @@ O IA 192.168.34.0/24 [110/20] via 192.168.23.3, 00:01:40, Ethernet0/0
 
 在整个OSPF network中只可以存在一个Backbon Area0，如果有两个Area0的话，必须用Virtual Link将其相连
 
-![Snipaste_2021-08-11_20-17-25](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211203/Snipaste_2021-08-11_20-17-25.6k8nb8xvf8g0.png)
+![Snipaste_2021-08-11_20-17-25](https://github.com/dhay3/image-repo/raw/master/20211203/Snipaste_2021-08-11_20-17-25.6k8nb8xvf8g0.png)
 
 按照上图如果没有设定Virtual LIink的情况下，两个Area0没法相连
 
@@ -1431,7 +1431,7 @@ C    192.168.34.0/24 is directly connected, Ethernet0/1
 
 ==Summarization可以把相连的Network组合起来，有效减少Route的数量==。OSPF的Summarization有两种，一个用在ABR的Area Range，而另一个用在ASBR的Summary Address。用一下网络做例子，==ABR R2会把172.16.0.1/32 及 172.16.1.1/32两个Network Summary，而ASBR R3则会把172.16.2.1/32 及 172.16.3.1/32 Redistribution 到 OSPF 之中，并把他们Summary==
 
-![Snipaste_2021-08-11_20-17-25](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211203/Snipaste_2021-08-11_20-17-25.3npncqo1opi0.png)
+![Snipaste_2021-08-11_20-17-25](https://github.com/dhay3/image-repo/raw/master/20211203/Snipaste_2021-08-11_20-17-25.3npncqo1opi0.png)
 
 ### Area Range
 
@@ -1537,7 +1537,7 @@ O IA  192.168.23.0/24 [110/20] via 192.168.12.2, 00:23:40, Ethernet1/0
 
 ## Example
 
-![2021-11-09_01-10](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211108/2021-11-09_01-10.1u7c56nzfq74.png)
+![2021-11-09_01-10](https://github.com/dhay3/image-repo/raw/master/20211108/2021-11-09_01-10.1u7c56nzfq74.png)
 
 1. Gonfigure Mode使用`router ospf <process id>`启动OSPF，留意process ID只是本机执行OSPF process的一个ID，和设定EIGRP时的AS number不同，两只要成为Neighbor的router==不需要==拥有相同ID
 2. 使用`network <network no> <wildcard> area <area id>`来宣告哪一个interface会参与OSPF，参与OSPF的Interface会发布hello packet尝试与对方成为neighbor，然后再成为Adjacency

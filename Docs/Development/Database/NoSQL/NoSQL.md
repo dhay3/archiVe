@@ -58,4 +58,4 @@ AP- 满足可用性,分区容忍性的系统,通常可能对一致性要求低�
 
 
 
-![1](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/1.6mnzgjd2gdo0.PNG)
+![1](https://github.com/dhay3/image-repo/raw/master/20210601/1.6mnzgjd2gdo0.PNG)

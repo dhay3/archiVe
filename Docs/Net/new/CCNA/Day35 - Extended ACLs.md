@@ -2,19 +2,19 @@
 
 ## Advantages of named of ACL Config mode
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-28_15-27.4bfq4v9n39hc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-28_15-27.4bfq4v9n39hc.webp)
 
 使用 `access-list <number> {permit | deny} <source>` 和 `ip access-list standard <number>` 虽然结果一样，但是使用 `ip access-list standard <number>` 有几个好处
 
 1. You can easily delete individual entries in the ACL with `no <entry-number>`
 
-   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-28_15-32.3875t53apdq8.webp)
+   ![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-28_15-32.3875t53apdq8.webp)
 
    例如我们想要删除配置的 `deny 192.168.3.0 0.0.0.255` 就可以使用 `no 30`，30 是使用 `show access-lists` 得到的
 
    如果是使用 `access-lists 1 deny 192.168.3.0 0.0.0.255` 的方式配置 ACE，你可能以为可以通过 `no access-lists 1 deny 192.168.3.0 0.0.0.255` 的方式来删除配置的 ACE
 
-   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-28_15-35.2v9pzqvm1jnk.webp)
+   ![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-28_15-35.2v9pzqvm1jnk.webp)
 
    ***When configuring/editing numbered ACLs from global config mode, you can’t delete individual entries, you can only delete the entire ACL***
 
@@ -28,7 +28,7 @@
 
    例如添加一条 `30 deny 192.168.2.0 0.0.0.255` ACE
 
-   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-28_15-44.6ijlm2yyei2o.webp)
+   ![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-28_15-44.6ijlm2yyei2o.webp)
 
    因为 sequence number 30 在 20 和 40 之间，所以对应的 ACE 也会在 20 和 40 之间，按照 20 30 40 逻辑过滤报文 
 
@@ -38,7 +38,7 @@
 
 如果想要修改 ACL 初始以及递增的 sequence 值，可以使用 `ip access-list resequence <acl-number> <start-seq-num> <increment>` 命令
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-28_15-50.5mrubvnp4d1c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-28_15-50.5mrubvnp4d1c.webp)
 
 > 这里按照 1 3 2 4 5 的顺序显示 ACE，是因为 router 会重新将 ACE 排序以加快处理 ACL 的速率
 
@@ -58,7 +58,7 @@ Extended ACLs 功能和逻辑上和 Standard ACLs 类似，一样可以使用 nu
 
 在 CCNA 中只关注几个过滤条件 Layer 4 Protocol/Port, source address, and destination address
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230626/2023-06-28_16-04.1k28edib0c1s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230626/2023-06-28_16-04.1k28edib0c1s.webp)
 
 两种方式可以配置 extend ACLs
 
@@ -69,19 +69,19 @@ Extended ACLs 功能和逻辑上和 Standard ACLs 类似，一样可以使用 nu
 
 protocol 字段可以使用 protocol number 或者是 protocol name 来表示
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230629/2023-06-29_11-11.5teblq34jj0g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230629/2023-06-29_11-11.5teblq34jj0g.webp)
 
 这里需要注意一个选项 `ip`，如果使用该 protocol 只要使用了 3 层 IP 协议的报文都会被过滤
 
 如果想要过滤 /32 source 或者是 destination，和 standard ACL 不一样，在 extended ACL 中必须使用 `host` 或者是指明 0.0.0.0 wildcard mask
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230629/2023-06-29_11-18.5yrsy3gstvuo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230629/2023-06-29_11-18.5yrsy3gstvuo.webp)
 
 上图中的 `deny tcp any 10.0.0.0 0.0.0.255` 会过滤所有从 10.0.0.0/24 过来的 4 层报文
 
 几个例子加深一些影响
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230629/2023-06-29_11-24.4u16ku3w2pds.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230629/2023-06-29_11-24.4u16ku3w2pds.webp)
 
 1. 还可以使用 `permit ip any`
 2. 还可以使用 `deny udp 10.0.0.0 0.0.0.255 192.168.1.1 0.0.0.0`
@@ -97,11 +97,11 @@ protocol 字段可以使用 protocol number 或者是 protocol name 来表示
 - `neq 80 = not equal 80`
 - `range 80 100 = from port 80 to port 100`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230629/2023-06-29_11-30.67822zhyvny8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230629/2023-06-29_11-30.67822zhyvny8.webp)
 
 和 protocol 一样，port 也可以使用 number 或者是 protocol name(表示协议对应的默认端口)来表示
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230629/2023-06-29_11-32.78owzgphyzy8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230629/2023-06-29_11-32.78owzgphyzy8.webp)
 
 例如输入 `deny tcp any host 1.1.1.1 eq http`, 就会拒绝所有 4 层从 1.1.1.1:80 过来的报文
 
@@ -115,13 +115,13 @@ protocol 字段可以使用 protocol number 或者是 protocol name 来表示
 
 一些例子加深一下影响
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230629/2023-06-29_12-06.7gi87dinmum8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230629/2023-06-29_12-06.7gi87dinmum8.webp)
 
 ## Example
 
 有如下拓扑和需要满足的条件
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230629/2023-06-29_12-08.18268jtu1isg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230629/2023-06-29_12-08.18268jtu1isg.webp)
 
 > *Extended ACLs should be applied **as close to the source as possible**,to limit how far the packets travel in the network before being denied*
 >
@@ -131,27 +131,27 @@ protocol 字段可以使用 protocol number 或者是 protocol name 来表示
 
 先配置满足第一个条件的 ACL
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230629/2023-06-29_12-11.3iwnbqu3x0w0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230629/2023-06-29_12-11.3iwnbqu3x0w0.webp)
 
 按照上面的规则需要配置在源就近的接口上，即 R1 G0/1 inbound
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230629/2023-06-29_12-16.3s1bjr521eps.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230629/2023-06-29_12-16.3s1bjr521eps.webp)
 
 如果 PC1 想要访问 SRV1 443，入向报文到 R1 G0/1 时就会被直接丢弃
 
 配置满足第二个条件的 ACL
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230629/2023-06-29_12-20.20z4ulcoyd1c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230629/2023-06-29_12-20.20z4ulcoyd1c.webp)
 
 同理按照就近规则需要配置在 R1 G0/2 inbound
 
 配置满足第三个条件的 ACL
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230629/2023-06-29_12-22.70peg5w9exz4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230629/2023-06-29_12-22.70peg5w9exz4.webp)
 
 这里只需要配置 3 条规则，不需要配置 `deny icmp 192.168.2.0 0.0.0.255 10.0.2.0 0.0.0.255`，因为在第二个条件中过滤的 protocol ip 中已经包括了 ICMP，所以可以不用配置(但是也可以声明，同样不影响结果)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230629/2023-06-29_12-26.5tgzb6dk0t8g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230629/2023-06-29_12-26.5tgzb6dk0t8g.webp)
 
 按照就近规则需要配置在 R1 G0/0 outbound
 
@@ -159,11 +159,11 @@ protocol 字段可以使用 protocol number 或者是 protocol name 来表示
 
 使用 `show access-lists` 可以看到所有的配置的 ACL 如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230629/2023-06-29_12-28.53z3ktkt5t6o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230629/2023-06-29_12-28.53z3ktkt5t6o.webp)
 
 我们还可以使用 `show ip interface <interface-id>` 来查看端口上配置的 ACL
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230629/2023-06-29_12-29.ij0f9usdr9c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230629/2023-06-29_12-29.ij0f9usdr9c.webp)
 
 这里可以看到 R1 G0/0 outbound 配置了 ACL BLOCK_ICMP, inbound 没有配置任何 ACL
 
@@ -171,7 +171,7 @@ protocol 字段可以使用 protocol number 或者是 protocol name 来表示
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_16-02.12zf9lkyufk0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_16-02.12zf9lkyufk0.webp)
 
 Confiugre extended ACLs to fulfill the following network policies
 

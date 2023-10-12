@@ -30,7 +30,7 @@ Private IP addresses cannot be used over the Internet
 
 既然私网 IP 不能出公网，那么对应的机器要怎么出公网呢？那就需要使用到 NAT
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-11_10-47.4f6pxats3ocg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-11_10-47.4f6pxats3ocg.webp)
 
 *Although the private IP addresses are unique, the public addresses must be unique.*
 
@@ -54,7 +54,7 @@ Private IP addresses cannot be used over the Internet
 
 192.168.0.167 需要访问 8.8.8.8
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-11_10-53.6o7ip24wg5j4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-11_10-53.6o7ip24wg5j4.webp)
 
 1. R1 在收到 PC1 过来的请求，会将源 IP 替换层 203.0.113.1(这里对应 R1 的接口 IP，但是实际有很多种不同的方式来选择源 IP)
 2. 服务器在收到从 R1 来的请求，会回目的到 203.0.113.1
@@ -82,7 +82,7 @@ Static NAT involves statically configuring **one-to-one** mappings of private IP
 
 例如下图
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-11_11-26.6t55cbq6jg1s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-11_11-26.6t55cbq6jg1s.webp)
 
 *Static NAT allows devices with private IP addresses to communicate over the Internet*
 
@@ -90,11 +90,11 @@ Static NAT involves statically configuring **one-to-one** mappings of private IP
 
 > 也是因为一对一的关系，外部的设备也可以通过 inside global 地址直接访问 inside local 设备
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_11-15.hticgsmbekg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_11-15.hticgsmbekg.webp)
 
 ### Static NAT Configuration
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-11_14-45.4ms20us2mxkw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-11_14-45.4ms20us2mxkw.webp)
 
 - `R1(config)#int <interface-id>`
 
@@ -116,7 +116,7 @@ Static NAT involves statically configuring **one-to-one** mappings of private IP
 
 配置完后可以使用 `R1#show ip nat translations` 查看 NAT table
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-11_14-49.6plcbe1vgvi8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-11_14-49.6plcbe1vgvi8.webp)
 
 只要你使用了 Static NAT 就会出现第 2 第 4 行的情形，其余的都是 dynamic translation
 
@@ -146,13 +146,13 @@ Static NAT involves statically configuring **one-to-one** mappings of private IP
 
 如果需要手动清空 NAT table 在的 dynamic translation 可以使用 `R1#clear ip nat translation *`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-11_15-59.2936fxqbl7eo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-11_15-59.2936fxqbl7eo.webp)
 
 > 即使不手动清空 NAT table, 在 192.168.0.167/168 不在需要访问 100.0.0.1/2 一段时间后也会从 NAT table 中自动清空
 
 还可以使用 `R1#show ip nat statistics` 来查看 NAT 统计的信息
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-11_16-08.5hwa4f938r9c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-11_16-08.5hwa4f938r9c.webp)
 
 - `Total active translations`
 
@@ -168,21 +168,21 @@ Static NAT involves statically configuring **one-to-one** mappings of private IP
 
 ## Command Summary
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-11_16-09.5ttvo0ju2glc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-11_16-09.5ttvo0ju2glc.webp)
 
 ## Quiz
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-11_16-14.1h7xg9x1xsw0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-11_16-14.1h7xg9x1xsw0.webp)
 
 这里选 C 是因为，如果使用 Static NAT 私网地址和公网地址是一一对应的，在输入第二条命令后设备会直接报错
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-11_16-17.5psn883g2o74.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-11_16-17.5psn883g2o74.webp)
 
 只有先声明映射关系的可以使用对应的公网地址，如果需要 10.0.0.2 也可以出公网，要使用另外一个公网的 IP
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-11_16-10.32cqrz4xu3uo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-11_16-10.32cqrz4xu3uo.webp)
 
 ### 0x01
 

@@ -78,7 +78,7 @@ Git 是一个提供 Version Control (VC) 功能的工具，例如大名鼎鼎的
 
   也被称为 Repository，用于存储项目的 metadata。包含所有版本信息的指针索引( 版本库 )
 
-![Snipaste_2020-12-05_10-49-32](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-12-05_10-49-32.5g6xqy7mx0s0.png)
+![Snipaste_2020-12-05_10-49-32](https://github.com/dhay3/image-repo/raw/master/20210518/Snipaste_2020-12-05_10-49-32.5g6xqy7mx0s0.png)
 
 ## Optional args
 

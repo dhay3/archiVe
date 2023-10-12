@@ -13,7 +13,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 19.0.1+10-21, mixed mode, sharing)
 
 有 2 种可选的方式
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230801/2023-08-01_14-55.hduqlofjohc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230801/2023-08-01_14-55.hduqlofjohc.webp)
 
 1. Binary archive
 

@@ -51,7 +51,7 @@ Diffie-Hellman key exchange 通常也被称为 DHE，其算法主要用于安全
 
 如果在 Alice 与 Bob 之前出现一个监听者 Eve，Eve 是不能知道 K 的值的，具体可以参考下面这张图
 
-![2022-12-21_21-30](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221221/2022-12-21_21-30.1aln9fdvrgu8.webp)
+![2022-12-21_21-30](https://github.com/dhay3/image-repo/raw/master/20221221/2022-12-21_21-30.1aln9fdvrgu8.webp)
 
 ## Vibrants
 

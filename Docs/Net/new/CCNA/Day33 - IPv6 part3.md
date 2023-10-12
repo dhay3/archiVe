@@ -2,7 +2,7 @@
 
 ## IPv6 Header
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_20-01.4ovyzn98kr5s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_20-01.4ovyzn98kr5s.webp)
 
 IPv4 header 长度可以在 20 - 60 bytes 之间，而 IPv6 header 的长度固定在 40 bytes，所以在 IPv6 header 中就没有 header length 只一个字段用于表示 header 的长度。因为报文头都是固定的，对 router 而言处理效率就比 IPv4 高
 
@@ -60,7 +60,7 @@ IPv4 header 长度可以在 20 - 60 bytes 之间，而 IPv6 header 的长度固�
 
 Solicited-Node Multicast Address 是从对应接口的 Unicast Address 计算而来的
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_20-16.32716m6qpmio.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_20-16.32716m6qpmio.webp)
 
 通过取 unicast address 的最后 6 digits，拼接 ff02::1:ff 而来
 
@@ -68,7 +68,7 @@ Solicited-Node Multicast Address 是从对应接口的 Unicast Address 计算而
 
 如果我们使用 `show ipv6 int <interface-name>` 可以看到不仅只有 ff02::1(all nodes) 和 ff02::2(all router) 加入到 multicast address group 中外，还有一个地址，就是 solicited-node multicast address
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_20-18.3mn1ui4f00zk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_20-18.3mn1ui4f00zk.webp)
 
 R1 G0/0 Unicast address 是 fe80::ef8:22ff:fe36:8500，所以取后 6 digits 为 36:8500，拼接后为 ff02::1:ff:36:8500
 
@@ -90,13 +90,13 @@ IPv4 中通过 ARP 来学习 MAC address， 而在 IPv6 中通过 Neighbor Disco
 
 R1 想要 ping R2
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_20-27.5h2xstiurgqo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_20-27.5h2xstiurgqo.webp)
 
 因为 R1 想要访问 R2, 就必须要知道对方的 MAC
 
 1. 首先 R1 会发送 NS，到端口互联的链路上
 
-   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_20-29.23jlbrnm2fi8.webp)
+   ![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_20-29.23jlbrnm2fi8.webp)
 
    这里的目的 IP 为 R2 的 solicited-node multicast address, 但是 R1 是怎么知道 R2 的 solicited-node multicast address 的呢？因为只要知道对端的 IPv6 地址就可以计算出来，这里 R1 访问 R2 是知道 R2 的 IPv6 地址的
 
@@ -104,7 +104,7 @@ R1 想要 ping R2
 
 2. R2 在收到 R1 发送过来的 NS，如果目的 IP 匹配就会从收到 NS 的端口链路上回送 NA
 
-   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_20-35.qc83kkymdcg.webp)
+   ![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_20-35.qc83kkymdcg.webp)
 
    回送 NA 的逻辑和 ARP reply 类似
 
@@ -134,7 +134,7 @@ NDP 除了类似 ARP 学习 MAC address 的功能外，还可以自动的发现 
 
 R2 G0/0 配置了 IPv6 并 enable 
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_20-49.pprwn1j0cr4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_20-49.pprwn1j0cr4.webp)
 
 1. R2 会自动发送 RS 到 G0/0 互联的链路上，询问链路上是否有其他的 routers
 2. R1 收到 R2 发送过来的 RS，会回送 RA 到收到 RS 端口的链路上
@@ -154,7 +154,7 @@ DAD 通过发送 NS/NA 来实现
 
 如果在 Cisco 的设备上检查到了 duplicate address 会显示如下信息
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_21-11.1fusn6xrhjz4.webp) 
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_21-11.1fusn6xrhjz4.webp) 
 
 ## IPv6 neighbor table
 
@@ -162,7 +162,7 @@ DAD 通过发送 NS/NA 来实现
 
 可以通过 `show ipv6 neighbor` 来查看 neighbor table
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_20-36.6cxjvozx8d1c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_20-36.6cxjvozx8d1c.webp)
 
 这里可以看到 R1 不仅学习了互联的 R2 g0/0 IPv6，还学习了 R2 link-local address
 
@@ -198,7 +198,7 @@ R1 和 R2 互联，R1 配置了 IPv6 address，但是 R2 没有配置 IPv6 addre
 
 如果 R2 使用了 `ipv6 address autoconfig` 就会自动生成一个 IPv6 address，当然也包括 link-local address
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_20-57.10p3w6esz1hc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_20-57.10p3w6esz1hc.webp)
 
 > SLAAC 并不是 Cisco 独有，在 end host 上同样也可以使用 SLAAC 来自动配置 IPv6 address
 
@@ -214,11 +214,11 @@ IPv6 和 IPv4 routing 逻辑上相同，但是有几点细节有区别
 
 例如有如下拓扑
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_21-17.2egd5goahw8w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_21-17.2egd5goahw8w.webp)
 
 先看一下 R1 的 routing table
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_21-18.1juy3a3a5d1c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_21-18.1juy3a3a5d1c.webp)
 
 和 IPv4 一样，只要配置了 IPv6，就会自动添加两条路由，connected route 和 local route
 
@@ -261,7 +261,7 @@ IPv6 和 IPv4 routing 逻辑上相同，但是有几点细节有区别
 
    > 因为 traffic 是通过端口转发的，知道 next-hop address 并不能直接知道本设备对应的端口是那个，所以同样需要通过查询 routing table
 
-   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230625/2023-06-25_23-47.16jbu50idpz4.png)
+   ![](https://github.com/dhay3/image-repo/raw/master/20230625/2023-06-25_23-47.16jbu50idpz4.png)
 
    先找红框中的，然后按照 nexthop 找黄框中的
 
@@ -301,7 +301,7 @@ IPv6 和 IPv4 routing 逻辑上相同，但是有几点细节有区别
 
 在 day32 中的 lab，如果直接使用 link-local address 作为 recursive static route 中的 next-hop 会报错
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230625/2023-06-26_00-07.3eof7oqt324g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230625/2023-06-26_00-07.3eof7oqt324g.webp)
 
 需要使用 fully specified static route
 
@@ -311,7 +311,7 @@ IPv6 和 IPv4 routing 逻辑上相同，但是有几点细节有区别
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230625/2023-06-26_00-26.2uig3yc9yxc0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230625/2023-06-26_00-26.2uig3yc9yxc0.webp)
 
 ### 0x01
 

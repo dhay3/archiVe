@@ -12,7 +12,7 @@ CDP 和 LLDP 都是 2 层的协议，用于共享和学习互联设备的一些�
 
 例如 R1 和 SW1 互联，会分享类似下图中的内容
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_16-51.5qdipe7qnzpc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_16-51.5qdipe7qnzpc.webp)
 
 ## CDP
 
@@ -34,25 +34,25 @@ CDP(Cisco Discovery Protocol) 是思科独有而协议，在思科所有的设�
 
 以下图拓扑为例
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_17-09.6unaxgf35ukg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_17-09.6unaxgf35ukg.webp)
 
 可以使用 `show cdp` 来查看 CDP sending time 和 hold time，使用 `show cdp traffic` 可以看收到和发送的 CDP 报文数
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_17-01.6rlt7uxwsjr4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_17-01.6rlt7uxwsjr4.webp)
 
 > 如果设备没有启用 CDP `show cdp` 会得到如下内容
 >
-> ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_17-03.5gqq99kwjzi8.webp)
+> ![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_17-03.5gqq99kwjzi8.webp)
 
 同样的信息也可以使用 `show cdp interface [interface-name]` 来查看，如果没有指定 interface-name 默认查看接受的端口
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_17-05.343nuc6d32tc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_17-05.343nuc6d32tc.webp)
 
 蓝框内表示当前设备上，一共有几个端口使用了 CDP，几个端口没有使用
 
 如果需要查看 CDP neighbor table，可以使用 `show cdp neighbors`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_17-08.34a28y1ynkn4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_17-08.34a28y1ynkn4.webp)
 
 - Device ID
 
@@ -80,7 +80,7 @@ CDP(Cisco Discovery Protocol) 是思科独有而协议，在思科所有的设�
 
   如果在 packettracer 中会显示
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_17-22.4h0ap45w9v5s.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_17-22.4h0ap45w9v5s.webp)
 
 - Port ID
 
@@ -90,7 +90,7 @@ CDP(Cisco Discovery Protocol) 是思科独有而协议，在思科所有的设�
 
 我们还可以使用 `show cdp neighbors detail` 来查看和 CDP 相关的详细信息
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_17-28.6kvvvorkc0ao.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_17-28.6kvvvorkc0ao.webp)
 
 > CDP 可以看 VTP 相关的信息，但是 LLDP 不能，因为 VTP 同样也是思科独有的协议
 
@@ -100,13 +100,13 @@ CDP(Cisco Discovery Protocol) 是思科独有而协议，在思科所有的设�
 
 如果需要查看单独的设备 cdp 详细的信息可以使用 `show cdp entry <device-id>`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_17-35.zgeljeaal80.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_17-35.zgeljeaal80.webp)
 
 #### Summary
 
 查看 CDP 的信息可以使用如下几个命令
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_17-36.4chqe2vcbwn4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_17-36.4chqe2vcbwn4.webp)
 
 ### CDP Configuration
 
@@ -150,7 +150,7 @@ CDP(Cisco Discovery Protocol) 是思科独有而协议，在思科所有的设�
 
 以下图拓扑为例
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_17-09.6unaxgf35ukg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_17-09.6unaxgf35ukg.webp)
 
 - LLDP is usually globally disabled by default
 
@@ -182,21 +182,21 @@ CDP(Cisco Discovery Protocol) 是思科独有而协议，在思科所有的设�
 
 和 CDP 一样，可以通过 `show lldp` 来查看对应 timer 的信息
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_18-03.2f1mt36380qo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_18-03.2f1mt36380qo.webp)
 
 使用 `show lldp traffic` 来查看发送和接受的 LLDP message 数量
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_18-06.1yrvd2gdlhvk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_18-06.1yrvd2gdlhvk.webp)
 
 使用 `show lldp interface [interface-name]` 来查看对应接口 trimission 和 recive 的状态
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_18-06_1.2bo13jhqvq9s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_18-06_1.2bo13jhqvq9s.webp)
 
 其中的 `Tx state: IDLE` 表示当前没有发送 LLDP message，`Rx state: WAIT FOR FRAME` 表示等待接受 LLDP message
 
 可以使用 `show lldp neighbors` 来查看 lldp neighbors
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_18-09.4ashl2bh5fwg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_18-09.4ashl2bh5fwg.webp)
 
 - Deivce ID
 
@@ -222,7 +222,7 @@ CDP(Cisco Discovery Protocol) 是思科独有而协议，在思科所有的设�
 
 除此外同样也可以使用 `show lldp neighbors detail` 来查看 lldp 详细的信息
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_18-18.40c99qnafx6o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_18-18.40c99qnafx6o.webp)
 
 这里会有两个 Capabilities 相关的字段
 
@@ -236,13 +236,13 @@ CDP(Cisco Discovery Protocol) 是思科独有而协议，在思科所有的设�
 
 当然也可以使用 `show lldp entry <device-id>` 来查看对应 neighbor device ID 的信息
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_18-23.4juzhzbcsus.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_18-23.4juzhzbcsus.webp)
 
 #### Summary
 
 查看 LLDP 的信息可以使用如下几个命令
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_18-24.2n9f3knm51hc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_18-24.2n9f3knm51hc.webp)
 
 ## Wireshark Captures
 
@@ -250,7 +250,7 @@ CDP(Cisco Discovery Protocol) 是思科独有而协议，在思科所有的设�
 
 以 R1 发送 CDP 到 SW1 为例
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-06-30_18-25.78e6m1o74pz4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-06-30_18-25.78e6m1o74pz4.webp)
 
 - Destination: CDP/VTP/DTP/PAgP/UDLD (01:00:0c:cc:cc:cc)
 
@@ -264,7 +264,7 @@ CDP(Cisco Discovery Protocol) 是思科独有而协议，在思科所有的设�
 
 以 SW1 发送 LLDP 到 R1 为例
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_14-37.31uj08jskwsg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_14-37.31uj08jskwsg.webp)
 
 - Dst: LLDP_Multicast (01:80:c2:00:00:0e)
 
@@ -278,7 +278,7 @@ CDP(Cisco Discovery Protocol) 是思科独有而协议，在思科所有的设�
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_14-56.7cjnh1ihzy80.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_14-56.7cjnh1ihzy80.webp)
 
 ### 0x01
 
@@ -300,7 +300,7 @@ R1           Gig 0/1          166            R       C2900       Gig 0/2
 
 最后的拓扑如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_18-00.7l3qup2spegw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_18-00.7l3qup2spegw.webp)
 
 ### 0x02
 

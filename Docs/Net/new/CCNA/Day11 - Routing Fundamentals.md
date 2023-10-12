@@ -24,17 +24,17 @@
 
 以下图为例子说明，主要关注 R1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-24_15-55.4xlds643ghkw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-24_15-55.4xlds643ghkw.webp)
 
 先配置 R1 接口
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-24_15-58.1af5bdoaf5gg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-24_15-58.1af5bdoaf5gg.webp)
 
 ## show ip route
 
 配置完 R1 接口后，可以使用 `show ip route` 来查看路由
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-24_16-00.67ycin57c6ww.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-24_16-00.67ycin57c6ww.webp)
 
 Codes 部分是 legend (图例)
 
@@ -48,7 +48,7 @@ Codes 部分是 legend (图例)
 
 只要你对一个接口配置了 IP 并使用了 `no shutdown`，就会有 2 条 routes (connected route, local route)自动加入到 routing table
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-24_16-06.1vj6vy4vyb9c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-24_16-06.1vj6vy4vyb9c.webp)
 
 ### Connected and Local routes
 
@@ -80,7 +80,7 @@ Codes 部分是 legend (图例)
 
 假设现在 R3 发送了一个 Dst IP 192.168.1.1 的报文到 R1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-24_16-18.77wd0pog4d1c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-24_16-18.77wd0pog4d1c.webp)
 
 R1 上匹配 192.168.1.1 的路由有两条
 
@@ -99,7 +99,7 @@ R1 上匹配 192.168.1.1 的路由有两条
 
 你可能注意到除 connected route 和 local route 外还有一部分，这些并不是路由
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-24_16-30.5pii4eq16wlc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-24_16-30.5pii4eq16wlc.webp)
 
 例如 
 

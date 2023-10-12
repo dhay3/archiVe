@@ -2,19 +2,19 @@
 
 ## Virtualization
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_16-27.5l9saeglugg0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_16-27.5l9saeglugg0.webp)
 
 ### Type 1 Hypervisor
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_15-51.4g5vdvnvkm40.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_15-51.4g5vdvnvkm40.webp)
 
 ### Type 2 Hypervisor
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_16-22.5r3eypfu5o00.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_16-22.5r3eypfu5o00.webp)
 
 ### Containers
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_17-28.2r4jrmy3i3k0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_17-28.2r4jrmy3i3k0.webp)
 
 ## Cloud Services
 
@@ -28,15 +28,15 @@
 
 #### SaaS
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_16-40.6v67ii5ace80.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_16-40.6v67ii5ace80.webp)
 
 #### PaaS
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_16-42.4ecsc3l2j200.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_16-42.4ecsc3l2j200.webp)
 
 #### IaaS
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_16-43.2zak95knjuo0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_16-43.2zak95knjuo0.webp)
 
 ### Deployment Models
 
@@ -49,16 +49,16 @@
 
 #### Private Cloud
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_16-53.65w3tac6p680.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_16-53.65w3tac6p680.webp)
 
 #### Community Cloud
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_16-55.1y89yuz8hdq8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_16-55.1y89yuz8hdq8.webp)
 
 #### Public Cloud
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_16-56.64yj2hyqd2k0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_16-56.64yj2hyqd2k0.webp)
 
 #### Hybrid Cloud
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_16-56_1.5fqlcorecyc0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_16-56_1.5fqlcorecyc0.webp)

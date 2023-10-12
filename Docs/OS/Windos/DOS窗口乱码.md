@@ -4,11 +4,11 @@
 
 对应`CHCP` 936
 
-![1](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/1.kieb7t07fbk.png)
+![1](https://github.com/dhay3/image-repo/raw/master/20210518/1.kieb7t07fbk.png)
 
 键入`chcp 65001` 会进入一个新的`DOS`界面, 类似于`telnet`
 
-![2](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/2.x34v077sgy8.png)
+![2](https://github.com/dhay3/image-repo/raw/master/20210518/2.x34v077sgy8.png)
 
 常见编码:
 

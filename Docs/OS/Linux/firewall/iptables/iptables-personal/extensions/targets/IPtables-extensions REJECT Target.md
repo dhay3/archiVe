@@ -26,7 +26,7 @@ REJECT target 用于回送指定的报文，只在 INPUT, FORWARD, OUPUT chains 
 
 以 192.168.1.1 ping 192.168.3.1 回送 icmp-port-unreachable 为例子
 
-![2022-11-14_11-50](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221114/2022-11-14_11-50.559yumdnaxog.webp)
+![2022-11-14_11-50](https://github.com/dhay3/image-repo/raw/master/20221114/2022-11-14_11-50.559yumdnaxog.webp)
 
 192.168.3.1 设置规则
 
@@ -49,7 +49,7 @@ From 192.168.3.1 icmp_seq=2 Destination Port Unreachable
 
 以 192.168.1.1 访问 192.168.3.1 80 端口回送 icmp-port-reachable
 
-![2022-11-14_11-50](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221114/2022-11-14_11-50.559yumdnaxog.webp)
+![2022-11-14_11-50](https://github.com/dhay3/image-repo/raw/master/20221114/2022-11-14_11-50.559yumdnaxog.webp)
 
 192.168.3.1 设置规则
 
@@ -95,7 +95,7 @@ curl: (7) Failed to connect to 192.168.3.1 port 80: Connection refused
 
 以 192.168.1.1 访问 192.168.3.1 为例
 
-![2022-11-14_11-50](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221114/2022-11-14_11-50.559yumdnaxog.webp)
+![2022-11-14_11-50](https://github.com/dhay3/image-repo/raw/master/20221114/2022-11-14_11-50.559yumdnaxog.webp)
 
 192.168.3.1 设置规则
 

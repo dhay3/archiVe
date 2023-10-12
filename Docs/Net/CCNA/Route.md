@@ -286,7 +286,7 @@ S       192.168.1.0/24 [1/0] via 192.168.12.2
 
 static route可以使用以下三种next hop设定
 
-![Snipaste_2021-08-11_20-17-25](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210823/Snipaste_2021-08-11_20-17-25.25wgue9okexs.png)
+![Snipaste_2021-08-11_20-17-25](https://github.com/dhay3/image-repo/raw/master/20210823/Snipaste_2021-08-11_20-17-25.25wgue9okexs.png)
 
 ### next hop IP
 

@@ -48,7 +48,7 @@ curl -svL 39.156.66.10
 
 这里显示的是 `connected to 39.156.66.10` 实际应该是 180.97.251.233。因为应用输出到 stdout 的内容是最优先的(在 OSI7 之前)，但是可以通过抓包看到报文是已经 DNAT 的了
 
-![2022-10-31_23-16](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221031/2022-10-31_23-16.1noi1a38ay3k.webp)
+![2022-10-31_23-16](https://github.com/dhay3/image-repo/raw/master/20221031/2022-10-31_23-16.1noi1a38ay3k.webp)
 
 因为 nfilter 在 tcpdump 或者 wireshark 之前也在 NIC 处理报文之前
 
@@ -65,7 +65,7 @@ Chain OUTPUT (policy ACCEPT 13 packets, 2311 bytes)
 
 以 192.168.1.1 访问 192.168.4.1 DNAT 成 192.168.5.2 为例子
 
-![2022-11-02_13-34](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221102/2022-11-02_13-34.4jnwlj1u7zwg.webp)
+![2022-11-02_13-34](https://github.com/dhay3/image-repo/raw/master/20221102/2022-11-02_13-34.4jnwlj1u7zwg.webp)
 
 先看一下 labos-3 的 NIC 信息和路由
 

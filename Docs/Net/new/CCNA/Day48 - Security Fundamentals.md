@@ -64,11 +64,11 @@
 
 通常 Attacker 都会使用代理，所以通常 Target 回送的 SYN-ACK 并不会直接到 Attacker
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_11-29.1jvxjecqbfwg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_11-29.1jvxjecqbfwg.webp)
 
 但是一般会由多台机器组成 botnet 来攻击，也被称为 DDoS(Distributed Denial-Of-Service)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_11-34.4gvyqbnq85q8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_11-34.4gvyqbnq85q8.webp)
 
 ### Spoofing attacks
 
@@ -79,7 +79,7 @@ DHCP exhaustion
 - An attacker uses spoofed MAC addresses to flood DHCP Discover messages
 - The target server’s DHCP pool becomes full, resulting in a denial-of-service to other devices
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_11-38.37hgn4fjd1z4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_11-38.37hgn4fjd1z4.webp)
 
 > 仅仅伪装源 MAC 地址，报文其他的部分值和 DHCP Discover 一样
 
@@ -87,21 +87,21 @@ DHCP exhaustion
 
 ### Reflection/Amplification
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_12-18.a260qyguc1s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_12-18.a260qyguc1s.webp)
 
 ### Man-in-the-middle attack
 
 ARP Spoofing 就是一种中间人攻击
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_12-18.a260qyguc1s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_12-18.a260qyguc1s.webp)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_12-21.1tix2qv2bhsw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_12-21.1tix2qv2bhsw.webp)
 
 ### Reconnaissance attacks
 
 Reconnaissance(侦查) 攻击，顾名思义就是收集攻击目标的信息
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_12-23.28zqdm80neio.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_12-23.28zqdm80neio.webp)
 
 ### Malware
 

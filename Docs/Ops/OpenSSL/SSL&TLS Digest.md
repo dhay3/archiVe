@@ -24,7 +24,7 @@ https://medium.com/@clu1022/%E9%82%A3%E4%BA%9B%E9%97%9C%E6%96%BCssl-tls%E7%9A%84
 
 Secure sockets Layer (SSL) is protocol for establishing authenticated and encrypted links between networked computers
 
-![Snipaste_2020-08-25_17-24-19](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2020-08-25_17-24-19.4429l90bojo0.png)
+![Snipaste_2020-08-25_17-24-19](https://github.com/dhay3/image-repo/raw/master/20210601/Snipaste_2020-08-25_17-24-19.4429l90bojo0.png)
 
 SSL 是一个被广泛应用的加密及身份验证的表现层( presentation )协议，中文直译为 安全套接层
 
@@ -75,9 +75,9 @@ An SSL/TLS handshake is a negotiation between two parties on a network - such as
 
 handshake phase 主要包含下列几个流程
 
-![2022-12-17_00-50](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221217/2022-12-17_00-50.5p1rin7gsd1c.webp)
+![2022-12-17_00-50](https://github.com/dhay3/image-repo/raw/master/20221217/2022-12-17_00-50.5p1rin7gsd1c.webp)
 
-![2022-12-17_03-35](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221221/2022-12-17_03-35.20m8hk4mgwsg.webp)
+![2022-12-17_03-35](https://github.com/dhay3/image-repo/raw/master/20221221/2022-12-17_03-35.20m8hk4mgwsg.webp)
 
 这里的 retrans 和 dup ack 可以忽略，中间过代理 RTO 重传
 
@@ -93,7 +93,7 @@ server 回送 4 层 SYN-ACK 报文
 
 client 回送 ACK 报文，并发送 ClientHello
 
-![2022-12-17_01-54](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221221/2022-12-17_01-54.2ungvtpo8pq8.webp)
+![2022-12-17_01-54](https://github.com/dhay3/image-repo/raw/master/20221221/2022-12-17_01-54.2ungvtpo8pq8.webp)
 
 向 server 宣告 
 
@@ -111,7 +111,7 @@ server 收到  ClientHello 是会回送一个 ACK 包
 
 如果 ClientHello 中的信息都没有问题并且 server 都支持相应的配置，就会回送 ServerHello （这里也可以采用 TCP 的捎带回送，只回送 ServerHello）。反之会回送 Server handshake error
 
-![2022-12-17_03-27](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221221/2022-12-17_03-27.5gugf5iw69o.webp)
+![2022-12-17_03-27](https://github.com/dhay3/image-repo/raw/master/20221221/2022-12-17_03-27.5gugf5iw69o.webp)
 
 向 client 宣告
 
@@ -125,7 +125,7 @@ server 收到  ClientHello 是会回送一个 ACK 包
 
 client 发送 ACK 报文，server 收到后发送 server certificate 给 client，同理一样也可以捎带回送
 
-![2022-12-17_03-18](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221221/2022-12-17_03-18.4x4n6esato1s.webp)
+![2022-12-17_03-18](https://github.com/dhay3/image-repo/raw/master/20221221/2022-12-17_03-18.4x4n6esato1s.webp)
 
 注意这里会回送 2 个证书，一个是 server 自己的证书，另一个是用于标识校验 server 证书的 CA 根证书
 
@@ -133,19 +133,19 @@ client 发送 ACK 报文，server 收到后发送 server certificate 给 client�
 
 宣告使用 ECDH( Diffle-Hellman ) 算法同时宣告DH 算法生成的 Publickey (这里的公钥不是证书的，是通过 DH 算法计算出来的)
 
-![2022-12-17_02-23](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221221/2022-12-17_02-23.2ij9uenwmtxc.webp)
+![2022-12-17_02-23](https://github.com/dhay3/image-repo/raw/master/20221221/2022-12-17_02-23.2ij9uenwmtxc.webp)
 
 ### ServerHello done
 
 声明 ServerHello 相关的信息已经全部发送
 
-![2022-12-21_18-02](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221221/2022-12-21_18-02.552hgcoeim4g.webp)
+![2022-12-21_18-02](https://github.com/dhay3/image-repo/raw/master/20221221/2022-12-21_18-02.552hgcoeim4g.webp)
 
 ### Clientkey exchange
 
 宣告使用 ECDH( Diffle-Hellman ) 算法同时宣告DH 算法生成的 Publickey ( 这里的公钥不是证书的，是通过 DH 算法计算出来的 )
 
-![2022-12-21_18-04](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221221/2022-12-21_18-04.33nbez4hzn0g.webp)
+![2022-12-21_18-04](https://github.com/dhay3/image-repo/raw/master/20221221/2022-12-21_18-04.33nbez4hzn0g.webp)
 
 ### Change cipher spec(client)
 
@@ -153,25 +153,25 @@ client 发送 ACK 报文，server 收到后发送 server certificate 给 client�
 
 ChangeCipherSpec是一个独立的协议，体现在数据包中就是一个字节的数据，用于告知对端已经切换到之前协商好的加密套件（Cipher Suite）的状态，准备使用之前协商好的加密套件加密数据并传输了。
 
-![2022-12-21_18-05](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221221/2022-12-21_18-05.3znn36x4yon4.webp)
+![2022-12-21_18-05](https://github.com/dhay3/image-repo/raw/master/20221221/2022-12-21_18-05.3znn36x4yon4.webp)
 
 ### Encrypted handshake message 
 
 用于校验 DH 算法中生成的 master key 
 
-![2022-12-21_18-06](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221221/2022-12-21_18-06.2mtykp14lxs0.webp)
+![2022-12-21_18-06](https://github.com/dhay3/image-repo/raw/master/20221221/2022-12-21_18-06.2mtykp14lxs0.webp)
 
 ### Change cipher spec (server)
 
 向 client 宣告随后的信息都将用双方商定的加密方法和密钥发送
 
-![2022-12-21_18-08](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221221/2022-12-21_18-08.16kid8v02a1s.webp)
+![2022-12-21_18-08](https://github.com/dhay3/image-repo/raw/master/20221221/2022-12-21_18-08.16kid8v02a1s.webp)
 
 ### Encrypted handshake message 
 
 用于校验 DH 算法中生成的 master key 
 
-![2022-12-21_18-08_1](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221221/2022-12-21_18-08_1.4i1bi0qkhf5s.webp)
+![2022-12-21_18-08_1](https://github.com/dhay3/image-repo/raw/master/20221221/2022-12-21_18-08_1.4i1bi0qkhf5s.webp)
 
 ### Application data
 
@@ -221,6 +221,6 @@ Premaster 本身就是一个随机数，且能在所有主机上生成，那么 
 
 https://osqa-ask.wireshark.org/questions/62514/tls-handshake-without-server-certificate/
 
-![2022-12-17_01-34](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221217/2022-12-17_01-34.5uoi2amka3cw.webp)
+![2022-12-17_01-34](https://github.com/dhay3/image-repo/raw/master/20221217/2022-12-17_01-34.5uoi2amka3cw.webp)
 
 wireshark 中有一个 bug 如果证书的认证链较长，那么 SSL 中的报文的内容就非常多，目前 wireshark 无法正常识别。所以就会出现缺少 Certificate phase 的现象

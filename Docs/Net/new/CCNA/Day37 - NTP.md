@@ -33,7 +33,7 @@ Time source is hardware calendar
 
 可以使用 `show logging` 来查看设备上的日志
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_18-26.2c7bjene8av.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_18-26.2c7bjene8av.webp)
 
 ## Manual Time Configuration
 
@@ -43,7 +43,7 @@ Time source is hardware calendar
 >
 > 因为时间是动态的，通过 `write` 命令来写配置不合乎逻辑
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_18-32.1qopo83vn35s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_18-32.1qopo83vn35s.webp)
 
 *Although the hardware calendar(built-in clock) is the default time-source, the hardware clock and software clock are separate and be configured separately*
 
@@ -51,7 +51,7 @@ Time source is hardware calendar
 
 可以通过 `R1#calendar set` 来配置 hardware clock 时间
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_18-37.s5ls6sa7awg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_18-37.s5ls6sa7awg.webp)
 
 配置完之后还需要使用 `clock update-calendar` 或者 `clock read-calendar` 来让时间生效，否则会在重启后还原
 
@@ -59,19 +59,19 @@ Time source is hardware calendar
 
 让 hardware clock 和 software clock 同步，hardware clock 被更新
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_18-45.6xb3xctzs29s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_18-45.6xb3xctzs29s.webp)
 
 ### clock read-calendar
 
 让 software clock 和 hardware clock 同步, software clock 被更新
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_18-48.6mnse5q6ocjk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_18-48.6mnse5q6ocjk.webp)
 
 ### Configuring the Time Zone
 
 可以使用 `R1(config)#clock timezone <zone name> <offset...>` 来配置 timezone，需要在 global config mode 中配置
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_18-53.3vhvll30niv4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_18-53.3vhvll30niv4.webp)
 
 > name of time zone 可以是任意的字符，无需和实际存在的 TimeZone 关联
 
@@ -111,7 +111,7 @@ Network Time Protocol(NTP)
 
 ### NTP Hierarchy
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_19-13.55zde3747uo0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_19-13.55zde3747uo0.webp)
 
 - stratum 1 的 NTP 服务器和 stratum 0 的 reference clock 做时间同步
 
@@ -125,7 +125,7 @@ Network Time Protocol(NTP)
 
   思科的设备同样支持 symmetric active mode
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_19-23.4v8pc68xxeo0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_19-23.4v8pc68xxeo0.webp)
 
 stratum 1 的设备也被称为 primary servers，stratum 值大于 1 的被称为 secondary servers
 
@@ -133,25 +133,25 @@ stratum 1 的设备也被称为 primary servers，stratum 值大于 1 的被称�
 
 例如如下拓扑，需要让 R1/2/3 和 time.google.com 做 NTP 同步
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_19-25.1wsojifftdwg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_19-25.1wsojifftdwg.webp)
 
 需要先查看 time.google.com 的 DNS 记录
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_19-30.6rqtzxtwl3eo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_19-30.6rqtzxtwl3eo.webp)
 
 然后使用 `R1(config)#ntp server <A record>` 来配置需要主动同步的 NTP 服务器
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_19-31.5pp3ma2edrls.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_19-31.5pp3ma2edrls.webp)
 
 最好配置多个服务器地址，如果一台服务器同步有问题，也可以和其他的服务器同步(NTP 会自动选择)
 
 如果需要固定优先使用某台服务器，可以使用 `R1(config)#ntp server <A record> prefer`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_19-33.5wc65s2zgc8w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_19-33.5wc65s2zgc8w.webp)
 
 配置完后(这里使用没有配置 prefer 的)，可以使用 `show ntp associations` 来查看 NTP 的信息
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_19-40.5kev90lebtds.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_19-40.5kev90lebtds.webp)
 
 - address
 
@@ -185,7 +185,7 @@ stratum 1 的设备也被称为 primary servers，stratum 值大于 1 的被称�
 
 除了使用 `show ntp association` 来查看 NTP 信息外，还可以使用 `show ntp status` 来查看当前选中服务的信息
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_19-59.1knp57vyo0g0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_19-59.1knp57vyo0g0.webp)
 
 - stratum 2
 
@@ -197,7 +197,7 @@ stratum 1 的设备也被称为 primary servers，stratum 值大于 1 的被称�
 
 检查一下系统的时间
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_20-12.6ev5zih5whhc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_20-12.6ev5zih5whhc.webp)
 
 > 使用 NTP 必须配置准确的 time zone
 
@@ -209,19 +209,19 @@ stratum 1 的设备也被称为 primary servers，stratum 值大于 1 的被称�
 
 需要使用 `R1(config)#ntp source loopback0` 来指定发送 NTP messages 的 interface (也可以理解层直接让设备变成 NTP server)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_20-36.3y4p5e0h3vb4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_20-36.3y4p5e0h3vb4.webp)
 
 > 这里使用 loopback 因为，不受物理端口限制。这里已经提前使用 OSPF 配置了 R1/R2/R3 之间的路由了
 
 配置 R2
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_20-41.2e4jsclnsy2o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_20-41.2e4jsclnsy2o.webp)
 
 这里 reference clock 是 10.1.1.1 同步的 NTP server 即 reference；而 stratum 为 2，即 R1 到 .GOOG.；如果使用 `show ntp status` 可以看到 R3 到 .GOOG. stratum 为 3 
 
 配置 R3
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_21-19.388u2i7z0qio.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_21-19.388u2i7z0qio.webp)
 
 这里为 R3 分别添加 R1 和 R2 的 loopback 地址，看 R3 会优先选择谁，使用 `show ntp associations` 可以明确的看到会选择 R1
 
@@ -233,13 +233,13 @@ stratum 1 的设备也被称为 primary servers，stratum 值大于 1 的被称�
 
 有如下拓扑
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_21-26_1.7fru82osz728.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_21-26_1.7fru82osz728.webp)
 
 如果设备没办法和其他的 NTP server 同步，但是又想要让当前的组网所有设备 NTP 同步，有什么方法呢？
 
 需要让一台机器称为 NTP master，其他所有机器可以参考这台机器做 NTP 同步。使用 `ntp master [stratum]` 来让 R1 成为 NTP master
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_21-26.2weaesygilts.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_21-26.2weaesygilts.webp)
 
 这里可以看到 `show ntp asso` 显示 127.127.1.1 stratum 值为 7，所以 R1 到 127.127.1.1 的 stratum 值为 8，所以即 R1 stratum 值为 8(==默认为 8==)，可以使用 `show ntp status` 来校验
 
@@ -255,7 +255,7 @@ stratum 1 的设备也被称为 primary servers，stratum 值大于 1 的被称�
 
 配置 R2/3
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_21-36.6k2g0hur0a2o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_21-36.6k2g0hur0a2o.webp)
 
 R2/3 均使用 R1 loopback interface 对应的地址
 
@@ -263,11 +263,11 @@ R2/3 均使用 R1 loopback interface 对应的地址
 
 使用 Configuring NTP Server mode 中的拓扑和配置
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_21-26_1.7fru82osz728.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_21-26_1.7fru82osz728.webp)
 
 让 R2 和 R3 之间成为 symmetric active mode，只需要使用 `ntp peer <peer ip address>` 即可
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_21-40.19uddunitb28.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_21-40.19uddunitb28.webp)
 
 ### Configuring NTP authentication
 
@@ -277,7 +277,7 @@ NTP authentication 是一个可选的配置，需要 clients 和 server 配置�
 
 配置需要按照如下步骤
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_21-57.5h1juqehrnk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_21-57.5h1juqehrnk.webp)
 
 1. `ntp athenticate`
 
@@ -299,17 +299,17 @@ NTP authentication 是一个可选的配置，需要 clients 和 server 配置�
 
 R1 作为 NTP server
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_21-26_1.7fru82osz728.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_21-26_1.7fru82osz728.webp)
 
 R1/2/3 配置如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_22-00.6w87rnw0plds.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_22-00.6w87rnw0plds.webp)
 
 > 这里还使用了 `ntp peer <peer ip address> key <key number>` 来为 symmetric active mode 配置 NTP authentication
 
 ## Summary
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-03_22-05.713hcb02idq8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-03_22-05.713hcb02idq8.webp)
 
 ## LAB
 

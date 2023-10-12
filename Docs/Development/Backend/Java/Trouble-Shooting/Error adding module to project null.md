@@ -15,7 +15,7 @@ Default locale: en_US, platform encoding: UTF-8
 OS name: "linux", version: "6.1.38-1-manjaro", arch: "amd64", family: "unix"
 ```
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230802/2023-08-02_11-16.200vakrqldeo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230802/2023-08-02_11-16.200vakrqldeo.webp)
 
 **references**
 

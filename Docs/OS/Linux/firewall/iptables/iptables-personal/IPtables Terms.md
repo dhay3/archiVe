@@ -10,7 +10,7 @@ https://arthurchiao.art/blog/deep-dive-into-iptables-and-netfilter-arch-zh/
 
 理解 IPtables 的核心在于下面这张图表，为了方便记忆 security table 被移除（实际情况下很少会使用 security table）
 
-![Snipaste_2020-10-13_23-24-43](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-13_23-24-43.1q1a0cer9hvk.png)
+![Snipaste_2020-10-13_23-24-43](https://github.com/dhay3/image-repo/raw/master/20210518/Snipaste_2020-10-13_23-24-43.1q1a0cer9hvk.png)
 
  任何数据报文都会按照上述图表的顺序
 

@@ -4,17 +4,17 @@
 
 回忆一下普通的 ARP，例如 192.168.1.10 需要访问 8.8.8.8
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230815/2023-08-15_20-24.6ysrshz8ilmo.png)
+![](https://github.com/dhay3/image-repo/raw/master/20230815/2023-08-15_20-24.6ysrshz8ilmo.png)
 
 因为 PC1 目前还没有 8.8.8.8 的 MAC，且 8.8.8.8 不在一个 LAN 中，需要通过 Router 转发，所以会先问 Router 的 MAC 地址。即 PC1 首先会广播一个 ARP Request, 报文内容大致如下
 
 > ARP 只用于 LAN，不需要被发送到 LAN 外，所以也就不需要被 router 发送到其他的 network，所以也就不需要 IP header 
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230815/2023-08-15_20-30.53ewwyghmlo0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230815/2023-08-15_20-30.53ewwyghmlo0.webp)
 
 ARP Request 到 SW1/SW2 分别会记录相应的条目到对应设备的 MAC table，R1 在收到 ARP Request 后因为 Target IP address 对应接口的地址，R1 会将相应的条目记录到 MAC table 和 ARP table 中，同时回送 ARP Reply 到 PC1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230815/2023-08-15_20-40.79yi6n847680.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230815/2023-08-15_20-40.79yi6n847680.webp)
 
 ARP Reply 到 SW1/SW2 分别记录相应的条目到对应设备的 MAC table，PC1 在收到 ARP reply 将相应的条目记录到自己的 MAC table 和 ARP table 中，同时发送报文
 
@@ -37,13 +37,13 @@ Gratuitous ARP(GARP) 顾名思义免费的 ARP，有几点特质
 
 例如当 PC1 开机时，就会发送 GARP 到整个网络
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230815/2023-08-15_20-51.30xxpl9biw20.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230815/2023-08-15_20-51.30xxpl9biw20.webp)
 
 ## ARP Poisoning
 
 ARP poisoning 和 DHCP poisoning 类似
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230815/2023-08-15_21-04.9meva8arfbw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230815/2023-08-15_21-04.9meva8arfbw.webp)
 
 1. 假设 PC2 发送了 GARP(当然也可以是正常的 ARP reply) 声明 192.168.1.1 的 MAC 是 PC2，而实际 PC2 的 IP 是 192.168.1.11
 2. LAN 中所有的设备除 192.168.1.1 外所有的设备会认为 PC2 就是 192.168.1.1
@@ -77,7 +77,7 @@ DAI 有一些注意点
 
   例如下图中蓝色的接口都是 trusted ports，橙色的接口都是 untrusted ports
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230815/2023-08-15_21-01.77zigay9m400.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230815/2023-08-15_21-01.77zigay9m400.webp)
 
 - ARP ACLs can be manually configured to map IP addresses/MAC address for DAI to check
 
@@ -89,7 +89,7 @@ DAI 有一些注意点
 
 ## DAI Configuration
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230815/2023-08-15_21-25.1dxkpvjool8g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230815/2023-08-15_21-25.1dxkpvjool8g.webp)
 
 DAI 配置很简单
 
@@ -103,13 +103,13 @@ DAI 配置很简单
 
 配置完成后可以使用 `SW1#show ip arp inspection interfaces` 来查看那些端口是 trusted 或 untrusted 的
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230815/2023-08-15_21-31.159xqa9rpakg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230815/2023-08-15_21-31.159xqa9rpakg.webp)
 
 > DAI 比 DHCP snooping 更灵活
 
 ### DAI rate limiting
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230815/2023-08-15_21-34.5y8en3uceq00.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230815/2023-08-15_21-34.5y8en3uceq00.webp)
 
 配置 rate limiting 也相对简单，只需要使用 `SW1(config-if)#ip arp inspection limit rate <counts> [burst interval <seconds>]` 即可
 
@@ -119,15 +119,15 @@ DAI 配置很简单
 
 只需要使用 `SW1(config)#errdisable recovery cause arp-inspection` 即可
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230815/2023-08-15_21-40.6bgvgqybuvo0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230815/2023-08-15_21-40.6bgvgqybuvo0.webp)
 
 ### DAI Optional Checks
 
 DAI 除了校验 DHCP snooping table 还可以校验 dst-mac, ip, src-mac
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230815/2023-08-15_21-52.2t16fco5zz40.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230815/2023-08-15_21-52.2t16fco5zz40.webp)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230815/2023-08-15_20-30.53ewwyghmlo0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230815/2023-08-15_20-30.53ewwyghmlo0.webp)
 
 - dst-mac
 
@@ -145,17 +145,17 @@ DAI 除了校验 DHCP snooping table 还可以校验 dst-mac, ip, src-mac
 
 > dst-mac ip src-mac 没有先后顺序
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230815/2023-08-15_22-00.3doab41glzc0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230815/2023-08-15_22-00.3doab41glzc0.webp)
 
 ### ARP ACLs
 
 如果设备使用静态地址不使用 DHCP，因为对应的信息不在 DHCP snooping table 中就会直接被丢弃
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230815/2023-08-15_22-01.6kiz90bgv94.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230815/2023-08-15_22-01.6kiz90bgv94.webp)
 
 为了让这些设备的 ARP request 或者 reply 正常转发可以通过 ARP ACL
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230815/2023-08-15_22-27.6x3x5x6bnis0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230815/2023-08-15_22-27.6x3x5x6bnis0.webp)
 
 - `SW1(config)#arp access-list <name>`
 
@@ -171,15 +171,15 @@ DAI 除了校验 DHCP snooping table 还可以校验 dst-mac, ip, src-mac
 
 配置完成后可以使用 `show ip arp inspection` 来查看 DAI 配置
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-16_13-41.5fo8a28k8vc0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-16_13-41.5fo8a28k8vc0.webp)
 
 ## Command Summary
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-16_13-42.1ror1amu9gbk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-16_13-42.1ror1amu9gbk.webp)
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-16_13-56.4uwapfz5umc0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-16_13-56.4uwapfz5umc0.webp)
 
 ### 0x01
 

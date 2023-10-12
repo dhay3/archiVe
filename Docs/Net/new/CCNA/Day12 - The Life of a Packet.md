@@ -2,7 +2,7 @@
 
 以如下拓扑为例
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-25_16-05.6gesqr387aww.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-25_16-05.6gesqr387aww.webp)
 
 橙色框内表示 MAC 地址，例如 PC1 MAC 1111，R1 Gi0/2 aaaa
 

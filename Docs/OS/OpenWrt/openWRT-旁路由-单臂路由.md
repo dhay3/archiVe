@@ -25,7 +25,7 @@ https://www.youtube.com/watch?v=OPG47_wT3XI
 
 > 这里的openWRT是无线AP，内置的openWRT
 
-![Snipaste_2020-10-08_10-42-00](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230210/Snipaste_2020-10-08_10-42-00.1tzr7rq7n05c.webp)
+![Snipaste_2020-10-08_10-42-00](https://github.com/dhay3/image-repo/raw/master/20230210/Snipaste_2020-10-08_10-42-00.1tzr7rq7n05c.webp)
 
 光猫路由模式下，网络里不会有第二个执行NAT功能的服务器，所以我们的openWRT服务器不应该具有NAT功能，==那么它只能是一台网关服务器，也就是一台旁路由（旁路网关）==。不具有NAT功能，只是用单一LAN，不使用WAN口
 

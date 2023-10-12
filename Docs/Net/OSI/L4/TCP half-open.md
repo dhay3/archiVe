@@ -21,7 +21,7 @@ TCP 正常连接是，A 向 B 发 SYN，B 向 A 回 ACK-SYN，A 向 B 发 ACK。
 
 服务端收到客户端发起的 SYN 请求后，内核会把该连接储存到半连接队列，并向客户端响应 SYN + ACK，接着客户端返回 ACK，服务端收到第 3 次握手的 ACK 后，内核会把连接从半连接队列移除，染回创建新的完全的连接，并将其添加到 accept 队列，等待进程调用 accept 函数时把连接取出
 
-![2022-04-18_22-05](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220418/2022-04-18_22-05.tw4nn0kcjw0.webp)
+![2022-04-18_22-05](https://github.com/dhay3/image-repo/raw/master/20220418/2022-04-18_22-05.tw4nn0kcjw0.webp)
 
 不管半连接队列还是全连接队列，都有最大长度限制，超过限制时，内核会直接丢弃，或返回RST包
 

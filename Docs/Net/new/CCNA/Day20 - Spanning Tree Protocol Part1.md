@@ -10,33 +10,33 @@
 
 例如下面的这个拓扑结构中就不具备 redundancy
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_13-42.4aeoyws0zdc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_13-42.4aeoyws0zdc.webp)
 
 如果 Router 和 Internet 中间的链路有问题，那么整个网络中的所有主机就会有问题
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_13-44.6xstz050aa2o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_13-44.6xstz050aa2o.webp)
 
 如果交换之间的链路有问题，那个连在交换机下的主机就会有问题
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_13-45.3p429btshsao.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_13-45.3p429btshsao.webp)
 
 对比一下一个设计地比较完整的拓扑，如果两个 components(除主机外) 中的链路出现问题，主机还是可以正常访问 Internet 的
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_13-46.4fjiqgzzv79c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_13-46.4fjiqgzzv79c.webp)
 
 例如
 
 PC 访问 Internet
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_13-48.75h7yg4aixz4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_13-48.75h7yg4aixz4.webp)
 
 或者同 LAN PC 访问 PC
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_13-49.6jc5kri5m6f4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_13-49.6jc5kri5m6f4.webp)
 
 但是如果和主机互联的 SW 出现问题了，一般就会有问题
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_13-52.2sm431du8800.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_13-52.2sm431du8800.webp)
 
 但是呢，这个拓扑任然是有问题的，会导致 Broadcast Storms
 
@@ -48,7 +48,7 @@ Broadcast Storms 中文也叫做广播风暴
 
 以如下拓扑为例
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_14-00.3uyz0jzd10w0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_14-00.3uyz0jzd10w0.webp)
 
 假设 PC1 需要访问 PC2，首先需要知道 PC2 的 MAC address，所以需要做 ARP request。因为 ARP request 目的 MAC 是 FFFF.FFFF.FFFF，所以会被 SW 广播
 
@@ -56,7 +56,7 @@ Broadcast Storms 中文也叫做广播风暴
 2. 当 SW2 收到 ARP request 时，会广播到 和 SW3 以及 PC2 互联的端口
 3. 当 SW3 收到 ARP request 时，会广播到 和 SW2 以及 PC3 互联的端口
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_14-23.4al3qbx1pp4w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_14-23.4al3qbx1pp4w.webp)
 
 这样就有一个问题，SW2 会和 SW3 互相收到从对方发来的广播帧，因为目的 MAC 任然是 FFFF.FFFF.FFFF，所以他们又会广播到 SW1，SW1 又会分别广播到 SW2 或者 SW3。这样就形成了一个环
 
@@ -76,7 +76,7 @@ SW 在 de-encapsulation 报文的时候并不会修改报文中的 MAC address�
 
 因为 boardcast storm 的原因，上述 2 步会重复，所以 MAC address table 也就会不断的更新 PC1 Source MAC address 对应条目的端口值，这个也被称为 MAC address flapping
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_15-57.6psfj7wefi0w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_15-57.6psfj7wefi0w.webp)
 
 
 
@@ -88,7 +88,7 @@ Spanning Tree Protocol 是一种为了保证 2 层 network Redundancy 正常运�
 
 默认所有 vendors 的网络设备，都会开启并使用 STP
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_13-58.1lummuyftqww.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_13-58.1lummuyftqww.webp)
 
 使用了 STP 端口有两种状态
 
@@ -110,7 +110,7 @@ Spanning Tree Protocol 是一种为了保证 2 层 network Redundancy 正常运�
 
 在 Hub 往 Switch 发展的过程中，还有一个 Bridge，是一个只有 2 口的 Switch，一样会做 Mac address 寻址
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_16-09.23bwu7n56t28.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_16-09.23bwu7n56t28.webp)
 
 这里直接将 Bridge 理解成 Switch 即可
 
@@ -122,17 +122,17 @@ Spanning Tree Protocol 是一种为了保证 2 层 network Redundancy 正常运�
 
 橙色的端口都是 blocking 状态的，只会发送或者接受 STP 协议的报文，不会转发其他的报文(比如 ARP)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_16-15.4n55gurcnsow.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_16-15.4n55gurcnsow.webp)
 
 那么可以逻辑上的将 SW3 和 SW2 间的链路想象成不存在，以虚线表示
 
 如果 PC1 发送 ARP request，那么流量就会如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_16-18.2t2nleqf5a9s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_16-18.2t2nleqf5a9s.webp)
 
 如果 SW2 和 SW1 之间的链路出问题了，链路就会自动地调整成如下拓扑
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_16-21.jukik49f14g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_16-21.jukik49f14g.webp)
 
 *By selecting which ports are forwarding and which ports are blocking, STP creates a single path to/form each point in the network. This prevents Layer2 loops*
 
@@ -146,7 +146,7 @@ If a switch receives a Hello BPDU on an interface, it knows that interface is co
 
 设备收发 BDPUs Hello 图如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_16-29.59jv895r8fb4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_16-29.59jv895r8fb4.webp)
 
 #### Root bridge
 
@@ -162,7 +162,7 @@ If a switch receives a Hello BPDU on an interface, it knows that interface is co
 
 Birdge ID 长得类似下图
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_16-34.4y439ydru64g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_16-34.4y439ydru64g.webp)
 
 > 这里的 MAC address 对应 Switch MAC[^STP Switch MAC address] 是 SWitch 的一个唯一标识符
 >
@@ -178,19 +178,19 @@ Birdge ID 长得类似下图
 
 因为 SW 和 PC 互联的端口，一定是不会出现环的，所以一定是 forwarding state(designated port)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_16-41.19g6y2i9qw2o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_16-41.19g6y2i9qw2o.webp)
 
 现在因为都是默认的状态，所以 Bridge priority 默认都是 32768，因为 3 台 SW 都一样，所以会比较 3 台 SW 的 MAC address
 
 因为 SW1 在 3 台 SW 中的 MAC address 最小，所以 SW1 就会选举成 root bridge，那么他所有的端口就都会是 forwarding state
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_16-46.1nawvfa9pk2o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_16-46.1nawvfa9pk2o.webp)
 
 #### Bridge Priority
 
 在 Cisco 设备上实际 Bridge Priority 还可以分成两部分
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_16-48.45bd344rkwow.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_16-48.45bd344rkwow.webp)
 
 > 这里为什么包含 VLAN ID 呢，因为 Cisco 实际使用的是 PVTS(Per-VLAN Spanning Tree)。每一个 VLAN 都会运行一个单独的 STP instance，在不同的 VLAN 中，不同的接口状态可以是不同的
 >
@@ -198,7 +198,7 @@ Birdge ID 长得类似下图
 
 为什么默认的 bridge priority 是 32768
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_17-08.6huamg77xri8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_17-08.6huamg77xri8.webp)
 
 因为 bridge prority 一共占 16 bits，默认的 prority bit 是最高为，所以 32768 = $2^{15}$
 
@@ -206,7 +206,7 @@ Birdge ID 长得类似下图
 
 *In the default VLAN of 1, the default bridge priority is actually 32769(32768 + 1)*
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_17-20.5iq7pmdxq4u8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_17-20.5iq7pmdxq4u8.webp)
 
 > 如果是 VLAN2，那么对应的 bridge priority 就会是 32770
 >
@@ -216,7 +216,7 @@ Birdge ID 长得类似下图
 
 因为实际的 bridge priority 是由 bridge priority 中的 bridge priority 和 Extended Sytem ID(VLAN ID) 组成的，但是 Extended System ID 是不能修改的(因为和 VLAN 有关，如果 VLAN 变了，Extended System ID 就会改变)。所以 bridge priority 可以使用的 bit 只有 12 - 15，最小的 bit 对应的值为 4096 = $2^{12}$，即最小的差值单位为 4096
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_17-18.75lngv9rcvi8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_17-18.75lngv9rcvi8.webp)
 
 因为 bridge priority 是可以增加或者减小的，所以 root bridge 可以有用户自己设置，例如
 
@@ -240,7 +240,7 @@ Birdge ID 长得类似下图
 
   会比较 switch root cost,如果一样比较 bridge ID(自己的 bridge ID)
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_18-32.22vkf2c005ds.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_18-32.22vkf2c005ds.webp)
 
   SW2 最小的 root cost 为 SW2 G0/1 - SW1 G0/0 4
 
@@ -264,7 +264,7 @@ root port 会先由 root cost 决定
 
 端口花费值参考下图
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_18-06.59dyjoyu8xa8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_18-06.59dyjoyu8xa8.webp)
 
 例如，下面拓扑，所有的端口都是 Gigabits 的所以端口的花费均为 4
 
@@ -272,7 +272,7 @@ root port 会先由 root cost 决定
 >
 > 按照文字里的逻辑理解
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_18-41.4vuyfun6uvls.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_18-41.4vuyfun6uvls.webp)
 
 因为 SW1 是 root bridge 所以到 root bridge 不需要经过任何的出端口(自己本身就是 root bridge)，所以 root cost 是 0，每个端口都是 root port(这种情况也将 port记为 designated port)
 
@@ -300,7 +300,7 @@ root port 会先由 root cost 决定
 
 因为路径 1 root cost 最小，所以 SW3 G0/0 是 root port
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-01_18-48.6gu5pth82yo0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-01_18-48.6gu5pth82yo0.webp)
 
 *The ports connected to another switch’s root port MUST be designated. Because the root port is the switch’s path to the root bridge, another switch must not block it*
 
@@ -310,7 +310,7 @@ root port 会先由 root cost 决定
 
 例如
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-02_12-29.48ba2ynmxgjk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-02_12-29.48ba2ynmxgjk.webp)
 
 4 台 SW 中，SW2 会被选为 root bridge，因为 Bridge Id 最小，所以 SW2 所有的端口就是 designated ports
 
@@ -326,7 +326,7 @@ SW3 两条路径到 root bridge cost 均为 8，因为相同，所以会比较�
 
 下图红框在的部分关联 port ID
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-02_13-30.7dcp5rkljwn4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-02_13-30.7dcp5rkljwn4.webp)
 
 *STP port ID = port priority(default 128) + port number*
 
@@ -338,7 +338,7 @@ SW3 两条路径到 root bridge cost 均为 8，因为相同，所以会比较�
 
 SW1 和 SW2 通过两条 link 互联
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-02_13-36.17qcvedbdnfk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-02_13-36.17qcvedbdnfk.webp)
 
 SW3 有 3 条路径到 root bridge，cost 均为 8
 
@@ -455,7 +455,7 @@ SW1 有两路径和 SW3 互联，端口分别为 G0/1 和 G0/2。G0/1 的序号�
 
 ### 0x01
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-05_18-56.43k1ub2nkbls.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-05_18-56.43k1ub2nkbls.webp)
 
 1. 先判断 root bridge，因为 priority ID 都一样，所处比较 MAC，SW3 MAC 最小，所以 SW3 是 root bridge。所以 SW3 G0/0 和 SW3 G0/1 都是 designated port
 2. SW1 G0/1 到 root bridge cost 最小，所以 SW1 G0/1 是 root port；SW4 G0/0 到 root bridge cost 最小，所以 SW4 G0/0 是 root port

@@ -12,17 +12,17 @@ Port Security 是思科交换机上的一个安全功能
 
 例如当前 PC1 直连 SW1, A.A.A 是被授权 Source MAC，PC1 可以正常访问到 R1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_13-58.vxz75jbfybk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_13-58.vxz75jbfybk.webp)
 
 现在将 PC1 和 SW1 直连的网线拔下来，改成 PC2 和 SW1 互联
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_14-00.56c2nplptri8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_14-00.56c2nplptri8.webp)
 
 因为 B.B.B 不是被授权的地址，当 SW1 通过 G0/1 收到 PC2 发过来的报文就会将 G0/1 置为 err-disable 状态
 
 现在将链路改回原来的状态
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_14-03.3460lzez24c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_14-03.3460lzez24c.webp)
 
 此时 PC1 任然是不可以访问 R1 的，因为 SW1 G0/1 的状态并不会自动改变，而是 err-disable 的状态
 
@@ -37,7 +37,7 @@ Port Security 是思科交换机上的一个安全功能
 
    例如 在 IP phone 的场景在 PC1 和 PH11 都要通过 SW1 访问 R1
 
-   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_14-09.10rkifq6wwvk.webp)
+   ![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_14-09.10rkifq6wwvk.webp)
 
    如果这时还是只能配置一个 MAC address.那明显不合理。所以 Port security 允许的 MAC 地址数量不
    
@@ -63,7 +63,7 @@ Port Security 是思科交换机上的一个安全功能
 
 ## Port Security Configuration
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_14-28.3eau1me63aio.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_14-28.3eau1me63aio.webp)
 
 让端口开启 port security 的功能很简单，只需要使用 `SW1(config-if)#switchport port-security [mac-address <address>]`  即可(添加 mac-address 参数表示手动指定 authorized MAC)
 
@@ -73,7 +73,7 @@ Port Security 是思科交换机上的一个安全功能
 
 如果想要查看端口是否开启了 port security 的功能，可以使用 `show port-security interface <interface-id>`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_14-41.115qy6lg6mts.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_14-41.115qy6lg6mts.webp)
 
 1. `Port Security： Enabled`
 
@@ -135,13 +135,13 @@ Port Security 是思科交换机上的一个安全功能
 
 假设现在 PC1 ping R1，使用 `show port-security interface <interface-id>` 来查看
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_14-43.m02762i91yo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_14-43.m02762i91yo.webp)
 
 这里可以看到 Total MAC Addresses 和 Last Source Address 对应的值都发生改变了
 
 现在将 PC2 和 SW1 直连，PC2 ping R1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_14-50.2xyew5e4d5kw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_14-50.2xyew5e4d5kw.webp)
 
 可以看到 Port Status 从 Secure-up 变成 Secure-shutdown 了，并且使用 `show interfaces status` 查看端口时，可以看见是 err-disabled
 
@@ -149,7 +149,7 @@ Port Security 是思科交换机上的一个安全功能
 
 除了 `show port-security interface <interface-id>` 外来查看 port security，还可以使用 `show port-security` 来查看所有开启 port security 功能的端口列表
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_19-34.3jmg1ezipd4w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_19-34.3jmg1ezipd4w.webp)
 
 ### Re-enabling an interface
 
@@ -164,7 +164,7 @@ Port Security 是思科交换机上的一个安全功能
 
 > 需要注意的是需要先将 PC2 断开连接，否则当 PC2 发送报文时，SW1 将会将 PC2 MAC 作为 authorized MAC
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_14-56.5fsuvo3w30xs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_14-56.5fsuvo3w30xs.webp)
 
 这是使用 `show port-security interface g0/1` 查看端口的状态，就会发现复原成 PC1 没有发报文到 R1 的状态了
 
@@ -174,7 +174,7 @@ Port Security 是思科交换机上的一个安全功能
 
 端口进入 errdisable 状态通常有如下几种原因，可以使用 `SW1#show errdisable recovery` 来查看
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_15-02.3ss6y4p0e5c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_15-02.3ss6y4p0e5c.webp)
 
 Timer Status 对应的列会显示 errdisable recovery 功能是否启用，默认均为 disable 表示不开启 errdisable recovery 的功能
 
@@ -184,13 +184,13 @@ Timer Interval 表示
 
 现在开启 port-security errdisable recovery 的功能
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_15-11.2ogxuxc05e0w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_15-11.2ogxuxc05e0w.webp)
 
 只需要使用 `SW1(config)#errdisabel recovery cause psecure-violation`，为了方便查看 errdisable recovery 的功能是否生效，这里将 Timer Interval 的值改小 为 3 mins `SW1#errdisable recovery interval 180`
 
 如果使用 `SW1#show errdisable recovery` 来查看 errdisable recovery 的功能是否开启，就可以发现 Timer status 对应的字段值为 disable，同时 Timer Interval 变成 180 seconds，当 180 后端口还是处于 errdisable 就会尝试自动 enable 端口(即执行 shutdown/no shutdown)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_15-14.1ljlmnxdrq1s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_15-14.1ljlmnxdrq1s.webp)
 
 > 需要注意的一点是
 >
@@ -221,7 +221,7 @@ Violation mode 是当收到 unauthorized Source MAC 报文时，端口处理的�
 
 这里 PC2 ping R1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_15-30.1l6zwo1mz6ww.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_15-30.1l6zwo1mz6ww.webp)
 
 因为手动设置 authorized MAC 是 000a.000a.000a，PC2 MAC 不是 authorized MAC，且是 restrict violation mode，所以 SW1 G0/1 port status 状态认为 secure-up 同时 security violation count 计数上涨
 
@@ -234,7 +234,7 @@ Violation mode 是当收到 unauthorized Source MAC 报文时，端口处理的�
 
 和 restrict violation 配置的方式一样
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_19-08.1xuscchadusg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_19-08.1xuscchadusg.webp)
 
 如果从 PC2 ping R1 这里可以注意到 Security Violation Count 值是不会增加的
 
@@ -246,7 +246,7 @@ Sticky 是指学到的 MAC address 永远不会过期，可以通过 `SW1(config
 
 一旦使用了 `switchport port-security mac-address sticky` 会将当前所有的 secured MAC 直接转为 sticky MAC
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_19-44.1u1bxp0k68bk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_19-44.1u1bxp0k68bk.webp)
 
 ## MAC Address Table
 
@@ -257,15 +257,15 @@ Sticky 是指学到的 MAC address 永远不会过期，可以通过 `SW1(config
 
 可以通过 `show mac address-table secure` 来查看 secure MAC address 
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_19-49.6zmpdpl4cge8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_19-49.6zmpdpl4cge8.webp)
 
 ## Command summary
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_19-52.517qz0c2gwsg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_19-52.517qz0c2gwsg.webp)
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230718/2023-07-18_20-01.1ztdw90cd3k0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230718/2023-07-18_20-01.1ztdw90cd3k0.webp)
 
 ### 0x01
 

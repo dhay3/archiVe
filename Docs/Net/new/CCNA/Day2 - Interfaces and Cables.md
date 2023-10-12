@@ -6,7 +6,7 @@
 
 ### RJ45
 
-![switch interfaces](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230516/2023-05-16_17-59.5gm776povf28.webp)
+![switch interfaces](https://github.com/dhay3/image-repo/raw/master/20230516/2023-05-16_17-59.5gm776povf28.webp)
 
 RJ45 是最常见的接口类型，全称为 Registrered Jack 45 connector，使用 8PIN。通常被用在双绞网线中
 
@@ -14,11 +14,11 @@ RJ45 是最常见的接口类型，全称为 Registrered Jack 45 connector，使
 
 SFP (Small Form-Factor Pluggable)，通常和 fiber-optic cables(光纤) 一起使用
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230516/2023-05-17_13-50.1qfk0i4rrkjk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230516/2023-05-17_13-50.1qfk0i4rrkjk.webp)
 
 黄色的部分是 RJ45 口，红色的部分是 SFP 口。但是现在还不能使用，还需要插入 SFP transceiver 才能性(即支持 hot-pluggable)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230516/2023-05-17_13-57.4ie7v09a1am8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230516/2023-05-17_13-57.4ie7v09a1am8.webp)
 
 
 
@@ -38,7 +38,7 @@ SFP (Small Form-Factor Pluggable)，通常和 fiber-optic cables(光纤) 一起�
 
 UTP Cables 通常使用 RJ45 作为接口，使用 copper (铜) 做传输介质,
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230516/2023-05-16_18-15.566r8qj8kigw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230516/2023-05-16_18-15.566r8qj8kigw.webp)
 
 在 Ethernet 中特性如下表
 
@@ -61,7 +61,7 @@ UTP Cables 通常使用 RJ45 作为接口，使用 copper (铜) 做传输介质,
 
 假设现在有一台 PC 和 Switch 需要互联，就会使用如下的方式通过 cable 对接 Connector PIN 
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230516/2023-05-17_11-04.3prlfy2j70xs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230516/2023-05-17_11-04.3prlfy2j70xs.webp)
 
 - 在 PC 侧 RJ45 母口 PIN12 用于传输数据，母口 PIN36 用于接收数据
 - 在 Switch 侧 RJ45 母口 PIN12 用于接收数据，母口 PIN36 用于发送数据
@@ -71,7 +71,7 @@ UTP Cables 通常使用 RJ45 作为接口，使用 copper (铜) 做传输介质,
 
 假设现在有一台 Router 和 Switch 需要互联，相同的也会采用上述的方式
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230516/2023-05-17_11-13.38ohoc973g00.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230516/2023-05-17_11-13.38ohoc973g00.webp)
 
 总结一下，在 UTP cables 10BASE-T/100BASE-T 的情况下
 
@@ -82,20 +82,20 @@ UTP Cables 通常使用 RJ45 作为接口，使用 copper (铜) 做传输介质,
 
 假设现在 2 台 Router 需要互联
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230516/2023-05-17_11-42.259mhm4zvq00.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230516/2023-05-17_11-42.259mhm4zvq00.webp)
 
 就不能使用 Straight-through cable，因为 Router PIN12 都用于发送数据，如果这种情况下还使用 Straight-through cable 逻辑上明显不合理(同理两台 Switch 或者 PC，或者 PC 和 Router)
 
 为了解决这种情况引入了 ==Crossover cable==
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230516/2023-05-17_11-46.65n1p4igvq0w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230516/2023-05-17_11-46.65n1p4igvq0w.webp)
 
 - Switch1 RJ45 母口 PIN1 和 Switch2 RJ45 母口 PIN3，通过 cable 中同一条线对接，同理 Switch1 PIN2 和 Switch2 PIN6 
 - Switch1 RJ45 母口 PIN3 和 Switch2 RJ45 母口 PIN1，通过 cable 中同一条先对接，同理 Switch1 PIN6 和 Switch2 PIN2
 
 为了方便记忆不同设备不同 PIN 的功能参考下图 
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230516/2023-05-17_11-52.54nf4a7efslc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230516/2023-05-17_11-52.54nf4a7efslc.webp)
 
 ##### Auto MDI-X
 
@@ -105,11 +105,11 @@ UTP Cables 通常使用 RJ45 作为接口，使用 copper (铜) 做传输介质,
 
 Switch1 和 Switch 互联，在两个接口都不支持 Auto MDI-X 的情况下，数据明显是不能正常传输
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230516/2023-05-17_12-10.5vpmf6q7zf9c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230516/2023-05-17_12-10.5vpmf6q7zf9c.webp)
 
 现在使用 Auto MDI-X 的接口
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230516/2023-05-17_12-12.l6pi4bfwra.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230516/2023-05-17_12-12.l6pi4bfwra.webp)
 
 那么 Switch2 接口的 PIN12 就会从接收数据变成发送数据，PIN36 从发送数据变成接收数据，这样数据就可以在两台交换机间正常传输了
 
@@ -117,7 +117,7 @@ Switch1 和 Switch 互联，在两个接口都不支持 Auto MDI-X 的情况下�
 
 1000BASE-T/10GBASE-T，使用 4 pairs，即 8 wires 用于收发数据
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230516/2023-05-17_12-20.5df3fuvqsg00.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230516/2023-05-17_12-20.5df3fuvqsg00.webp)
 
 且每对 pair 都是 bidirectional，即可以用于传输也可以用于接收数据
 
@@ -125,15 +125,15 @@ Switch1 和 Switch 互联，在两个接口都不支持 Auto MDI-X 的情况下�
 
 Fiber-Optic cables 中文也叫做光纤，使用光信号替代电信号，通常和 SFP 一起使用
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230516/2023-05-17_14-03.79yi6jn4e2v4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230516/2023-05-17_14-03.79yi6jn4e2v4.webp)
 
 光纤长成这样，是因为一侧的两个头分别用于传输和接收数据
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230516/2023-05-17_14-05.412xvtpfwkhs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230516/2023-05-17_14-05.412xvtpfwkhs.webp)
 
 一般由 4 层构成
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230516/2023-05-17_14-11.3fno7sh4rrb4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230516/2023-05-17_14-11.3fno7sh4rrb4.webp)
 
 根据一些特性分为两类
 
@@ -148,7 +148,7 @@ Multimode Fiber 横切面张这样
 
 蓝色部分代表 cladding
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230516/2023-05-17_14-17.581bgnp1h474.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230516/2023-05-17_14-17.581bgnp1h474.webp)
 
 - Multimode Fiber fiberglass core 直径要比 Singlemode Fiber 要大
 - 允许传输多角度的光波
@@ -157,7 +157,7 @@ Multimode Fiber 横切面张这样
 
 #### Singlemode Fiber
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230516/2023-05-17_14-19.4er5uyo4ud4w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230516/2023-05-17_14-19.4er5uyo4ud4w.webp)
 
 - Singhlemode fiber fiberglass core 直接要比 Multimode Fiber 要小
 - 光波以直线输入
@@ -166,7 +166,7 @@ Multimode Fiber 横切面张这样
 
 #### Fiber-Optic cable Standards
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230516/2023-05-17_14-26.3js96arx1uww.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230516/2023-05-17_14-26.3js96arx1uww.webp)
 
 ## UTP VS Fiber-Optic Cables
 

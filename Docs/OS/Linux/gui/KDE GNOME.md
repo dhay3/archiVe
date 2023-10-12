@@ -10,7 +10,7 @@ GTK是一款开源跨平台的GUI widget toolkit，常被用于GNOME的软件开
 
 下面展示的是Display，GUI interface toolkit，Application之间的关系
 
-![2021-07-05_22-26](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/2021-07-05_22-26.amg7gf2tu0s.png)
+![2021-07-05_22-26](https://github.com/dhay3/image-repo/raw/master/20210601/2021-07-05_22-26.amg7gf2tu0s.png)
 
 ## KDE
 

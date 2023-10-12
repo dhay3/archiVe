@@ -26,7 +26,7 @@ https://segmentfault.com/a/1190000015967922
 
 假设现在有一个固定容量的漏桶，能进水也能出水（出水速率恒定）。
 
-![2022-11-18_17-23](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221117/2022-11-18_17-23.btdpon7pwlk.webp)
+![2022-11-18_17-23](https://github.com/dhay3/image-repo/raw/master/20221117/2022-11-18_17-23.btdpon7pwlk.webp)
 
 那么会有以下几种情况( 均以恒定速度考虑 )
 
@@ -49,9 +49,9 @@ https://segmentfault.com/a/1190000015967922
 
 食堂的窗口就是令牌桶，需要干饭人的速率就是请求的报文，食堂大妈打饭的速度就是令牌桶产生的速度。这样我就可以通过大妈打饭的速度来控制流量(但是显示中大妈并不是代码)。
 
-![2022-11-18_17-48](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221117/2022-11-18_17-48.30kqpn19wcn4.webp)
+![2022-11-18_17-48](https://github.com/dhay3/image-repo/raw/master/20221117/2022-11-18_17-48.30kqpn19wcn4.webp)
 
-![2022-11-18_17-48_1](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221117/2022-11-18_17-48_1.28owgblow6io.webp)
+![2022-11-18_17-48_1](https://github.com/dhay3/image-repo/raw/master/20221117/2022-11-18_17-48_1.28owgblow6io.webp)
 
 通常令牌桶算法分为几部分
 
@@ -100,7 +100,7 @@ To further explain the limit match, it is basically a token bucket filter. Consi
 
 192.168.1.1 以 1 秒间隔发包，192.168.3.1 在收到的报文数小于 3 时正常接受，当超过这个数值时只允许接受每分钟 30 个报文，即每 2 秒接收一个报文(产生一个令牌)
 
-![2022-11-15_15-14](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221115/2022-11-15_15-14.56e538jrk8w0.webp)
+![2022-11-15_15-14](https://github.com/dhay3/image-repo/raw/master/20221115/2022-11-15_15-14.56e538jrk8w0.webp)
 
 192.168.3.1 设置规则
 

@@ -4,7 +4,7 @@
 
 ### [Download](https://www.mysql.com/downloads/)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230802/2023-08-02_20-17.73ke7kx6670g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230802/2023-08-02_20-17.73ke7kx6670g.webp)
 
 选择 [MySQL Community Server](https://dev.mysql.com/downloads/mysql/) 按照系统的架构选择版本即可
 

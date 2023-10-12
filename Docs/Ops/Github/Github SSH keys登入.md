@@ -8,7 +8,7 @@ https://git-scm.com/book/zh/v2/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git
 
 > 注意如果使用ssh登入，需要使用SSH URL。==如果使用2FA必须使用ssh或personal access token登入==
 
-![Snipaste_2020-12-02_11-11-27](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2020-12-02_11-11-27.i9gkbxs3uvs.png)
+![Snipaste_2020-12-02_11-11-27](https://github.com/dhay3/image-repo/raw/master/20210601/Snipaste_2020-12-02_11-11-27.i9gkbxs3uvs.png)
 
 ## 概述
 
@@ -54,7 +54,7 @@ https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/
 
    复制`id_rsa.pub`生成的公钥，将其复制到setting → SSH and GPG keys。
 
-   ![Snipaste_2020-09-25_09-54-21](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-09-25_09-54-21.5hf1rxssqi40.png)
+   ![Snipaste_2020-09-25_09-54-21](https://github.com/dhay3/image-repo/raw/master/20210518/Snipaste_2020-09-25_09-54-21.5hf1rxssqi40.png)
 
 5. 测试 SSH 连接，T表示不分配终端
 
@@ -62,7 +62,7 @@ https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/
    $ ssh -T git@github.com
    ```
 
-   ![Snipaste_2020-09-25_09-56-48](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-09-25_09-56-48.64pv3ziw4b80.png)
+   ![Snipaste_2020-09-25_09-56-48](https://github.com/dhay3/image-repo/raw/master/20210518/Snipaste_2020-09-25_09-56-48.64pv3ziw4b80.png)
 
 ## ssh-agent
 

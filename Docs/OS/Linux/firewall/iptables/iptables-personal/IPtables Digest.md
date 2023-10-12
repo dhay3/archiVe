@@ -34,7 +34,7 @@ IPtables 是一个通过 netfilter 来管理 kernel 层面的数据报文的 use
 
 ## IPtables VS NIC
 
-![Snipaste_2020-10-13_23-09-07](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-13_23-09-07.2bumkikl390k.png)
+![Snipaste_2020-10-13_23-09-07](https://github.com/dhay3/image-repo/raw/master/20210518/Snipaste_2020-10-13_23-09-07.2bumkikl390k.png)
 
 入向报文
 

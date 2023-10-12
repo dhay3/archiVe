@@ -19,7 +19,7 @@ Duplex 双工分两种
 
 假设现在 PC1/PC2/PC3 通过 Hub 互联
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230601/2023-06-02_14-49.1ekt9lmqjudc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230601/2023-06-02_14-49.1ekt9lmqjudc.webp)
 
 当 PC1 需要发送报文到 PC2
 
@@ -52,7 +52,7 @@ PC1 发送报文时，PC2 和 PC3 也可以发送报文，无须处于接收状�
 
 例如在同一时间 PC1 需要发包到 PC2, PC3 需要发包到 PC1，两个报文同时到了 Hub
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230523/2023-05-23_21-04.5zrjo8zqmjk0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230523/2023-05-23_21-04.5zrjo8zqmjk0.webp)
 
 因为 Hub 会 Flood 所有的报文到除接收端口外的所有的端口，所以就会将从 PC1 和 PC3 收到的报文同时 flood 到和 PC1 互联的端口
 
@@ -99,19 +99,19 @@ Carrier Sense Multiple Access with Collision Detection (CSMA/CD)
 
 如果有以下拓扑，并使用了 auto negotiation
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230523/2023-05-23_21-24.2k2bc7agpkao.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230523/2023-05-23_21-24.2k2bc7agpkao.webp)
 
 那么最后每个端口的 speed/duplex 如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230523/2023-05-23_21-26.6qd3x68etj0g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230523/2023-05-23_21-26.6qd3x68etj0g.webp)
 
 如果 auto negotiation 被 disable 掉了，例如下图
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230523/2023-05-23_22-11.5v3v1izyl8qo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230523/2023-05-23_22-11.5v3v1izyl8qo.webp)
 
 那么最后每个端口的 speed/duplex 如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230523/2023-05-23_22-13.5y2w4w27km80.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230523/2023-05-23_22-13.5y2w4w27km80.webp)
 
 ## Commands
 

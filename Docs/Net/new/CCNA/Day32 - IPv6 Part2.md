@@ -30,25 +30,25 @@ EUI-64 是怎么将 MAC address 转成 host portion 的呢？
 
    上面就会变成 1034 56FF FE78 90AB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_15-00.6j9zlduqxmdc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_15-00.6j9zlduqxmdc.webp)
 
 下面几个例子加深一些印象
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_15-04.2p6fxpzsz2ww.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_15-04.2p6fxpzsz2ww.webp)
 
 如果需要使用 EUI-64 来配置 IPv6 地址，可以参考下面的例子
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_15-07.4gbdk263qvq.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_15-07.4gbdk263qvq.webp)
 
 需要使用 `ipv6 address <ipv6 network portion> eui-64` 来使用 EUI-64 配置端口 IPv6 地址
 
 > 这里必须带上 IPv6 network portion,因为 EUI-64 转化而来的部分仅仅只作为 IPv6 host portion
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_15-10.5fmgh1bfyy9s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_15-10.5fmgh1bfyy9s.webp)
 
 上图为接口对应的 MAC address
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_15-13.32v23apcz8qo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_15-13.32v23apcz8qo.webp)
 
 例如 
 
@@ -90,7 +90,7 @@ MAC addresses 可以分为两种
 
 最初 2000::/3(2000:: to 3FFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF) 被定义为 Global unicast addresses 范围，后来规定只要不是保留的地址都是 Global unicast addresses
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_15-45.z0ng1cby4uo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_15-45.z0ng1cby4uo.webp)
 
 ## Unique Local addresses
 
@@ -100,13 +100,13 @@ MAC addresses 可以分为两种
 
 最初 FC00::/7 (FC00:: to FDFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF) 被定义为 Unique Local addresses 范围，后来规则要求 8th bit 必须为 1，所以必须以 FD 开头，即 FD00::/7
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_15-46.47j7ubndwzcw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_15-46.47j7ubndwzcw.webp)
 
 ## Link local addresses
 
 Link local addresses 会在使用 IPv6 地址的接口上自动生成，范围在 FE80::/10(FE80:: to FEBF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF)，但是后来的的规则要求只能以 FE80/10 开头，10 bits - 64 bits 部分都需要是 0， 64 bits 部分拼接 EUI-64 转换的 host portion 部分
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_15-56.6wewt38z37nk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_15-56.6wewt38z37nk.webp)
 
 *Link-local means that these addresses are used for communication within a single link(subnet). Routers will not route packets with a link-local destination IPv6 address*
 
@@ -120,7 +120,7 @@ link-local address 通常被用在如下几个场景
 
 例如
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_16-06.12is7m3ob40w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_16-06.12is7m3ob40w.webp)
 
 PC1 需要访问 PC2，R1/2/3/4 上均只有 link-local address(可以使用 `ipv6 enable` 来自动生成 link-local address，而无需通过手动配置端口 IPv6 地址来生成 link-local address)
 
@@ -148,7 +148,7 @@ R3/R4 任意一个 link-local address，但是可以 ping 通 R2 和 R1 互联�
 
 虽然 IPv6 没有 broadcast address 不支持 broadcast，但是可以通过 mutlicast address 中的 FF02::1 来实现 “broadcast”
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_16-43.2y63dnja9uv4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_16-43.2y63dnja9uv4.webp)
 
 > 这里 IPv6 address 都是 Link-local scope multicast address
 >
@@ -182,11 +182,11 @@ IPv6 定义了多种 multicast scopes
 
 例如下图
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_17-17.w5ybhhpusao.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_17-17.w5ybhhpusao.webp)
 
 如果使用 `show ipv6 int <interface-name>` 可以看到加入的 multicast group
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_17-19.40fsvo5w70ao.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_17-19.40fsvo5w70ao.webp)
 
 ## Anycast
 
@@ -196,7 +196,7 @@ one-to-(one-of-many)
 
 有多个可能的目的地址，但是每次只和一台目的地址交互
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_17-25.7hv9gts9i4n4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_17-25.7hv9gts9i4n4.webp)
 
 Multiple routers are configured with the same IPv6 address
 
@@ -207,7 +207,7 @@ Multiple routers are configured with the same IPv6 address
 
 可以通过 `ipv6 address <ipv6-address> anycast` 来使一个地址变为 anycast address
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_17-30.1fuax58yk4g0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_17-30.1fuax58yk4g0.webp)
 
 如果使用了上述命令，可以通过 `show ipv6 interface <interface-name>` 就可以看到 unicast address 多路一个 2001:DB8:1:1::99 的地址对应配置的的 anycast 地址，使用 ANY 来标识
 
@@ -237,7 +237,7 @@ Multiple routers are configured with the same IPv6 address
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-25_18-32.42fkyvxkkou8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-25_18-32.42fkyvxkkou8.webp)
 
 ### 0x01
 

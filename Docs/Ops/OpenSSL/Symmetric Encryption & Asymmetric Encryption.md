@@ -32,7 +32,7 @@ $$
 
 
 
-![Snipaste_2020-08-25_16-23-57](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221214/Snipaste_2020-08-25_16-23-57.4f3yo0ajeum8.webp)
+![Snipaste_2020-08-25_16-23-57](https://github.com/dhay3/image-repo/raw/master/20221214/Snipaste_2020-08-25_16-23-57.4f3yo0ajeum8.webp)
 
 对称加密有一个问题，就是密钥需要通过什么方式传输或者和对端协商。如果一旦密钥被第 3 方拦截，那么就可以破解所有相关的信息，那么这个加密系统就是不可靠的
 
@@ -80,7 +80,7 @@ $$
 E_{PK_B}(D_{SK_B}(X)) = X
 $$
 
-![Snipaste_2020-08-25_16-52-53](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221214/Snipaste_2020-08-25_16-52-53.4ncc85edc8lc.webp)
+![Snipaste_2020-08-25_16-52-53](https://github.com/dhay3/image-repo/raw/master/20221214/Snipaste_2020-08-25_16-52-53.4ncc85edc8lc.webp)
 
 
 
@@ -100,7 +100,7 @@ $$
 - 若 A 要抵赖曾发送报文给 B，B 可将明文和对应的密文出示给第三者。第三者很容易用 A 的公钥去证实 A 确实发送 X 给 B。
 - 反之，若 B 将 X 伪造成 X‘，则 B 不能在第三者前出示对应的密文。这样就证明了 B 伪造了报文。  
 
-![Snipaste_2020-08-25_17-00-11](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221214/Snipaste_2020-08-25_17-00-11.2icyzef3eby8.webp)
+![Snipaste_2020-08-25_17-00-11](https://github.com/dhay3/image-repo/raw/master/20221214/Snipaste_2020-08-25_17-00-11.2icyzef3eby8.webp)
 
 ### Encrption vs Signature
 

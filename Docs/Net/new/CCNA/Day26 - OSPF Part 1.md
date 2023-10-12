@@ -28,7 +28,7 @@ OSPF 一共有 3 个版本
 
 以如下拓扑为例
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_12-19.y7eo1p32bg0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_12-19.y7eo1p32bg0.webp)
 
 假设 R1/R2/R3/R4 都运行了 OSPF，互相都是 OSPF neighbors，有一样的 LSDB(Link state database)
 
@@ -56,7 +56,7 @@ OSPF 一共有 3 个版本
 
    flood 方式如下图
 
-   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_12-41.6clxlrzpnrwg.webp)
+   ![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_12-41.6clxlrzpnrwg.webp)
 
 4. This results in all routers sharing the same LSDB
 
@@ -102,11 +102,11 @@ OSPF 使用 areas 的逻辑概念来划分 network
 
 例如下图，将所有的 routes 都划分在了以 OSPF Area 0(也被称为 Backbone area)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_13-03.409axfv6g4u8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_13-03.409axfv6g4u8.webp)
 
 通常不会这么干，而是会按照下图划分 OSPF Area
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_13-05.1yqla4lgv7q8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_13-05.1yqla4lgv7q8.webp)
 
 Each Area has unique LSDB
 
@@ -116,13 +116,13 @@ Area0 = Backbond area
 
 *The backbone area(area 0) is an area that all other areas must connect to*
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_13-05.1yqla4lgv7q8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_13-05.1yqla4lgv7q8.webp)
 
 例如上面的例子，Area1/Area2/Area3 必须要和 Area0 互联才可以组成 OSPF network
 
 下图的例子是不会也不允许出现在 OSFP 中
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_13-10.6u1cgjvp1gn4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_13-10.6u1cgjvp1gn4.webp)
 
 因为 Area1 没有和 Area0 互联，而是通过 Area2 和 Area0 互联
 
@@ -132,13 +132,13 @@ Area0 = Backbond area
 
   例如下图中红框部分都是 internal routers
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_13-13.5bmb0xoo3mgw.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_13-13.5bmb0xoo3mgw.webp)
 
 - Routers with interfaces in multiple areas are called **area border routers**(ABRs)
 
   例如下图中红框部分都是 ABR
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_13-15.56wget31yry8.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_13-15.56wget31yry8.webp)
 
   > *ABRs maintain a separate LSDB for each area they are connected to. It is recommend that you connect an ABR to a maximum of 2 areas. Connecting an ABR to 3+ areas can overburden the router*
   >
@@ -148,23 +148,23 @@ Area0 = Backbond area
 
   例如下图中红框部分就是 backbond router 同时也是 internal router
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_13-21.jr0wmvf74cg.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_13-21.jr0wmvf74cg.webp)
 
   下图中红框部分(忽略马赛克部分)也是 backbond router 同时也是 board area router
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_13-23.8wf2cgkbdag.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_13-23.8wf2cgkbdag.webp)
 
 - An **intra-area route** is a route to a destination inside the same OSPF area
 
   例如下图红框中的 router 通过 OSPF 学到了红框中的网段对应的路由，这条路由就被称为 intra-area route，因为是 router 从同 area 学到的 route
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_13-25.2jy2x0u64ao0.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_13-25.2jy2x0u64ao0.webp)
 
 - An **interarea route** is a route to destination in a differetn OSPF area
 
   例如下图红框中的 router 通过 OSPF 学到了红框中的网段对应的路由，这条路由就被称为 interarea route，因为是 router 从不同 area 学到的 route
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_13-28.zasjsbvy3g0.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_13-28.zasjsbvy3g0.webp)
 
 ## Rules in OSFP
 
@@ -172,7 +172,7 @@ Area0 = Backbond area
 
   例如下图中的拓扑是不允许在 OSPF 中出现的
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_13-33.5htti5q06y9s.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_13-33.5htti5q06y9s.webp)
 
   因为左边的 Area1 和 右边的 Area1 是通过 Area0 互联的，不是连续的
 
@@ -180,7 +180,7 @@ Area0 = Backbond area
 
   例如下图就是不允许的
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_13-36.6fpsdzy536kg.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_13-36.6fpsdzy536kg.webp)
 
   因为 Area1 中的 ABR 没有和 Area0 的 ABR 互联
 
@@ -188,7 +188,7 @@ Area0 = Backbond area
 
   例如下图
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_13-39.47s9ydc2e1mo.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_13-39.47s9ydc2e1mo.webp)
 
   红框中的四台 router 对应的接口分别为 192.168.1.1/2/3/4, 因为 192.168.1.1/3/4 都在 area0，但是 192.168.1.2 在 area1，所以这个拓扑是不行的
 
@@ -196,11 +196,11 @@ Area0 = Backbond area
 
 例如需要配置成如下拓扑
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_13-43.3sszlyoq23eo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_13-43.3sszlyoq23eo.webp)
 
 针对 R1 配置如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_13-46.4emxfsgutr7k.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_13-46.4emxfsgutr7k.webp)
 
 - `router ospf 1`
 
@@ -224,7 +224,7 @@ Area0 = Backbond area
 
 和 RIP 以及 EIGRP 中的一样，OSPF 也有 `passive-interface <interface-id>` 的功能
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_14-01.2ts5o8s3p3i8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_14-01.2ts5o8s3p3i8.webp)
 
 让 router 指定端口停止发送 OSPF hello 的信息，但是 neighbors 任然是可以收到该端口对应的 network route
 
@@ -234,13 +234,13 @@ Area0 = Backbond area
 
 例如 R1 配置如下
 
-![   ](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_14-03.3875t4hrwlc0.webp)
+![   ](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_14-03.3875t4hrwlc0.webp)
 
 现在需要将 R1 default route advertise 到其他的 neighbors
 
 和 RIP 一样可以通过 `default-information originate` 命令来实现
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_14-38.6ki3mcyqrp8g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_14-38.6ki3mcyqrp8g.webp)
 
 可以看到上图中 R2 已经成功从 R1 学到了 default route
 
@@ -248,7 +248,7 @@ Area0 = Backbond area
 
 看一下配置了 OSPF 后 R1 `show ip protocols` 的信息
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_14-44.4vhrg7m1gkxs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_14-44.4vhrg7m1gkxs.webp)
 
 - `“ospf 1”`
 
@@ -266,7 +266,7 @@ Area0 = Backbond area
 
      在使用 `router-id` 命令后，还需要使用 `clear ip ospf process` 或者是重启 router 来让 OSPF route id 生效
 
-     ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_14-52.2yzmsg13a874.webp)
+     ![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_14-52.2yzmsg13a874.webp)
 
      > 通过 `clear ip ospf process` 来使 OSPF router id 生效实际并不是一个好的方案，因为会 reset OSPF on the router
      >
@@ -296,7 +296,7 @@ Area0 = Backbond area
 
   和 RIP 以及 EIGRP 一样，可以使用 `maximum-paths` 来修改
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_15-05.515vme55g934.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_15-05.515vme55g934.webp)
 
 - `Routing for Networks`
 
@@ -316,13 +316,13 @@ Area0 = Backbond area
 
   如果需要修改 OSPF AD 可以通过 `distance <number>` 命令
 
-  ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_15-19.76z9zzs3fmkg.webp)
+  ![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_15-19.76z9zzs3fmkg.webp)
 
 ## Quiz
 
 ### Quiz 1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_16-04.n0vx0yosjxc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_16-04.n0vx0yosjxc.webp)
 
 这里注意一下选项 B，通常都会使用 area 0 来配置 single-area OSPF，但是并不是 single-area OSPF 必须要使用 area 0
 
@@ -330,7 +330,7 @@ area0 是 single-area OSPF 的充分不必要条件
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230613/2023-06-13_16-16.t1b6dkeffz4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230613/2023-06-13_16-16.t1b6dkeffz4.webp)
 
 ### 0x01
 

@@ -173,7 +173,7 @@ end
 
 [trace.pcap](/home/cpl/note/appendix)
 
-![2022-03-28_20-48](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220328/2022-03-28_20-48.2mfdy7s8us40.webp)
+![2022-03-28_20-48](https://github.com/dhay3/image-repo/raw/master/20220328/2022-03-28_20-48.2mfdy7s8us40.webp)
 
 traceroute 探测一次会发 3 个包，前 3 个包的 ttl 值为 1（由traceroute设置），到达 192.168.80.1 时 ttl - 1 值为 0 回送给源 ICMP type 11 (ttl 255 表示还未到达目的端，不可达，由路由器设置可以知道路由器ttl默认为255)，第二次探测的 3 个包的 ttl 值会设置为 2，但是到达了目的了，所以就没有第三次探测了，同时回送给源 ICMP type 11(ttl 254 ，会减掉 1 跳)。如果 ttl 的值到达了 30 就会终止
 

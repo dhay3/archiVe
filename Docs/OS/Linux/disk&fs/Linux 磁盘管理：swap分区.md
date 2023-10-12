@@ -8,7 +8,7 @@ https://www.cnblogs.com/kerrycode/p/5246383.html
 
 类似于windows中的虚拟内存，当内存不足时，将一部分硬盘空间虚拟成内存使用。虽然这个SWAP分区能够作为"虚拟"的内存,但它的速度比物理内存可是慢多了,因此如果需要更快的速度的话,并不能寄厚望于SWAP,最好的办法仍然是加大物理内存。
 
-![Snipaste_2020-10-21_18-39-37](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-10-21_18-39-37.1ef3nfzlrkgw.png)
+![Snipaste_2020-10-21_18-39-37](https://github.com/dhay3/image-repo/raw/master/20210518/Snipaste_2020-10-21_18-39-37.1ef3nfzlrkgw.png)
 
 ## 查看swap分区大小
 

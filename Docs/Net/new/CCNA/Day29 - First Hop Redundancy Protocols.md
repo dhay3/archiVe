@@ -4,11 +4,11 @@
 
 在 STP 中，已经说明了网络 Redundancy 的重要性
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-16_17-23.74nvmvmb4lfk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-16_17-23.74nvmvmb4lfk.webp)
 
 如果 R1 到 互联网的连接有问题，end hosts 同样还是可以通过 R2 访问互联网
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-16_17-25.21ic2eh7mlmo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-16_17-25.21ic2eh7mlmo.webp)
 
 现在假设所有的 end hosts 都指定使用 R1 .254 作为 default gateway，当 R1 挂掉后，这些 end hosts 需要怎么访问公网?
 
@@ -20,43 +20,43 @@
 
 如果使用了 FHRP，两台 router 会共享一个 VIP，可以将 end hosts 的 default gateway 配置成这个 IP，而不是 R1/2 任意的一个物理接口 IP
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-16_17-34.5juz7wq67uo0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-16_17-34.5juz7wq67uo0.webp)
 
 那 routers 之间怎么来共享这个 VIP 呢？
 
 他们之间会通过 multicast 发送 Hello message
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-16_17-36.601sbncdrmrk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-16_17-36.601sbncdrmrk.webp)
 
 通过 Hello message 来协商主备，主 router 被称为 Active router，备 router 被称为 Standby router
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-16_17-38.6bmz8gmsu800.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-16_17-38.6bmz8gmsu800.webp)
 
 Active router 作为首选，即如果 R1 没有问题 end hosts 会先走 R1； Standby router 作为次选，即如果 R1 有问题 end hosts 会走 R2
 
 假设现在 PC1 想要访问公网的机器
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-16_17-41.14t01esi3p8g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-16_17-41.14t01esi3p8g.webp)
 
 因为 PC2 访问公网的机器不在同 LAN，所以需要通过 default route，对应的 default gateway 为 172.16.0.252，但是目前还不知道对应的 MAC，所以会先做 ARP request 学习 default gateway MAC
 
 ARP request 会做 2 层的广播，所以 R1/2 都会收到 ARP request(这里因为 STP，所以 Switches 有些端口并不会转发 ARP request)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-16_17-43.41xntz46wozk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-16_17-43.41xntz46wozk.webp)
 
 这时只有 R1 会回送 unicast ARP reply 到 PC1，因为 R1 是 Active router
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-16_17-48.jthivew8x4g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-16_17-48.jthivew8x4g.webp)
 
 > 注意这里回送的 MAC address 是 virtual 的，并不是实际物理端口对应有的 MAC address
 
 PC1 收到 R1 回送的 ARP reply，假设需要 PC1 实际需要访问的是 8.8.8.8，那么对应的请求报文如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-16_17-50.6us4mar91q80.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-16_17-50.6us4mar91q80.webp)
 
 现在 R1 突然挂了，那么 R2 就收不到从 R1 来的 hello message，R2 就会认为自己就是 Active router
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-16_17-52.2hm3a92814hs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-16_17-52.2hm3a92814hs.webp)
 
 现在 R2 是 Active router，那么 R2 需要通过什么方式向其他设备宣告，将流量发送到 R2 呢？
 
@@ -64,7 +64,7 @@ PC1 收到 R1 回送的 ARP reply，假设需要 PC1 实际需要访问的是 8.
 
 在 PC1 中 ARP table 如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-16_17-54.2jpwpg880pq8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-16_17-54.2jpwpg880pq8.webp)
 
 end hosts 并不需要修改什么东西，因为对应的 MAC address 都是虚拟的。那么什么设备需要修改呢？
 
@@ -84,11 +84,11 @@ R2 会发送 source MAC address of the virtual MAC address 的 ARP 报文，告�
 
 R2 发送 gratuitous ARP 过程如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-16_18-05.1idvhtwtyxhc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-16_18-05.1idvhtwtyxhc.webp)
 
 现在 PC1 还要访问 8.8.8.8，那么就会通过 R2
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-16_18-08.3fzhky29d1fk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-16_18-08.3fzhky29d1fk.webp)
 
 假设现在 R1 重新上线，并正常了；R1 会因为之前是 Active router 还会保持是 Active router 吗？
 
@@ -142,7 +142,7 @@ PC1/3 在 VLAN 1,  R1/2 HSRP virtual IP 1.252, .253 为 Router on stick 需要�
 
 PC2/4 在 VLAN 2,  R1/2 HSRP virtual IP 2.252, .253 为 Router on stick 需要的 3 层地址(sub-interface)，在 VLAN 2 中 R2 是 Active Router 而 R1 Standby Router
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-16_18-30.1g706qpmwujk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-16_18-30.1g706qpmwujk.webp)
 
 > VLAN1 用 R1 作为 default gateway
 >
@@ -164,7 +164,7 @@ Virtual Router Redundancy Protocol
 
 > 这点和 HSRP 一样
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-19_13-53.44l671pmehog.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-19_13-53.44l671pmehog.webp)
 
 和 HSRP 中例子的拓扑一样，只是替换了 Active 为 Master，Standby 为 Backup
 
@@ -185,27 +185,27 @@ Gateway Load Balancing 和 HSRP 一样也是 Cisco 独有协议
 
 ## Comparing HSRP 
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-19_14-07.55kwbhyfe328.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-19_14-07.55kwbhyfe328.webp)
 
 ## Configuring HSRP
 
 配置如下拓扑
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-19_14-24.6iaji0g29jpc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-19_14-24.6iaji0g29jpc.webp)
 
 先看 R1 的配置，需要确认 Router 那个互联的端口作为 default gateway
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-19_14-25.klcobkuwhzk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-19_14-25.klcobkuwhzk.webp)
 
 > 默认会使用 HSRP version1，如果使用 HSRP version2 group number 范围在 0-4095
 
 可以使用 `standby version 2` 来使用 version2 HSRP
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-19_14-27.1kcrokd1zx6o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-19_14-27.1kcrokd1zx6o.webp)
 
 这里只有一个 subnet(VLAN1)，所以值需要配置一个 HSRP group
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-19_14-31.2i5ai2t3onuo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-19_14-31.2i5ai2t3onuo.webp)
 
 > 为了方便记忆，和 Router on a stick 配置 router 的 sub-interface 一样，group number 可以使用 VLAN number
 >
@@ -213,7 +213,7 @@ Gateway Load Balancing 和 HSRP 一样也是 Cisco 独有协议
 
 可以使用 `standby <group number> ip <ip address>` 来配置 HSRP virtual IP
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-19_14-33.6qeagij6o2rk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-19_14-33.6qeagij6o2rk.webp)
 
 这里还使用了 `standby <group number> priority <number>`设置了 priority
 
@@ -250,7 +250,7 @@ else if a.priority == b.priority then:
 
 看一下 R2 的配置
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-19_14-49.6hxxs0kbrxts.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-19_14-49.6hxxs0kbrxts.webp)
 
 大部分和 R1 类似，但是需要注意一点
 
@@ -260,7 +260,7 @@ else if a.priority == b.priority then:
 
 在配置完 R1/2 后，可以使用 `show standy` 来查看 HSRP 相关信息
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-19_14-52.43nlg9c846io.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-19_14-52.43nlg9c846io.webp)
 
 - `Group 1(version 2)`
 

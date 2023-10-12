@@ -38,7 +38,7 @@ https://post.smzdm.com/p/a7dg5pko/
 
 不同的设备通过手动指定网关选择使用 主路由 还是 旁路由
 
-![2023-02-21_00-39](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230220/2023-02-21_00-39.3q6ns2z4zvr4.webp)
+![2023-02-21_00-39](https://github.com/dhay3/image-repo/raw/master/20230220/2023-02-21_00-39.3q6ns2z4zvr4.webp)
 
 配置需要如下几步
 
@@ -57,7 +57,7 @@ https://www.tlcement.com/35015.html
 
 所有设备流量都经过旁路由
 
-![2023-02-21_00-50](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230220/2023-02-21_00-50.5bkj7uczq6ww.webp)
+![2023-02-21_00-50](https://github.com/dhay3/image-repo/raw/master/20230220/2023-02-21_00-50.5bkj7uczq6ww.webp)
 
 配置需要如下几步
 

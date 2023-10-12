@@ -12,7 +12,7 @@ DTP is Cisco propreitary protocol(思科专有的协议) that allows Cisco switc
 
 可以使用 `switchport mode dynamic` 来指定使用 DTP
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_15-41.74ex2er3x20w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_15-41.74ex2er3x20w.webp)
 
 > 如果交换机同时支持 802.1Q 和 ISL，需要先使用 `switchport trunk encapsulation negotiate` 声明，才可以使用 `switchport mode dyanmic ...` 或者是 `switchport mode trunk`
 
@@ -29,11 +29,11 @@ A switchport in `dynamic auto` mode will not actively try to form a trunk with o
 
 SW1 G0/0 配置了 `switchport mode dynamic auto`, SW2 G0/0 配置了 `swithcport mode dynamic auto`，那么 SW1 G0/0 和 SW2 G0/0 就会使用 access mode
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_15-54.3d0nks8ga4cg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_15-54.3d0nks8ga4cg.webp)
 
 如果 SW1 G0/0 配置了 `switchport mode dynamic auto`, SW2 G0/0 配置了 `switchport mode trunk`， 那么 SW1 G0/0 就会配置成 access mode
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_16-15.46tm7v5azojk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_16-15.46tm7v5azojk.webp)
 
 
 
@@ -49,13 +49,13 @@ A switchport in `dynamic desirable` mode will actively try to form a trunk with 
 
 例如
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_15-44.6tcc3rh6nog0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_15-44.6tcc3rh6nog0.webp)
 
 如果 SW1 G0/0 配置了 `switchport mode dynamic desirable`, SW2 G0/0 配置了 `switchport mode trunk` 那么 G0/0 会自动配置成 trunk mode
 
 这里需要注意的是，如果 SW2 G0/0 配置的是 access port，那么 SW1 G0/0 也会是 access mode，因为是 try to
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_15-51.6mrj3a03i5ts.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_15-51.6mrj3a03i5ts.webp)
 
 > On newer switches, `switchport mode dynamic auto` is the ==default administrative mode== 	
 
@@ -63,18 +63,18 @@ A switchport in `dynamic desirable` mode will actively try to form a trunk with 
 
 可以使用 `show interfaces <interface-name> switchport` 来查 L2 port 使用的 trunk 还是 access
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_16-27.yfz21o3t780.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_16-27.yfz21o3t780.webp)
 
 - Adminstrative mode 是我们实际配置在接口上的状态
 - Operational mode 是端口实际使用的状态
 
 如果两个端口都手动配置，但是一个使用 trunk 一个使用 access, 就会有问题
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_16-21.2me0c5oxweo0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_16-21.2me0c5oxweo0.webp)
 
 接口 Administrative 之间的关系，以及最后使用 access还是 trunk 可以参考下表
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_16-29.66nrvff5fklc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_16-29.66nrvff5fklc.webp)
 
 例如两个互联的接口，一个使用 dynamic desirable, 一个使用 dynamic auto 那么最后两个端口都会是 trunk mode
 
@@ -118,13 +118,13 @@ Will synchronize their VLAN database to the server with the highest revision num
 
 有如下拓扑，互联的端口均配置成了 trunk mode
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_17-18.65w7ct6h0zk0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_17-18.65w7ct6h0zk0.webp)
 
 因为 Cisco switches 默认是 VTP server，所以端口间，就会互相发送 VTP traffic
 
 可以使用 `show vtp status` 来查看 Switch 上 VTP 的信息
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_17-21.40kbxo95ehkw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_17-21.40kbxo95ehkw.webp)
 
 - `VTP version capable` 表示当前 Switch 支持版本 1 to 3
 - `VTP version running` 表示当前 Switch 使用的版本
@@ -136,15 +136,15 @@ Will synchronize their VLAN database to the server with the highest revision num
 
 现在使用 `vtp domain cisco` 修改 SW1 的 VTP domain name，然后创建一个 VLAN10
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_17-30.g77vool20nc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_17-30.g77vool20nc.webp)
 
 那么我们就可以看见，VTP domain name 和 Configuration Revision 对应的字段值改变了，同时 Number of existing VLANs 值加 1，因为新增加了一个 VLAN10
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_17-32.7c97qexifm2o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_17-32.7c97qexifm2o.webp)
 
 现在使用 `show vtp status` 看一下 SW2 的配置
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_17-34.24l0bak4pkn4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_17-34.24l0bak4pkn4.webp)
 
 可以看见竟然和 SW1 上的一样
 
@@ -160,13 +160,13 @@ Number of existing VLANs 和 Configuration Revision 因为
 
 同理 SW3,SW4
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_17-39.1hyez58e71k0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_17-39.1hyez58e71k0.webp)
 
 有一种情况，假设互联 SW1-SW2-SW3,通过 VTP 同步了
 
 现在加入 SW4，revision number 50 比其他 3 台 SW 都大，那么其他 3 台 SW 就会通过 VTP 同步，但是 SW4 中 VLAN database 条目实际少于其他 3 台，所以同步后会导致 SW1/SW2/SW3 中和 SW4 中不一样的 VLAN 就会消失，那么对应的 VLAN 就不能通过 trunk port 传输，也就不通了 
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_17-44.6bonhsx4r3b4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_17-44.6bonhsx4r3b4.webp)
 
 ### VTP transparent
 
@@ -182,21 +182,21 @@ SW2 如果使用 `vtp mode client`，然后创建一个 VLAN20 就会失败
 
 SW3 使用 `vtp mode transparent`, 并将 SW2 domain name 改成 juniper，那么就不会和 cisco domain 做同步
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_17-55.k7gvdru5m2o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_17-55.k7gvdru5m2o.webp)
 
 然后在 SW1 中创建一个 VLAN20
 
 > 这里的 Configuration Revision 逻辑上应该是 2，这里是 4，是为了匹配 LAB 
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_18-01.zi6eh2ck5k0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_18-01.zi6eh2ck5k0.webp)
 
 因为 SW2 是 Client，所以会和 VTP server 同步
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_18-03.4855yc4bzh0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_18-03.4855yc4bzh0.webp)
 
 因为 SW3 是 transparent mode，所以不会和 VTP server 同步
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_18-04.7dobfo0lrds0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_18-04.7dobfo0lrds0.webp)
 
 这里可以看见 Configuration Revision 值为 0，是因为
 
@@ -209,25 +209,25 @@ SW3 使用 `vtp mode transparent`, 并将 SW2 domain name 改成 juniper，那�
 
 因为 SW1 VTP server 有 VLAN20，那么 SW4 会有 VLAN20 吗？ 答案是不会，因为 SW3 是 transparent mode，domain name 不一样，所以不会转发 SW1 的 VTP advertise 
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_18-12.2jla3skonudc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_18-12.2jla3skonudc.webp)
 
 那么如何让 SW3 转发 SW1 VTP advertise 呢，可以将 SW3 domain name 修改成和 SW1 相同的 domain name 即可
 
 > 这里，增加了 SW1 VLAN numbers 到 11，所以 SW4 Number of existing VLANs 和 Configuration Revision 都增加了。逻辑上应该是 7 和 4
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_18-19.4n0iv7pcojr4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_18-19.4n0iv7pcojr4.webp)
 
 ### VTP version
 
 如果需要修改 SW 使用的 VTP 可以使用 `vtp version <1-3>`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_18-21.4od9hub7jy80.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_18-21.4od9hub7jy80.webp)
 
 修改 version 后，Configuration Revision 同样会做加 1，同时其他的 SW client 会同步，version 同样也会改变
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230531/2023-05-31_20-40.52cbe0avsi9s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230531/2023-05-31_20-40.52cbe0avsi9s.webp)
 
 ### 0x01
 

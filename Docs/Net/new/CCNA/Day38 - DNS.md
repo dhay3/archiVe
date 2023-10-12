@@ -6,20 +6,20 @@
 
 例如如下拓扑
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_14-48.6fycs19l651c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_14-48.6fycs19l651c.webp)
 
 在 windows 中可以使用 `ipconfig /all` 来查看主机使用的 DNS Servers
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_14-49.3w0l3d2eu6rk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_14-49.3w0l3d2eu6rk.webp)
 
 通过 `nslookup <domain>` 来查看域名使用的 IP
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_14-50.3he73s3z67i8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_14-50.3he73s3z67i8.webp)
 
 - `server` 表示使用的 DNS 服务器
 - `non-authoritative answer` 表示域名查询的结果
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_14-53.mjk1sygd7io.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_14-53.mjk1sygd7io.webp)
 
 > 注意在这个链路中，R1 上并不需要配置任何和 DNS 相关的信息，R1 只启路由转发的功能
 >
@@ -29,7 +29,7 @@
 
 使用 `nslookup youtube.com` 报文交互如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_14-57.1rt6jo2qcpa8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_14-57.1rt6jo2qcpa8.webp)
 
 *DNS ‘A’ record = Used to map names to IPv4 addresses*
 
@@ -47,11 +47,11 @@ DNS 虽然可以使用 TCP/UDP 来查询，但是标准的 DNS 一般都使用 U
 
 在 Windows 上可以使用 `ipconfig /displaydns` 来查看 DNS cache 相关的信息
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_15-05.1ok3w5hdbheo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_15-05.1ok3w5hdbheo.webp)
 
 如果想要清空 DNS cache 可以使用 `ipconfig /flushdns`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_15-07.1mm3lwko54ow.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_15-07.1mm3lwko54ow.webp)
 
 清空 cache 后，如果需要查询域名，会再次发送对应 DNS 的报文
 
@@ -59,7 +59,7 @@ DNS 虽然可以使用 TCP/UDP 来查询，但是标准的 DNS 一般都使用 U
 
 在早期没有 DNS 的时候，设备上都会有一个 Hosts 文件，将域名和 IP 绑定
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_15-11.5z1jvfe5a3gg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_15-11.5z1jvfe5a3gg.webp)
 
 通过该文件，会直接使用本机上该文件中对应的内容(设备不会发送 DNS 相关的报文)
 
@@ -71,7 +71,7 @@ However, a Cisco router can be configured as a DNS server, although it’s rare
 
 如果需要让 Cisco router 变为 DNS server，需要使用 `ip dns server`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_15-15.69ih00mdb2io.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_15-15.69ih00mdb2io.webp)
 
 如果设备上有对应过来 DNS query 报文中查询的部分就会回送 response，通过如果几个命令来配置 Router 上对应的条目
 
@@ -91,13 +91,13 @@ However, a Cisco router can be configured as a DNS server, although it’s rare
 
 上述配置完成后，现在 PC1 想要 ping PC2
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_14-48.6fycs19l651c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_14-48.6fycs19l651c.webp)
 
 首先需要将 PC1 的 DNS server 地址指向 R1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_15-24.3j6ziqdpsnuo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_15-24.3j6ziqdpsnuo.webp)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_15-28.2p3vrw01sgjk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_15-28.2p3vrw01sgjk.webp)
 
 1. 当 PC1 ping PC2 使用 host 时，会发送 DNS query 到 DNS server 即 R1
 
@@ -111,7 +111,7 @@ However, a Cisco router can be configured as a DNS server, although it’s rare
 
 如果现在需要 ping youtube.com
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_15-35.6r80n0o3q6w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_15-35.6r80n0o3q6w.webp)
 
 1. 当 PC1 ping youtube.com 时，会发送 DNS query 到 DNS server 即 R1
 
@@ -125,13 +125,13 @@ However, a Cisco router can be configured as a DNS server, although it’s rare
 
 如果需要查看 Router 上的 DNS 条目(==包括 cached DNS==)，可以使用 `R1#show hosts`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_15-53.1obfyj2bykzk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_15-53.1obfyj2bykzk.webp)
 
 Flags 中的 temp 表示 cached DNS，并不是本地配置的，而是通过其他 DNS server 学过来的
 
 现在把 R1 上和 DNS 相关的配置都删除，使用如下配置
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_16-05.4k1hrvzjyn7k.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_16-05.4k1hrvzjyn7k.webp)
 
 如果这时 PC1 仍把 R1 作为 DNS server，R1 并不会回送 DNS reponse 到 PC1
 
@@ -139,15 +139,15 @@ Flags 中的 temp 表示 cached DNS，并不是本地配置的，而是通过其
 
 在 Router 中还可以使用 `R1(config)#ip domain name <domain-name>` 来为没有 标准 domain name 的 hosts 自动添加 domain-name，类似 `resolv.conf` 中的 search 指令
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_17-55.3ox9obiq8i2o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_17-55.3ox9obiq8i2o.webp)
 
 ## Commands Summary 
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_17-56.4bzer7nk1zw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_17-56.4bzer7nk1zw.webp)
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230630/2023-07-04_18-24.3m5tivkpj0xs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230630/2023-07-04_18-24.3m5tivkpj0xs.webp)
 
 ### 0x01
 

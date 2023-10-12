@@ -26,7 +26,7 @@ iptables 还可以根据 counter 来匹配，这样我们就可以通过 iptable
 
 以 192.168.1.1 访问 192.168.3.1 为例子
 
-![2022-11-15_15-14](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221115/2022-11-15_15-14.56e538jrk8w0.webp)
+![2022-11-15_15-14](https://github.com/dhay3/image-repo/raw/master/20221115/2022-11-15_15-14.56e538jrk8w0.webp)
 
 192.168.3.1 设置规则
 
@@ -55,7 +55,7 @@ PING 192.168.3.1 (192.168.3.1) 56(84) bytes of data.
 
 例如 192.168.1.1 访问 192.168.4.2 负载均衡到 192.168.5.2 和 192.168.6.2 
 
-![2022-11-21_22-34](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221117/2022-11-21_22-34.59hp8mxzyznk.webp)
+![2022-11-21_22-34](https://github.com/dhay3/image-repo/raw/master/20221117/2022-11-21_22-34.59hp8mxzyznk.webp)
 
 192.168.4.1 配置规则
 

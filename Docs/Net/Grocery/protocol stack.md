@@ -6,7 +6,7 @@ https://www.pcmag.com/encyclopedia/term/protocol-stack
 
 协议栈，也称为协议堆叠。一个协议依赖于另一个协议，例如TCP/IP模型
 
-![Snipaste_2021-08-23_22-38-06](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210823/Snipaste_2021-08-23_22-38-06.m0qzo3cex00.png)
+![Snipaste_2021-08-23_22-38-06](https://github.com/dhay3/image-repo/raw/master/20210823/Snipaste_2021-08-23_22-38-06.m0qzo3cex00.png)
 
 3台主机，A和B通过无线电设备互联(IEEE 802.11)，B和C通过物理电缆互联(以太网)。使用这两项协议A不能直接和C通信。因为这些电脑在概念上是连接在不同网络上的。因此需要一个跨网络协议来连接它们。
 

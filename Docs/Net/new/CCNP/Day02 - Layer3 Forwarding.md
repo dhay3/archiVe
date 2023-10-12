@@ -12,7 +12,7 @@
 
 首先会使用 XOR(异或，相同为 0 不同为 1)来计算 Source 和 Destination
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_20-29.6q4n2vc620g0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_20-29.6q4n2vc620g0.webp)
 
 例如 192.168.1.10/24 访问 192.168.1.99
 
@@ -22,7 +22,7 @@
 
 然后使用 AND(与，相同为 1 不同为 0)来计算 XOR 的结果和 Subnetmask
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_20-35.3mtufm37ah00.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_20-35.3mtufm37ah00.webp)
 
 例如 192.168.1.10/24 访问 192.168.1.99
 
@@ -38,7 +38,7 @@ s xor d and sub == 0.0.0.0 ？ same subnet : not same subnet
 
 例子
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_20-45.3rnjai7scda0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_20-45.3rnjai7scda0.webp)
 
 更推荐直接将 Source 和 Destination 都和 subnet mask 做与运算即可，如果结果相同表示在同 subnet，反之不在同 subnet
 
@@ -56,7 +56,7 @@ s and sub == d and sub ？ same subnet : not same subnet
 
 > 目的 MAC 是通过 ARP 学习而来的
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_20-49.4z7dm6dnqww0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_20-49.4z7dm6dnqww0.webp)
 
 例如现在 PC1 10.0.0.11 想要访问 PC3 10.0.0.13
 
@@ -78,7 +78,7 @@ PC1 首先会查找自己的 ARP table，如果有对应 10.0.0.13 的条目，D
 
 - The final router in the path receives the frame/packet, it will change the destination MAC address to that of the destination host and source MAC address to that of its sending interface
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_20-59.14ae3bhdhwdc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_20-59.14ae3bhdhwdc.webp)
 
 例如 PC1 访问 PC2，subnet mask 255.255.255.0 所以不在一个 subnet 中
 
@@ -88,13 +88,13 @@ PC1 首先会查找自己的 ARP table，如果有对应 10.0.0.13 的条目，D
 
 ## Layer 2 vs Layer 3 Forwarding
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_21-18.1sexxe1zfuzk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_21-18.1sexxe1zfuzk.webp)
 
 ### Layer 3 Forwarding Decisions
 
 这里扩展 layer 3 forwarding 中 most specific 含义
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_21-24.u9ir1x1cdb4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_21-24.u9ir1x1cdb4.webp)
 
 *When it comes to making a Layer 3 forwarding decision, the matching route with the longest prefix length wins*
 
@@ -114,7 +114,7 @@ Cisco 的设备还可以配置 secondary IP
 >
 > 逻辑上理解成类似 router-on-a-stick 中的子接口，但是这个 IP 是直接配置在物理接口上
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_21-32.72lcaoc1kq40.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_21-32.72lcaoc1kq40.webp)
 
 可以通过 `R1(config)#ip address <ip> <subnet mask> secondary` 来配置 secondary IP
 
@@ -124,7 +124,7 @@ Cisco 的设备还可以配置 secondary IP
 
 ### Verifying IPv4 address
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_21-44.33il9zwe45k0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_21-44.33il9zwe45k0.webp)
 
 - `IP-Address`
 
@@ -148,7 +148,7 @@ Cisco 的设备还可以配置 secondary IP
 
 虽然 `show ip int br` 不会显示 secondary address，但是可以通过 `show ip interface <interface-name>` 来查看
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230824/2023-08-24_20-09.3sx0y0ydnvs0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230824/2023-08-24_20-09.3sx0y0ydnvs0.webp)
 
 ## Directed Broadcast
 
@@ -172,7 +172,7 @@ Directed broadcast forwarding is disabled
 
 例如
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230824/2023-08-24_20-24.qkzkvbhj4qo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230824/2023-08-24_20-24.qkzkvbhj4qo.webp)
 
 1. 首先通过 `R1#debug ip icmp` 进入 ICMP debugging 模式
 
@@ -188,7 +188,7 @@ Directed broadcast forwarding is disabled
 
 > 需要在发送广播帧的出接口上使用该命令
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230824/2023-08-24_20-47.3ob0knvrai00.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230824/2023-08-24_20-47.3ob0knvrai00.webp)
 
 > 报文的 Dst MAC 如上图
 

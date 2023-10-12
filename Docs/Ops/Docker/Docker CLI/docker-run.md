@@ -73,7 +73,7 @@ docker使用`--network`来指定生成的容器该怎么创建容器。可以使
 
    生成的容器和宿主机的iface配置相同(使用宿主机的 IP 和端口。但是，容器的其他方面，如文件系统、进程列表等还是和宿主机隔离的)，==如果对网络要求较高推荐采用这种方法，但是由于容器可以访问宿主的网络信息，所以不安全。==
 
-   ![Snipaste_2021-02-23_10-06-14](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/Snipaste_2021-02-23_10-06-14.5ldtluc8x3c0.webp)
+   ![Snipaste_2021-02-23_10-06-14](https://github.com/dhay3/image-repo/raw/master/20220412/Snipaste_2021-02-23_10-06-14.5ldtluc8x3c0.webp)
 
    ```
    root in ~ λ docker run --network=host -itd --name t4 busybox
@@ -113,7 +113,7 @@ docker使用`--network`来指定生成的容器该怎么创建容器。可以使
 
    与指定的容器共享网络(NIC)。在宿主机上只会生成一个vethxxx。t1与t2的网络信息相同。
 
-   ![Snipaste_2021-02-23_10-11-21](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/Snipaste_2021-02-23_10-11-21.61ua3aqpldw0.webp)
+   ![Snipaste_2021-02-23_10-11-21](https://github.com/dhay3/image-repo/raw/master/20220412/Snipaste_2021-02-23_10-11-21.61ua3aqpldw0.webp)
 
    ```
    root in /opt/t λ docker run -itd --name t1 busybox
@@ -184,7 +184,7 @@ docker使用`--network`来指定生成的容器该怎么创建容器。可以使
 
    docker0作为容器的网关，vethxxx的另一端放在新建的容器中，以eth0命名。
 
-   ![Snipaste_2021-01-22_19-50-21](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/Snipaste_2021-01-22_19-50-21.6ruo87m8dmg0.webp)
+   ![Snipaste_2021-01-22_19-50-21](https://github.com/dhay3/image-repo/raw/master/20220412/Snipaste_2021-01-22_19-50-21.6ruo87m8dmg0.webp)
 
    此时容器能与宿主机通信，同时也能访问外网。
 

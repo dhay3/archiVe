@@ -62,7 +62,7 @@ The users and devices that have keys are often just called entities. In general,
 
   在windows上可以通过`certmgr.msc`服务查看存储的根证书
 
-  ![Snipaste_2021-03-03_10-03-17](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2021-03-03_10-03-17.56yitsbh8aw0.png)
+  ![Snipaste_2021-03-03_10-03-17](https://github.com/dhay3/image-repo/raw/master/20210601/Snipaste_2021-03-03_10-03-17.56yitsbh8aw0.png)
 
   linux 存储默认在 `/etc/ssl/certs/ca-bundle.crt` , 可以通过`openssl x509 -text -in certificate` 来查看
 
@@ -74,7 +74,7 @@ X.509 是数字证书的一种 ISO 格式，其中 X.509V3 是现在最广为流
 
 ### Content of Certificates
 
-![Snipaste_2021-03-03_11-36-32](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2021-03-03_11-36-32.2re74gpl9wo0.png)
+![Snipaste_2021-03-03_11-36-32](https://github.com/dhay3/image-repo/raw/master/20210601/Snipaste_2021-03-03_11-36-32.2re74gpl9wo0.png)
 
 以 windows 上的为例，主要包含如下几个字段
 
@@ -167,7 +167,7 @@ X.509 是数字证书的一种 ISO 格式，其中 X.509V3 是现在最广为流
 
 和传统的分销模式一样，证书机构也有分销，这在 PKI 中被称为 认证链 （chain of trust )
 
-![Snipaste_2021-03-03_11-12-07](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2021-03-03_11-12-07.5pmxm181oiw0.png)
+![Snipaste_2021-03-03_11-12-07](https://github.com/dhay3/image-repo/raw/master/20210601/Snipaste_2021-03-03_11-12-07.5pmxm181oiw0.png)
 
 假设现在 A 为 root CA，把分发 certificates 的权限下发给了 B，这样 B 就可以通过自己的私钥来签发证书了。现在 C 向 B 申请了证书。那么
 
@@ -178,7 +178,7 @@ X.509 是数字证书的一种 ISO 格式，其中 X.509V3 是现在最广为流
 
 同时 B 分发给 C 的证书也会含有 B 的证书信息 (为了校验)
 
-![2022-12-16_02-41](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221216/2022-12-16_02-41.3hpf70x75p34.webp)
+![2022-12-16_02-41](https://github.com/dhay3/image-repo/raw/master/20221216/2022-12-16_02-41.3hpf70x75p34.webp)
 
 ## PKCS
 
@@ -200,4 +200,4 @@ pfx 是 PKCS #12 ( public key cruptography standards #12 )在 windows 上的说�
 
 通过它我们就可以导出和导入证书
 
-![Snipaste_2021-03-03_10-49-46](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Snipaste_2021-03-03_10-49-46.62upmes092s0.png)
+![Snipaste_2021-03-03_10-49-46](https://github.com/dhay3/image-repo/raw/master/20210601/Snipaste_2021-03-03_10-49-46.62upmes092s0.png)

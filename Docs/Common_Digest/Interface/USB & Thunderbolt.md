@@ -6,7 +6,7 @@ USB(Universal Serial Bus)是一种串口总线标准，至今已有四代，USB1
 
 类别和对应接口参考[en_wiki](https://en.wikipedia.org/wiki/USB)/[zh_wiki](https://zh.wikipedia.org/wiki/USB)
 
-![2021-06-16_01-51](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/2021-06-16_01-51.4ebzycmsxo60.png)
+![2021-06-16_01-51](https://github.com/dhay3/image-repo/raw/master/20210601/2021-06-16_01-51.4ebzycmsxo60.png)
 
 > 现有的USB都兼容USB2.0，使用了SuperSpeed的数据线一般会标有ss的标志，也有厂商不标明
 

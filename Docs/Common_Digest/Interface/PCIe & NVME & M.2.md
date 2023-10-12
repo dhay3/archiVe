@@ -14,7 +14,7 @@ Peripheral Component Interconnect Express，也被缩写为PCIe或PCI-e是一种
 
 ==PCIe根据带宽不同接口的形状也不同==
 
-![2021-06-19_00-20](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/2021-06-19_00-20.2q5770dbetc0.png)
+![2021-06-19_00-20](https://github.com/dhay3/image-repo/raw/master/20210601/2021-06-19_00-20.2q5770dbetc0.png)
 
 较短的PCIe卡可以插入较长的PCIe槽
 
@@ -30,7 +30,7 @@ NVM(Non-Volatile Memory) Express也被称为NVMe，是一种专门为SSD设计�
 
 使用PCIe Mini card 物理接口，也被称为NGFF。使用PCIe 4.0 最大4x带宽
 
-![Samsung-860-EVO-M](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/Samsung-860-EVO-M.2-SSD-2.7eiu9rh2xyw0.jpg)
+![Samsung-860-EVO-M](https://github.com/dhay3/image-repo/raw/master/20210601/Samsung-860-EVO-M.2-SSD-2.7eiu9rh2xyw0.jpg)
 
 
 

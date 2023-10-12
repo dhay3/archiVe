@@ -43,7 +43,7 @@ state 是 conntrack 的一个子集(不涵盖 NAT 的场景)
 
 **TCP 3-way handshake**
 
-![2022-11-17_12-31](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221117/2022-11-17_12-31.3iaao6cbo8zk.webp)
+![2022-11-17_12-31](https://github.com/dhay3/image-repo/raw/master/20221117/2022-11-17_12-31.3iaao6cbo8zk.webp)
 
 1. IPtables state machine 并没有 TCP state machine 中类似 SYN_RCD 的这种状态
 2. 在 TCP state machine 中如果发送或者收到了一个 SYN 报文，会被认为是 NEW state
@@ -59,7 +59,7 @@ state 是 conntrack 的一个子集(不涵盖 NAT 的场景)
 
 看了 TCP 建连的 3-way handshake，看一下 关闭连接的 4-way handshake 是否和 TCP state machine 也有区别呢，答案是肯定的
 
-![2022-11-17_12-47](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221117/2022-11-17_12-47.2eoxj8esnpxc.webp)
+![2022-11-17_12-47](https://github.com/dhay3/image-repo/raw/master/20221117/2022-11-17_12-47.2eoxj8esnpxc.webp)
 
 1. FIN-WAIT. CLOSE-WAIT 在 IPtables state machine 中统称为 ESTABLISHED
 2. TIME-WAIT 在 IPtables state machine 中被称为 CLOSED, 如果收到了 RST 报文同样会进入 CLOSED
@@ -68,7 +68,7 @@ state 是 conntrack 的一个子集(不涵盖 NAT 的场景)
 
 UDP 协议因为不需要在传输前建立连接，所以本身是无状态的。但是在 IPtables 为了方便关管理，UDP 报文也有 state machine
 
-![2022-11-17_21-57](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221117/2022-11-17_21-57.5dzkqeit01ds.webp)
+![2022-11-17_21-57](https://github.com/dhay3/image-repo/raw/master/20221117/2022-11-17_21-57.5dzkqeit01ds.webp)
 
 按照四元组匹配
 
@@ -76,7 +76,7 @@ UDP 协议因为不需要在传输前建立连接，所以本身是无状态的�
 
 和 UDP 协议一样，ICMP 协议也不是一个有状态的协议
 
-![2022-11-17_22-10](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221117/2022-11-17_22-10.djwlmcadgio.webp)
+![2022-11-17_22-10](https://github.com/dhay3/image-repo/raw/master/20221117/2022-11-17_22-10.djwlmcadgio.webp)
 
 在 ICMP 中 echo request 匹配 NEW，echo reply 匹配 ESTABLISHED
 
@@ -84,11 +84,11 @@ UDP 协议因为不需要在传输前建立连接，所以本身是无状态的�
 
 TCP
 
-![2022-11-17_22-18](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221117/2022-11-17_22-18.4esfxooarg8w.webp)
+![2022-11-17_22-18](https://github.com/dhay3/image-repo/raw/master/20221117/2022-11-17_22-18.4esfxooarg8w.webp)
 
 UDP
 
-![2022-11-17_22-19](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221117/2022-11-17_22-19.5naqwmn2p5og.webp)
+![2022-11-17_22-19](https://github.com/dhay3/image-repo/raw/master/20221117/2022-11-17_22-19.5naqwmn2p5og.webp)
 
 答案是和报文没有关系状态都是相同的
 
@@ -98,7 +98,7 @@ UDP
 
 例如 192.168.1.1 可以正常访问其他机器的 80 端口，但是其他机器不能主动连接 192.168.1.1 80 端口
 
-![2022-11-15_15-14](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221115/2022-11-15_15-14.56e538jrk8w0.webp)
+![2022-11-15_15-14](https://github.com/dhay3/image-repo/raw/master/20221115/2022-11-15_15-14.56e538jrk8w0.webp)
 
 192.168.1.1 设置规则
 

@@ -6,7 +6,7 @@
 
 Router 是一个 3 层设备，用于划分广播域(LAN)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230519/2023-05-22_14-44.2d0o6ilyhcsg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230519/2023-05-22_14-44.2d0o6ilyhcsg.webp)
 
 假设现在 PC1 访问 PC3
 
@@ -16,7 +16,7 @@ Router 是一个 3 层设备，用于划分广播域(LAN)
 
 IPv4 Header 长这样
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230522/2023-05-22_14-46.4kh1u49auozk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230522/2023-05-22_14-46.4kh1u49auozk.webp)
 
 先关注两个字段
 
@@ -27,13 +27,13 @@ IPv4 Header 长这样
 
 ### IPv4 address
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230522/2023-05-22_14-50.bijsuyjuee0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230522/2023-05-22_14-50.bijsuyjuee0.webp)
 
 一个 IPv4 address 由 4 部分 8 bits decimal number 组成，通过 dot 分隔，所以也被称为 dotted decimal (中文叫点分十进制)。主要为了方便记忆
 
 > 每 8 bits 一组的部分也被称为 octets
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230522/2023-05-22_15-00.3y75edo8q1w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230522/2023-05-22_15-00.3y75edo8q1w.webp)
 
 IPv4 address 还可以通过 `/` 的方式来划分 network portion 和 host portion
 
@@ -43,7 +43,7 @@ IPv4 address 还可以通过 `/` 的方式来划分 network portion 和 host por
 
 根据 first octet 可以将 IPv4 address 分为 4 类
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230522/2023-05-22_14-58.gzyxlswhwn4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230522/2023-05-22_14-58.gzyxlswhwn4.webp)
 
 主要关注 ABC 类地址，D 类地址为保留的 Multicast address, E 类地址为保留的实验地址
 
@@ -70,7 +70,7 @@ IPv4 address 还可以通过 `/` 的方式来划分 network portion 和 host por
 
 每类地址都有固定可用数量的 network 和 addresses(host) per network 
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230522/2023-05-22_15-14.5ckh1ct40adc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230522/2023-05-22_15-14.5ckh1ct40adc.webp)
 
 > number of networks 或者 addresses per network 计算的都是可能性(和 binary 转 decimal 没有什么关系)。每 bit 上只有 0 和 1 两种可能，想象成一棵二叉树
 >
@@ -82,7 +82,7 @@ IPv4 address 还可以通过 `/` 的方式来划分 network portion 和 host por
 
 ##### Network Adddress
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230522/2023-05-22_15-34.543fjla8lngg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230522/2023-05-22_15-34.543fjla8lngg.webp)
 
 - Host portion 全 0 的地址
 - 不能被分配给主机
@@ -91,7 +91,7 @@ IPv4 address 还可以通过 `/` 的方式来划分 network portion 和 host por
 
 ##### Boardcast Address
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230522/2023-05-22_15-37.4fshawu1xu9s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230522/2023-05-22_15-37.4fshawu1xu9s.webp)
 
 - Host portion 全 1 的地址
 - 不能被分配给主机
@@ -114,7 +114,7 @@ Netmask(Subnet mask) 中文也叫做掩码(子网掩码)，和 IPv4 address 一�
 
 按照如下拓扑配置 R1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230522/2023-05-22_16-09.7jrw4i8aeef4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230522/2023-05-22_16-09.7jrw4i8aeef4.webp)
 
 进入 global configuration mode
 

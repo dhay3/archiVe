@@ -22,7 +22,7 @@ SNAT target 只能在 nat table 中的 POSTROUTING 和 INPUT 中使用，或者�
 
 以从 192.168.1.1 访问 192.168.4.1 SNAT 成 192.168.4.3 为例子
 
-![2022-11-02_13-03](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221102/2022-11-02_13-03.2xvk36zki4hs.webp)
+![2022-11-02_13-03](https://github.com/dhay3/image-repo/raw/master/20221102/2022-11-02_13-03.2xvk36zki4hs.webp)
 
 设置 SNAT 规则
 
@@ -60,7 +60,7 @@ labos-3 抓包
 
 以 192.168.1.1 访问 192.168.5.2 SNAT 成 192.168.4.1 为例子
 
-![2022-11-10_22-31](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221110/2022-11-10_22-31.2te6bh9llqbk.webp)
+![2022-11-10_22-31](https://github.com/dhay3/image-repo/raw/master/20221110/2022-11-10_22-31.2te6bh9llqbk.webp)
 
 labos-3 route 和 NIC 配置
 

@@ -6,7 +6,7 @@
 
 > 对比 Ethernet 报文，802.11 报文更复杂
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-18_15-07.2w1hln0m8ue0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-18_15-07.2w1hln0m8ue0.webp)
 
 -  Frame Control
 
@@ -58,7 +58,7 @@
 
   Same as in an Ethernet frame, used to check  for errors
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-18_15-20.4a8i0f4spug0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-18_15-20.4a8i0f4spug0.webp)
 
 ## AP deployment
 

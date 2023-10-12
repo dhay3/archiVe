@@ -6,7 +6,7 @@ Local Area Networks(LAN)
 
 switch 并不会划分 LAN，但是路由器会划分 LAN
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230518/2023-05-18_21-18.3npugjmmmy0w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230518/2023-05-18_21-18.3npugjmmmy0w.webp)
 
 上述 1234 分别代表不同的 4 个 LAN
 
@@ -14,9 +14,9 @@ switch 并不会划分 LAN，但是路由器会划分 LAN
 
 > 这里只考虑 Ethernet
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230518/2023-05-18_21-23.66w1mll3264g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230518/2023-05-18_21-23.66w1mll3264g.webp)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230518/2023-05-18_21-48.5jrq8roburuo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230518/2023-05-18_21-48.5jrq8roburuo.webp)
 
 一个二层帧由 3 部分组成
 
@@ -40,7 +40,7 @@ Eth header 通常包含 4 部分
 | SFD            | 1bytes(8 bits)  | Marks the end of the preamble. and the beginning of the rest of the frame |
 | Destination    | 6bytes(48bits)  | Destination MAC(media access control), indicate the devices receiving the frame |
 | Source         | 6bytes(48bits)  | Source MAC(media access control), indicate the devices sending the frame |
-| Type or Length | 2bytes(12bits)  | A value of 1500 or less in this field indicates the LENGTH of the encapsulated packet(in bytes).<br>A value of 1536 or greater in this field indicates the Type of the encapsulated packet, and the length is determined via other method.<br>![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230518/2023-05-18_21-36.64d5v64f24xs.webp)<br>例如最后字段的值是 0x0800 即十进制 2048 就表示该 frame 是 IPv4 报文<br>如果最后字段的值是 0x86DD 即十进制 34525 就表示该 frame 是 IPv6 报文 |
+| Type or Length | 2bytes(12bits)  | A value of 1500 or less in this field indicates the LENGTH of the encapsulated packet(in bytes).<br>A value of 1536 or greater in this field indicates the Type of the encapsulated packet, and the length is determined via other method.<br>![](https://github.com/dhay3/image-repo/raw/master/20230518/2023-05-18_21-36.64d5v64f24xs.webp)<br>例如最后字段的值是 0x0800 即十进制 2048 就表示该 frame 是 IPv4 报文<br>如果最后字段的值是 0x86DD 即十进制 34525 就表示该 frame 是 IPv6 报文 |
 
 > Ethernet 2 层帧的报文头为 22 bytes，==但是 Preamble 和 SFD 通常并不算作 2 层帧的报文头==，即 2 层帧的报文头只有 14 bytes[^Ethernet Header]
 >
@@ -71,7 +71,7 @@ Eth trailer 只包含一部分 FCS (Frame check sequence)
 - The last 3 bytes are unique to the devices itself
 - Written as 12 hexadecimal characters
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230518/2023-05-18_21-56.31iijuh1gqdc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230518/2023-05-18_21-56.31iijuh1gqdc.webp)
 
 是一个 12 位的 16 进制数，每 4 位(16 bits)一组。所以上图中
 
@@ -84,11 +84,11 @@ Eth trailer 只包含一部分 FCS (Frame check sequence)
 
 首先 PC1 会发送一个 unicast frame - Dest:.0002 Src:.0001
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230519/2023-05-19_10-38.5mvl0znguohs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230519/2023-05-19_10-38.5mvl0znguohs.webp)
 
 到达 SW1 后, 因为没有对应的 Source MAC address 的信息,所以 SW1 会将从那个端口==学来的 Source MAC address== 记录在自己的 MAC address table 中。下图中，即表示 .0001 Source MAC address 是从 F0/1 端口(学)过来的。这种也被称为  Dynamically learned MAC address/Dynamic MAC address
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230519/2023-05-19_10-39.4rk9pjqx39xc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230519/2023-05-19_10-39.4rk9pjqx39xc.webp)
 
 但是目前 SW1 并不知道 Dest MAC address .0002 的“位置”，所以往 SW1 除从报文来的端口(这里即 F0/1)外的所有的端口发送一个 Unknown Unicast frame(Flood 中文也叫做泛洪)。报文到达 PC3 时，因为 MAC address 不匹配 Dest MAC address 所以会被丢弃
 
@@ -96,11 +96,11 @@ Eth trailer 只包含一部分 FCS (Frame check sequence)
 >
 > 但是不知道对应的 MAC 需要通过那个端口转发，所以被称为 unknown Unicast
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230519/2023-05-19_10-45.73c0wpbi4mww.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230519/2023-05-19_10-45.73c0wpbi4mww.webp)
 
 因为 PC2 MAC address 匹配 Dest MAC address .0002，所以会回包。当回包报文到达 SW1 时，因为没有 .0002 Source MAC address 的信息，同样会记录 MAC address .0002 是从那个端口( 即 F0/2 )学过来的。因为 Dest MAC address 在 MAC table 中有对应的记录，所以不会 Flood 会直接转发(Forward，也被称为 Known Unicast frame)到 F0/1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230519/2023-05-19_11-51.m2itc3iuun4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230519/2023-05-19_11-51.m2itc3iuun4.webp)
 
 > - MAC address table 会记录没有的 Source MAC address 从那个的端口学来的
 > - Dynamic MAC address 在 Cisco 的设备中有效的生命周期为 5 mins。如果在这个时间段内没有收到任何关联 Dynamic MAC address 的报文，就会自动从 MAC adress table 中删除，如果有收到报文就会更新开始计算的时间点
@@ -111,7 +111,7 @@ Eth trailer 只包含一部分 FCS (Frame check sequence)
 
 PC1 MAC .0001 PC2 MAC .0003
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230519/2023-05-19_12-12.1lpluro747xc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230519/2023-05-19_12-12.1lpluro747xc.webp)
 
 1. Src MAC address .0001 Dest MAC address .0003 到达 SW1
 2. 因为 SW1 没有对应 .0001 Source MAC address 的信息，所以 SW1 记录 MAC address .0001, Interface F0/1。并往 F0/2 和 F0/3 发送 Unknown Unicast Frame Src MAC address .0001 Dest MAC address .0003
@@ -193,7 +193,7 @@ Address Resolution Protocol 简称 ARP
 - ARP request
 - ARP reply
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230519/2023-05-19_16-40.5vqpew48enb4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230519/2023-05-19_16-40.5vqpew48enb4.webp)
 
 假设有如下情况
 
@@ -207,7 +207,7 @@ PC4 IP: 192.168.1.4 MAC: 0C2F.B01F.0A00
 
 现在 PC1 想通过 IP address 发送数据到 PC3 (192.168.1.1 -> 192.168.1.3)。因为 IP address 是一个逻辑含义的地址，PC1 想要把数据发送到 PC3 还需要 MAC address，但是现在并不知道 PC3 的 MAC address。所以 PC1 首先会发送一个 ARP request
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230519/2023-05-19_16-52.1oldz0u2e6u8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230519/2023-05-19_16-52.1oldz0u2e6u8.webp)
 
 ARP Request 中包含如下信息
 
@@ -237,7 +237,7 @@ ARP Request 中包含如下信息
 
    例如在 Windows 长这样
 
-   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230519/2023-05-19_17-20.3dp67hyw64g0.webp)
+   ![](https://github.com/dhay3/image-repo/raw/master/20230519/2023-05-19_17-20.3dp67hyw64g0.webp)
 
 > 不管是 PC 还是 Router 都有自己的 ARP table/MAC address table，但是 Switch 没有 ARP table，只有 MAC address table。因为 Switch 只是一个工作在 2 层的设备(不考虑 3 层 Switch)
 
@@ -249,7 +249,7 @@ ARP Request 中包含如下信息
 
 Ping 是一个发送 ICMP 报文的工具，用于测试 3 层可达性以及 RTT
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230519/2023-05-19_17-25.38v6ps167874.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230519/2023-05-19_17-25.38v6ps167874.webp)
 
 其中
 

@@ -10,7 +10,7 @@
 
    例如下图中所有的 end hosts 都连接到了一台 switch
 
-   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-16_14-30.5bz0am1o8ho0.webp)
+   ![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-16_14-30.5bz0am1o8ho0.webp)
 
 2. Full Mesh 网状拓扑
 
@@ -18,13 +18,13 @@
 
    例如下图中所有设备两两互联
 
-   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-16_14-32.3uropjoxvoo0.webp)
+   ![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-16_14-32.3uropjoxvoo0.webp)
 
 3. Partial Mesh 部分网状拓扑
 
    when some devices are connected to each other, but not all
 
-   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-16_14-34.5vny5xf7g5s0.webp)
+   ![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-16_14-34.5vny5xf7g5s0.webp)
 
 ## Tier
 
@@ -71,7 +71,7 @@
 
 由 Access layer 和 Distribution layer 组成
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-16_14-45.m5dm3snor74.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-16_14-45.m5dm3snor74.webp)
 
 > 不过在 two-tier 架构中 Distribution layer 也承担了 Core layer 的功能，所以也被称为 Core-Distribution layer
 
@@ -79,21 +79,21 @@
 
 当 Distribution layer 中设备多的时候，要满足 Distribution layer 设备互联的条件就会需要创建多条 connections，网络拓扑的扩展性就会非常差，所以这时候就需要 Core layer 来连接 Distribution layer
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-16_14-57.372w0yz2pn20.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-16_14-57.372w0yz2pn20.webp)
 
 > 思科推荐当 Distribution layer 中设备超过 3 台时，就应该使用 Core 	layer
 
 例如在下图中加入 Core layer 设备和 Distribution layer 设备构成 Star
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-16_15-00.7756omijerc0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-16_15-00.7756omijerc0.webp)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-16_15-08.4un8ldta4h00.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-16_15-08.4un8ldta4h00.webp)
 
 ## Spine-Leaf Architecture
 
 在现在的互联网架构中通常会使用 Virtual server 来对外提供服务，当流量到了 VIP 对应的设备后，会做 East-West(横向)的转发
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-16_15-26.3kbcum32z0y0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-16_15-26.3kbcum32z0y0.webp)
 
 *The traditional three-tier architecture led to bottlenecks in bandwidth as well as variability in the server-to-server latency depending on the path the traffic takes*
 
@@ -101,7 +101,7 @@
 
 为了解决 three-tier 的这个问题，通常会使用 Spine-Leaf architecture(也被称为 Clos architecture)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-16_16-27.1b4juonat7og.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-16_16-27.1b4juonat7og.webp)
 
 > 和 Two-Tier 对比，就是 Spine 对应的 Distribution layer 不需要互联
 
@@ -119,11 +119,11 @@ SOHO network 通常只需要一台设备，也就是家用路由器，负责几�
 - Wireless Access Point(AP)
 - Modem(光猫)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-16_16-35.282ug4k9oxzw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-16_16-35.282ug4k9oxzw.webp)
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-16_16-39.7gifanay62c0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-16_16-39.7gifanay62c0.webp)
 
 Configure HSRP on DSW1/DSW2, and ensure sychronization with STP 
 

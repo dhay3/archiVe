@@ -20,7 +20,7 @@ https://forum.openwrt.org/t/howto-resizing-root-partition-on-x86/140631
 
 ### Type of firmware
 
-![Snipaste_2022-12-19_20-15-26](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221219/Snipaste_2022-12-19_20-15-26.63ptrl73ork0.webp)
+![Snipaste_2022-12-19_20-15-26](https://github.com/dhay3/image-repo/raw/master/20221219/Snipaste_2022-12-19_20-15-26.63ptrl73ork0.webp)
 
 - **ext4-combined-efi.img.gz**
 
@@ -60,7 +60,7 @@ https://forum.openwrt.org/t/howto-resizing-root-partition-on-x86/140631
 
 先按照 [对照表](https://openwrt.org/toh/views/toh_fwdownload) 查看小主机的型号是否有对应的固件。如果没找到对应设备，参考 [All firmware image](https://downloads.openwrt.org/releases/22.03.3/targets/) 选择对应 CPU 指令集的固件下载
 
-![Snipaste_2022-12-19_00-24-29](https://cdn.staticaly.com/gh/dhay3/image-repo@master/Snipaste_2022-12-19_00-24-29.4gwnjctlnea0.webp)
+![Snipaste_2022-12-19_00-24-29](https://github.com/dhay3/image-repo/raw/master/Snipaste_2022-12-19_00-24-29.4gwnjctlnea0.webp)
 
 按照 CPU 的指令集选择后，会出现 [Type of firwmare](#Type of firmware) 中显示的内容，按需选择。Supplementary Files 为校验文件
 
@@ -126,7 +126,7 @@ https://dickies.myds.me:56789/st/routeos/1024/
 
 OpenWrt 默认 eth0 配置 LAN，刷完机后将第一个网口连接主机 RJ45 口。打开网络适配器查看详细信息中的网关 IP，即刷好 OpenWrt 的机器的 eth0
 
-![Snipaste_2022-12-19_23-57-53](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221219/Snipaste_2022-12-19_23-57-53.24hgp6dsjv34.webp)
+![Snipaste_2022-12-19_23-57-53](https://github.com/dhay3/image-repo/raw/master/20221219/Snipaste_2022-12-19_23-57-53.24hgp6dsjv34.webp)
 
 这样我们就可以通过 192.168.1.1 来连接我们的软路由了
 

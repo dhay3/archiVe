@@ -1,5 +1,5 @@
 # Salt Architectrue
-![Snipaste_2021-08-16_16-42-17](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220223/Snipaste_2021-08-16_16-42-17.rd5cjqezh28.webp)
+![Snipaste_2021-08-16_16-42-17](https://github.com/dhay3/image-repo/raw/master/20220223/Snipaste_2021-08-16_16-42-17.rd5cjqezh28.webp)
 ## Salt Accesses
 [https://docs.saltproject.io/en/getstarted/system/index.html](https://docs.saltproject.io/en/getstarted/system/index.html)
 **REAL-TIME COMMUNICATION**
@@ -26,7 +26,7 @@ Overview With Pictrues
 _Central management system._
 _This system is used to send commands and configurations to the Salt minion that is running on managed systems._
 _The Salt master/minion model only requires inbound connections into the Salt master. Connections are established from the minion and never from the master._
-![Snipaste_2021-08-30_19-28-02](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220223/Snipaste_2021-08-30_19-28-02.22ukygp5mae8.webp)
+![Snipaste_2021-08-30_19-28-02](https://github.com/dhay3/image-repo/raw/master/20220223/Snipaste_2021-08-30_19-28-02.22ukygp5mae8.webp)
 salt 都是从 minion 向 master 发起的 tcp 链接
 ```
 D:\code\snat_proxy>py sx.py cmd -i 11.181.158.16 -c "ss -npt | head -1 && ss -npt | grep salt"
@@ -44,7 +44,7 @@ master 同时对 minion 提供两种服务
 Constant inquiring connection
 4506 - Data payloads and minion returns (file services/return data)
 Connects only to deliver data
-![Snipaste_2021-11-03_15-27-49](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220223/Snipaste_2021-11-03_15-27-49.6w6qkzgdio00.webp)
+![Snipaste_2021-11-03_15-27-49](https://github.com/dhay3/image-repo/raw/master/20220223/Snipaste_2021-11-03_15-27-49.6w6qkzgdio00.webp)
 #### conf
 master 默认读取`/etc/salt/master`下的文件，但是也可以使用`-c`来指定配置文件
 ```
@@ -75,7 +75,7 @@ Recv-Q Send-Q             Local Address:Port               Peer Address:Port
 ### Salt minion
 由 slat master 管控的机器，但是 salt minion 也可以以 stand-alone 模式运行，无需 salt master
 _Managed system. This system runs the Salt minion which receives commands and configuration from the Salt master_
-![Snipaste_2021-12-08_09-38-21](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220223/Snipaste_2021-12-08_09-38-21.5p4f7s041rs0.webp)
+![Snipaste_2021-12-08_09-38-21](https://github.com/dhay3/image-repo/raw/master/20220223/Snipaste_2021-12-08_09-38-21.5p4f7s041rs0.webp)
 #### conf
 minion 默认读取`/etc/slat/minion`下的配置文件，和master一样可以通过`-c`来指定配置文件
 ```
@@ -111,14 +111,14 @@ subsystem其实是python module
 | Configuration | Configures targeted systems to match a desired state. |
 
 下图用于阐述subsystem
-![Snipaste_2022-03-02_12-06-27](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220223/Snipaste_2022-03-02_12-06-27.4eh0qpp0qyw0.webp)
+![Snipaste_2022-03-02_12-06-27](https://github.com/dhay3/image-repo/raw/master/20220223/Snipaste_2022-03-02_12-06-27.4eh0qpp0qyw0.webp)
 当一个salt任务在运行时会关联多个subsystems
-![Snipaste_2022-03-02_12-06-42](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220223/Snipaste_2022-03-02_12-06-42.xbwcjexh0s0.webp)
+![Snipaste_2022-03-02_12-06-42](https://github.com/dhay3/image-repo/raw/master/20220223/Snipaste_2022-03-02_12-06-42.xbwcjexh0s0.webp)
 _At each step, the subsystem delegates its work to the configured plug-in. For example, the job returner plug-in in step 7 might be one of 30 plug-ins including MySQL, redis, or not be configured at all (the job returner plug-in can also run directly on the managed system after step 4)._
 _At each step, there are many plug-ins available to perform a task, resulting in hundreds of possible Salt configurations and workflows._
 ## Communication model
 salt 使用 publish-subscribe 模式来通信（生产消费）。链接由minion主动建立，减少了被攻击的风险。master使用 4505 和 4506 端口
-![Snipaste_2022-03-02_12-06-53](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220223/Snipaste_2022-03-02_12-06-53.3gk5ye1foim0.webp)
+![Snipaste_2022-03-02_12-06-53](https://github.com/dhay3/image-repo/raw/master/20220223/Snipaste_2022-03-02_12-06-53.3gk5ye1foim0.webp)
 ### Publisher
 master 向 minion 发送命令
 (port 4505) All Salt minions establish a persistent connection to the publisher port where they listen for messages._ Commands are sent asynchronously to all connections over this port_, which enables commands to be executed over large numbers of systems simultaniously.
@@ -127,5 +127,5 @@ minion 向 master 回送命令结果
 (port 4506) Salt minions connect to the request server as needed to send results to the Salt master, and to securely request files and minion-specific data values (called Salt pillar). Connections to this port are 1:1 between the Salt master and Salt minion (not asynchronous).
 ### salt minion authentication
 当minion第一次启动时，会默认以salt domain name 作为master（但是也可以使用配置指定），如果有找到就会将public key 发送到master（不会存在`/root/.ssh/authorized_keys`），可以使用 salt-key 来查看存储的pk。minion 的 pk 必须被 master 认可，否则minion不能执行任何命令
-![Snipaste_2022-03-02_12-07-03](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220223/Snipaste_2022-03-02_12-07-03.1u24a0j3tt0g.webp)
+![Snipaste_2022-03-02_12-07-03](https://github.com/dhay3/image-repo/raw/master/20220223/Snipaste_2022-03-02_12-07-03.1u24a0j3tt0g.webp)
 salt 使用RSA非对称加密用于鉴权，AES对称加密用于信息加密传输

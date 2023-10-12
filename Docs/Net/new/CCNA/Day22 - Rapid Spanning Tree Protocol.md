@@ -6,7 +6,7 @@
 
 > 最大的区别是，IEEE 不支持每一个 VLAN 单独配置 STP(除 MSTP 外)，而 Cisco 支持(STP Load Balancing)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230606/2023-06-06_14-22.w9edsihiajk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230606/2023-06-06_14-22.w9edsihiajk.webp)
 
 在大型的网络拓扑中，一般会优先使用 Multiple Spanning Tree Protocol(MSTP)。因为支持为一组 VLAN 配置 STP Load Balancing
 
@@ -33,13 +33,13 @@ RSTP 相比普通的 STP，会使用 handshake 的机制来判断端口应该处
 
 端口花费不一样
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230606/2023-06-06_14-47.533otewecxs0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230606/2023-06-06_14-47.533otewecxs0.webp)
 
 #### Port state
 
 端口状态不一样
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230606/2023-06-06_14-49.2z51qy9ijds0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230606/2023-06-06_14-49.2z51qy9ijds0.webp)
 
 对比普通的 STP
 
@@ -50,7 +50,7 @@ RSTP 相比普通的 STP，会使用 handshake 的机制来判断端口应该处
 
 端口角色不同
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230606/2023-06-06_14-56.6vi0vjobteyo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230606/2023-06-06_14-56.6vi0vjobteyo.webp)
 
 > root port 和 designated port 角色和逻辑都相同，但是 non-designated port(blocking port) 被拆分成两个角色
 >
@@ -86,11 +86,11 @@ RSTP 相比普通的 STP，会使用 handshake 的机制来判断端口应该处
 
 例如有如下拓扑
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230606/2023-06-06_15-06.7choktplax6o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230606/2023-06-06_15-06.7choktplax6o.webp)
 
 假设现在 SW3 和 SW1 互联的链路有问题，端口收不到 SW1 BPDUs 了，那么 SW3 和 SW2 互联的端口就会从 non-designate port 变成 root port，从 blocking 转为 fowarding
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230606/2023-06-06_15-07.7j6ixal2vo8w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230606/2023-06-06_15-07.7j6ixal2vo8w.webp)
 
 *This immediate move to forwarding state functions like a classic STP optional feature called UplinkFast. Because it built into RSTP, you do not need to activate UplinkFast when using RSTP/Rapid PVST+*
 
@@ -102,7 +102,7 @@ RSTP 相比普通的 STP，会使用 handshake 的机制来判断端口应该处
 
 有如下拓扑
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230606/2023-06-06_15-24.1s2qdqtab868.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230606/2023-06-06_15-24.1s2qdqtab868.webp)
 
 假设现在 SW1 和 SW2 之间的链路出问题了，SW2 收不到 BPDUs 了，就会认为自己就是 root bridge，然后往 SW3 发送 BPDUs
 
@@ -112,7 +112,7 @@ RSTP 相比普通的 STP，会使用 handshake 的机制来判断端口应该处
 
 SW2 重新认定 SW1 为 root bridge，然后 SW2 变更端口角色
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230607/2023-06-07_17-56.6eazbkfx0etc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230607/2023-06-07_17-56.6eazbkfx0etc.webp)
 
 *BackboneFast allows SW3(和 SW2 互联的端口) to expire the max age timers(20 秒) on its itnerface and rapidly forward the superior BPDUs to SW2*
 
@@ -126,7 +126,7 @@ SW2 重新认定 SW1 为 root bridge，然后 SW2 变更端口角色
 
 可以使用 `spanning-tree mode rapid-pvst` 来使用 RSTP(在 Cisco 中默认使用 RSTP，所以一般无须使用该命令)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230607/2023-06-08_13-57.66fsr2vd3wxs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230607/2023-06-08_13-57.66fsr2vd3wxs.webp)
 
 使用上述命令后，可以看到 `spanning tree enabled protocol rstp` 就表明开启并使用了 RSTP
 
@@ -138,7 +138,7 @@ SW2 重新认定 SW1 为 root bridge，然后 SW2 变更端口角色
 
 对比一下和普通 STP 报文，左边为普通 STP 报文，右边为 RSTP 报文
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230607/2023-06-08_14-09.67jyzozv12bk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230607/2023-06-08_14-09.67jyzozv12bk.webp)
 
 1. Protocol Version Identifier
 
@@ -178,7 +178,7 @@ RSTP 将互联的链路分为 3 种
 
    可以使用 `spanning-tree link-type shared` 手动将端口变为 shared
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_14-24.4ah9hko3dcw0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_14-24.4ah9hko3dcw0.webp)
 
 ## RSTP VS STP
 
@@ -192,7 +192,7 @@ RSTP 将互联的链路分为 3 种
 
 ### 0x001
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230607/2023-06-08_13-38.cvs5jx7llmo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230607/2023-06-08_13-38.cvs5jx7llmo.webp)
 
 1. 先判断 root bridge。因为在 priority ID 相同的情况下 SW1 MAC 最小，所以 SW1 是 root bridge，SW1 G0/0 G0/1 均为 designated port
 2. 再判断 root port。SW3 G0/2 cost 最小所以是 root port；SW2 G0/0 cost 最小所以是 root port；SW4 在 cost 相同的情况下, neighbor SW2 MAC 小，所以 SW4 G0/1 是 root port
@@ -213,7 +213,7 @@ else if a is backup_port then:
 
 ## Lab
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230608/2023-06-08_14-45.2cze3m3xgzi8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230608/2023-06-08_14-45.2cze3m3xgzi8.webp)
 
 ### 0x01
 

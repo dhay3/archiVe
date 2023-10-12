@@ -38,7 +38,7 @@
 
 PC1 访问 SRV1 80 端口
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-19_22-32.6t9vhjttgo00.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-19_22-32.6t9vhjttgo00.webp)
 
 在 PC1 中所有 Src:50000 Dst:80 的报文，以及在 SRV1 中所有 Src:80 Dst:50000 的报文都在一个 Session 中，可以简单的理解成相同 4 元组(源目 IP 及端口)的所有报文构成一个 Session
 
@@ -71,13 +71,13 @@ Connection-oriented 体现在两点
 
 例如 PC1 想要访问 SRV1 http
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-20_13-41.jdqddpnz39c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-20_13-41.jdqddpnz39c.webp)
 
 1. PC1 will send a TCP segment to SRV1 with the SYN flag set, meaning that bit is set to 1
 2. SRV1 will reply by sending a TCP segment to PC1 with the SYN and ACK flags set. So both bits are set to 1
 3. Finally, PC1 will send a TCP segment with the ACK bit set
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-20_13-44.1edq1qwrzkow.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-20_13-44.1edq1qwrzkow.webp)
 
 #### Terminating Connections
 
@@ -90,7 +90,7 @@ Connection-oriented 体现在两点
 3. SRV1 then sends its own FIN
 4. Finally, PC1 sends an ACK in response to SRV1’s FIN, and the connection is terminated
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-20_13-56.759cdpy3jkao.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-20_13-56.759cdpy3jkao.webp)
 
 
 
@@ -98,11 +98,11 @@ Connection-oriented 体现在两点
 
 *The destination host must acknowledge that it received each TCP segment(Layer 4 PDU)*
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-20_14-04.4bqnlhwp8jgg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-20_14-04.4bqnlhwp8jgg.webp)
 
 *If a segment isn’t acknowledged, it is sent again*
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-20_14-07.2rcx2d8yfc3k.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-20_14-07.2rcx2d8yfc3k.webp)
 
 ### TCP provides sequencing
 
@@ -112,11 +112,11 @@ Connection-oriented 体现在两点
 
 *The destination host can tell the source host to increase/decrease the rate that data is sent*
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-20_14-10.1n06i0y4fq5c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-20_14-10.1n06i0y4fq5c.webp)
 
 ### TCP Header
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-20_13-34.4gm0pqyfm0ao.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-20_13-34.4gm0pqyfm0ao.webp)
 
 CCNA 中不需要了解 TCP header 中所有的字段，主要关注如下几个字段
 
@@ -167,7 +167,7 @@ User Datagram Protocol(UDP)
 
 ### UDP header
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-20_14-18.797fe0fkrocg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-20_14-18.797fe0fkrocg.webp)
 
 ## TCP vs UDP
 
@@ -187,7 +187,7 @@ User Datagram Protocol(UDP)
 
 - Some applications uses both TCP & UDP, depending on the situation
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230616/2023-06-20_14-26.35ytbwitry9s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230616/2023-06-20_14-26.35ytbwitry9s.webp)
 
 **references**
 

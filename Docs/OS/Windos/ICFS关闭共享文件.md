@@ -10,11 +10,11 @@
 
 ==windows默认开启磁盘共享==，如果另一方获取到权限就可以远程访问这些共享文件，非常不安全，所以我们需要删除这些共享文件
 
-![Snipaste_2020-08-30_00-15-45](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-08-30_00-15-45.dix4xs3ibao.png)
+![Snipaste_2020-08-30_00-15-45](https://github.com/dhay3/image-repo/raw/master/20210518/Snipaste_2020-08-30_00-15-45.dix4xs3ibao.png)
 
 通过`net share`命令我们可以看到所有的共享文件，包括隐藏共享文件（以`$`结尾）。这里`IPC$`表示空连接,表示可以访问所有资源。
 
 通过`services.msc`将`server`启动类型置为禁用，恢复置为不操作
 
-![Snipaste_2020-08-30_01-07-19](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-08-30_01-07-19.74wu6iab67c0.png)
+![Snipaste_2020-08-30_01-07-19](https://github.com/dhay3/image-repo/raw/master/20210518/Snipaste_2020-08-30_01-07-19.74wu6iab67c0.png)
 

@@ -24,4 +24,4 @@ Type 2 hypervisors是基于host machine’s preexisting OS的，所有VM的活�
 
 常见的软件有**Virtualbox**，**Vmware Station**，**QEMU**
 
-![2021-06-19_13-13](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/2021-06-19_13-13.4527enria540.png)
+![2021-06-19_13-13](https://github.com/dhay3/image-repo/raw/master/20210601/2021-06-19_13-13.4527enria540.png)

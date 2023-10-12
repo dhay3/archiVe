@@ -11,7 +11,7 @@ FTP(File Transfer Protocol) 和 TFTP(Trivial File Transfer Protocol) 都是 IEEE
 
 两种协议在网络设备中最常见的使用场景就是，设备的系统升级
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_15-33.5wvrk1qeoo74.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_15-33.5wvrk1qeoo74.webp)
 
 
 
@@ -42,7 +42,7 @@ TFTP 通过应用层类似 TCP acknowledged 的机制来保证报文的可靠性
 
 例如左边的是 TFTP server，右边的是 TFTP client
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_16-30.40n36s2bt3y8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_16-30.40n36s2bt3y8.webp)
 
 ### TFTP Connections
 
@@ -60,7 +60,7 @@ TFTP 传输文件需要有 3 个过程
 
    After the the last data message has been sent, a final acknowledgment is sent to terminate the connection
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_16-40.69mlvm74q1kw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_16-40.69mlvm74q1kw.webp)
 
 ### TFTP TID
 
@@ -69,7 +69,7 @@ TFTP 传输文件需要有 3 个过程
 - The server then also selects a random TID to use as the source port when it replies, not 69
 - When the client sends the next message, the destination port will be the server’s TID, not 69
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_16-46.1cio3swcaf8g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_16-46.1cio3swcaf8g.webp)
 
 ## FTP
 
@@ -92,7 +92,7 @@ FTP 需要使用 2 个不同端口，因为 FTP 需要 2 种不同的 connection
 
 例如
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_16-58.2axjkmy4ln28.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_16-58.2axjkmy4ln28.webp)
 
 1. Client 和 Server 需要先建立 TCP connection
 2. FTP 认证以及 Client 中输入的 FTP 指令会通过 Control Connection(21)
@@ -101,7 +101,7 @@ FTP 需要使用 2 个不同端口，因为 FTP 需要 2 种不同的 connection
 
 > 由 server 侧主动发起建立 Data connection 的连接
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_17-03.35tw3ghpt5xc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_17-03.35tw3ghpt5xc.webp)
 
 假设现在 client 侧添加了一个防火墙
 
@@ -109,17 +109,17 @@ FTP 需要使用 2 个不同端口，因为 FTP 需要 2 种不同的 connection
 
 > 由 client 侧主动发起建立 Data connection 的连接
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_17-06.55ad1bkwmfsw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_17-06.55ad1bkwmfsw.webp)
 
 ## FTP vs TFTP
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_17-13.5llek9gy33eo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_17-13.5llek9gy33eo.webp)
 
 ## IOS File System
 
 可以使用 `(R1)#show file systems` 来查看 IOS 的文件系统
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_17-14.7i221w05i0e8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_17-14.7i221w05i0e8.webp)
 
 > 已经从 CCNA 的考试范围内移除了,
 
@@ -127,17 +127,17 @@ FTP 需要使用 2 个不同端口，因为 FTP 需要 2 种不同的 connection
 
 现在需要对 R1 做系统升级，对应的系统以及下载到了 SRV1 上
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_17-20.5dfs96l7x0g0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_17-20.5dfs96l7x0g0.webp)
 
 首先先看一下 R1 上对应的 IOS 版本，可以使用 `R1#show version`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_17-20_1.7gk3jyrb1zeo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_17-20_1.7gk3jyrb1zeo.webp)
 
 > 注意这里的 K9 就像之前 SSH 中的表示支持 crypto
 
 你也可以使用 `R1#show flash` 来查看闪存中的文件
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_17-23.50i1hnp41tg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_17-23.50i1hnp41tg.webp)
 
 这里可以看到 R1 闪存中有对应的 IOS 镜像，现在就是需要从 File Transfer Server 上将镜像拷贝下来，替换 R1 正在使用的 IOS 镜像，然后重启 R1 让 R1 使用新的 IOS 镜像加载系统 
 
@@ -145,7 +145,7 @@ FTP 需要使用 2 个不同端口，因为 FTP 需要 2 种不同的 connection
 
 如果使用 TFTP 在 R1 上拉取 SRV1 上的 IOS 镜像按照如下方式操作
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_17-33.4cx6wrb6fibk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_17-33.4cx6wrb6fibk.webp)
 
 - `R1#copy <source> <destination>`
 
@@ -169,11 +169,11 @@ FTP 需要使用 2 个不同端口，因为 FTP 需要 2 种不同的 connection
 
 当你从 TFTP Server 上拷贝完文件后，可以使用 `R1#show flash` 来校验
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_17-34.759qk6hrewsg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_17-34.759qk6hrewsg.webp)
 
 现在如何让 R1 使用新的这个 IOS 镜像文件来加载系统呢？
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_17-38.23afo457fwio.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_17-38.23afo457fwio.webp)
 
 - `R1(config)#boot system flash:<IOS filename>`
 
@@ -191,17 +191,17 @@ FTP 需要使用 2 个不同端口，因为 FTP 需要 2 种不同的 connection
 
 在上述配置完成后，可以使用 `show version` 来校验是否生效
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_17-41.18hc4eia5mu8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_17-41.18hc4eia5mu8.webp)
 
 当然在配置完成后，还可以删除老的 IOS 镜像文件，可以使用 `R1#delete flash:<filename>`
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_17-42.76fz8lab51mo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_17-42.76fz8lab51mo.webp)
 
 ### FTP
 
 如果使用 FTP 在 R1 上拉取 SRV1 上的 IOS 镜像，按照如下方式
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_17-48.6j3zd8bm9rwg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_17-48.6j3zd8bm9rwg.webp)
 
 - `R1(config)#ip ftp username cisco`
 
@@ -225,11 +225,11 @@ FTP 需要使用 2 个不同端口，因为 FTP 需要 2 种不同的 connection
 
 ## Command Summary
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_17-49.1ztacmr2b49s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_17-49.1ztacmr2b49s.webp)
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-10_17-54.p7urr6bc8qo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-10_17-54.p7urr6bc8qo.webp)
 
 ### 0x01
 

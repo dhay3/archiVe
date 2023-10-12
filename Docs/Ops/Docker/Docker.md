@@ -16,7 +16,7 @@
 
   仓库可看成一个代码控制中心，用来保存镜像。
 
-![Snipaste_2020-08-19_18-46-53](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-08-19_18-46-53.2jdsoogrvwo0.png)
+![Snipaste_2020-08-19_18-46-53](https://github.com/dhay3/image-repo/raw/master/20210518/Snipaste_2020-08-19_18-46-53.2jdsoogrvwo0.png)
 
 ## 安装
 
@@ -108,7 +108,7 @@ https://www.runoob.com/docker/docker-tutorial.html
 
 ==容器其实就是一个精简的linux系统==
 
-![tomcat](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/tomcat.7l7hj0fgy1o0.PNG)
+![tomcat](https://github.com/dhay3/image-repo/raw/master/20210518/tomcat.7l7hj0fgy1o0.PNG)
 
 ==容器重启后不会保留数据==，如需要保留数据使用容器卷
 
@@ -178,7 +178,7 @@ https://www.runoob.com/docker/docker-tutorial.html
 
   ==注意新版的镜像挂载点的映射在Mounts中==
 
-![Snipaste_2020-08-20_17-26-03](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-08-20_17-26-03.295jhpnnbc5c.png)
+![Snipaste_2020-08-20_17-26-03](https://github.com/dhay3/image-repo/raw/master/20210518/Snipaste_2020-08-20_17-26-03.295jhpnnbc5c.png)
 
 - docker cp [OPTIONS] container:src_path dest_path
   docker cp [OPTIONS] dest_path container:src_path 
@@ -211,11 +211,11 @@ https://www.runoob.com/docker/docker-tutorial.html
   name： 自定义新容器的image名字
   version: 自定义新容器的version
 
-![commit](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/commit.5bmejq6ok3c0.PNG)
+![commit](https://github.com/dhay3/image-repo/raw/master/20210518/commit.5bmejq6ok3c0.PNG)
 
 **运行自定义的镜像要指定版本**
 
-![commit2](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/commit2.1dt8q6dxghpc.PNG)
+![commit2](https://github.com/dhay3/image-repo/raw/master/20210518/commit2.1dt8q6dxghpc.PNG)
 
 ## 数据容器卷
 
@@ -235,7 +235,7 @@ docker run -it -v /mydata:/data:ro [CONTAINERID]表示容器内的文件只允�
 
 ### 容器卷
 
-![Snipaste_2020-08-20_17-52-33](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2020-08-20_17-52-33.gdpt3kijy5k.png)
+![Snipaste_2020-08-20_17-52-33](https://github.com/dhay3/image-repo/raw/master/20210518/Snipaste_2020-08-20_17-52-33.gdpt3kijy5k.png)
 
 ```
 docker run -it --volumes-form [parentcontainerid] --name [alis]

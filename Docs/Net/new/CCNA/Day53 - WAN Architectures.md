@@ -10,7 +10,7 @@ Although the Internet itself can be considered a WAN, the term WAN is typically 
 
 例如下图就是一个 WAN
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_13-37.2sr4v77et3w0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_13-37.2sr4v77et3w0.webp)
 
 其中 Leased Line 也被称为专线
 
@@ -21,11 +21,11 @@ Although the Internet itself can be considered a WAN, the term WAN is typically 
 
 但是现在 WAN 通常并不会使用 Leased Line 直联，而会是通过 Service Provider，构建私网
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_13-40.2132n0rgprwg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_13-40.2132n0rgprwg.webp)
 
 但是也可以通过公网，使用 IPsec VPN Tunnel 对报文加密，来实现类似私网的效果
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_13-43.3dkxse9gas20.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_13-43.3dkxse9gas20.webp)
 
 ## MPLS
 
@@ -41,7 +41,7 @@ MPLS 就是通过 labels 来划分流量的，在 MPLS 中有几种角色
 2. PE router = Provider Edge router
 3. P router = Provider core router
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_13-53.5serysxic600.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_13-53.5serysxic600.webp)
 
 - When the ==PE routers== receive frames from the CE routers, they add a label to the frame
 - These labels are used to make forwarding decisions ==within the service provider network, not the destination IP==
@@ -51,7 +51,7 @@ When using a Layer 3 MPLS VPN, the CE and PE routers peer using OSPF, for exampl
 
 例如 下图
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_14-05.5jjgholok6o0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_14-05.5jjgholok6o0.webp)
 
 Office A’s CE will peer with one PE, and Office B’s CE will peer with the other PE
 
@@ -65,21 +65,21 @@ The service provider network is entirely transparent to the CE routers. In effec
 
 If a routing protocol is used, the two CE routers will peer directly with each other
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_14-13.48k53vyut540.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_14-13.48k53vyut540.webp)
 
 > 可以将 Service Provider 部分想象成一个交换机，CE 之间逻辑上的直联
 
 ## DSL
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_14-19.dkascwrz61k.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_14-19.dkascwrz61k.webp)
 
 ## CATV
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_14-19.13dp90aef99c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_14-19.13dp90aef99c.webp)
 
 ## Redundant Internet Connections
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_14-23.4ci846gbm400.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_14-23.4ci846gbm400.webp)
 
 ## Internet VPNs
 
@@ -93,7 +93,7 @@ When using the Internet as a WAN to connect sites together, there is no built-in
 
 Site-to-Site 指的是只能是两台设备之间才能构成 Tunnel，不存在多台设备直接构成 Tunnel
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_14-30.1rfeaep7oulc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_14-30.1rfeaep7oulc.webp)
 
 过程主要如下
 
@@ -118,41 +118,41 @@ Site-to-Site 指的是只能是两台设备之间才能构成 Tunnel，不存在
 
 基于 TLS
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_15-01.5g8bedcbbjc0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_15-01.5g8bedcbbjc0.webp)
 
 例如下图
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_15-04.3xby3ib47oq0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_15-04.3xby3ib47oq0.webp)
 
 ## Site-to-Site Vs Remote-Access VPN
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_15-05.1paoyq3ss400.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_15-05.1paoyq3ss400.webp)
 
 ## GRE Over IPsec
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_14-52.2o1viq864n40.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_14-52.2o1viq864n40.webp)
 
 例如
 
 报文首先会加上 GRE header 和 新的 IP header
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_14-53.ow1eoaeojk0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_14-53.ow1eoaeojk0.webp)
 
 然后按照 IPsec 规则对报文做 encryption，同时加上 VPN header 和 新的 IP header
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_14-54.5zhsr0oacbg0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_14-54.5zhsr0oacbg0.webp)
 
 ## DMVPN
 
 *DMVPN(Dynamic Multipoint VPN) is a Cisco-developed solution that allows routers to dynamically create a full mesh of IPsec tunnels without having to manually configure every single tunnel*
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_14-58.8d0rdjb7vt0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_14-58.8d0rdjb7vt0.webp)
 
 ## LAB
 
 > GRE 并不在 CCNA 考试的范围内
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230816/2023-08-17_15-11.2g2y9317b9gk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230816/2023-08-17_15-11.2g2y9317b9gk.webp)
 
 ### 0x01
 

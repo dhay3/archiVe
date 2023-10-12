@@ -66,7 +66,7 @@ Local branches 是指只在本地的 branches，通过 local reference 来追踪
 
 Remote branches 是指在 remote repository 中的 branches
 
-![2023-04-21_15-42](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230421/2023-04-21_15-42.53uyp5iauzcw.webp)
+![2023-04-21_15-42](https://github.com/dhay3/image-repo/raw/master/20230421/2023-04-21_15-42.53uyp5iauzcw.webp)
 
 例如上图中红框部分就是对应 `github/gitignore` 的 remote branches
 

@@ -6,7 +6,7 @@ Classless Inter-Domain Routing (CIDR) 可以让我们更加灵活地使用 IPv4 
 
 假设有如下一个 Point-to-Point 网络
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-25_20-26.6877jhheykxs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-25_20-26.6877jhheykxs.webp)
 
 显然的在 203.0.133.0/24 中只需要 4 个 IP address，所以有 252 IP addresses 被浪费了
 
@@ -32,7 +32,7 @@ These smaller network are called ‘subnetworks’ or ‘subnets’
 
 假设现在一个点对点网络配置了 203.0.113.0/24 network
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-25_20-35.6q2rq6yy2qo0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-25_20-35.6q2rq6yy2qo0.webp)
 
 就会有 254 个可用的地址，公式如下
 $$
@@ -43,17 +43,17 @@ $$
 
 如果使用 30 bits mask，那么一共可用的地址就是 2 个，做到地址零浪费
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-25_20-40.2iwdamdvy5c0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-25_20-40.2iwdamdvy5c0.webp)
 
 > 但是在 Point-to-Point 网络中，实际是不需要 3 层广播地址的或者是 network 地址的，所以 203.0.113.1 和 203.0.113.0 也是可以被使用的
 >
 > *在 Point-to-Point network	/31 可以用做 mask*
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-25_20-51.4s7epr3kdr0g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-25_20-51.4s7epr3kdr0g.webp)
 
 如果使用 32 bits mask 呢？
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-25_20-53.2dohmwtldtk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-25_20-53.2dohmwtldtk.webp)
 
 显然是不行的，32 bits mask 是不能被用在 interface 上表示一个网段的，但是可以用在路由中表示最高精度的匹配
 
@@ -61,13 +61,13 @@ $$
 
 在 CIDR 中，mask 部分被称为 CIDR Notation
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-25_20-56.5o438f8omvwg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-25_20-56.5o438f8omvwg.webp)
 
 ## Subnetting
 
 假设有 192.168.1.0/24 network 需要划分成 4 个 subnets，每个 subnets 中可以包含 45 hosts
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-25_20-57.4mhbndu56xs0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-25_20-57.4mhbndu56xs0.webp)
 
 $47 \times 4=188$ 显然是小于 256 的，所以这个需求是可以被满足的，大于 47 最小的 2 进制数是 64，即 $2^6$
 
@@ -104,11 +104,11 @@ $47 \times 4=188$ 显然是小于 256 的，所以这个需求是可以被满足
 
 现在需要将 192.168.255.0/24 划分成 5 个 subnets
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-25_21-21.6ap3utkzaruo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-25_21-21.6ap3utkzaruo.webp)
 
 现在并不知道 host number 所以也就不能使用上面的方法
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-25_21-27.54kuyg6rhqbk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-25_21-27.54kuyg6rhqbk.webp)
 
 我们可以使用“借位法”，1 bit 有 2 种可能 0 和 1，所以借 1 bit 就可以划分出 2 subnets，如果需要划分出 5 subnets，至少需要 3 位，即 CIDR notation /27
 
@@ -122,17 +122,17 @@ $47 \times 4=188$ 显然是小于 256 的，所以这个需求是可以被满足
 
 subnetting 有一个小技巧
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-25_21-13.6j370b0cwx34.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-25_21-13.6j370b0cwx34.webp)
 
 因为至少需要 6 bits CIDR natation，所以只关注 the last of octets
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-25_21-16.1jzdlo08ra4g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-25_21-16.1jzdlo08ra4g.webp)
 
 因为 the first subnet 是很容易就计算出来的，所以在 the first subnet 的基础上 **add the last bit of the network portion** 就是 next subnet
 
 ## Identify the subnet
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-25_21-32.4n3311tlxo1s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-25_21-32.4n3311tlxo1s.webp)
 
 只需要去掉，host portion 部分的 bit 即可，所以为 192.168.5.32
 
@@ -148,7 +148,7 @@ VLSM 就是一种划分子网的方法，主要有如下几步
 
 > 总的来说就是按照，实际需要的 end-host 大小顺序来划分子网
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-25_22-26.6uw9hv8753pc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-25_22-26.6uw9hv8753pc.webp)
 
 > 还需要判断一些 192.168.1.0/24 IP 数是否够划分
 >
@@ -204,7 +204,7 @@ Point-to-Point connection 只需要分配 2 个可用的 IP address，所以可�
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230524/2023-05-26_14-07.2j5q1ie12juo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230524/2023-05-26_14-07.2j5q1ie12juo.webp)
 
 LAN2
 192.168.5.0/25

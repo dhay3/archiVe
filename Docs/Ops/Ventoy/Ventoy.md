@@ -59,7 +59,7 @@ https://www.gnome-look.org/p/1569525
 
 在原主题上可以修改一些图片和值，来适配 ventoy 
 
-![unnamed](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230222/unnamed.5xekla5me874.webp)
+![unnamed](https://github.com/dhay3/image-repo/raw/master/20230222/unnamed.5xekla5me874.webp)
 
 目录层级如下
 

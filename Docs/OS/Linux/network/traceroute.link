@@ -149,7 +149,7 @@ traceroute to baidu.com (39.156.66.10), 30 hops max, 60 byte packets
 
 first hop 显示的回包地址是 f1/1 配置的 IP
 
-![](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220412/2022-04-12_21-28.1j5fzz3c2l9c.webp#crop=0&crop=0&crop=1&crop=1&id=trttn&originHeight=296&originWidth=987&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
+![](https://github.com/dhay3/image-repo/raw/master/20220412/2022-04-12_21-28.1j5fzz3c2l9c.webp#crop=0&crop=0&crop=1&crop=1&id=trttn&originHeight=296&originWidth=987&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
 
 如果 address of gateway 显示的是 asterisk（*），表示在指定时间内（默认5sec）没有从 gateway 收到回包，造成这种的原因通常有：
 
@@ -298,7 +298,7 @@ traceroute 10.10.50.5
 
 第 4 跳是一个防火墙，第 5 跳回送包的第4 跳时做了 SNAT
 
-![](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220223/lQLPDhtSJheUL73NAXrNAs6wfXzG7p6VCSoCV0QKgYA_AQ_718_378.1oofuh151pls.webp#crop=0&crop=0&crop=1&crop=1&id=UBL4l&originHeight=231&originWidth=737&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
+![](https://github.com/dhay3/image-repo/raw/master/20220223/lQLPDhtSJheUL73NAXrNAs6wfXzG7p6VCSoCV0QKgYA_AQ_718_378.1oofuh151pls.webp#crop=0&crop=0&crop=1&crop=1&id=UBL4l&originHeight=231&originWidth=737&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
 
 第二种：
 
@@ -322,7 +322,7 @@ traceroute 10.10.50.5
 
 走公网运营商路径不同。有的路径比较优，先到了74.117.154.4
 
-![2022-06-30_12-45](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220630/2022-06-30_12-45.6eh32yxdkls0.webp)
+![2022-06-30_12-45](https://github.com/dhay3/image-repo/raw/master/20220630/2022-06-30_12-45.6eh32yxdkls0.webp)
 
 ### 0x3 Not end
 在使用 traceroute 时，可能会出现在路径中已经出现了目的 IP ，但是还在发包。
@@ -417,7 +417,7 @@ end
 
 [trace.pcap](/home/cpl/note/appendix)
 
-![](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220328/2022-03-28_20-48.2mfdy7s8us40.webp#crop=0&crop=0&crop=1&crop=1&id=f4fDK&originHeight=493&originWidth=2230&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
+![](https://github.com/dhay3/image-repo/raw/master/20220328/2022-03-28_20-48.2mfdy7s8us40.webp#crop=0&crop=0&crop=1&crop=1&id=f4fDK&originHeight=493&originWidth=2230&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
 
 traceroute 探测一次会发 3 个包，前 3 个包的 ttl 值为 1（由traceroute设置），到达 192.168.80.1 时 ttl - 1 值为 0 回送给源 ICMP type 11 (ttl 255 表示还未到达目的端，不可达，由路由器设置可以知道路由器ttl默认为255)，第二次探测的 3 个包的 ttl 值会设置为 2，但是到达了目的了，所以就没有第三次探测了，同时回送给源 ICMP type 11(ttl 254 ，会减掉 1 跳)。如果 ttl 的值到达了 30 就会终止
 

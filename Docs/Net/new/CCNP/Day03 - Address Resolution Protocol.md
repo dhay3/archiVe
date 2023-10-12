@@ -2,7 +2,7 @@
 
 ## Layer2 and Layer3 Address
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230825/2023-08-25_09-40.mmwkkutjk1c.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230825/2023-08-25_09-40.mmwkkutjk1c.webp)
 
 Layer2 和 Layer3 地址提供的功能把不一样
 
@@ -19,7 +19,7 @@ Layer2 和 Layer3 地址提供的功能把不一样
 
 ## ARP Overview
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230825/2023-08-25_09-55.2lcapvdvnri0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230825/2023-08-25_09-55.2lcapvdvnri0.webp)
 
 ARP 是介于 L2 和 L3 之间的(所以 ARP 也比较难划分进 OSI 模型中特定的层)，用于将 Layer3 地址映射成 Layer2 地址
 
@@ -57,17 +57,17 @@ ARP 是介于 L2 和 L3 之间的(所以 ARP 也比较难划分进 OSI 模型中
 
 ARP 报文是直接被封装在 Ethernet header 和 trailer 内的，不包含 IP header(也是这种原因 ARP 被大多数人视为 L2 协议)。如果 Ehthernet 帧中 Type 值为 0x0806 就表示 payload 部分是 ARP message
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230825/2023-08-25_10-39.73mra8ao1f40.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230825/2023-08-25_10-39.73mra8ao1f40.webp)
 
 ARP message 格式都一样，主要包含如下几个字段
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230825/2023-08-25_10-45.4zt89x0i5n0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230825/2023-08-25_10-45.4zt89x0i5n0.webp)
 
 > 针对 GARP Operation 字段的值均为 2，因为 GARP 逻辑上就是 ARP reply
 
 ### ARP packet
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230904/2023-09-04_16-49.4cbx978b3gu0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230904/2023-09-04_16-49.4cbx978b3gu0.webp)
 
 ARP request 中的 Target MAC address 为 0000.0000.0000 表示当前 Target IP 对应的 MAC 未知
 
@@ -75,7 +75,7 @@ ARP request 中的 Target MAC address 为 0000.0000.0000 表示当前 Target IP 
 
 ARP 处理的过程按照 发送 和 回送 分为
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230904/2023-09-04_16-21.5ile0v9hwa00.png)
+![](https://github.com/dhay3/image-repo/raw/master/20230904/2023-09-04_16-21.5ile0v9hwa00.png)
 
 - ARP Source Host
 - ARP Destination Host
@@ -106,7 +106,7 @@ ARP 处理的过程按照 发送 和 回送 分为
 
 例如 R1 192.168.1.1 ping R2 192.168.1.2，如果使用 `debug arp` 就可以看到输出如下内容
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230904/2023-09-04_16-28.27bdh50ei134.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230904/2023-09-04_16-28.27bdh50ei134.webp)
 
 1. R1 会先生成一条 192.168.1.2 incomplete ARP entry
 2. 然后 R1 发送 ARP request，日志中的 0000.0000.0000 是 ARP 头中的，表示 192.168.1.2 目前 MAC 未知，和二层头中的 ffff.ffff.ffff 做区别
@@ -121,7 +121,7 @@ ARP 处理的过程按照 发送 和 回送 分为
 
 > 如果是主机，ARP table 只会显示同端内的 IP 对应条目，因为 ARP 只用于同段内
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230904/2023-09-04_17-11.4b71y6gskes.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230904/2023-09-04_17-11.4b71y6gskes.webp)
 
 主要有几个字段
 
@@ -155,7 +155,7 @@ ARP 处理的过程按照 发送 和 回送 分为
 
 例如在 R1 上 ping 192.168.1.3-5，因为当前 192.168.1.0/24 中只存在 192.168.1.1-2，且只有这两个 IP 能收到 ARP request，因为没有对应 IP 的主机能回送 ARP reply 所以对应的 ARP entry 就会显示 incomplete
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230904/2023-09-04_17-20.23bwubeyk3xc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230904/2023-09-04_17-20.23bwubeyk3xc.webp)
 
 在 Cisco 中，在没有收到对应的 ARP message 时，默认的 incomplete ARP entry 会在 1 分钟后从 ARP table 中移除，而对应的 complete ARP entry 会在 4 小时后从 ARP table 中移除
 
@@ -173,11 +173,11 @@ ARP 处理的过程按照 发送 和 回送 分为
 
 Proxy ARP 是一种特殊的 ARP，可以让非对应 Target IP 的设备回送 ARP reply, 思科的设备默认会开启 Proxy ARP
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230904/2023-09-04_17-31.7l63xe1ztio0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230904/2023-09-04_17-31.7l63xe1ztio0.webp)
 
 如果想要手动配置 Proxy ARP 需要使用如下命令
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230904/2023-09-04_17-34.4vqq0r51kgi0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230904/2023-09-04_17-34.4vqq0r51kgi0.webp)
 
 - `R1(config)#ip arp proxy disable`
 
@@ -207,7 +207,7 @@ PC1 192.168.0.11/16 想要访问 PC3 192.168.1.13/24
 
 > 这里的拓扑忽略了 PC1 PC2 之间的交换机，同理 PC3 PC4
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230904/2023-09-04_18-22.1fffo7n7pj34.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230904/2023-09-04_18-22.1fffo7n7pj34.webp)
 
 当 PC1 想要访问 PC3 时，因为 IP 层报文中并不包含 subnet mask，所以会认为 192.168.1.13 和自己在同一个段中，所以会直接发送 ARP request(无需按照正常的逻辑判断在不同 subnet 中，先请求 router 的 ARP 信息)，同理 PC1 访问 PC2/PC4
 
@@ -236,7 +236,7 @@ Proxy ARP 还有一个使用的场景，就是当目的包含在静态直联路�
 >
 > 对比 connected route 虽然显示 `is directly connected` 但是会以 `S` 标识，表示是手动配置的静态路由
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230904/2023-09-05_10-26.730p9qxsi7o0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230904/2023-09-05_10-26.730p9qxsi7o0.webp)
 
 这里可以观察到 192.168.12.2/192.168.34.3/192.168.34.4 对应的 MAC 条目均为 R2 G0/0 MAC(回程使用的接口 MAC)
 
@@ -246,13 +246,13 @@ Proxy ARP 还有一个使用的场景，就是当目的包含在静态直联路�
 
 如果关闭 R2 G0/0 Proxy ARP，任然保持添加那条静态直联路由，如果这是 R1 ping 192.168.34.3 就会超时，对应 ARP table 中的条目也会显示 incomplete
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230904/2023-09-05_10-33.5gq4zoly9tc0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230904/2023-09-05_10-33.5gq4zoly9tc0.webp)
 
 ## Gratuitous ARP
 
 Gratuitous ARP 免费的 ARP，顾名思义无需收到 ARP request 也能直接发送 ARP reply(Gratuitous ARP 报文 operation 值为 2)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230904/2023-09-05_10-48.2o0ozfqh3dm0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230904/2023-09-05_10-48.2o0ozfqh3dm0.webp)
 
 有如下几种场景会发送 Gratuitous ARP
 
@@ -266,7 +266,7 @@ Gratuitous ARP 免费的 ARP，顾名思义无需收到 ARP request 也能直接
 
 R1 g0/0 192.168.1.1 up/up 就会发送 Gratuitous ARP
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230904/2023-09-05_10-52.5ugiy86f6ds0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230904/2023-09-05_10-52.5ugiy86f6ds0.webp)
 
 这里可以观察到 R1 发送的 ARP 报文如下 
 
@@ -284,7 +284,7 @@ SW 会更新 MAC table，R2/3 刷新 ARP table entry(如果已经存在 192.168.
 
 Gratuitous ARP 报文主要如下，如果在 wireshark 中还会显示 `Is gratuitous` 这并不是 Gratuitous ARP 报文中字段，而是 wireshark 按照 ARP 报文中 sender/target 地址推断出来的
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230904/2023-09-05_10-54.3brya8vakns0.webp)  
+![](https://github.com/dhay3/image-repo/raw/master/20230904/2023-09-05_10-54.3brya8vakns0.webp)  
 
 ## Manual ARP Entry Configuration
 
@@ -292,7 +292,7 @@ Gratuitous ARP 报文主要如下，如果在 wireshark 中还会显示 `Is grat
 
 可以通过 `R1(config)#arp <ip address> <mac address> arpa `(arpa 其实也是一个多选参数，但是在现在的网络中一般只会使用该参数表示 ethernet II)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230904/2023-09-05_11-00.k9muw7sscgg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230904/2023-09-05_11-00.k9muw7sscgg.webp)
 
 配置完成后使用 `show arp` 查看 ARP table 时，可以发现对应的条目，但是 Interface 处的值是空的
 
@@ -302,7 +302,7 @@ Gratuitous ARP 报文主要如下，如果在 wireshark 中还会显示 `Is grat
 
 假设现在使用了 `R1#clear arp` 来删除 R1 上对应的所有 ARP 条目，可以发现，前后竟然没什么区别(timer 会被 refresh)
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230904/2023-09-05_11-06.6mxqerukwtc0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230904/2023-09-05_11-06.6mxqerukwtc0.webp)
 
 因为在使用 `clear arp` 命令之后，设备会先发送 unicast ARP request 刷新 ARP table，如果在 3 次内没有收到对应的 ARP reply 才会执行清空对应对的条目
 
@@ -314,7 +314,7 @@ Gratuitous ARP 报文主要如下，如果在 wireshark 中还会显示 `Is grat
 
 假设现在使用 `clear arp` 来 refresh ARP table
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230904/2023-09-05_11-24.5qnnt8bzo280.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230904/2023-09-05_11-24.5qnnt8bzo280.webp)
 
 当 refresh timer 显示为 0， 设备会重新尝试 refresh，如果 refresh 次数超过 3 次，就会清空对应的条目
 
@@ -352,13 +352,13 @@ Cisco IOS devices add a random jitter between 0 seconds and 30 minutes to the ti
 
 当然 ARP aging 也是可以手动配置的，但是不推荐，可以通过 `R1(config-if)#arp timeout <seconds>` 来实现
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230904/2023-09-05_11-34.179m9wx2kjxc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230904/2023-09-05_11-34.179m9wx2kjxc.webp)
 
 > 这里为什么 configured timeout + jitter 小于 3 mintus 没明白
 
 ## Command Review
 
-![	](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230904/2023-09-05_11-40.47dwfhxb8iw0.webp)
+![	](https://github.com/dhay3/image-repo/raw/master/20230904/2023-09-05_11-40.47dwfhxb8iw0.webp)
 
 
 

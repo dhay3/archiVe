@@ -42,25 +42,25 @@ DHCP使用的广播地址是255.255.255.255，在同一个广播域(由三层设
 
 用一个例子来解释，网络中有 ABCDE用户，现在只有ABC用户有接收数据源信息的要求
 
-![2022-04-05_23-22](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220405/2022-04-05_23-22.3ouphz49mla0.webp)
+![2022-04-05_23-22](https://github.com/dhay3/image-repo/raw/master/20220405/2022-04-05_23-22.3ouphz49mla0.webp)
 
 ### 采用单播
 
 使用单播，需要确保有流量需求的用户都能收到流量，数据源需要3份流量，相应的网络设备B也需要承载3份流量
 
-![2022-04-05_23-32](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220405/2022-04-05_23-32.1jnrbb0sky74.webp)
+![2022-04-05_23-32](https://github.com/dhay3/image-repo/raw/master/20220405/2022-04-05_23-32.1jnrbb0sky74.webp)
 
 ### 采用广播
 
 使用广播，数据源值需要发送一份流量，有流量需求的用户可以收到流量，但是也因为关播的机制无流量需求的DE用户也收到了流量，存在流量冗余
 
-![2022-04-05_23-35](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220405/2022-04-05_23-35.55k7hqy9a040.webp)
+![2022-04-05_23-35](https://github.com/dhay3/image-repo/raw/master/20220405/2022-04-05_23-35.55k7hqy9a040.webp)
 
 ### 采用组播
 
 使用组播，数据源值发送一份流量，有流量需求的用户可以收到流量，而无流量需求的DE用户不会收到冗余的流量
 
-![2022-04-05_23-37](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20220405/2022-04-05_23-37.p09tbrqfjz4.webp)
+![2022-04-05_23-37](https://github.com/dhay3/image-repo/raw/master/20220405/2022-04-05_23-37.p09tbrqfjz4.webp)
 
 ## 对比
 

@@ -52,7 +52,7 @@ lrwx------ root root 64 B Thu Jul 28 01:26:43 2022  2 ⇒ /dev/pts/1
 
 因为`proc/self/fd`下有 stdin, stdout, stderr。==所以所有的 Shell 命令都会默认有 3 个文件FD==
 
-![480px-Stdstreams-notitle](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20220727/480px-Stdstreams-notitle.6bfsgmevmmbk.webp)
+![480px-Stdstreams-notitle](https://github.com/dhay3/image-repo/raw/master/20220727/480px-Stdstreams-notitle.6bfsgmevmmbk.webp)
 
 ```
 ➜  /tmp ll /dev/std*

@@ -6,15 +6,15 @@
 
 先回顾一下 OSI 模型
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230821/2023-08-21_22-52.4ipceywzosy0.png)
+![](https://github.com/dhay3/image-repo/raw/master/20230821/2023-08-21_22-52.4ipceywzosy0.png)
 
 对比 TCP/IP 模型，以及常用的模型
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230821/2023-08-21_22-54.5faqnl51jqw0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230821/2023-08-21_22-54.5faqnl51jqw0.webp)
 
 ### Encapsulation/De-Encapsulation
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230821/2023-08-21_22-57.6cr5h5dwtwo0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230821/2023-08-21_22-57.6cr5h5dwtwo0.webp)
 
 报文从上层到下层叫做 encapsulation(封装)
 
@@ -24,7 +24,7 @@
 >
 > 2 层报文叫做 frame
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230821/2023-08-21_22-59.3r57z5xq1ko0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230821/2023-08-21_22-59.3r57z5xq1ko0.webp)
 
 报文从下层到上层叫做 de-encapsulation(解封装)
 
@@ -34,7 +34,7 @@
 
 - 如果同时存在多个发送者，就会出现冲突(这里的逻辑无需深入，将其看成一个定理即可)，即 Collision Domain
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_11-08.7ep8p9k1t740.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_11-08.7ep8p9k1t740.webp)
 
 ### Hub
 
@@ -42,14 +42,14 @@
 - Hub 没有 buffer，Hub 收到报文后会立即转发到除接收端口外的其他所有端口。因为这种特性就要求 Hub 工作在半双工的环境下，以减少冲突的几率(同样还是有概率冲突的)
 - 所有通过 Hub 互联的设备构成的网络是一个冲突域
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_11-39.5652zhj4axs0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_11-39.5652zhj4axs0.webp)
 
 ### Switch
 
 - Switch 是一个 2 层设备，会根据报文 MAC 进行转发
 - 和 Hub 不同，Switch 每一个端口对应的链路都是一个 Collision Domain
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_11-22.fp3nnoc9vmg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_11-22.fp3nnoc9vmg.webp)
 
 Switch 有 buffer，所以可以决定报文的发送顺序，减小冲突
 
@@ -63,11 +63,11 @@ Switch 有 buffer，所以可以决定报文的发送顺序，减小冲突
 
 例如下图中一共有 9 个冲突域
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_13-56.21jilsertg2o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_13-56.21jilsertg2o.webp)
 
 ### Broadcast Domains
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_13-59.2mcfcw3il3o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_13-59.2mcfcw3il3o.webp)
 
 > 通常我们并不需要注意 Collision domain，因为 Switch 会为我们划分 Collision domain
 >
@@ -75,7 +75,7 @@ Switch 有 buffer，所以可以决定报文的发送顺序，减小冲突
 
 ### quiz
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_16-16.6n1h3wxjzas0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_16-16.6n1h3wxjzas0.webp)
 
 ## Layer 2 Forwarding
 
@@ -85,7 +85,7 @@ Switch 有 buffer，所以可以决定报文的发送顺序，减小冲突
 
 Layer 2 Forwarding 可以划分成 4 大类
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_14-10.4hy2j6jr7b40.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_14-10.4hy2j6jr7b40.webp)
 
 - known Unicast
 
@@ -107,7 +107,7 @@ Layer 2 Forwarding 可以划分成 4 大类
 
 例如 R1 访问 PC1
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_14-42.2h1pj6vt0a20.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_14-42.2h1pj6vt0a20.webp)
 
 1. R1 发送报文 Src MAC aaaa.aaaa.aaaa Dst MAC 1111.1111.1111
 
@@ -125,7 +125,7 @@ Layer 2 Forwarding 可以划分成 4 大类
 
 例如 PC1 给 R1 回包
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_15-06.5ql3ndgzvf80.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_15-06.5ql3ndgzvf80.webp)
 
 1. PC1 回送 Src MAC 1111.1111.1111 Dst MAC aaaa.aaaa.aaaa
 
@@ -139,7 +139,7 @@ Layer 2 Forwarding 可以划分成 4 大类
 
 例如 PC2 发送广播帧
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_15-15.141tpaznxkm8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_15-15.141tpaznxkm8.webp)
 
 1. PC2 发送 Src MAC 2222.2222.2222 Dst MAC ffff.ffff.ffff
 
@@ -151,7 +151,7 @@ Layer 2 Forwarding 可以划分成 4 大类
 
 例如 PC3 访问 PC2
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_15-23.1hlf2sxnppmo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_15-23.1hlf2sxnppmo.webp)
 
 1. PC3 发送 Src MAC 3333.3333.3333 Dst MAC 2222.2222.2222
 2. SW1 收到报文时，会 de-encapsulation，因为 Src MAC 3333.3333.3333 不在 MAC address table 中，所以会将其记录，同时发现 Dst MAC 是 2222.2222.2222 在 MAC address table 中有记录，所以直接转发到 G0/2
@@ -160,11 +160,11 @@ Layer 2 Forwarding 可以划分成 4 大类
 
 > 多播只需记住默认 flood 即可，会在后面的章节详细介绍
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_15-36.y07wn5dsuds.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_15-36.y07wn5dsuds.webp)
 
 ## MAC Address Table
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_15-42.11c8wfu9hsps.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_15-42.11c8wfu9hsps.webp)
 
 - `Type`
 
@@ -176,7 +176,7 @@ Layer 2 Forwarding 可以划分成 4 大类
 
 ### MAC Address aging
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_15-49.6nr69ydmsbg0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_15-49.6nr69ydmsbg0.webp)
 
 MAC Address 默认并不会永久的保存在 MAC Address table 中
 
@@ -188,7 +188,7 @@ MAC Address 默认并不会永久的保存在 MAC Address table 中
 
 ### MAC Address learning
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_15-53.429ru00f86c0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_15-53.429ru00f86c0.webp)
 
 还可以通过 `SW1(config)#no mac address-table learning vlan <vlan-id>` 来关闭指定 VLAN 的 dynamically learning
 
@@ -198,7 +198,7 @@ MAC Address 默认并不会永久的保存在 MAC Address table 中
 
 ### MAC Address static configuration
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_15-57.6f4ptocbks00.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_15-57.6f4ptocbks00.webp)
 
 当然 MAC Address 也可以和 Route 一样，配置成 Static
 
@@ -210,7 +210,7 @@ MAC Address 默认并不会永久的保存在 MAC Address table 中
 
 ### Mac Address Table count
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_16-10.4cwp6rddtfy0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_16-10.4cwp6rddtfy0.webp)
 
 可以使用 `show mac address-table count` 来显示 mac address table 中一共的条目数
 
@@ -220,7 +220,7 @@ MAC Address 默认并不会永久的保存在 MAC Address table 中
 
 ### Clearing dynamic MAC Address
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_16-06.13i17tqmet34.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_16-06.13i17tqmet34.webp)
 
 除了 aging time 后自动删除 MAC address，还可以通过 `SW1#clear mac address-table dynamic` 来清空所有 dynamically learning 学来的 MAC address
 
@@ -228,7 +228,7 @@ MAC Address 默认并不会永久的保存在 MAC Address table 中
 
 ## Command Summary
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230823/2023-08-23_16-14.z2bpgluocsw.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230823/2023-08-23_16-14.z2bpgluocsw.webp)
 
 
 

@@ -8,11 +8,11 @@
 
 思科的 IP phone 长这样
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_14-09.6f0h374dgdc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_14-09.6f0h374dgdc.webp)
 
 IP phone 和 end host 一样，都是通过 Switch 或者是 WIFI 接入网络的
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_14-10.50ucw4pnrc74.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_14-10.50ucw4pnrc74.webp)
 
 IP phone 内置了一个 3 口的交换机
 
@@ -22,7 +22,7 @@ IP phone 内置了一个 3 口的交换机
 
 逻辑上可以想象成下图
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_14-12.2g0l6f4hyi2o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_14-12.2g0l6f4hyi2o.webp)
 
 因为这种模型，通常需要将 voice traffic(from the IP phone) and data traffic(from the PC) 通过 VLAN 隔离
 
@@ -30,11 +30,11 @@ IP phone 内置了一个 3 口的交换机
 
 因为 IP phone 逻辑上内部包含一个 3 口交换机，所以上面的拓扑就可以抽象成下图
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_16-47.4fb5fq0trb40.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_16-47.4fb5fq0trb40.webp)
 
 ### IP phones/Voice VLAN
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_14-20.66jmonhbth0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_14-20.66jmonhbth0.webp)
 
 所有的配置均在 SW1 上完成
 
@@ -42,7 +42,7 @@ PC1 正常的流量走 VLAN10，如果是从 PH1 来的走 VLAN11 会打上 VLAN
 
 还可以通过 `show interfaces trunk` 来确定 SW1 g0/0 不是 trunk 口
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_14-54.7j0wvlmn7q4g.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_14-54.7j0wvlmn7q4g.webp)
 
 ## Power over Ethernet(PoE)
 
@@ -56,13 +56,13 @@ PD 可以是 IP phones, IP cameras, wireless access points 等
 
 PoE 主要有如下几种协议
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_17-24.br46xgy2lu8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_17-24.br46xgy2lu8.webp)
 
 最早的 PoE 协议是 Cisco inline Power，PSE 每个端口可以提供 7 watts 的功率，网线中的 2 对绞线提供电流
 
 使用 PoE 后拓扑如下
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_17-30.10ot9d9qo500.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_17-30.10ot9d9qo500.webp)
 
 ### PSE/PD
 
@@ -74,7 +74,7 @@ PoE 主要有如下几种协议
 
 交换机电源接入到插座，就可以将 AC 转发为 DC 为 PD 供电
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_16-54.6j0fraom64u8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_16-54.6j0fraom64u8.webp)
 
 如果 PSE 提供太高的电流给 PC 就可能造成损毁 PD
 
@@ -104,7 +104,7 @@ PoE 有自己独立的一套逻辑来判断连接的设备是否需要电流，�
 
 例如让 SW1 G0/0 为 PH1 供电
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_17-18.5atcvthl6ao0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_17-18.5atcvthl6ao0.webp)
 
 只需要配置 `SW1(config-if)#power inline police` 指定 PSE 使用的供电策略，这里使用默认的
 
@@ -112,7 +112,7 @@ PoE 有自己独立的一套逻辑来判断连接的设备是否需要电流，�
 
 如果使用了 `power inline police action log` 就会修改 Admin Police 到 log
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_17-21.7aejyxj6rksg.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_17-21.7aejyxj6rksg.webp)
 
 ## QoS
 
@@ -148,7 +148,7 @@ QoS 主要被用于控制 4 个方面
    - The amount of the time it takes traffic to go from source to destination = one-way delay
    - The amount of the time it takes traffic to go from source to destination and return = two-way delay
 
-   ![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_17-57.5lxm3toqornk.webp)
+   ![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_17-57.5lxm3toqornk.webp)
 
 3. Jitter 抖动
 
@@ -181,7 +181,7 @@ QoS 主要被用于控制 4 个方面
 
 当 Router 同时收到 G0/0-1 接口过来的流量时，只有一个 G0/2 做转发，转发效率比不上接受的效率，在 Router 内有一个抽象的 Queue，里面填充了接受但是还没有转发的报文
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_18-13.u24wb02g0bk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_18-13.u24wb02g0bk.webp)
 
 *By default, queued messages will be forwarded in a First In First Out(FIFO) manner*
 
@@ -191,7 +191,7 @@ QoS 主要被用于控制 4 个方面
 
 假设现在队列满了，这时入向的报文就会被丢弃
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_18-17.2byyk6xh7sqo.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_18-17.2byyk6xh7sqo.webp)
 
 这种现象也被称为 **Tail drop**，可能会导致 **TCP global synchronization**
 
@@ -208,7 +208,7 @@ TCP sliding window 会根据发送的流量来动态的调整
 
 > 正是因为 TCP 的 二进制退避 规则会导致更多的丢包，网络更加拥塞
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-12_18-25.772tlyniy0e8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-12_18-25.772tlyniy0e8.webp)
 
 解决 tail drop 和 TCP global synchronization 有一种方法就是 **Random Early Detection(RED)**
 
@@ -224,7 +224,7 @@ TCP sliding window 会根据发送的流量来动态的调整
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-13_16-28.2oqvvgqca5og.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-13_16-28.2oqvvgqca5og.webp)
 
 ### 0x01
 
@@ -312,11 +312,11 @@ In simulation mode, ping PC2 from PC1. Is the traffic tagged with a VLAN ID
 
 In simulation mode, call PH1 from PH2. Is the traffic tagged with a VLAN ID
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-13_17-32.4qbdbqv0t668.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-13_17-32.4qbdbqv0t668.webp)
 
 框中的就是 PH1 的号码，如果从 PH2 拨打 2020 就可以发现发送的报文是带 VLAN ID 的
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230713/2023-07-13_17-35.7e6fnu1xaglc.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230713/2023-07-13_17-35.7e6fnu1xaglc.webp)
 
 这里可以发现 PH2 发出的报文 TCI 是 0x0014 即 VLAN20
 

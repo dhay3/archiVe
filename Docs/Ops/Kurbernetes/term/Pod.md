@@ -60,7 +60,7 @@ spec:
 
 ## networking
 
-![Snipaste_2021-03-25_15-36-38](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210518/Snipaste_2021-03-25_15-36-38.799e9dg6vvc0.png)
+![Snipaste_2021-03-25_15-36-38](https://github.com/dhay3/image-repo/raw/master/20210518/Snipaste_2021-03-25_15-36-38.799e9dg6vvc0.png)
 
 1. kubernetes为pod提供唯一的IP
 2. 同一Pod中的container通过localhost通信

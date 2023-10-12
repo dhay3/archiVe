@@ -1,6 +1,6 @@
 # MTU vs MSS
 
-![2021-09-06_15-42](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20210601/2021-09-06_15-42.6zgzrm9nbjo0.png)
+![2021-09-06_15-42](https://github.com/dhay3/image-repo/raw/master/20210601/2021-09-06_15-42.6zgzrm9nbjo0.png)
 
 ## MTU
 

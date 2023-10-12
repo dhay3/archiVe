@@ -19,7 +19,7 @@ RETURN target 是 IPtables built-in Targets 之一，且是一个 terminated Tar
 
 例如设置 192.168.1.1 访问 192.168.3.1 不通，但是 192.168.4.1 可以访问 192.168.3.1
 
-![2022-11-15_15-14](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20221115/2022-11-15_15-14.56e538jrk8w0.webp)
+![2022-11-15_15-14](https://github.com/dhay3/image-repo/raw/master/20221115/2022-11-15_15-14.56e538jrk8w0.webp)
 
 设置 192.168.3.1 规则
 

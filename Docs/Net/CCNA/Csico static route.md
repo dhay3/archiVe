@@ -103,7 +103,7 @@ ip route 10.10.1.0 255.255.255.0 f0/0 192.168.80.4
 
 ## Example
 
-![2021-12-08_22-23](https://cdn.jsdelivr.net/gh/dhay3/image-repo@master/20211208/2021-12-08_22-23.1itbzvxllp0g.png)
+![2021-12-08_22-23](https://github.com/dhay3/image-repo/raw/master/20211208/2021-12-08_22-23.1itbzvxllp0g.png)
 
 fa0/0 - fa1/0 fa0/1 - fa0/0	
 

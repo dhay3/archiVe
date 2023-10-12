@@ -10,7 +10,7 @@ Syslog 是一个用于收集日志的标准的协议
 
 例如对端口使用 `no shutdown` 设备就会立马显示两条 Syslog messages
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_15-42.wmox357lvk0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-06_15-42.wmox357lvk0.webp)
 
 在实际的生产中，Syslog 和 SNMP 形成互补
 
@@ -18,17 +18,17 @@ Syslog 是一个用于收集日志的标准的协议
 
 Syslog 会按照 `seq:time stamp: %facility-serverity-MNEMONIC:descprtion` 来显示
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_15-46.2mgki1gzizb4.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-06_15-46.2mgki1gzizb4.webp)
 
 例如
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_16-51.6p8fyk5xubk0.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-06_16-51.6p8fyk5xubk0.webp)
 
 > seq 和 time stamp 不一定会出现在 syslog messages，需要看 Syslog 配置
 
 severity 一共有 8 个值，值越大程度越紧急,你可以使用 level 也可以使用 keyword
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_15-49.5frh94ire0e8.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-06_15-49.5frh94ire0e8.webp)
 
 ## Syslog Logging Location
 
@@ -52,7 +52,7 @@ Syslog messages 会出现在几个位置
 
 ## Syslog Configuration
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_17-00.110mmhf5vhxs.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-06_17-00.110mmhf5vhxs.webp)
 
 1. `R1(config#)logging console <severity>`
 
@@ -84,7 +84,7 @@ Syslog messages 会出现在几个位置
 
 默认如果你在 CLI 中输命令的时候，syslog messages 可能会输出在中间，例如
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_17-49.1ng175dmc28w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-06_17-49.1ng175dmc28w.webp)
 
 如果需要避免这种情况出现，需要使用 logging synchronous，使用如下命令
 
@@ -97,11 +97,11 @@ R1(config-line)#logging synchronous
 
 使用上面命令后就会有如下效果
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_17-52.yrvytfdgi2o.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-06_17-52.yrvytfdgi2o.webp)
 
 ### service timestamps/service sequence-numbers
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_17-56.3wa8h2xpjxfk.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-06_17-56.3wa8h2xpjxfk.webp)
 
 - `service timestamps log <datetime|uptime>`
 
@@ -113,7 +113,7 @@ R1(config-line)#logging synchronous
 
 ## Command summary
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_17-58.3dpnxlk3oc1s.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-06_17-58.3dpnxlk3oc1s.webp)
 
 ## Syslog VS SNMP
 
@@ -135,7 +135,7 @@ Syslog 和 SNMP 虽然都用于监控设备的信息，但是两者这间功能�
 
 ## LAB
 
-![](https://cdn.staticaly.com/gh/dhay3/image-repo@master/20230706/2023-07-06_18-11.35s4ahh5y08w.webp)
+![](https://github.com/dhay3/image-repo/raw/master/20230706/2023-07-06_18-11.35s4ahh5y08w.webp)
 
 ### 0x01
 
