@@ -149,6 +149,8 @@ ssb* rsa3072/E0F78F9BC03150DF
 
 添加其他邮箱信息
 
+> 如果 Key 需要用于 Github GPG Signing 邮箱需要和 `.gitconfig` 中的相同
+
 ```
 gpg> adduid
 Real name: c4lice
