@@ -77,6 +77,8 @@ Tmux 的指令需要通过 Prefix（默认 <kbd>ctrl</kbd> + <kbd>b</kbd>）和 
 | q                                      | 显示 panel 的序号，可以和数字使用直接切换快速切换到制定 panel, 例如 q 2 |
 | 0..9                                   | 切换 window                                                  |
 | c                                      | 创建一个新的 window                                          |
+| x                                      | 关闭当前 panel                                               |
+| space                                  | 调整 panel 的位置，为了方便复制                              |
 
 ## ~/.tmux.conf
 

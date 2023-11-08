@@ -1,7 +1,5 @@
 # Sogoupinyin
 
-> if it's not work, use ` fcitx-diagnose` to debug 
-
 1. Download sogoupinyin and dependencies for AUR
 
    ```
@@ -16,7 +14,7 @@
    export XMODIFIERS=@im=fcitx
    ```
 
-3. Ff not work Use `fcitx-diagnose`
+3. If not work use `fcitx-diagnose` to debug
 
 ## Jetbrain
 
@@ -28,9 +26,7 @@ Jetbrain 全家桶和 fcitx5 不兼容会出现输入框偏移（官网现在已
 
 3. 2021.1.3 之前的版本用这个 [JRE](https://github.com/RikudouPatrickstar/JetBrainsRuntime-for-Linux-x64/releases/download/202110301849/jbr-linux-x64-202110301849.zip) 不要使用官方给的 JRE
 
-   
-
-
+4. 替换掉 JRE 重启即可正常使用 fcitx
 
 **references**
 

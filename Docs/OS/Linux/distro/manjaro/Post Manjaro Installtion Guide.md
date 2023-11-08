@@ -46,6 +46,19 @@ sudo ../AppRun
 
 然后解锁 Clash core, 后续使用运行 AppRun
 
+为了方便使用可以创建一个 desktop file
+
+```
+[Desktop Entry]
+Exec=/home/0x00/appimages/squashfs-root/AppRun
+MimeType=text/plain;
+Name=Clash Verge
+Type=Application
+Icon=/home/0x00/appimages/squashfs-root/clash-verge.png
+Terminal=false
+Categories=Network
+```
+
 ## Update System
 
 ```
@@ -233,7 +246,7 @@ latte-dock
 | flatpak | 3 方下载工具    |
 | snapd   | 3 方下载工具    |
 | nmap    | 网络探测工具    |
-|         |                 |
+| docker  |                 |
 |         |                 |
 |         |                 |
 |         |                 |
