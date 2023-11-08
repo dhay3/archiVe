@@ -78,13 +78,6 @@ plugins=(
     sudo
 )
 
-# Bindings
-bindkey '^U' backward-kill-line
-bindkey '^P' history-search-backward
-bindkey '^N' history-search-forward
-bindkey '\e[A' history-search-backward
-bindkey '\e[B' history-search-forward
-
 # Extra
 fpath+=/usr/share/zsh/plugins/zsh-completions/src
 [ -f /usr/share/zsh/plugins/zsh-autopair/autopair.zsh ] && source /usr/share/zsh/plugins/zsh-autopair/autopair.zsh
@@ -92,6 +85,55 @@ fpath+=/usr/share/zsh/plugins/zsh-completions/src
 [ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 [ -f $ZSH/oh-my-zsh.sh ] && source $ZSH/oh-my-zsh.sh
 autopair-init
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/0x00/anaconda3/bin/conda' 'shell.zsh' 'hook' 2>/dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/0x00/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/0x00/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/0x00/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+#fastfetch
+fastfetch --logo Arya \
+    --set Colors="" \
+    --set Cursor="" \
+    --set Locale="" \
+    --set DE="" \
+    --set WM="" \
+    --set WMTheme="" \
+    --set Theme="" \
+    --set Icons="" \
+    --set Font="" \
+    --set Terminal="" \
+    --set TerminalFont=""
+
+# Print a new line after command excuted
+precmd() {
+    print ""
+}
+
+# Use gpg-agent instead of ssh-agent
+unset SSH_AGENT_PID
+if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+    export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+fi
+export GPG_TTY=${TTY:-"$(tty)"}
+gpg-connect-agent updatestartuptty /bye >/dev/null
+
+# Bindings
+bindkey '^U' backward-kill-line
+bindkey '^P' history-search-backward
+bindkey '^N' history-search-forward
+bindkey '\e[A' history-search-backward
+bindkey '\e[B' history-search-forward
 
 #aliases
 alias c='clear'
@@ -125,39 +167,6 @@ alias pacman='pacman --color always'
 alias -s {json,yaml,yml,html}=subl
 alias -s md=typora
 alias -s txt=subl
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/0x00/anaconda3/bin/conda' 'shell.zsh' 'hook' 2>/dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/0x00/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/0x00/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/0x00/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-#custom scripts
-fastfetch --logo Arya \
-    --set Colors="" \
-    --set Cursor="" \
-    --set Locale="" \
-    --set DE="" \
-    --set WM="" \
-    --set WMTheme="" \
-    --set Theme="" \
-    --set Icons="" \
-    --set Font="" \
-    --set Terminal="" \
-    --set TerminalFont=""
-precmd() {
-    print ""
-}
-
 ```
 
 ## Vim
