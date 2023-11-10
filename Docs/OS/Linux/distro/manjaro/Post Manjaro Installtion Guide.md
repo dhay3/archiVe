@@ -46,7 +46,7 @@ sudo ../AppRun
 
 然后解锁 Clash core, 后续使用运行 AppRun
 
-为了方便使用可以创建一个 desktop file
+当然为了方便使用可以创建一个 desktop file
 
 ```
 [Desktop Entry]
@@ -226,35 +226,35 @@ latte-dock
 | visual-studio-code-bin | 万能编辑器                                   |
 | gimp                   | PS 工具                                      |
 | wechat                 |                                              |
-|                        |                                              |
-|                        |                                              |
+| docker-desktop         |                                              |
+| picgo                  | 图床工具                                     |
 |                        |                                              |
 |                        |                                              |
 |                        |                                              |
 
 ### Basic Function Software
 
-| Name    | Description     |
-| ------- | --------------- |
-| bind    | 包含 dig        |
-| tmux    | 终端多开工具    |
-| ranger  | TUI 文件浏览    |
-| vim     | TUI 编辑工具    |
-| vagrant | 虚拟机管理工具  |
-| git     | 版本控制工具    |
-| gh      | github 管理工具 |
-| flatpak | 3 方下载工具    |
-| snapd   | 3 方下载工具    |
-| nmap    | 网络探测工具    |
-| docker  |                 |
-|         |                 |
-|         |                 |
-|         |                 |
-|         |                 |
-|         |                 |
-|         |                 |
-|         |                 |
-|         |                 |
+| Name      | Description          |
+| --------- | -------------------- |
+| bind      | 包含 dig             |
+| tmux      | 终端多开工具         |
+| ranger    | TUI 文件浏览         |
+| vim       | TUI 编辑工具         |
+| vagrant   | 虚拟机管理工具       |
+| git       | 版本控制工具         |
+| gh        | github 管理工具      |
+| flatpak   | 3 方下载工具         |
+| snapd     | 3 方下载工具         |
+| nmap      | 网络探测工具         |
+| docker    |                      |
+| downgrade | package 版本降级工具 |
+|           |                      |
+|           |                      |
+|           |                      |
+|           |                      |
+|           |                      |
+|           |                      |
+|           |                      |
 
 
 
