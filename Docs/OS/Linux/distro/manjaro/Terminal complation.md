@@ -56,9 +56,17 @@ python install trash-cli
 ### ~/.zshrc
 
 ```Shell
-# Enviroment Virables
+# Theme
 ZSH_THEME="half-life"
+
+# History Settings
+HISTFILE=~/.zhistory
+HISTSIZE=4096
+SAVEHIST=4096
+
+# Enviroment Virables
 export ZSH="/home/0x00/.oh-my-zsh"
+export VISUAL="/usr/bin/subl"
 export EDITOR="/usr/bin/vim"
 export UPDATE_ZSH_DAYS=30
 export LANG=en_US.UTF-8
@@ -68,7 +76,7 @@ eval "$(zoxide init zsh)"
 # Use control + g to activate navi
 eval "$(navi widget zsh)"
 
-# Built-in
+# Plugins
 plugins=(
     colored-man-pages
     extract
@@ -129,11 +137,19 @@ export GPG_TTY=${TTY:-"$(tty)"}
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
 # Bindings
+#Ctrl
+bindkey '^A' beginning-of-line
+bindkey '^E' end-of-line
+bindkey '^F' forward-word
+bindkey '^B' backward-word
+bindkey '^K' kill-line
 bindkey '^U' backward-kill-line
 bindkey '^P' history-search-backward
 bindkey '^N' history-search-forward
-bindkey '\e[A' history-search-backward
-bindkey '\e[B' history-search-forward
+bindkey '^Y' yank
+#escape
+#bindkey '\e[A' history-search-backward
+#bindkey '\e[B' history-search-forward
 
 #aliases
 alias c='clear'
@@ -141,6 +157,7 @@ alias n='navi'
 alias ls='lsd'
 alias ll='ls -l'
 alias la='ls -a'
+alias ln='ln -v'
 alias lla='ls -la'
 alias lt='ls --tree'
 alias cp='rsync --progress -azvh'
@@ -411,6 +428,7 @@ colorscheme solarized
 ### ~/.tmux.conf
 
 ```
+set -g default-terminal "screen-256color"
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'fabioluciano/tmux-tokyo-night'
 

@@ -83,11 +83,20 @@ Tmux 的指令需要通过 Prefix（默认 <kbd>ctrl</kbd> + <kbd>b</kbd>）和 
 ## ~/.tmux.conf
 
 ```
+set -g default-terminal "screen-256color"
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'fabioluciano/tmux-tokyo-night'
 
 run '~/.tmux/plugins/tpm/tpm'
 ```
+
+## Trouble shooting
+
+- ['tmux-256color': unknown terminal type.](https://unix.stackexchange.com/questions/1045/getting-256-colors-to-work-in-tmux)
+
+  
+
+  
 
 **references**
 

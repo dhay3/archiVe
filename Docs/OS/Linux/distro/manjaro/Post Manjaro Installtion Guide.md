@@ -246,17 +246,17 @@ latte-dock
 | flatpak   | 3 方下载工具         |
 | snapd     | 3 方下载工具         |
 | nmap      | 网络探测工具         |
-| docker    |                      |
+| docker    | 镜像工具             |
 | downgrade | package 版本降级工具 |
-|           |                      |
-|           |                      |
-|           |                      |
+| uxplay    | apple airplay 投屏   |
+| strace    |                      |
+| whois     |                      |
 |           |                      |
 |           |                      |
 |           |                      |
 |           |                      |
 
-
+:cn:
 
 ## 
 
