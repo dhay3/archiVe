@@ -1,13 +1,6 @@
 # GPG - keyserver
 
-ref
-https://www.gnupg.org/gph/en/manual/x457.html
 
-[https://keys.openpgp.org/about/usage](https://www.gnupg.org/gph/en/manual/x457.html)
-
-https://wiki.archlinux.org/title/GnuPG#Use_a_keyserver
-
-https://en.wikipedia.org/wiki/Key_server_(cryptographic)#Keyserver_examples
 
 ## Digest
 
@@ -65,6 +58,8 @@ Keys 1-1 of 1 for "49801911B98422051F6AAA86A23605A6E42927AD".  Enter number(s), 
 ```
 
 如果需要指定查询那个 keyserver 可以使用
+
+> 如果使用 `hkps://keys.openpgp.org` 是看不签名的 UID(邮箱)，可以使用 `https://keyserver.ubuntu.com/`
 
 ```
 [vagrant@localhost ~]$ gpg --keyserver hkps://keys.openpgp.org --search-keys FFF05AF41C85F603A6DA2704B19B91237DAE029E
@@ -212,3 +207,10 @@ uid                  Aroul (this key is for testing purpose) <823419326@qq.com>
 ```
 
 这个逻辑完全是正确，因为 revoke 只是针对私钥的，公钥任然可以用做签名校验
+
+**references**
+[^1]:https://www.gnupg.org/gph/en/manual/x457.html
+[^2]:[https://keys.openpgp.org/about/usage](https://www.gnupg.org/gph/en/manual/x457.html)
+[^3]:https://wiki.archlinux.org/title/GnuPG#Use_a_keyserver
+[^4]:https://en.wikipedia.org/wiki/Key_server_(cryptographic)#Keyserver_examples
+[^5]:https://superuser.com/questions/1485213/gpg-cant-import-key-new-key-but-contains-no-user-id-skipped
