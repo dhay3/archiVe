@@ -1,4 +1,4 @@
-# Shell 函数
+# Bash Function
 
 > <font color="red">Shell中函数体内直接声明的变量，属于全局变量，整个脚本都可以读取，与javascript相似</font>
 

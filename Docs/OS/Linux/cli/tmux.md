@@ -79,6 +79,7 @@ Tmux 的指令需要通过 Prefix（默认 <kbd>ctrl</kbd> + <kbd>b</kbd>）和 
 | c                                      | 创建一个新的 window                                          |
 | x                                      | 关闭当前 panel                                               |
 | space                                  | 调整 panel 的位置，为了方便复制                              |
+| z                                      |                                                              |
 
 ## ~/.tmux.conf
 
@@ -93,10 +94,6 @@ run '~/.tmux/plugins/tpm/tpm'
 ## Trouble shooting
 
 - ['tmux-256color': unknown terminal type.](https://unix.stackexchange.com/questions/1045/getting-256-colors-to-work-in-tmux)
-
-  
-
-  
 
 **references**
 

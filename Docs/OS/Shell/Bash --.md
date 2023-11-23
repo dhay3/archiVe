@@ -1,10 +1,4 @@
-# Shell --
-
-参考：
-
-https://www.gnu.org/software/bash/manual/bash.html#Invoking%20Bash
-
-https://unix.stackexchange.com/questions/11376/what-does-double-dash-mean
+# Bash --
 
 A `--` signals the end of options and disables further option processing. Any arguments after the `--` are treated as filenames and arguments.
 
@@ -17,3 +11,8 @@ root in /opt λ ll | grep -- -v
 -rw-r--r-- 1 root root    0 Feb 18 18:20 b-v
 ```
 
+**references**
+
+1. [^1]:https://www.gnu.org/software/bash/manual/bash.html#Invoking%20Bash
+
+2. [^2]:https://unix.stackexchange.com/questions/11376/what-does-double-dash-mean
