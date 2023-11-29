@@ -2,7 +2,17 @@
 
 ## 0x01 Package manager
 
-## 0x02 
+安装 Nginx 最简单的方式就是通过包管理器安装
+
+```
+
+```
+
+
+
+## 0x02 Binary
+
+
 
 ## 0x03 Building from Sources
 
@@ -16,7 +26,7 @@ curl -O http://nginx.org/download/nginx-1.24.0.tar.gz
 
 ```
 #下载签名文件
-[root@d2f7bc37acff ~]# curl -O http://nginx.org/download/nginx-1.24.0.tar.gz.asc\
+[root@d2f7bc37acff ~]# curl -O http://nginx.org/download/nginx-1.24.0.tar.gz.asc
 
 #检查签名使用的公钥指纹
 [root@d2f7bc37acff ~]# gpg --verify nginx-1.24.0.tar.gz.asc             
@@ -510,8 +520,6 @@ Accept-Ranges: bytes
 - `--with-debug`
 
   允许记录 debug log
-
-## 0x02 
 
 **references**
 
