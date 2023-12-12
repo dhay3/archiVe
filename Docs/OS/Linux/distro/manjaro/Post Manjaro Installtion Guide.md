@@ -227,10 +227,10 @@ latte-dock
 | gimp                   | PS 工具                                      |
 | wechat                 |                                              |
 | docker-desktop         |                                              |
-| picgo                  | 图床工具                                     |
+| balena-etcher          |                                              |
 | burpsuite              |                                              |
-|                        |                                              |
-|                        |                                              |
+| feedly                 |                                              |
+| spotify                |                                              |
 
 ### Basic Function Software
 
@@ -251,7 +251,7 @@ latte-dock
 | uxplay    | apple airplay 投屏   |
 | strace    |                      |
 | whois     |                      |
-|           |                      |
+| binwalk   |                      |
 |           |                      |
 |           |                      |
 |           |                      |

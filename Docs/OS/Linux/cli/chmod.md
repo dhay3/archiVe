@@ -67,4 +67,7 @@ Linux/Unix 的文件调用权限分为三级 : 文件所有者（Owner）、用�
    find . -type f -print0 | xargs -0 -I {} chmod 644 {}
    ```
 
-   
+
+**references**
+
+[^1]:https://www.redhat.com/sysadmin/suid-sgid-sticky-bit
