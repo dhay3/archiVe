@@ -1,41 +1,97 @@
 # dmidecode
 
-ref:
+## Overview
 
-https://en.wikipedia.org/wiki/System_Management_BIOS
+syntax
+
+```
+dmidecode [options]
+```
+
+`dmidecode` 是一个 Linux 上用于 decode DMI table(实际是 SMBIOS) 的工具，在使用 `dmidecode` 之前需要先了解一下什么是 DMI 和 SMBIOS
 
 ## DMI/SMBIOS
 
-System Management BIOS，规定了OS可以从BIOS中读取的信息(主要是硬件相关的信息)，DMI(Desktop management interface)有更多的信息，其中包含SMBIOS
+Desktop Management Interface(DMI) 是一个允许系统调用以及管理硬件设备的通用的标准框架
 
+SMBIOS 是 DMI 的一个真子集($SMBIOS \subseteq DMI$)，规定了系统可以从 BIOS 中读取并调用的信息(SMBIOS table)。`demicode` 就是读取这些信息的一个工具
 
-
-## dmidecode
-
-我们可以通过`dmidecode`来读取dmi table，每条entry由下面格式组成
+SMBIOS table 中的每条 entry 由下面格式组成
 
 ```
-       Handle 0x0002, DMI type 2, 8 bytes.  Base  Board  Informa‐
-       tion
-               Manufacturer: Intel
-               Product Name: C440GX+
-               Version: 727281-001
-               Serial Number: INCY92700942
-
+Handle 0x0002, DMI type 2, 8 bytes.  Base  Board  Information
+	Manufacturer: Intel
+  Product Name: C440GX+
+  Version: 727281-001
+  Serial Number: INCY92700942
 ```
 
-- A handler：唯一标识符，十六进制
-- A type：SMBIOS定义了不同组件type不同
-- A size：数据的大小，一般比实际要小
-- decode value：根据type不同，显示的内容不同
+- handle
 
-可以展现的数据有大致如下：
+  唯一标识符，十六进制
 
-- System
+- type
 
-  包含机器型号，序列号等信息
+  SMBIOS 定义了不同组件 type 不同
+
+- size
+
+  数据的大小，一般比实际要小
+
+- decode value
+
+  根据type不同，显示的内容不同
+
+
+## Optional args
+
+- `-s | --string KEYWORD`
+
+  只显示 SMBIOS table 中指定 KEYWORD 的信息，KEYWORD 的值具体看 Man page
 
   ```
+  (base) 0x00 in ~ λ sudo dmidecode -s bios-version
+  GZCN27WW
+  ```
+
+  能用 `-s` 查看的都可以用 `-t` 查看
+
+- `-t | --type TYPE`
+
+  只显示 SMBIOS table 中指定 TYPE 的信息， Type 的值具体看 Man page
+  
+  ```
+  (base) 0x00 in ~ λ sudo dmidecode -t memory      
+  # dmidecode 3.5
+  Getting SMBIOS data from sysfs.
+  SMBIOS 3.3.0 present.
+  
+  Handle 0x0001, DMI type 16, 23 bytes
+  Physical Memory Array
+          Location: System Board Or Motherboard
+          Use: System Memory
+          Error Correction Type: None
+          Maximum Capacity: 16 GB
+          Error Information Handle: 0x0000
+          Number Of Devices: 2
+  ...
+  ```
+
+## Examples
+
+- 查看机器型号，序列号等信息
+
+  ```
+  (base) 0x00 in ~ λ sudo dmidecode -t system
+  # dmidecode 3.5
+  Getting SMBIOS data from sysfs.
+  SMBIOS 3.3.0 present.
+  
+  Handle 0x002F, DMI type 32, 11 bytes
+  System Boot Information
+          Status: No errors detected
+  
+  Handle 0x000E, DMI type 1, 27 bytes
   System Information
           Manufacturer: LENOVO
           Product Name: 82MS
@@ -47,11 +103,30 @@ System Management BIOS，规定了OS可以从BIOS中读取的信息(主要是硬
           Family: XiaoXinPro 14ACH 2021
   ```
 
-- Memory
-
-  这里可以看出最大物理内存为16GB，由2条内存条组成双通
+- 查看机器 BIOS 信息
 
   ```
+  (base) 0x00 in ~ λ sudo dmidecode -t bios
+  ...
+  BIOS Information
+          Vendor: LENOVO
+          Version: GZCN27WW
+          Release Date: 05/01/2022
+          Address: 0xE0000
+          Runtime Size: 128 kB
+          ROM Size: 16 MB
+          Characteristics:
+  ...
+  ```
+
+- 查看机器内存信息
+
+  ```
+  (base) 0x00 in ~ λ sudo dmidecode -t memory
+  # dmidecode 3.5
+  Getting SMBIOS data from sysfs.
+  SMBIOS 3.3.0 present.
+  
   Handle 0x0001, DMI type 16, 23 bytes
   Physical Memory Array
           Location: System Board Or Motherboard
@@ -60,54 +135,63 @@ System Management BIOS，规定了OS可以从BIOS中读取的信息(主要是硬
           Maximum Capacity: 16 GB
           Error Information Handle: 0x0000
           Number Of Devices: 2
+  ```
+
+  这里可以看出最大物理内存为16GB，由2条内存条组成双通。省略的信息里还可以看出内存的频率(对应 Speed 的字段)
+
+- 查看机器 CPU 信息
+
+  ```
+  (base) 0x00 in ~ λ sudo dmidecode -t processor
+  ...
+  				Voltage: 1.2 V
+          External Clock: 100 MHz
+          Max Speed: 4450 MHz
+          Current Speed: 3200 MHz
+          Status: Populated, Enabled
+          Upgrade: None
+          L1 Cache Handle: 0x0003
+          L2 Cache Handle: 0x0004
+          L3 Cache Handle: 0x0005
+          Serial Number: Null
+          Asset Tag: Null
+          Part Number: Null
+          Core Count: 8
+          Core Enabled: 8
+          Thread Count: 16
   
   ```
 
-  可以使用如下命令来查看
+  如果想要看 CPU Cache 可以使用 `dmidecode -t cache`
+
+  当然你也可以使用 `lscpu` 来查看
+
+- 查看机器 接口信息
 
   ```
-  cpl in /etc λ sudo dmidecode -t memory 
+  (base) 0x00 in ~ λ sudo dmidecode -t connector  
+  ...
+  Handle 0x0014, DMI type 8, 9 bytes
+  Port Connector Information
+          Internal Reference Designator: J49
+          Internal Connector Type: None
+          External Reference Designator: USB 3.1 A P0
+          External Connector Type: Access Bus (USB)
+          Port Type: USB
+  
+  Handle 0x0015, DMI type 8, 9 bytes
+  Port Connector Information
+          Internal Reference Designator: J70
+          Internal Connector Type: None
+          External Reference Designator: USB 3.1 A P1
+          External Connector Type: Access Bus (USB)
+          Port Type: USB
+  ...
   ```
 
-- GPU cache
+**references**
 
-  可以使用如下命令来查看
-
-  ```
-  dmidecode -t cache
-  ```
-
-- CPU
-
-  可以使用如下命令来查看
-
-  ```
-  cpl in /etc λ sudo dmidecode -t processor
-  ```
-
-
-## options
-
-- `-q | --quite`
-
-  只显示decode value
-
-- `-s | --string KEYWORD`
-
-  只显示指定字段，具体查看manual page
-
-  ```
-  ➜  /etc dmidecode -s bios-vendor
-  LENOVO
-  ```
-
-- `-t | --type TYPE`
-
-  只显示指定type的，具体可以使用的type查看man page DMI TYPES
-
-
-
-
-
-
+[^1]:https://en.wikipedia.org/wiki/System_Management_BIOS
+[^2]:https://en.wikipedia.org/wiki/Desktop_Management_Interface
+[^3]:https://www.vmware.com/topics/glossary/content/desktop-management.html
 
