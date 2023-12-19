@@ -231,6 +231,16 @@ latte-dock
 | burpsuite              |                                              |
 | feedly                 |                                              |
 | spotify                |                                              |
+| kdiskmark              | hard drive benchmark tool                    |
+|                        |                                              |
+|                        |                                              |
+|                        |                                              |
+|                        |                                              |
+|                        |                                              |
+|                        |                                              |
+|                        |                                              |
+|                        |                                              |
+|                        |                                              |
 
 ### Basic Function Software
 
