@@ -56,6 +56,11 @@ python install trash-cli
 ### ~/.zshrc
 
 ```Shell
+# Start Tmux as the default Shell for user
+if [ -z "${TMUX}" ]; then
+    exec tmux
+fi
+
 # Theme
 ZSH_THEME="half-life"
 
@@ -93,6 +98,11 @@ fpath+=/usr/share/zsh/plugins/zsh-completions/src
 [ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 [ -f $ZSH/oh-my-zsh.sh ] && source $ZSH/oh-my-zsh.sh
 autopair-init
+
+# >>>> Vagrant command completion (start)
+fpath=(/opt/vagrant/embedded/gems/gems/vagrant-2.4.0/contrib/zsh $fpath)
+compinit
+# <<<<  Vagrant command completion (end)
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!

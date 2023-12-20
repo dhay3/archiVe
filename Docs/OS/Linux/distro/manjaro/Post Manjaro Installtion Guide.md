@@ -232,7 +232,7 @@ latte-dock
 | feedly                 |                                              |
 | spotify                |                                              |
 | kdiskmark              | hard drive benchmark tool                    |
-|                        |                                              |
+| github-desktop         |                                              |
 |                        |                                              |
 |                        |                                              |
 |                        |                                              |
@@ -244,27 +244,27 @@ latte-dock
 
 ### Basic Function Software
 
-| Name      | Description          |
-| --------- | -------------------- |
-| bind      | 包含 dig             |
-| tmux      | 终端多开工具         |
-| ranger    | TUI 文件浏览         |
-| vim       | TUI 编辑工具         |
-| vagrant   | 虚拟机管理工具       |
-| git       | 版本控制工具         |
-| gh        | github 管理工具      |
-| flatpak   | 3 方下载工具         |
-| snapd     | 3 方下载工具         |
-| nmap      | 网络探测工具         |
-| docker    | 镜像工具             |
-| downgrade | package 版本降级工具 |
-| uxplay    | apple airplay 投屏   |
-| strace    |                      |
-| whois     |                      |
-| binwalk   |                      |
-|           |                      |
-|           |                      |
-|           |                      |
+| Name          | Description          |
+| ------------- | -------------------- |
+| bind          | 包含 dig             |
+| tmux          | 终端多开工具         |
+| ranger        | TUI 文件浏览         |
+| vim           | TUI 编辑工具         |
+| vagrant       | 虚拟机管理工具       |
+| git / git-lfs | 版本控制工具         |
+| gh            | github 管理工具      |
+| flatpak       | 3 方下载工具         |
+| snapd         | 3 方下载工具         |
+| nmap          | 网络探测工具         |
+| docker        | 镜像工具             |
+| downgrade     | package 版本降级工具 |
+| uxplay        | apple airplay 投屏   |
+| strace        |                      |
+| whois         |                      |
+| binwalk       |                      |
+| ddrescue      |                      |
+| iat           |                      |
+|               |                      |
 
 **references**
 
