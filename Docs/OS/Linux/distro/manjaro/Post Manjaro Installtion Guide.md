@@ -264,7 +264,7 @@ latte-dock
 | binwalk       |                      |
 | ddrescue      |                      |
 | iat           |                      |
-|               |                      |
+| john          | 爆破工具             |
 
 **references**
 
