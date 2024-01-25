@@ -4,17 +4,11 @@
 
 安装 Nginx 最简单的方式就是通过包管理器安装
 
-```
+http://nginx.org/en/linux_packages.html#RHEL
 
-```
+## 0x02 Building from Sources
 
-
-
-## 0x02 Binary
-
-
-
-## 0x03 Building from Sources
+### 0x021 Prepare
 
 当然 Nginx 也支持使用源码编译，首先下载源码包，可以在 [下载页面](http://nginx.org/en/download.html) 选择想要安装的版本
 
@@ -59,6 +53,8 @@ gpg: WARNING: This key is not certified with a trusted signature!
 gpg:          There is no indication that the signature belongs to the owner.
 Primary key fingerprint: 13C8 2A63 B603 5761 56E3  0A4E A0EA 981B 66B0 D967
 ```
+
+### 0x022 Configure
 
 确认签名是正常的后，解压并进入对应的目录
 
@@ -134,7 +130,7 @@ tar -xvzf nginx-1.24.0.tar.gz && cd nginx-1.24.0
 
 - `configure`
 
-  是一个 Bash 脚本，会按照 auto 下的目录执行，生成 Makefile
+  是一个 Bash 脚本，会按照 auto 下的目录执行，用于生成 Makefile
 
 - `conf`
 
@@ -144,7 +140,7 @@ tar -xvzf nginx-1.24.0.tar.gz && cd nginx-1.24.0
 
   按照模块对应源码
 
-执行配置指令(为编译做准备)，可以使用如下模版，全模块编译
+执行配置指令(为编译做准备)，可以使用如下模版，全模块编译(只包含 Nginx 内置的模块)
 
 ```
 ./configure \
@@ -189,18 +185,34 @@ tar -xvzf nginx-1.24.0.tar.gz && cd nginx-1.24.0
 --with-stream_realip_module \
 --with-stream_ssl_module \
 --with-stream_ssl_preread_module \
---with-threads \
+--with-threads
 ```
 
 如果报错，那是因为对应的模块有依赖，需要手动安装，才可以正常编译
 
 1. 如果出现 `./configure: error: C compiler cc is not found.` 那就需要安装 `gcc` 用于编译 C 文件[^3]，以 rhel 为例，可以执行 `yum install gcc`
 
+   如果没法使用包管理，可以下载 gcc 源码编译安装
+
+   https://gcc.gnu.org/
+
 2. 如果出现 `./configure: error: the HTTP rewrite module requires the PCRE library.` 对应 `--with-pcre` 那就需要安装 `pcre-devel`，以 rhel 为例，可以执行 `yum install pcre-devel`
+
+   如果没办法使用包管理，可以下载 pcre 源码编译安装
+
+   https://github.com/PCRE2Project/pcre2
 
 3. 如果出现 `./configure: error: the HTTP gzip module requires the zlib library.` 对应 `--with-http_gunzip_module` 那就需要安装 `zlib-devel`, 以 rhel 为例，可以执行 `yum install zlib-devel`
 
+   如果没办法使用包管理，可以下载 zlib 源码编译安装
+
+   https://github.com/madler/zlib
+
 4. 如果出现 `./configure: error: SSL modules require the OpenSSL library.`. 对应 `--with-http_ssl_module` 那就需要安装 `openssl-devel`，以 rhel 为例，可以执行 `yum install openssl-devel`
+
+   如果没办法使用包管理，可以下载 openssl 源码编译安装
+
+   https://www.openssl.org/
 
 5. 如果出现 `./configure: error: the GeoIP module requires the GeoIP library.` 对应 `--with-http_geoip_module` 那就需要安装 `geoip-devel`, 以 rhel 为例，可以执行 `yum install geoip-devel`
 
@@ -210,7 +222,9 @@ tar -xvzf nginx-1.24.0.tar.gz && cd nginx-1.24.0
 
 配置完成后提示编译后使用的目录(如果没有按照上述模板配置会使用默认值)
 
-> 需要注意的一点是 `html` 目录是默认在 prefix 下的，不会像通过 package manager 安装的方式在 `/usr/share/nginx/` 下。如果为了和标准的相同可以手动创建目录，修改配置文件的 `root` 指令块值即可 
+> 需要注意的一点是 `html` 目录是默认在 prefix 下的，不会像通过 package manager 安装的方式在 `/usr/share/nginx/` 下
+>
+> 如果为了和标准的相同可以手动创建目录，修改配置文件的 `root` 指令块值即可 
 
 ```
   nginx path prefix: "/etc/nginx"

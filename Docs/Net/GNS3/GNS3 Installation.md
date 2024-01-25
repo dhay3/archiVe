@@ -1,6 +1,6 @@
 # GNS3 Instanllation 	
 
-> 注意为了正常运行GNS3，需要保证GUI和VM版本对应，否则导入IOS时可能会失效
+> ==注意为了正常运行GNS3，需要保证GUI和VM版本对应，否则导入IOS时可能会失效==
 
 ## GNS3 GUI
 
@@ -35,11 +35,11 @@ Interface: INetworkAdapter {e9a0c183-7071-4894-93d6-dcbec010fa91}
 
 ```
 
-主需要为宿主机添加一张虚拟的NIC adaptor 即可
+主需要为宿主机添加一张虚拟的NIC adaptor 即可 (File -> Tools -> Network Manager)
 
 https://github.com/GNS3/gns3-vm/issues/102
 
-按照提供的信息在 edit - preferences 中配置 server 信息
+按照提供的信息在 GNS3 edit - preferences 中配置 server 信息
 
 > 默认账号：gns3
 >

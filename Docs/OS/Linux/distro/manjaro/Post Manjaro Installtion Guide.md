@@ -172,8 +172,6 @@ root ALL=(ALL:ALL) ALL
 yay -S fcitx-sogoupinyin kcm-fcitx fcitx-configtool 
 ```
 
-
-
 ## Remove Orphaned Packages
 
 ## KDE Tweak
@@ -225,20 +223,20 @@ latte-dock
 | clion                  | C 编辑器                                     |
 | visual-studio-code-bin | 万能编辑器                                   |
 | gimp                   | PS 工具                                      |
-| wechat                 |                                              |
-| docker-desktop         |                                              |
-| balena-etcher          |                                              |
-| burpsuite              |                                              |
-| feedly                 |                                              |
-| spotify                |                                              |
+| wechat                 | 微信                                         |
+| docker-desktop         | docker 桌面管理工具                          |
+| balena-etcher          | ISO 写盘工具                                 |
+| burpsuite              | 7 层报文抓包工具                             |
+| feedly                 | Rss 阅读工具                                 |
+| spotify                | 音乐                                         |
 | kdiskmark              | hard drive benchmark tool                    |
-| github-desktop         |                                              |
-|                        |                                              |
-|                        |                                              |
-|                        |                                              |
-|                        |                                              |
-|                        |                                              |
-|                        |                                              |
+| github-desktop         | github 桌面管理                              |
+| nessus                 | 漏洞扫描工具                                 |
+| kvantum                | KDE applications 美化工具                    |
+| Discord                | discord 社区                                 |
+| thunderbird            | 邮箱收发客户端                               |
+| WPS                    | office 套件                                  |
+| Pling Store            | KDE 插件商店                                 |
 |                        |                                              |
 |                        |                                              |
 
@@ -265,6 +263,16 @@ latte-dock
 | ddrescue      |                      |
 | iat           |                      |
 | john          | 爆破工具             |
+| ocs-url       | kde store 下载工具   |
+|               |                      |
+|               |                      |
+|               |                      |
+|               |                      |
+|               |                      |
+|               |                      |
+|               |                      |
+|               |                      |
+|               |                      |
 
 **references**
 
