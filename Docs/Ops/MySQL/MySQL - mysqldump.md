@@ -38,16 +38,14 @@ GRANT SELECT,SHOW VIEW ON *.* to 'test'@'localhost';
 ## 0x04 Syntax
 
 ```
-Usage: mysqldump [OPTIONS] database [tables]
+Usage: mysqldump [OPTIONS] <database> [tables]
 OR     mysqldump [OPTIONS] --databases [OPTIONS] DB1 [DB2 DB3...]
 OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 ```
 
-### 0x041 Optional args
-
 > 只列举常见参数，具体参数查看官方文档
 
-#### 0x0411 Connection args
+### 0x041 Connection args
 
 - `--bind-address=#`
 
@@ -99,7 +97,129 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
   指定连接使用的密码
 
-#### 0x0412 DDL args
+### 0x042 Debug args
+
+- `-i | --comments`
+
+  以注释的形式导出 program version, server version, host, dump date
+
+  ```
+  -- MySQL dump 10.13  Distrib 8.0.29, for Linux (x86_64)
+  --
+  -- Host: localhost    Database: test
+  -- ------------------------------------------------------
+  -- Server version       8.0.29
+  ```
+
+  默认开启
+
+
+- `--skip-comments`
+
+  对 `--comments` 取反
+
+- `--dump-date`
+
+  导出文件会在末尾有一个时间戳
+
+  ```
+  -- Dump completed on 2024-02-01 16:04:27
+  ```
+
+  默认开启
+
+
+- `-v | --verbose`
+
+  详细输出
+
+- `--debug & --debug-check & --debug-info`
+
+  输出 debug 日志，只有 MySQL 在构建时使用 WITH_DEBUG 才生效 
+
+### 0x043 Display args
+
+- `-r | --result-file=<file-name>`
+
+  将内容输出到文件，通常用在 Windows 上防止 `\n` 转换成 `\r\n`
+
+- `-X | --xml`
+
+  以 xml 的格式导出
+
+### 0x044 DDL args
+
+- `-A | --all-databases`
+
+  导出所有的数据库，等价与 `--databases <name of all the databases>`
+
+- `-B | --databases <database...>`
+
+  导出指定的数据库(使用该参数可以导出多个数据库)。导出的内容中每个数据库前会使用`CREATE DATABASE ... IF NOT EXSIT` 和 `USE <DATABSE>` 
+
+  ```
+  CREATE DATABASE /*!32312 IF NOT EXISTS*/ `test2` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+  
+  USE `test2`;
+  ```
+
+  ==注意这点和 `mysql [options] <database>` 导出的不同，结果中不包含 `CREATE DATABSE ... IF NOT EXSIT` 或者是 `USE <DATABASE>`（因为没有使用 `--databases` 的格式 `<database>` 后面跟的是 `<tablename>` 只能关联一个数据库，导入数据库时需要用户手动指定）==
+
+- `--tables <table...>`
+
+  导出指定的表(该参数后面的所有值都表示表名)
+
+  ```
+  mysqldump -v -u root -p test2 --tables table1
+  ```
+
+- `-n | --no-create-db`
+
+  导出的时候没有 `CREATE DB` DDL
+
+- `-t | --no-create-info`
+
+  导出的时候没有 `CREATE TABLE` DDL (包含 `INSERT`)
+
+  ```
+  mysqldump -v -u root -p -t test2
+  ```
+
+- `--ignore-table=<db_name>.<tbl_name>`
+
+  不导出指定的表,必须指定库名
+
+  ```
+  mysql -u root -p -e 'use test2;show tables;'
+  +-----------------+
+  | Tables_in_test2 |
+  +-----------------+
+  | table1          |
+  | table2          |
+  +-----------------+
+  
+  mysqldump -v -u root -p --ignore-table test2.table1 test2
+  ```
+
+- `-d | --no-data`
+
+  只导出表结构 DDL
+
+  ```
+  mysqldump -v -u root -p -d test2
+  ```
+
+- `-Q | --quote-names`
+
+  database name,table name,column name 会包裹在 back bracket 中 ` (在 back bracket 中可以包含 MySQL 的关键字)
+
+- `--skip-quote-names`
+
+  对 `--quote-names` 取反
+
+- `-c | --complete-insert`
+
+  使用 `INSERT` 时会使用 `INSERT INTO <table> (col_names...) VALUES (values...)` 的格式，而不是默认的 `INSERT INTO <table> VALUES (values...)` 
 
 - `--add-drop-database`
 
@@ -115,93 +235,85 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
   在每一个 `CREATE TRIGGER` 语句迁使用 `DROP TRIGGER ... IF EXSIT`
 
-- `-n | --no-create-db`
-
-  导出的时候没有 `CREATE DB` DDL
-
-- `-t | --no-create-info`
-
-  导出的时候没有 `CREATE TABLE` DDL
-
-- `-d | --no-data`
-
-  只导出表结构
-
 - `--replace`
 
   使用 `REPLACE` 替代 `INSERT`
 
-#### 0x0412 Debug args
+- `-R | --routines`
 
-- `-i | --comments`
+  导出 `CREATE PROCEDURE` 和 `CREATE FUNCTION` DDL
 
-  以注释的形式导出 program version, server version, host
+- `--triggers`
 
-  ```
-  -- MySQL dump 10.13  Distrib 8.0.29, for Linux (x86_64)
-  --
-  -- Host: localhost    Database: test
-  -- ------------------------------------------------------
-  -- Server version       8.0.29
-  ```
+  导出 triggers
 
-  默认开启
-
-- `--debug & --debug-check & --debug-info`
-
-  输出 debug 日志，只有 MySQL 在构建时使用 WITH_DEBUG 才生效 
-
-- `--dump-date`
-
-  导出文件会在末尾有一个时间戳
-
-  ```
-  -- Dump completed on 2024-02-01 16:04:27
-  ```
-
-  默认开启
-
-- `-v | --verbose`
-
-  详细输出
-
-#### 0x0413 Out args
-
-- `--print-defaults`
-
-  `mysqldump` 会使用的默认参数，可以通过 `my.cnf` 来配置
-
-- `--no-defaults`
-
-  不读取任何 `my.cnf` 中的配置
-
-- `--defualts-file=#`
-
-  只读取指定的 `my.cnf`
+### 0x045 Transaction args
 
 - `--add-locks`
 
-- `-A | --all-databases`
-
-  导出所有的 DB
-
-- `-i | --comments`
-
-  导出所有的备注
+  导出的 DDL 执行 `INSERT` 前使用 `LOCK TABLE <table> WRITE` 数据插入完成后使用 `UNLOCK TABLE`
 
   默认开启
 
-- 
+- `-x | --lock-all-tables`
 
-- 
+  在导出过程中，被导出的数据库的所有表使用 READ LOCK
 
-  
+  默认开启
 
+## 0x05 Examples
 
+1. 整库备份
 
+   ```
+   mysqldump -u root -p -v test2 -r test2.sql
+   #等价, 但是推荐第 1 种
+   mysqldump -u root -p -v test2 > test2.sql
+   ```
 
+2. 多库备份
 
+   ```
+   mysqldump -u root -p -v --databases test test2 -r all_test.sql
+   ```
 
+3. 所有库备份
+
+   ```
+   mysqldump -u root -p --all-databases -r all_dbs.sql
+   ```
+
+4. 导出库中的某一张表
+
+   ```
+   mysqldump -v -u root -p test2 table1 -r test2.table1.sql
+   ```
+
+5. 导出库中的某几张表
+
+   ```
+   mysqldump -v -u root -p test2 table1 table2 -r test2.sql
+   ```
+
+6. 导出库并同步(最好先备份再同步)
+
+   ```
+   mysqldump -v -u root -p test2 | mysql -h 10.0.1.205 -u root -p'test1234' test2
+   ```
+
+7. 导出指定表以外的所有表
+
+   ```
+   mysqldump -v -u root -p --ignore-table test2.table1 test2 -r table1.sql
+   ```
+
+## 0x06 How to restore dumps
+
+1. `mysql -v -u root -p test2 < test2.sql`
+
+2. `mysql -v -u root -p -e "source /path/to/dump.sql" test2`
+
+   等价于先登入 mysql 然后执行 `use test2;source /path/to/dump`
 
 **references**
 
