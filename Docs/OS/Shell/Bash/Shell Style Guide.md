@@ -514,6 +514,17 @@
    fi
    ```
 
+6. Never use `-ne` or `-eq` for string comparsion, use `!=` or `==` instead
+
+   ```
+   a=aaa
+   if [[ $a -ne bbb ]];then echo 1;else echo 2;fi
+   2
+   
+   # in bash help test, it is use for Arithmetic
+   # arg1 OP arg2 Arithmetic tests.  OP is one of -eq, -ne, -lt, -le, -gt, or -ge.
+   ```
+
 ### Mathematical
 
 1. `<` and `>` don’t perform numerical comparison inside `[[...]]`. For preference, don’t use `[[...]]` at all for numeric comparisons, use `((...))` instead

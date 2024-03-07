@@ -56,9 +56,11 @@ python install trash-cli
 ### ~/.zshrc
 
 ```Shell
-# Start Tmux as the default Shell for user
-if [ -z "${TMUX}" ]; then
-    exec tmux
+# Start Tmux as the default Shell for user execlude dolphin and jetbrain
+if [[ -x "$(command -v tmux)" ]] && [[ -n "${DISPLAY}" ]] && [[ -z "${TMUX}" ]]; then
+    if [[ ! "$(readlink -f /proc/${PPID}/exe)" =~ "dolphin" ]] && [[ ! "$(readlink -f /proc/${PPID}/exe)" =~ "jetbrain" ]]; then
+        exec tmux
+    fi
 fi
 
 # Theme
@@ -70,7 +72,7 @@ HISTSIZE=4096
 SAVEHIST=4096
 
 # Enviroment Virables
-export ZSH="/home/0x00/.oh-my-zsh"
+export ZSH="/home/cc/.oh-my-zsh"
 export VISUAL="/usr/bin/subl"
 export EDITOR="/usr/bin/vim"
 export UPDATE_ZSH_DAYS=30
@@ -106,14 +108,14 @@ compinit
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/0x00/anaconda3/bin/conda' 'shell.zsh' 'hook' 2>/dev/null)"
+__conda_setup="$('/home/cc/anaconda3/bin/conda' 'shell.zsh' 'hook' 2>/dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/0x00/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/0x00/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/cc/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/cc/anaconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/home/0x00/anaconda3/bin:$PATH"
+        export PATH="/home/cc/anaconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
@@ -170,23 +172,31 @@ alias la='ls -a'
 alias ln='ln -v'
 alias lla='ls -la'
 alias lt='ls --tree'
-alias cp='rsync --progress -azvh'
+#Recursive copy will create a dirctory name of the source, it should be trailing slash on the source to copy the contents of the directoy
+#alias cp='rsync --progress -azvh'
+alias cp='cp -v'
+alias mkdir='mkdir -v'
 alias mk='mkdir'
 alias mv='mv -v'
+#It is better do not use trash-put
 alias rm='trash-put -v'
+#alias rm='rm -v'
 alias du='dust'
+#alias du='du -h'
 alias df='duf'
-alias ps='procs'
+#alias df='df -h'
+#alias ps='procs'
+alias free='free -h'
 alias nc='ncat'
 alias ip='ip -c=always'
 alias jq='jq -C'
-alias top='btop'
+#alias top='btop'
 alias cat='bat -pp'
 alias less='bat'
 alias more='bat'
-alias grep='rg'
-alias find='fd'
-alias vbox='VirtualBox %U'
+#alias grep='rg'
+#alias find='fd'
+#alias vbox='VirtualBox %U'
 alias lynx='lynx -display_charset=utf-8'
 alias fzf='fzf --reverse'
 alias diff='diff --color=auto'

@@ -264,8 +264,8 @@ latte-dock
 | iat           |                      |
 | john          | 爆破工具             |
 | ocs-url       | kde store 下载工具   |
-|               |                      |
-|               |                      |
+| gping         |                      |
+| sysstat       |                      |
 |               |                      |
 |               |                      |
 |               |                      |
