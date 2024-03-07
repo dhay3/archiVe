@@ -1,11 +1,5 @@
 # Linux man 
 
-ref:
-
-https://superuser.com/questions/346703/linux-apropos-command-always-returns-nothing-appropriate
-
-https://www.howtogeek.com/682871/how-to-create-a-man-page-on-linux/
-
 > 无法查看内建命令，如果想要查看内建命令
 >
 > 1. 非bash使用`bash -c "help command"`
@@ -28,9 +22,7 @@ man -w|-W [man options] page ...
 
 man is the system’s manual pager
 
-系统通过 man 来管理 manual page
-
-默认 man 会按照 predefined 顺序查找所有匹配的 sections。==但是只会显示匹配的 first page，即使 page 在其他许多的 sections 中存在==
+系统通过 man 来管理 manual page，默认 man 会按照 predefined 顺序查找所有匹配的 sections。==但是只会显示匹配的 first page，即使 page 在其他许多的 sections 中存在==
 
 sections 如下：
 
@@ -45,7 +37,7 @@ sections 如下：
 8.  System administration commands (usually only for root)
 9.  Kernel routines [Non standard]
 
-一般在`man command`后显示在左上角，例如`sudo(8)`表示第 8 章
+一般在`man command`后显示在左上角，例如`sudo(8)`表示第 8 section
 
 ## nroff
 
@@ -128,15 +120,45 @@ mandb 用于更新和 `whatis`, `appropos` 相关命令的 index cache
 >
 > 需要执行 `sudo mandb`
 
-- `-f | --whatis`
+- `-f | --whatis <keyword>`
 
   等价与 `whatis`
 
   display one-line manual page descriptions
 
-- `-k | --apropos`
+  ```
+  (base) cc in ~ λ man -f man
+  man (1)              - an interface to the system reference manuals
+  man (1p)             - display system documentation
+  man (7)              - compose manual pages with GNU roff
+  ```
+
+  会显示所有 sections 中对应指令的 man page
+
+- `-k | --apropos <keyword>`
 
   等价与 `apropos`
+
+  即从 descriptions 中搜索指定的关键字
+
+
+- `-K | --global-apropos <keyword>`
+
+  全局搜索，即从所有的 man page 中找指定的关键字。==会直接显示 man page 的内容，通常和 `-w` 一起使用，查看具体关键字出现在那些 man page 中==
+
+  ```
+  (base) cc in ~ λ man -wK login.defs
+  /usr/share/man/man1/chfn.1.gz
+  /usr/share/man/man1/chsh.1.gz
+  /usr/share/man/man1/login.1.gz
+  /usr/share/man/man1/lslogins.1.gz
+  /usr/share/man/man1/runuser.1.gz
+  /usr/share/man/man1/su.1.gz
+  ```
+
+- `-w | --where | --path | --location`
+
+  输出 man page 的路径，一般和 `-K` 一起使用
 
 - `-i | --ignore-case`
 
@@ -145,6 +167,20 @@ mandb 用于更新和 `whatis`, `appropos` 相关命令的 index cache
 - `-I | --match-case`
 
   搜索 man page 时，大小写敏感
+
+- `-L <locale>| --locale=<locale>`
+
+  man 默认会读取 `$LANG` 作为显示对应语言 man page 的依据，可以通过改参数指定显示其他语言的 man page
+
+  例如显示中文
+
+  ```
+  man -L zh_CN man
+  ```
+
+- `-a`
+
+  一次显示所有的 man page，即显示 `man -f ` 中的显示所有 man page
 
 ## Examples
 
@@ -156,3 +192,10 @@ mandb 用于更新和 `whatis`, `appropos` 相关命令的 index cache
 
    ascii 表快查
 
+**references**
+
+[^1]:https://superuser.com/questions/346703/linux-apropos-command-always-returns-nothing-appropriate
+[^2]:https://www.howtogeek.com/682871/how-to-create-a-man-page-on-linux/
+[^3]:https://unix.stackexchange.com/questions/283660/how-to-change-the-language-for-man-command
+
+[^4]:https://askubuntu.com/questions/727876/how-to-search-for-all-the-man-files-that-contain-certain-keyword

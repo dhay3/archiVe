@@ -252,7 +252,7 @@ cpu 调度进程的优先级，如果值为rt 表示 rael time scheduling priori
 
 #### TIME/TIME+
 
-从进程启动后占用CPU的时间，TIME+毫秒级单位
+从进程启动后占用CPU的时间，TIME+毫秒级单位(别和 `ps` 的 STIME 混淆)
 
 #### TTY
 
@@ -506,7 +506,7 @@ minor page faults delta
 
 - `A`
 
-  进入多选模式，使用`g`选择使用的面板
+  进入多选模式，使用`g`选择使用的面板,再次键入`A`使用选择的面板
 
 - `i`
 

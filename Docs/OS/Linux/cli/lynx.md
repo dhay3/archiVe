@@ -92,6 +92,21 @@ https://lynx.invisible-island.net/release/lynx_help/cattoc.html
 
 lynx 内置了很多的 options ，我们可以在 lynx.cfg 中调用这些 options 以达到客制化
 
+例如 `/etc/lynx.cfg` 中添加如下配置
+
+```
+ACCEPT_ALL_COOKIES:TRUE
+VI_KEYS_ALWAYS_ON:TRUE
+XLOADIMAGE_COMMAND:gwenview %s &
+VIEWER:application/postscript:gwenview %s&:XWINDOWS
+VIEWER:image/gif:gwenview %s&:XWINDOWS
+VIEWER:image/x-xbm:gwenview %s&:XWINDOWS
+VIEWER:image/png:gwenview %s&:XWINDOWS
+VIEWER:image/tiff:gwenview %s&:XWINDOWS
+VIEWER:image/jpeg:gwenview %s&:XWINDOWS
+VIEWER:video/mpeg:gwenview %s &:XWINDOWS
+```
+
 ## Images
 
 https://lynx.invisible-island.net/release/lynx_help/body.html#VIEWER
@@ -119,7 +134,7 @@ VIEWER:image/bmp:gwenview %s&:XWINDOWS
 
 ## Cautions
 
-### 安装
+### Installation
 
 https://www.linode.com/community/questions/22943/how-do-i-fix-error-while-loading-shared-libraries-libsslso11
 
@@ -155,7 +170,7 @@ https://unix.stackexchange.com/questions/240252/pacman-exists-on-filesystem-erro
 sudo pacman -U  /var/cache/pacman/pkg/openssl-1.1.1.q-1-x86_64.pkg.tar.zst --overwrite *
 ```
 
-### 编码
+### Charset
 
 https://stackoverflow.com/questions/51548306/lynx-utf-8-support
 
