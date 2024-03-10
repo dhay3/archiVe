@@ -1,5 +1,7 @@
 # Sogoupinyin
 
+> 建议使用 fcitx5 替代搜狗
+
 1. Download sogoupinyin and dependencies for AUR
 
    ```
