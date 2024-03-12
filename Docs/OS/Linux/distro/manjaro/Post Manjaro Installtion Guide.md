@@ -267,7 +267,7 @@ latte-dock
 | gping                                                    |                      |
 | sysstat                                                  |                      |
 | manjaro-asian-input-support-fcitx5/fcitx5-chinese-addons | 中文输入法(支持双拼) |
-|                                                          |                      |
+| aria2                                                    | 下载工具             |
 |                                                          |                      |
 |                                                          |                      |
 |                                                          |                      |

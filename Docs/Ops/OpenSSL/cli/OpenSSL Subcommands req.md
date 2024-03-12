@@ -257,10 +257,10 @@ openssl req -new -key key.pem -out req.pem
 #生成一个新的 key.pem 私钥，使用 key.pem 生成 req.pem csr
 openssl req -newkey rsa:2048 -keyout key.pem -out req.pem
 
-#生成 self-signed root certificate
+#生成 self-signed root certificate(默认有效期 10 天)
 openssl req -x509 -newkey rsa:2048 -keyout fd.pem -out fd.crt
 
-#以非交互式生成 req.pem csr
+#以非交互式生成 key.pem 私钥, fd.crt 私钥
 openssl req -newkey rsa:2048 -keyout key.pem -out fd.crt -nodes -subj "/C=GB/L=London/O=Feisty Duck Ltd/CN=www.feistyduck.com"
 
 #以非交互式生成 fd.crt 自签证书

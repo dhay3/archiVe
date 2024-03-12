@@ -73,7 +73,10 @@ SAVEHIST=4096
 
 # Enviroment Virables
 export ZSH="/home/cc/.oh-my-zsh"
-export VISUAL="/usr/bin/subl"
+#It will cause less to subl in editor mod which is unexpected
+#But if use bat instead of less it's not matter cause bat do not support editor mod right now
+#export VISUAL="/usr/bin/subl"
+export VISUAL="/usr/bin/vim"
 export EDITOR="/usr/bin/vim"
 export UPDATE_ZSH_DAYS=30
 export LANG=en_US.UTF-8
@@ -199,7 +202,7 @@ alias more='bat'
 #alias man='man -P less'
 #alias grep='rg'
 #alias find='fd'
-#alias vbox='VirtualBox %U'
+alias vbox='VirtualBox %U'
 #Alias for logout KDE plasma
 alias logout="qdbus org.kde.ksmserver /KSMServer logout 0 0 1"
 alias lynx='lynx -display_charset=utf-8'
