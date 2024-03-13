@@ -15,7 +15,7 @@ set-option -g @plugin 'fabioluciano/tmux-tokyo-night'
 run '~/.tmux/plugins/tpm/tpm'
 
 # Global Opotions
-set-option -gq prefix C-b
+set-option -gq prefix C-x
 set-option -gq prefix2 None
 set-option -gq default-terminal "screen-256color"
 set-option -gq mode-keys vi
