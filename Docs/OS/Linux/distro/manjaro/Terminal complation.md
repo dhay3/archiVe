@@ -56,7 +56,7 @@ python install trash-cli
 ### ~/.zshrc
 
 ```Shell
-#Start Tmux as the default Shell for user execlude dolphin and jetbrain
+# Start Tmux as the default Shell for user execlude dolphin and jetbrain
 if [[ -x "$(command -v tmux)" ]] && [[ -n "${DISPLAY}" ]] && [[ -z "${TMUX}" ]]; then
     if [[ ! "$(readlink -f /proc/${PPID}/exe)" =~ "dolphin" ]] && [[ ! "$(readlink -f /proc/${PPID}/exe)" =~ "jetbrain" ]]; then
         exec tmux
@@ -73,33 +73,44 @@ SAVEHIST=4096
 
 # Enviroment Virables
 export ZSH="/home/cc/.oh-my-zsh"
-#It will cause less to subl in editor mod which is unexpected
-#But if use bat instead of less it's not matter cause bat do not support editor mod right now
+# It will cause less to subl in editor mod which is unexpected
+# But if use bat instead of less it's not matter cause bat do not support editor mod right now
 #export VISUAL="/usr/bin/subl"
 export VISUAL="/usr/bin/vim"
 export EDITOR="/usr/bin/vim"
 export UPDATE_ZSH_DAYS=30
 export LANG=en_US.UTF-8
 export FZF_BASE=/usr/share/fzf
+# Set firefox as the default browser for web-search plugin
+export BROWSER="firefox"
 eval "$(thefuck --alias)"
 eval "$(zoxide init zsh)"
+# fasd is archived now
+#eval "$(fasd --init auto)"
 # Use control + g to activate navi
 eval "$(navi widget zsh)"
 
 # Plugins
 plugins=(
     colored-man-pages
+    command-not-found
     extract
+    fancy-ctrl-z
     fzf
+    fzf-tab
     gh
     git
     sudo
+    themes
+    web-search
 )
 
 # Extra
 fpath+=/usr/share/zsh/plugins/zsh-completions/src
 [ -f /usr/share/zsh/plugins/zsh-autopair/autopair.zsh ] && source /usr/share/zsh/plugins/zsh-autopair/autopair.zsh
 [ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Use up-arrow or down-arrow to show candidate suggestions
+# Use right-arrow to accept the suggestion
 [ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 [ -f $ZSH/oh-my-zsh.sh ] && source $ZSH/oh-my-zsh.sh
 autopair-init
@@ -125,7 +136,7 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 #fastfetch
-if [[ -x "$(command -v tmux)" ]]; then
+if [[ -x "$(command -v fastfetch)" ]]; then
     fastfetch --logo Arya \
         --set Colors="" \
         --set Cursor="" \
@@ -153,22 +164,43 @@ fi
 export GPG_TTY=${TTY:-"$(tty)"}
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
-# Bindings
-#Ctrl
-bindkey '^A' beginning-of-line
-bindkey '^E' end-of-line
-bindkey '^F' forward-word
-bindkey '^B' backward-word
-bindkey '^K' kill-line
-bindkey '^U' backward-kill-line
-bindkey '^P' history-search-backward
-bindkey '^N' history-search-forward
-bindkey '^Y' yank
-#escape
-#bindkey '\e[A' history-search-backward
-#bindkey '\e[B' history-search-forward
+# Custom zsh bindings
+# ^ means ctrl
+# ^[ means escape
 
-#aliases
+# Set cursor to the beginning of a line
+bindkey -M main '^A' beginning-of-line
+# Set cursor to the end of a line
+bindkey -M main '^E' end-of-line
+
+# Set cursor backward one word
+# It's conflict with Tmux prefix, bind Tmux prefix to Ctrl + X
+bindkey -M main '^B' backward-word
+# Set cursor Forward one word
+bindkey -M main '^F' forward-word
+
+# Delete words before the cursor
+bindkey -M main '^U' backward-kill-line
+# Delete words after the cursor
+bindkey -M main '^K' kill-line
+
+# Delete one word before the cursor
+bindkey -M main '^W' backward-kill-word
+# Delete one word after the cursor
+bindkey -M main '^D' kill-word
+
+# Search history backword one line
+bindkey -M main '^P' history-search-backward
+# Search history forward one line
+bindkey -M main '^N' history-search-forward
+
+bindkey -M main '^H' fzf-history-widget
+bindkey -M main '^Q' fzf-file-widget
+
+bindkey -M main '^Y' yank
+bindkey -M main '^L' clear-screen
+
+# Aliases
 alias c='clear'
 alias n='navi'
 alias ls='lsd'
@@ -177,13 +209,13 @@ alias la='ls -a'
 alias ln='ln -v'
 alias lla='ls -la'
 alias lt='ls --tree'
-#Recursive copy will create a dirctory name of the source, it should be trailing slash on the source to copy the contents of the directoy
+# Recursive copy will create a dirctory name of the source, it should be trailing slash on the source to copy the contents of the directoy
 #alias cp='rsync --progress -azvh'
 alias cp='cp -v'
 alias mkdir='mkdir -v'
 alias mk='mkdir'
 alias mv='mv -v'
-#It is better do not use trash-put
+# It is better do not use trash-put
 alias rm='trash-put -v'
 #alias rm='rm -v'
 alias du='dust'
@@ -203,7 +235,7 @@ alias more='bat'
 #alias grep='rg'
 #alias find='fd'
 alias vbox='VirtualBox %U'
-#Alias for logout KDE plasma
+# Alias for logout KDE plasma
 alias logout="qdbus org.kde.ksmserver /KSMServer logout 0 0 1"
 alias lynx='lynx -display_charset=utf-8'
 alias fzf='fzf --reverse'
@@ -469,7 +501,7 @@ set-option -g @plugin 'fabioluciano/tmux-tokyo-night'
 run '~/.tmux/plugins/tpm/tpm'
 
 # Global Opotions
-set-option -gq prefix C-b
+set-option -gq prefix C-x
 set-option -gq prefix2 None
 set-option -gq default-terminal "screen-256color"
 set-option -gq mode-keys vi

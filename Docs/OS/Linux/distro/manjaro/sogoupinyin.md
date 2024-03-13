@@ -1,6 +1,10 @@
 # Sogoupinyin
 
 > 建议使用 fcitx5 替代搜狗
+>
+> ```
+> fcitx5-chinese-addons fcitx5-im manjaro-asian-input-support-fcitx5 fcitx5-pinyin-zhwiki
+> ```
 
 1. Download sogoupinyin and dependencies for AUR
 
