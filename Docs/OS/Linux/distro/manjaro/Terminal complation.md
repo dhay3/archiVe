@@ -203,12 +203,13 @@ bindkey -M main '^L' clear-screen
 # Aliases
 alias c='clear'
 alias n='navi'
+alias l='ll'
 alias ls='lsd'
 alias ll='ls -l'
 alias la='ls -a'
-alias ln='ln -v'
 alias lla='ls -la'
 alias lt='ls --tree'
+alias ln='ln -v'
 # Recursive copy will create a dirctory name of the source, it should be trailing slash on the source to copy the contents of the directoy
 #alias cp='rsync --progress -azvh'
 alias cp='cp -v'
@@ -235,8 +236,10 @@ alias more='bat'
 #alias grep='rg'
 #alias find='fd'
 alias vbox='VirtualBox %U'
-# Alias for logout KDE plasma
-alias logout="qdbus org.kde.ksmserver /KSMServer logout 0 0 1"
+alias rdm='remotedesktopmanager'
+alias xfreerdp='xfreerdp /cert:tofu /fonts /bpp:64 /dynamic-resolution /scale:140 /scale-desktop:125'
+# Alias for logout KDE plasma with cancel menu
+alias logout="qdbus org.kde.ksmserver /KSMServer logout 1 0 1"
 alias lynx='lynx -display_charset=utf-8'
 alias fzf='fzf --reverse'
 alias diff='diff --color=auto'
@@ -512,6 +515,8 @@ set-option -gq set-clipboard on
 set-option -gq set-titles on
 set-option -gq mouse on
 set-option -gq pane-border-lines simple
+set-option -gp pane-border-indicators both
+set-option -gq pane-active-border-style 'bg=default fg=#FF1493'
 set-option -gq base-index 1
 set-option -gq pane-base-index 1
 #xclip for xorg
@@ -553,8 +558,8 @@ bind-key -T prefix R command-prompt -I "#S" { rename-session "%%" }
 bind-key -T prefix k confirm-before -p "kill-window #W? (y/n)" kill-window
 bind-key -T prefix K confirm-before -p "kill-session #S? (y/n)" kill-session
 bind-key -T prefix C-k confirm-before -p "kill-server? (y/n)" kill-server
-bind-key -T prefix w split-window -h
-bind-key -T prefix W split-window -v
+bind-key -T prefix w split-window -h -c "#{pane_current_path}"
+bind-key -T prefix W split-window -v -c "#{pane_current_path}"
 bind-key -T prefix m command-prompt -T target { move-window -t "%%" }
 bind-key -T prefix M command-prompt -T target { move-pane -t "%%" }
 bind-key -T prefix z resize-pane -Z

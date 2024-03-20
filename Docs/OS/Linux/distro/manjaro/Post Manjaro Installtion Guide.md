@@ -223,7 +223,7 @@ latte-dock
 | clion                  | C 编辑器                                     |
 | visual-studio-code-bin | 万能编辑器                                   |
 | gimp                   | PS 工具                                      |
-| wechat                 | 微信                                         |
+| wechat-universal-bwrap | 微信                                         |
 | docker-desktop         | docker 桌面管理工具                          |
 | balena-etcher          | ISO 写盘工具                                 |
 | burpsuite              | 7 层报文抓包工具                             |
@@ -237,42 +237,42 @@ latte-dock
 | thunderbird            | 邮箱收发客户端                               |
 | WPS                    | office 套件                                  |
 | Pling Store            | KDE 插件商店                                 |
-|                        |                                              |
+| gestures               | libinput-gestures 图形化配置工具             |
 |                        |                                              |
 
 ### Basic Function Software
 
-| Name                                                     | Description          |
-| -------------------------------------------------------- | -------------------- |
-| bind                                                     | 包含 dig             |
-| tmux                                                     | 终端多开工具         |
-| ranger                                                   | TUI 文件浏览         |
-| vim                                                      | TUI 编辑工具         |
-| vagrant                                                  | 虚拟机管理工具       |
-| git / git-lfs                                            | 版本控制工具         |
-| gh                                                       | github 管理工具      |
-| flatpak                                                  | 3 方下载工具         |
-| snapd                                                    | 3 方下载工具         |
-| nmap                                                     | 网络探测工具         |
-| docker                                                   | 镜像工具             |
-| downgrade                                                | package 版本降级工具 |
-| uxplay                                                   | apple airplay 投屏   |
-| strace                                                   |                      |
-| whois                                                    |                      |
-| binwalk                                                  |                      |
-| ddrescue                                                 |                      |
-| iat                                                      |                      |
-| john                                                     | 爆破工具             |
-| ocs-url                                                  | kde store 下载工具   |
-| gping                                                    |                      |
-| sysstat                                                  |                      |
-| manjaro-asian-input-support-fcitx5/fcitx5-chinese-addons | 中文输入法(支持双拼) |
-| aria2                                                    | 下载工具             |
-|                                                          |                      |
-|                                                          |                      |
-|                                                          |                      |
-|                                                          |                      |
-|                                                          |                      |
+| Name                                                     | Description                           |
+| -------------------------------------------------------- | ------------------------------------- |
+| bind                                                     | 包含 dig                              |
+| tmux                                                     | 终端多开工具                          |
+| ranger                                                   | TUI 文件浏览                          |
+| vim                                                      | TUI 编辑工具                          |
+| vagrant                                                  | 虚拟机管理工具                        |
+| git / git-lfs                                            | 版本控制工具                          |
+| gh                                                       | github 管理工具                       |
+| flatpak                                                  | 3 方下载工具                          |
+| snapd                                                    | 3 方下载工具                          |
+| nmap                                                     | 网络探测工具                          |
+| docker                                                   | 镜像工具                              |
+| downgrade                                                | package 版本降级工具                  |
+| uxplay                                                   | apple airplay 投屏                    |
+| strace                                                   |                                       |
+| whois                                                    |                                       |
+| binwalk                                                  |                                       |
+| ddrescue                                                 |                                       |
+| iat                                                      |                                       |
+| john                                                     | 爆破工具                              |
+| ocs-url                                                  | kde store 下载工具                    |
+| gping                                                    |                                       |
+| sysstat                                                  |                                       |
+| manjaro-asian-input-support-fcitx5/fcitx5-chinese-addons | 中文输入法(支持双拼)                  |
+| aria2                                                    | 下载工具                              |
+| libinput-gestures                                        | 自定义 touchpad                       |
+| ydotool                                                  | 类似 xdotool 但是支持 wayland 和 xorg |
+|                                                          |                                       |
+|                                                          |                                       |
+|                                                          |                                       |
 
 **references**
 
