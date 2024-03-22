@@ -1,9 +1,5 @@
 # Linux dig
 
-ref:
-
-https://www.rfc-editor.org/rfc/rfc1035.txt
-
 ## Digest
 
 syntax:
@@ -212,3 +208,80 @@ dig 提供 query options，用来修改查询的方式和查询的结果
 - `+yaml`
 
   以 yml 的格式输出内容
+
+## Trouble shooting
+
+如果 DNS server 是 windows[^1] 的可能会导致 dig 无法正常获取到 response，这时可以使用 `+nocookie`
+
+```
+(base) cc in ~ λ dig baidu.com
+
+; <<>> DiG 9.18.24 <<>> baidu.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 43006
+;; flags: qr aa rd ra ad; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; MBZ: 0x0001, udp: 1232
+; COOKIE: 4fb94458e5871d56 (echoed)
+;; QUESTION SECTION:
+;baidu.com.                     IN      A
+
+;; ANSWER SECTION:
+baidu.com.              1       IN      A       198.18.0.38
+
+;; Query time: 0 msec
+;; SERVER: 172.18.10.11#53(172.18.10.11) (UDP)
+;; WHEN: Thu Mar 21 12:43:26 CST 2024
+;; MSG SIZE  rcvd: 66
+
+
+(base) cc in ~ λ dig baidu.com
+
+; <<>> DiG 9.18.24 <<>> baidu.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: FORMERR, id: 44733
+;; flags: qr rd; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 1c31a20486e7c74b (echoed)
+;; QUESTION SECTION:
+;baidu.com.                     IN      A
+
+;; Query time: 0 msec
+;; SERVER: 172.18.10.11#53(172.18.10.11) (UDP)
+;; WHEN: Thu Mar 21 12:43:36 CST 2024
+;; MSG SIZE  rcvd: 50
+
+
+(base) cc in ~ λ dig +nocookie baidu.com
+
+; <<>> DiG 9.18.24 <<>> +nocookie baidu.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 58495
+;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4000
+;; QUESTION SECTION:
+;baidu.com.                     IN      A
+
+;; ANSWER SECTION:
+baidu.com.              141     IN      A       110.242.68.66
+baidu.com.              141     IN      A       39.156.66.10
+
+;; Query time: 13 msec
+;; SERVER: 172.18.10.11#53(172.18.10.11) (UDP)
+;; WHEN: Thu Mar 21 12:43:41 CST 2024
+;; MSG SIZE  rcvd: 70
+```
+
+**references**
+
+[^1]:https://serverfault.com/questions/434581/why-can-host-and-nslookup-resolve-a-name-but-dig-cannot
+[^2]:https://www.rfc-editor.org/rfc/rfc1035.txt
