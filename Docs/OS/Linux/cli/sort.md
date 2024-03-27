@@ -4,7 +4,11 @@
 
 syntax：`sort [options] [file]`
 
-默认按照ascii表比较，从小到大，每一行为一个值
+==按照ascii表比较==
+
+==从小到大==
+
+每一行为一个值
 
 如果没有指定 file 或者 file 的位置是 `-`，表示从 stdin 读取
 
@@ -68,25 +72,11 @@ syntax：`sort [options] [file]`
 
 - `-g | --genernal-numeric-sort`
 
-  字母转为ascii表中的值，数字对比值
+  按照数值比较，支持科学计数
 
-  ```
-  #sort -g a
-  a
-  a
-  b
-  d
-  g
-  h
-  i
-  z
-  2
-  3
-  8
-  10
-  11
-  22
-  ```
+- `-n | --numeric-sort`
+
+  按照数值比较，不支持科学计数
 
 - `-M | --month-sort`
 
@@ -110,15 +100,9 @@ syntax：`sort [options] [file]`
   20G
   ```
 
-### output options
-
 - `-r | --reverse`
 
-  对输出的内容逆序
-
-- `-n | --numeric-sort`
-
-  按照string来比较，可以参考`-g`
+  对输出的内容逆序 (即默认从小到大排序，就会变成从大到小)
 
 ### other options
 
@@ -136,9 +120,14 @@ syntax：`sort [options] [file]`
 
 - `-u | --unique`
 
-  等价于`sort <file> | unique`不输出重复的值
+  等价于`sort <file> | unique` 不输出重复的值
+
+  值是否判断为重复又 key(column) 来决定
 
 - `-z | --zero-terminated`
 
   以 0 byte 来分隔，而不是以newline来分隔
 
+**references**
+
+[^1]:https://stackoverflow.com/questions/1255782/whats-the-difference-between-general-numeric-sort-and-numeric-sort-options

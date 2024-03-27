@@ -1,6 +1,6 @@
 # Linux pidof
 
-pidof用于找出特定进程的pid
+`pidof` 用于找出特定进程的关联的所有 pid
 
 ```
 cpl in /sharing/conf λ pidof Typora 
