@@ -369,7 +369,7 @@
 
 ### Arrays
 
-1. An array is assigned using parentheses, and can be appended to with `+=(...)` means append an element
+1. An array is assigned using parentheses, and can be appended to with `+=(...)`
 
    ```
    flags=(--foo --bar='baz')
@@ -383,50 +383,23 @@
    echo "${array[*]}"
    ```
 
-3. Brace expansions can be used in arrays
-
-   ```
-   replaces=('wechat-beta'{,-bwrap})
-   echo ${replaces[@]}
-   wechat-beta wechat-beta-bwrap
-   ```
-
-### Brace Expansion
-
-1. To iter specify counts use `{start..end}`
-
-   ```
-   echo a{1,2,3}b
-   a1b a2b a3b
-   echo {1..3}
-   1 2 3
-   for i in {1..3};do ${i};done
-   1
-   2
-   3
-   ```
-
 ### Exclamation mark
 
 1. Use the exclamation mark to invert the exit status of a command
 
    ```
-   ! whoami;echo $?
-   root
-   ! whoamii;echo $?
-   -bash: whoamii: command not found
-   0
+   $! echo true;echo $?
+   true
+   1
    ```
 
-2. when `!` in `test`, the command must comes with command subsitution，otherwise 
+2. When `false` or `true` are used, `!` can not use with `test` in `if `(in other word `test` can be used with `!` in test without `false` or `true`)
 
    ```
    if ! false ;then echo 1;else echo 2;fi
    1
    if [[ ! false ]];then echo 1;else echo 2;fi
    2
-   if [[ ! ${false} ]];then echo 1;else echo 2;fi
-   1
    ```
 
 ### Pipelines
@@ -494,7 +467,7 @@
 
 ### Test
 
-1. `[[...]]` (`help \[\[`)is preferred over `[...]`, `test` and `/usr/bin/[`
+1. `[[...]]` is preferred over `[...]`, `test` and `/usr/bin/[`
 
    `[[...]]` allows for regular expression match while `[...]` do not
 
@@ -504,27 +477,9 @@
    fi
    ```
 
-2. Operators must have leading space and traling space
+2. 'Use `==` for equality rather than `=` even though both work
 
-   ```
-   if [[ a == b ]];then echo 1;else echo 2;fi
-   2
-   if [[ a==b ]];then echo 1;else echo 2;fi
-   1
-   ```
-
-3. 'Use `==` for equality rather than `=` even though both work
-
-   ```
-   #both works but perfer ==
-   if [[ ${SHELL} == /usr/bin/bash ]];then echo ${SHELL};fi
-   /usr/bin/bash
-   
-   if [[ ${SHELL} = /usr/bin/zsh ]];then echo ${SHELL};fi
-   /usr/bin/bash
-   ```
-
-4. Use `-z` or `-n` for empty/non-empty strings, rather than filler characters
+3. Use `-z` or `-n` for empty/non-empty strings, rather than filler characters
 
    ```
    #not recommended
@@ -538,7 +493,7 @@
    fi
    ```
 
-5. Do not use mathematical comparison symbol(eg. `>`, `<` , etc) in `[[...]]`
+4. Do not use mathematical comparison symbol(eg. `>`, `<` , etc) in `[[...]]`
 
    ```
    #wrong
@@ -547,7 +502,7 @@
    fi
    ```
 
-6. Use `((...))` for mathematical comparison rather than `-lt`, `-gt`, etc. Thought all works
+5. Use `((...))` for mathematical comparison rather than `-lt`, `-gt`, etc. Thought all works
 
    ```
    if (( "${var}" > 3 )); then
@@ -559,7 +514,7 @@
    fi
    ```
 
-7. Never use `-ne` or `-eq` for string comparsion, use `!=` or `==` instead
+6. Never use `-ne` or `-eq` for string comparsion, use `!=` or `==` instead
 
    ```
    a=aaa
@@ -570,24 +525,9 @@
    # arg1 OP arg2 Arithmetic tests.  OP is one of -eq, -ne, -lt, -le, -gt, or -ge.
    ```
 
-8. Logical expressions are allowed in `test`
-
-   ```
-   if [[ root == $(whoami) || root  == $(groups)  ]]; then echo root;fi
-   if [[ vagrant == $(whoami) && vagrant == $(groups)  ]]; then echo vagrant;fi
-   ```
-
-9. Check an element is existed in an array or not use tild expansion(regex)
-
-   ```
-   a=(1 2 3 4)
-   if [[ ${a[*]} =~ 1 ]];then echo 1;else echo 2;fi
-   1
-   ```
-
 ### Mathematical
 
-1. `<` and `>` don’t perform numerical comparison inside `[[...]]`. For preference, don’t use `[[...]]` at all for numeric comparisons, use `((...))` instead or use `-lt` or `-gt` etc.
+1. `<` and `>` don’t perform numerical comparison inside `[[...]]`. For preference, don’t use `[[...]]` at all for numeric comparisons, use `((...))` instead
 
    ```
    #wrong
