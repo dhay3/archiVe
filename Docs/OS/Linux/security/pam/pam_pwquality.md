@@ -36,4 +36,5 @@ pam_pwquality.so 模块用于用户的密码校验
 
   默认 1
 
-  
+
+**references**

@@ -94,13 +94,13 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
   压缩 客户端 和 服务端 之前的消息传输
 
-  新版本 MySQL deprecated
+  8.0.18 MySQL 以上 deprecated
 
 - `--compression-algorithms=<zlib | uncompressed | zstd>`
 
   The permitted compression algorithms for connections to the server.
 
-  指定连接 服务端 时使用的压缩算法
+  指定连接 服务端 时使用的压缩算法，和 `--compress` 一起使用时才有意义
 
   默认使用 `uncompressed`
 
@@ -108,7 +108,7 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
   指定 zstd 的压缩程度，1 - 22
 
-  只有 `--compression-algorithms=zstd` 时才生效
+  只有 `--compression-algorithms=zstd` 时才生效，和 `--compress` 一起使用时才有意义
 
 ### Debug args
 
@@ -164,17 +164,47 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
 - `-X | --xml`
 
-  以 xml 的格式导出
+  以 xml 的格式导出，格式如下
+  
+  ```
+  <?xml version="1.0"?>
+  <mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <database name="world">
+  <table_structure name="City">
+  <field Field="ID" Type="int(11)" Null="NO" Key="PRI" Extra="auto_increment" />
+  <field Field="Name" Type="char(35)" Null="NO" Key="" Default="" Extra="" />
+  <field Field="CountryCode" Type="char(3)" Null="NO" Key="" Default="" Extra="" />
+  <field Field="District" Type="char(20)" Null="NO" Key="" Default="" Extra="" />
+  <field Field="Population" Type="int(11)" Null="NO" Key="" Default="0" Extra="" />
+  <key Table="City" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="ID"
+  Collation="A" Cardinality="4079" Null="" Index_type="BTREE" Comment="" />
+  <options Name="City" Engine="MyISAM" Version="10" Row_format="Fixed" Rows="4079"
+  Avg_row_length="67" Data_length="273293" Max_data_length="18858823439613951"
+  Index_length="43008" Data_free="0" Auto_increment="4080"
+  Create_time="2007-03-31 01:47:01" Update_time="2007-03-31 01:47:02"
+  Collation="latin1_swedish_ci" Create_options="" Comment="" />
+  </table_structure>
+  <table_data name="City">
+  <row>
+  <field name="ID">1</field>
+  <field name="Name">Kabul</field>
+  <field name="CountryCode">AFG</field>
+  <field name="District">Kabol</field>
+  <field name="Population">1780000</field>
+  </row>
+  ```
+
+- `--fields-terminated-by=`
 
 ### Filter args
 
 - `-A | --all-databases`
 
-  导出所有的数据库，等价与 `--databases <name of all the databases>` (包括注意事项)
+  导出所有的数据库，等价与 `--databases <name of all the databases>` 
 
 - `-B | --databases <database...>`
 
-  导出指定的数据库(使用该参数可以导出多个数据库)。导出的内容中每个数据库前会使用`CREATE DATABASE ... IF NOT EXSIT` 和 `USE <DATABSE>` 
+  导出指定的数据库(使用该参数可以导出多个数据库)。导出的内容中每个数据库前会使用`CREATE DATABASE ... IF NOT EXSIT` 和 `USE <DATABSE>` (同理 `--all-databases`)
 
   ```
   CREATE DATABASE /*!32312 IF NOT EXISTS*/ `test2` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
@@ -231,9 +261,9 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
 - `-t | --no-create-info`。可以将该参数记为 minus tables
 
-  导出的时候不包含 `CREATE TABLE` DDL，可以理解为只导出表条目
+  导出的时候不包含 `CREATE TABLE` DDL(如果只想导出数据的话)。可以理解为只导出表条目
 
-  ==在增量同步场景下非常有用==
+  ==在增量同步数据场景下非常有用==
 
 - `--where<='condition'> | -w'<condition>'`
 
@@ -274,11 +304,11 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
   只有在使用 `--databases` 或者是 `--all-databases` 情况下生效，因为 `mysqldump [database] [tables]` 并不会生成 `CREATE DABATBASE` DDL 
 
-  全库同步的场景下，可能会包含 `DROP DATABASE mysql`，谨慎使用该参数
+  ==全库同步的场景下，可能会包含 `DROP DATABASE mysql`，谨慎使用该参数==
 
 - `--add-drop-table`
 
-  在每一个 `CREATE TABSE` 语句前使用 `DROP TABLE ... IF EXSIT`
+  在每一个 `CREATE TABLE` 语句前使用 `DROP TABLE ... IF EXSIT`
 
   ```
   DROP TABLE IF EXISTS `table2`;
@@ -314,29 +344,37 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
   使用 `INSERT` 时会使用 `INSERT INTO <table> (col_names...) VALUES (values...)` 的格式，而不是默认的 `INSERT INTO <table> VALUES (values...)` 
 
+  ```
+  $ mysqldump -v -u root test2 table2 -n
+  INSERT INTO `table2` VALUES ('t2v1'),('t2v2');
+  
+  $ mysqldump -v -u root test2 table2 -c
+  INSERT INTO `table2` (`col1`) VALUES ('t2v1'),('t2v2');
+  ```
+
   ==在增量同步的场景中，如果 原表 和 目的表 结构 不同，就需要使用该参数==
 
-- `--replace`
+- `--insert-ignore`
 
-  使用 `REPLACE` 替代 `INSERT` 即如果表中有对应的数据，就先删除然后再插入
-
-  ```
-  $ mysqldump -v -t test2 table1 --replace
-  REPLACE INTO `table2` VALUES ('t2v1'),('t2v2');
-  ```
-
-  `--complete-insert` 同样也适用
+  使用 `INSERT IGNORE` 替代 `INSERT`
 
   ```
-  $ mysqldump -v -t test2 table1 --replace -c
-  REPLACE INTO `table1` (`col1`) VALUES ('t1v1'),('t1v2');
+  $ mysqldump -v -u root -e test2 -t --insert-ignore --compact
+  INSERT  IGNORE INTO `table2` VALUES ('t2v1'),('t2v2');
   ```
 
-  `--insert-ignore` 同样也适用
+  即如果表中有对应的数据相同的 primary key 或者 unique key ，就不会插入对应的条目
+
+  注意如果和 `--replace` 一起使用，`mysqldump` 会正常输出 SQL，但是并不存在 `REPLACE IGNORE` 这中语法，导入时会报错。直接理解为和 `--replace` 和 `--insert-ignore` 不能一起使用
 
   ```
-  $ mysqldump -v -t test2 table1 --replace --insert-ignore
-  REPLACE IGNORE INTO `table1` VALUES ('t1v1'),('t1v2');
+  $ mysqldump -v -u root test2 --replace  --insert-ignore | mysql -v -u root test2
+  ...
+  --------------
+  REPLACE  IGNORE INTO `table2` VALUES ('t2v1'),('t2v2')
+  --------------
+  
+  ERROR 1064 (42000) at line 57: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'IGNORE INTO `table2` VALUES ('t2v1'),('t2v2')' at line 1
   ```
 
 - `-e | --extended-insert`
@@ -356,18 +394,29 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
   INSERT INTO `table1` VALUES ('t1v2');
   ```
 
-- `--insert-ignore`
+- `--replace`
 
-  使用 `INSERT IGNORE` 替代 `INSERT`，或者是使用 `REPLACE IGNORE` 替代 `REPLACE` 
+  使用 `REPLACE` 替代 `INSERT` 即如果表中有对应的数据，就先删除然后再插入，反之直接插入
 
   ```
-  $mysqldump -v -u root -e test2 -t --insert-ignore --compact
-  INSERT  IGNORE INTO `table2` VALUES ('t2v1'),('t2v2');
+  $ mysqldump -v -t test2 table1 --replace
+  REPLACE INTO `table2` VALUES ('t2v1'),('t2v2');
   ```
 
-  即如果表中有对应的数据，就不会插入（可以简单地理解成 `INSERT` 相同主键的条目，报错不影响）
+  同样也适用 `--complete-insert` 
+
+  ```
+  $ mysqldump -v -t test2 table1 --replace -c
+  REPLACE INTO `table1` (`col1`) VALUES ('t1v1'),('t1v2');
+  ```
+
+  虽然和 `--insert-ignore` 一起使用不会报错，但是 MySQL 不支持 `REPLACE IGNORE` 这种语法
+
+  `--replace` 通常和 `--table-info` 一起使用，更新表条目而不更新表结构 
 
 ### Transaction args
+
+> `mysqldump` 默认参数中
 
 - `-l | --lock-tables`
 
@@ -375,9 +424,14 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
   默认开启
 
+
+- `-x | --lock-all-tables`
+
+  导表的过程中所有数据库的所有表会上 READ LOCK，会默认关闭 `--single-transaction` 和 `--lock-tables`
+
 - `--add-locks`
 
-  导出的 DDL 执行 `INSERT` 前使用 `LOCK TABLE <table> WRITE` 数据插入完成后使用 `UNLOCK TABLE`
+  执行 `INSERT` 前使用 `LOCK TABLE <table> WRITE` 数据插入完成后使用 `UNLOCK TABLE`
 
   ```
   LOCK TABLES `table1` WRITE;
@@ -387,13 +441,9 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
   默认开启，可以使用 `--skip-add-locks` 来关闭
 
-- `-x | --lock-all-tables`
-
-  在导出过程中，被导出的数据库的所有表使用 READ LOCK
-
-  默认开启
-
 - `--single-transaction`
+
+  导数据前会使用 `START TRANSACTION ` 只针对导出数据这一过程，生成的 SQL 并不会包含 `START TRANSACTION`
 
 ### Miscellaneous args
 
@@ -528,41 +578,61 @@ default-auth                      (No default value)
    mysqldump -u root -p --all-databases -r all_dbs.sql
    ```
 
-4. 导出库中的某一张表
+4. 只更新表数据
+
+   ```
+   mysqldump -u root -p test2 --replace -n
+   ```
+
+5. 导出库中的某一张表
 
    ```
    mysqldump -v -u root -p test2 table1 -r test2.table1.sql
    ```
 
-5. 导出库中的某几张表
+6. 导出库中的某几张表
 
    ```
    mysqldump -v -u root -p test2 table1 table2 -r test2.sql
    ```
 
-6. 只导出表结构
+7. 只导出表结构
 
    ```
    mysqldump -v -u root -p -d test2 table1 table2 -r test2.sql
    ```
 
-7. 只导出表条目
+8. 只导出表条目
 
    ```
    mysqldump -v -u root -p -t test2 table1 table2 -r test2.sql
    ```
 
-8. 导出库并同步(最好先备份再同步)
+9. 导出库并同步(最好先备份再同步)
 
    ```
    mysqldump -v -u root -p test2 | mysql -h 10.0.1.205 -u root -p'test1234' test2
    ```
 
-9. 导出指定表以外的所有表
+10. 导出指定表以外的所有表
 
-   ```
-   mysqldump -v -u root -p --ignore-table test2.table1 test2 -r table1.sql
-   ```
+    ```
+    mysqldump -v -u root -p --ignore-table test2.table1 test2 -r table1.sql
+    ```
+
+11. 导出查询结果
+
+    ```
+    mysqldump -v -u root -p test2 -e "select * from table1" > table1.result
+    ```
+
+12. 导出结果为 excel
+
+    ```
+    mysqldump -v -u root -p test2 -e "select * from table1" | tr '\t' ',' > table.csv
+    ```
+
+    需要注意的一点是，在 windows 上如果直接使用 excel 打开对应的 csv 文件，因为编码可能会显示乱码，可以在 notepad 里先以 UTF-8 的格式打开，然后直接复制到 csv 文件即可
 
 ## 0x06 How to restore dumps
 
@@ -578,3 +648,4 @@ default-auth                      (No default value)
 [^2]:https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_lock-tables
 [^3]:https://stackoverflow.com/questions/29539838/replace-versus-insert-in-sql
 [^4]:https://www.geeksforgeeks.org/sql-ddl-dql-dml-dcl-tcl-commands/
+[^5]:https://stackoverflow.com/questions/12040816/dump-all-tables-in-csv-format-using-mysqldump#25427665

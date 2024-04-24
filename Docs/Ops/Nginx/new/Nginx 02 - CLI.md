@@ -20,7 +20,7 @@ Nginx 通过 `nginx` CLI 来控制和管理 Nginx
 
 - `-t`
 
-  测试 Nginx 的配置文件语法是否正确
+  测试 Nginx 的配置文件语法是否正确。也可以查看当前 nginx 使用的配置文件路径
 
 - `-s [stop | quit | reopen | reload ]`
 

@@ -90,7 +90,6 @@ RHEL 7系统中使用firewalld取代了传统的iptables(删除了iptables servi
     source-ports: 
     icmp-blocks: 
     rich rules: 
-  
   ```
 
 ### service
@@ -142,9 +141,11 @@ RHEL 7系统中使用firewalld取代了传统的iptables(删除了iptables servi
   ```
   [root@cyberpelican ~]# firewall-cmd --permanent --set-target=DROP
   success
+  [root@cyberpelican ~]# sudo firewall-cmd --reload
+  success
   [root@cyberpelican ~]# firewall-cmd --list-all
   public (active)
-    target: default
+    target: DROP
     icmp-block-inversion: no
     interfaces: ens33
     sources: 
@@ -157,7 +158,6 @@ RHEL 7系统中使用firewalld取代了传统的iptables(删除了iptables servi
     icmp-blocks: host-unknown
     rich rules: 
   ```
-
   
 
 ### 规则

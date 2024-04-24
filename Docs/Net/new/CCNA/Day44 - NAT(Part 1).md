@@ -106,7 +106,7 @@ Static NAT involves statically configuring **one-to-one** mappings of private IP
 
   `R1(config-if)#ip nat outside`
 
-  声明 inside golbal 使用的接口
+  声明 inside golbal 互联的接口
 
 - `R1(config)#ip nat inside source static <source> <source nat>`
 

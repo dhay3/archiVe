@@ -402,11 +402,11 @@ minor page faults delta
 
   renice a task
 
-- W
+- `W`
 
   ==持久化当前在top中的修改的设置，默认存储在`~/.toprc`中，下次使用top是自动调用该配置文件==
 
-- Z
+- `Z`
 
   ==修改top展示信息的颜色==，使用`w`来当前选中的更改面板，默认USR，使用RGB 256
 
@@ -416,7 +416,7 @@ minor page faults delta
 
   设置列宽，`-1`表示自动scale
 
-- Y
+- `Y`
 
   在`.toprc`中输入如下内容，==可以查看指定进程打开的文件，日志，NUMA==，同样还是从syslog中读取日志
 
@@ -527,6 +527,8 @@ minor page faults delta
   只显示指定数目的进程
 
 ## config
+
+> 注意该配置文件不能被直接使用，需要通过设置然后使用 `W` 保存生成
 
 ![2022-02-24_23-46](https://github.com/dhay3/image-repo/raw/master/20220224/2022-02-24_23-46.2jvf71r4shk0.png)
 

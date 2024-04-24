@@ -9,13 +9,34 @@ Default: 	—
 Context: 	server, location
 ```
 
-location 指令用于匹配 uri 执行对应代码块中的内容
+location 指令用于匹配 URI (如果 URI 做了 encoding，例如 URI 中有中文, Nginx 会自动 decoding 然后再做 URI 匹配) 执行对应代码块中的内容
 
-这里的 Context 指明 location 同样也能出现在 location 指令块中
+==注意 Nginx 中的 URI 和传统意义上的 URI 不同(这点可以从 variable `$uri` 中得出)==
+
+```
+
+```
+
+这里的 Context 指明 location 同样也能出现在 location 指令块中，例如
+
+```
+location ^~ /images/ {
+    ...
+    location ~ /*.jpg/ {
+    	...
+    }
+    location ~ /*.png/ {
+    	...
+    }
+}
+```
 
 ## 0x01 [= | ~ | ~* | ^~]
 
-可以将这些符号统一称为 modifiers，可以分为两类 prefix modifiers 和 regex modifiers
+可以将这些符号统一称为 modifiers，可以分为两类
+
+1. prefix modifiers 
+2. regex modifiers
 
 - `=`
 
@@ -89,7 +110,12 @@ location 指令用于匹配 uri 执行对应代码块中的内容
 
 ## 0x02 Matching rules
 
-> *Among them, the location with the longest matching prefix is selected and remembered. Then regular expressions are checked, in the order of their appearance in the configuration file. The search of regular expressions terminates on the first match, and the corresponding configuration is used. If no match with a regular expression is found then the configuration of the prefix location remembered earlier is used.*
+> *To find location matching a given request, nginx first checks locations defined using the prefix strings (prefix locations). Among them, the location with the longest matching prefix is selected and remembered. Then regular expressions are checked, in the order of their appearance in the configuration file. The search of regular expressions terminates on the first match, and the corresponding configuration is used. If no match with a regular expression is found then the configuration of the prefix location remembered earlier is used.*
+
+简单的说就是
+
+1. Nginx 首先会使用 URI 去匹配 logest prefix modifiers (这点和路由的逻辑很像)
+2. 然后使用 URI 去匹配 regular modifiers
 
 伪代码逻辑如下
 

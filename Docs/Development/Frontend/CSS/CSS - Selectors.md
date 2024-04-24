@@ -429,7 +429,7 @@ div>span {
 	color: red;
 }
 ```
-但是上述 ``s2` 的样式也会修改。因为是 `s1` 的子孙元素，在 CSS 中子孙 CSS 样式会继承祖先元素的
+但是上述 `s2` 的样式也会修改。因为是 `s1` 的子孙元素，在 CSS 中子孙 CSS 样式会继承祖先元素的
 
 ### adjacent sibling selector
 

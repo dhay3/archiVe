@@ -1,6 +1,6 @@
 # Logrotate
 
-## Overview
+## 0x01 Overview
 
 logrotate 是一个日志切割工具, 通常会和 cron 或者是 rsyslog 一起使用，实现自动清理以及切割日志文件
 
@@ -61,19 +61,19 @@ include /etc/logrotate.d
 # system-specific logs may be also be configured here.
 ```
 
-## Syntax
+## 0x02 Syntax
 
 ```
 logrotate [options] configfile [configfile...]
 ```
 
-## Postional Args
+### Postional Args
 
 - configfile
 
   logrotate 配置的文件的路径
 
-## Optional Args
+### Optional Args
 
 - `-f | --force`
 
@@ -91,7 +91,7 @@ logrotate [options] configfile [configfile...]
 
   指定 logrotate 判断文件是否需要 rotate 的状态文件，默认 `/var/lib/logrotate.status`
 
-## Configuration
+## 0x03 Configuration
 
 logrotate 配置文件通常存储在以下两个位置，会被系统自动调用（`cron` 或者是 `systemd` 中需要声明对应的配置）
 
@@ -321,7 +321,7 @@ logrotate /etc/logrotate.d/
 
 - 
 
-## Default vs Create vs Copy vs Copytruncate
+## 0x04 Default vs Create vs Copy vs Copytruncate
 
 是否使用 `create`,`copy`,`copytruncate` 决定了 logrotate 该如何切割文件
 
@@ -772,13 +772,13 @@ this is a test
 
 ==即如果有进程的 fd 针对原始被切割文件 `test.log` 没有关闭，进程还是会读取原始的被切割文件，因为 `test.log` inode 未发生变化。同时切割生成的文件内容，为当前被切割文件对比前一次切割生成的文件中内容的增量==
 
-## What is rotate?
+## 0x05 What is rotate?
 
 例如 rotate 5
 
 你可以将其抽象成一个 length 5 的 quque, 如果指定切割被的文件已经被切割过 5 次（以 `glob pattern` 来确定当前队列中有多少成员，切割次数），就会按照 FIFO 的原则将队列中最旧的日志替换出去，新切割的文件加入队列
 
-## Lab
+## 0x06 Lab
 
 假设现在有一个创建 `test.log` 需要对该文件进行切割
 
@@ -1028,7 +1028,7 @@ total 8
 -rw-r--r--. 1 root root  20 Apr  2 09:45 test.log.2.gz
 ```
 
-## logrotate.status
+## 0x07 logrotate.status
 
 logrotate 自己维护着一个简单的数据库(默认存储在 `/var/lib/logrotate.status` 也可以使用 `--state <statefile>` 来指定)用于计算 frequency 是否达到匹配规则。
 
@@ -1144,7 +1144,7 @@ static int writeState(const char *stateFilename)
   }
 ```
 
-## Examples
+## 0x08 Examples
 
 - `nginx`
 
@@ -1193,7 +1193,7 @@ static int writeState(const char *stateFilename)
   
   ```
 
-## Boilerplate Configuration
+## 9x09 Boilerplate Configuration
 
 按照天切割文件，切割的后文件保留 14 天
 

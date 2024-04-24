@@ -1,10 +1,8 @@
 # GNS3 Digest
 
-参考：
+## Overview
 
-https://docs.gns3.com/docs/
-
-GNS3是一个开源的网络模拟工具，类似的有Cisco tracer
+GNS3是一个开源的网络模拟工具，和 Cisco tracer 类似，但是功能更强
 
 GNS3由两部分组成：
 
@@ -32,3 +30,6 @@ GUI是我们画网络拓扑图结构的客户端工具，需要由一个服务�
 6. Pemu：Cisco PIX 防火墙的仿真
 7. VPCS：PC进行的模拟(功能比较简单)
 
+**references**
+
+[^1]:https://docs.gns3.com/docs/

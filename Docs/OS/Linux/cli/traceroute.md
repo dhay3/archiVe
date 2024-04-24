@@ -423,7 +423,7 @@ traceroute 探测一次会发 3 个包，前 3 个包的 ttl 值为 1（由trace
 
 ### Linux
 
-![2022-08-04_21-09](https://git.poker/dhay3/image-repo/blob/master/20220804/2022-08-04_21-09.2nejewalwv40.webp?raw=true)
+![](https://github.com/dhay3/picx-images-hosting/raw/master/20240419/2022-08-04_21-09.54xjvk96dl.webp)
 
 大家都知道 TTL 在到路由设备时会 minus 1
 
@@ -525,7 +525,7 @@ traceroute to 192.168.3.1 (192.168.3.1), 30 hops max, 60 byte packets
 
 这里能发现 `maxttl(echo request) == 7`，但是实际 3 跳就应该到了，逻辑上应该在 `ttl==3`的时候就应该停止发包了。所以说明 traceroute 概率是==异步发包==的。
 
-![2022-08-05_15-51](https://git.poker/dhay3/image-repo/blob/master/20220805/2022-08-05_15-51.4zly7xs6z9mo.webp?raw=true)
+![](https://github.com/dhay3/picx-images-hosting/raw/master/20240419/2022-08-05_15-51.2ruxecwemp.webp)
 
 观察 19th 和 35th, 是“一对” （注意 ICMP 不是对称的协议，这里只是为了逻辑上方便理解所以才称为一对）
 
@@ -565,7 +565,7 @@ traceroute 将 ttl 设置为 3，经过 R1 和 R2 minus 2，ttl 的值不为 0�
 
 **R1 <-> R2**
 
-![2022-08-05_15-12](https://git.poker/dhay3/image-repo/blob/master/20220805/2022-08-05_15-12.5fo89nbeif40.webp?raw=true)
+![](https://github.com/dhay3/picx-images-hosting/raw/master/20240419/2022-08-05_15-12.9nzkyjg5m4.webp)
 
 traceroute 首先将 ttl 设置为1，数据包根据路由达到了 R1，R1 将 ttl minus 1，发现 `ttl == 0`，R1 查找路由通过 fa0/0 回送 ICMP type 11, ttl 255 。==这时数据包并没有通过 R1 转发到 R2 的链路上，所以上面并不会显示关联的数据包==
 
@@ -600,7 +600,7 @@ traceroute 将 ttl 设置为 5，经过 R1 minus 1，对应 55th。centos-2 回�
 
 > 需要注意的一点是 TCP 发送默认的 60 byte，是不带 TCP segment 的，20 IP Header ，40 TCP Header
 
-![2022-08-19_23-04](https://git.poker/dhay3/image-repo/blob/master/20220819/2022-08-19_23-04.52qzjhjltgxs.webp?raw=true)
+![](https://github.com/dhay3/picx-images-hosting/raw/master/20240419/2022-08-19_23-04.361d585pjq.webp)
 
 **centos-1 <-> R1 4层TCP通**
 
@@ -621,7 +621,7 @@ traceroute to 192.168.3.1 (192.168.3.1), 30 hops max, 60 byte packets
 
 从 TCP SYN 包的数量和包内3层 ttl 值看，和 ICMP probe mode 一样会发大于实际 hops，ttl 值的包。每个到达目的主机的包，源都会主动对 socket pair 发 RST 包
 
-![2022-08-05_21-12](https://git.poker/dhay3/image-repo/blob/master/20220805/2022-08-05_21-12.sz1n0ne17jk.webp?raw=true)
+![](https://github.com/dhay3/picx-images-hosting/raw/master/20240419/2022-08-05_21-12.7w6m3mxsns.webp)
 
 观察 8th 和 51th
 
@@ -801,7 +801,7 @@ traceroute to 192.168.3.1 (192.168.3.1), 30 hops max, 60 byte packets
 State             Recv-Q             Send-Q                           Local Address:Port                           Peer Address:Port             Process
 ```
 
-![2022-08-05_23-34](https://git.poker/dhay3/image-repo/blob/master/20220805/2022-08-05_23-34.5bzzqai490g0.webp?raw=true)
+![](https://github.com/dhay3/picx-images-hosting/raw/master/20240419/2022-08-05_23-34.5tqtfkzpjo.webp)
 
 ttl 值未到 3 之前的逻辑不再赘述，这里只讨论 ttl 值为 3 的情况，即包达到了目的主机
 
@@ -888,7 +888,7 @@ traceroute to 192.168.3.1 (192.168.3.1), 30 hops max, 60 byte packets
  8  *^C
 ```
 
-![2022-08-08_12-23](https://git.poker/dhay3/image-repo/blob/master/20220807/2022-08-08_12-23.6fcw0tzmnfk0.webp?raw=true)
+![](https://github.com/dhay3/picx-images-hosting/raw/master/20240419/2022-08-08_12-23.51dxxujibj.webp)
 
 从 569th 开始 ttl 值为 3，可以从上图看到 centos-2 并没有回包给 centos-1，也没有出现重传
 
@@ -906,7 +906,7 @@ traceroute to 192.168.3.1 (192.168.3.1), 30 hops max, 60 byte packets
  3  192.168.3.1 (192.168.3.1)  24.785 ms  24.783 ms  25.889 ms
 ```
 
-![2022-08-07_16-08](https://git.poker/dhay3/image-repo/blob/master/20220807/2022-08-07_16-08.4k5fjwb9mmtc.webp?raw=true)
+![](https://github.com/dhay3/picx-images-hosting/raw/master/20240419/2022-08-07_16-08.1ov83h3avq.webp)
 
 观察 40th 和 56th
 
