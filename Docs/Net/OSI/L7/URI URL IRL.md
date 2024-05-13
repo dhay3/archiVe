@@ -13,8 +13,12 @@ A URI(Uniform Resource Identifier) is an unique sequence identifer that identifi
 https://developer.mozilla.org
 https://developer.mozilla.org/en-US/search?q=URL
 ftp://ds.internic.net/internet-drafts/draft-ietf-uri-irl-fun-req-02.txt
-#Nginx 中的 location directive 中就是使用 URI 来匹配规则的
-/image/
+```
+
+通常 URI 在网络中会以如下格式表示，必须包含 scheme (个人持相反观点，并非必须包含，例如 Nginx 中的 `$uri`)
+
+```
+URL = scheme ":" ["//" authority] path ["?" query] ["#" fragment]
 ```
 
 ## URL
@@ -33,10 +37,10 @@ ftp://ds.internic.net/internet-drafts/draft-ietf-uri-irl-fun-req-02.txt
 jdbc:mysql://10.0.3.34:3306/mysql?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&allowMultiQueries=true&allowPublicKeyRetrieval=true
 ```
 
-通常 URL 会以如下格式表示，必须包含 scheme (个人持相反观点，并非必须包含)
+通常 URL 会以如下格式表示
 
 ```
-URL = scheme ":" ["//" authority] path ["?" query] ["#" fragment]
+URL = scheme://authority/[path] ["?" query] ["#" fragment]
 ```
 
 ## IRI

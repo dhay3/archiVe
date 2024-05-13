@@ -19,25 +19,29 @@ set-option -gq prefix C-x
 set-option -gq prefix2 None
 set-option -gq default-terminal "screen-256color"
 set-option -gq mode-keys vi
-set-option -gq status on
 set-option -gq monitor-bell off
 set-option -gq renumber-windows on
 set-option -gq set-clipboard on
 set-option -gq set-titles on
 set-option -gq mouse on
-set-option -gq pane-border-lines simple
+set-option -gq status on
+set-option -gq status-position bottom
 set-option -gq base-index 1
 set-option -gq pane-base-index 1
-#xclip for xorg
-#set-option -gq copy-command 'xclip -i'
-#wl-copy for wayland
-set-option -gq copy-command 'wl-copy -n'
+set-option -gq pane-border-lines simple
+set-option -gp pane-border-indicators both
+set-option -gq pane-border-style 'bg=default fg=#AAFF00'
+set-option -gq pane-active-border-style 'bg=default fg=#FF1493 bold'
+#xclip for xorg, wl-copy for wayland
+if-shell  "[[ ${XDG_SESSION_TYPE} == wayland ]]" {set-option -gq copy-command 'wl-copy -n'}
+if-shell  "[[ ${XDG_SESSION_TYPE} == x11 ]]" {set-option -gq copy-command 'xclip -i'}
 
 
 # Bindings
 #unbind-key -a
 
 bind-key -T prefix C-b send-prefix
+bind-key -T prefix Space next-layout
 bind-key -T prefix h list-keys -N
 bind-key -T prefix H list-keys
 bind-key -T prefix s source-file ~/.tmux.conf
@@ -46,8 +50,10 @@ bind-key -T prefix : command-prompt
 bind-key -T prefix q display-panes
 bind-key -T prefix [ previous-window
 bind-key -T prefix ] next-window
-bind-key -T prefix \{ swap-pane -U
-bind-key -T prefix \} swap-pane -D
+bind-key -T prefix \{ swap-window -d -t -1
+bind-key -T prefix \} swap-window -d -t +1
+#bind-key -T prefix \{ swap-pane -U
+#bind-key -T prefix \} swap-pane -D
 bind-key -T prefix ( switch-client -p
 bind-key -T prefix ) switch-client -n
 bind-key -T prefix < display-menu -T "#[align=centre]#{window_index}:#{window_name}" -t = -x W -y W "#{?#{>:#{session_windows},1},,-}Swap Left" l { swap-window -t :-1 } "#{?#{>:#{session_windows},1},,-}Swap Right" r { swap-window -t :+1 } "#{?pane_marked_set,,-}Swap Marked" s { swap-window } '' Kill k { kill-window } Respawn x { respawn-window -k } "#{?pane_marked,Unmark,Mark}" m { select-pane -m } Rename r { command-prompt -F -I "#W" { rename-window -t "#{window_id}" "%%" } } '' "New After" C { new-window -a } "New At End" c { new-window }
@@ -67,8 +73,8 @@ bind-key -T prefix R command-prompt -I "#S" { rename-session "%%" }
 bind-key -T prefix k confirm-before -p "kill-window #W? (y/n)" kill-window
 bind-key -T prefix K confirm-before -p "kill-session #S? (y/n)" kill-session
 bind-key -T prefix C-k confirm-before -p "kill-server? (y/n)" kill-server
-bind-key -T prefix w split-window -h
-bind-key -T prefix W split-window -v
+bind-key -T prefix w split-window -h -c "#{pane_current_path}"
+bind-key -T prefix W split-window -v -c "#{pane_current_path}"
 bind-key -T prefix m command-prompt -T target { move-window -t "%%" }
 bind-key -T prefix M command-prompt -T target { move-pane -t "%%" }
 bind-key -T prefix z resize-pane -Z
@@ -91,12 +97,10 @@ bind-key -T root MouseDown3Status display-menu -T "#[align=centre]#{window_index
 bind-key -T root MouseDown1Pane select-pane -t = \; send-keys -M
 bind-key -T root MouseDrag1Pane select-pane -t = \; if-shell -F "#{||:#{pane_in_mode},#{mouse_any_flag}}" { send-keys -M } { copy-mode }
 bind-key -T root MouseDrag1Border resize-pane -M
-#xorg
-#bind-key -T root DoubleClick1Pane select-pane -t = \; copy-mode -M \; send-keys -X select-word \; send-keys -X copy-pipe-no-clear "xclip -selection clipboard -in"
-#bind-key -T root TripleClick1Pane select-pane -t = \; copy-mode -M \; send-keys -X select-line \; send-keys -X copy-pipe-no-clear "xclip -selection clipboard -in"
-#wayland
-bind-key -T root DoubleClick1Pane select-pane -t = \; copy-mode -M \; send-keys -X select-word \; send-keys -X copy-pipe-no-clear "wl-copy && wl-paste -n | wl-copy -p"
-bind-key -T root TripleClick1Pane select-pane -t = \; copy-mode -M \; send-keys -X select-line \; send-keys -X copy-pipe-no-clear "wl-copy && wl-paste -n | wl-copy -p"
+if-shell  "[[ ${XDG_SESSION_TYPE} == x11 ]]" {bind-key -T root DoubleClick1Pane select-pane -t = \; copy-mode -M \; send-keys -X select-word \; send-keys -X copy-pipe-no-clear "xclip -selection clipboard -in"}
+if-shell  "[[ ${XDG_SESSION_TYPE} == x11 ]]" {bind-key -T root TripleClick1Pane select-pane -t = \; copy-mode -M \; send-keys -X select-line \; send-keys -X copy-pipe-no-clear "xclip -selection clipboard -in"}
+if-shell  "[[ ${XDG_SESSION_TYPE} == wayland ]]" {bind-key -T root DoubleClick1Pane select-pane -t = \; copy-mode -M \; send-keys -X select-word \; send-keys -X copy-pipe-no-clear "wl-copy && wl-paste -n | wl-copy -p"}
+if-shell  "[[ ${XDG_SESSION_TYPE} == wayland ]]" {bind-key -T root TripleClick1Pane select-pane -t = \; copy-mode -M \; send-keys -X select-line \; send-keys -X copy-pipe-no-clear "wl-copy && wl-paste -n | wl-copy -p"}
 bind-key -r -T prefix Up select-pane -U
 bind-key -r -T prefix Down select-pane -D
 bind-key -r -T prefix Left select-pane -L
@@ -114,24 +118,18 @@ bind-key -T copy-mode v send-keys -X begin-selection
 bind-key -T copy-mode q send-keys -X cancel
 bind-key -T copy-mode Escape send-keys -X clear-selection
 bind-key -T copy-mode Space send-keys -X begin-selection
-#xorg
-#bind-key -T copy-mode Enter send-keys -X copy-pipe-and-cancel "xclip -selection clipboard -in"
-#wayland
-bind-key -T copy-mode Enter send-keys -X copy-pipe-and-cancel "wl-copy && wl-paste -n | wl-copy -p"
 bind-key -T copy-mode MouseUp1Pane send-keys -X clear-selection
 bind-key -T copy-mode MouseDrag1Pane select-pane \; send-keys -X begin-selection
-#xorg
-#bind-key -T copy-mode MouseDragEnd1Pane select-pane \; send-keys -X copy-pipe-no-clear "xclip -selection clipboard -in" 
-#bind-key -T copy-mode DoubleClick1Pane select-pane \; send-keys -X select-word \; send-keys -X copy-pipe-no-clear "xclip -selection clipboard -in" 
-#bind-key -T copy-mode TripleClick1Pane select-pane \; send-keys -X select-line \; send-keys -X copy-pipe-no-clear "xclip -selection clipboard -in"
-#bind-key -T copy-mode MouseDragEnd1Pane send-keys -X copy-pipe-no-clear "xclip -selection clipboard -in"
-#wayland
-bind-key -T copy-mode MouseDragEnd1Pane select-pane \; send-keys -X copy-pipe-no-clear "wl-copy && wl-paste -n | wl-copy -p" 
-bind-key -T copy-mode DoubleClick1Pane select-pane \; send-keys -X select-word \; send-keys -X copy-pipe-no-clear "wl-copy && wl-paste -n | wl-copy -p" 
-bind-key -T copy-mode TripleClick1Pane select-pane \; send-keys -X select-line \; send-keys -X copy-pipe-no-clear "wl-copy && wl-paste -n | wl-copy -p"
-bind-key -T copy-mode MouseDragEnd1Pane send-keys -X copy-pipe-no-clear "wl-copy && wl-paste -n | wl-copy -p"
 bind-key -T copy-mode WheelUpPane select-pane \; send-keys -X -N 1 scroll-up
 bind-key -T copy-mode WheelDownPane select-pane \; send-keys -X -N 1 scroll-down
+if-shell  "[[ ${XDG_SESSION_TYPE} == x11 ]]" {bind-key -T copy-mode Enter send-keys -X copy-pipe-and-cancel "wl-copy && wl-paste -n | wl-copy -p"}
+if-shell  "[[ ${XDG_SESSION_TYPE} == x11 ]]" {bind-key -T copy-mode MouseDragEnd1Pane select-pane \; send-keys -X copy-pipe-no-clear "xclip -selection clipboard -in"} 
+if-shell  "[[ ${XDG_SESSION_TYPE} == x11 ]]" {bind-key -T copy-mode DoubleClick1Pane select-pane \; send-keys -X select-word \; send-keys -X copy-pipe-no-clear "xclip -selection clipboard -in"}
+if-shell  "[[ ${XDG_SESSION_TYPE} == x11 ]]" {bind-key -T copy-mode TripleClick1Pane select-pane \; send-keys -X select-line \; send-keys -X copy-pipe-no-clear "xclip -selection clipboard -in"}
+if-shell  "[[ ${XDG_SESSION_TYPE} == wayland ]]" {bind-key -T copy-mode Enter send-keys -X copy-pipe-and-cancel "xclip -selection clipboard -in"}
+if-shell  "[[ ${XDG_SESSION_TYPE} == wayland ]]" {bind-key -T copy-mode MouseDragEnd1Pane select-pane \; send-keys -X copy-pipe-no-clear "wl-copy && wl-paste -n | wl-copy -p"}
+if-shell  "[[ ${XDG_SESSION_TYPE} == wayland ]]" {bind-key -T copy-mode DoubleClick1Pane select-pane \; send-keys -X select-word \; send-keys -X copy-pipe-no-clear "wl-copy && wl-paste -n | wl-copy -p"}
+if-shell  "[[ ${XDG_SESSION_TYPE} == wayland ]]" {bind-key -T copy-mode TripleClick1Pane select-pane \; send-keys -X select-line \; send-keys -X copy-pipe-no-clear "wl-copy && wl-paste -n | wl-copy -p"}
 
 bind-key -T copy-mode-vi C-c send-keys -X cancel
 bind-key -T copy-mode-vi / command-prompt -T search -p "(search down)" { send-keys -X search-forward "%%" }
@@ -141,24 +139,18 @@ bind-key -T copy-mode-vi v send-keys -X begin-selection
 bind-key -T copy-mode-vi q send-keys -X cancel
 bind-key -T copy-mode-vi Escape send-keys -X clear-selection
 bind-key -T copy-mode-vi Space send-keys -X begin-selection
-#xorg
-#bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "xclip -selection clipboard -in"
-#wayland
-bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "wl-copy && wl-paste -n | wl-copy -p"
 bind-key -T copy-mode-vi MouseUp1Pane send-keys -X clear-selection
 bind-key -T copy-mode-vi MouseDrag1Pane select-pane \; send-keys -X begin-selection
-#xorg
-#bind-key -T copy-mode-vi MouseDragEnd1Pane select-pane \; send-keys -X copy-pipe-no-clear "xclip -selection clipboard -in" 
-#bind-key -T copy-mode-vi DoubleClick1Pane select-pane \; send-keys -X select-word \; send-keys -X copy-pipe-no-clear "xclip -selection clipboard -in" 
-#bind-key -T copy-mode-vi TripleClick1Pane select-pane \; send-keys -X select-line \; send-keys -X copy-pipe-no-clear "xclip -selection clipboard -in"
-#bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-no-clear "xclip -selection clipboard -in"
-#wayland
-bind-key -T copy-mode-vi MouseDragEnd1Pane select-pane \; send-keys -X copy-pipe-no-clear "wl-copy && wl-paste -n | wl-copy -p" 
-bind-key -T copy-mode-vi DoubleClick1Pane select-pane \; send-keys -X select-word \; send-keys -X copy-pipe-no-clear "wl-copy && wl-paste -n | wl-copy -p" 
-bind-key -T copy-mode-vi TripleClick1Pane select-pane \; send-keys -X select-line \; send-keys -X copy-pipe-no-clear "wl-copy && wl-paste -n | wl-copy -p"
-bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-no-clear "wl-copy && wl-paste -n | wl-copy -p"
 bind-key -T copy-mode-vi WheelUpPane select-pane \; send-keys -X -N 1 scroll-up
 bind-key -T copy-mode-vi WheelDownPane select-pane \; send-keys -X -N 1 scroll-down
+if-shell  "[[ ${XDG_SESSION_TYPE} == x11 ]]" {bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "wl-copy && wl-paste -n | wl-copy -p"}
+if-shell  "[[ ${XDG_SESSION_TYPE} == x11 ]]" {bind-key -T copy-mode-vi MouseDragEnd1Pane select-pane \; send-keys -X copy-pipe-no-clear "xclip -selection clipboard -in"} 
+if-shell  "[[ ${XDG_SESSION_TYPE} == x11 ]]" {bind-key -T copy-mode-vi DoubleClick1Pane select-pane \; send-keys -X select-word \; send-keys -X copy-pipe-no-clear "xclip -selection clipboard -in"}
+if-shell  "[[ ${XDG_SESSION_TYPE} == x11 ]]" {bind-key -T copy-mode-vi TripleClick1Pane select-pane \; send-keys -X select-line \; send-keys -X copy-pipe-no-clear "xclip -selection clipboard -in"}
+if-shell  "[[ ${XDG_SESSION_TYPE} == wayland ]]" {bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "xclip -selection clipboard -in"}
+if-shell  "[[ ${XDG_SESSION_TYPE} == wayland ]]" {bind-key -T copy-mode-vi MouseDragEnd1Pane select-pane \; send-keys -X copy-pipe-no-clear "wl-copy && wl-paste -n | wl-copy -p"}
+if-shell  "[[ ${XDG_SESSION_TYPE} == wayland ]]" {bind-key -T copy-mode-vi DoubleClick1Pane select-pane \; send-keys -X select-word \; send-keys -X copy-pipe-no-clear "wl-copy && wl-paste -n | wl-copy -p"}
+if-shell  "[[ ${XDG_SESSION_TYPE} == wayland ]]" {bind-key -T copy-mode-vi TripleClick1Pane select-pane \; send-keys -X select-line \; send-keys -X copy-pipe-no-clear "wl-copy && wl-paste -n | wl-copy -p"}
 ```
 
 **references**

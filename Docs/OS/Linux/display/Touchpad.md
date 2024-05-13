@@ -37,7 +37,7 @@ Gestures 分为几种
 
 Pinch gestures are executed when two or more fingers are located on the touchpad and are either changing the relative distance to each other (pinching) or are changing the relative angle (rotate). 
 
-2 根手指相对的移动或者旋转
+2 根以上手指相对的移动或者旋转
 
 ![_images/pinch-gestures.svg](https://wayland.freedesktop.org/libinput/doc/latest/_images/pinch-gestures.svg)
 

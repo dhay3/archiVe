@@ -1,4 +1,4 @@
-# Nginx Installation
+# Nginx 01 - Installation
 
 ## 0x01 Package manager
 
@@ -147,6 +147,7 @@ tar -xvzf nginx-1.24.0.tar.gz && cd nginx-1.24.0
 ```
 ./configure \
 --prefix=/opt/nginx \
+--builddir=./builddir \
 --user=nobody \
 --group=nobody \
 --conf-path=/opt/nginx/nginx.conf \
@@ -196,6 +197,7 @@ tar -xvzf nginx-1.24.0.tar.gz && cd nginx-1.24.0
 ```
 ./configure \
 --prefix=/opt/nginx \
+--builddir=./builddir \
 --user=nobody \
 --group=nobody \
 --conf-path=/opt/nginx/nginx.conf \
@@ -213,8 +215,6 @@ tar -xvzf nginx-1.24.0.tar.gz && cd nginx-1.24.0
 --with-file-aio \
 --with-pcre-jit \
 --with-libatomic \
---with-stream \
---with-stream_ssl_module \
 --with-http_ssl_module \
 --with-http_gunzip_module \
 --with-http_gzip_static_module \
@@ -299,7 +299,7 @@ tar -xvzf nginx-1.24.0.tar.gz && cd nginx-1.24.0
    ```
    curl -OL https://www.openssl.org/source/openssl-3.2.1.tar.gz
    sudo tar -xzvf openssl-3.2.1.tar.gz && cd openssl-3.2.1
-   
+   ./configure && make install
    ```
 
    或者使用 `--with-openssl=path` 指定 pcre 的源码包
@@ -559,8 +559,6 @@ configure arguments: --builddir=build --prefix=/opt/nginx --user=nobody --group=
 
   设置编译时使用的 working directory
 
-  该参数可能存在问题，生成的 `path/src` 下为空
-
 - `--with-select_module`
 
   允许 nginx 调用 `select()`，默认构建
@@ -715,7 +713,7 @@ configure arguments: --builddir=build --prefix=/opt/nginx --user=nobody --group=
 
   `--with-stream=dynamic`
 
-  增加 [stream module](http://nginx.org/en/docs/stream/ngx_stream_core_module.html) 指令块，使用 `upstream` 指令块需要使用，默认不构建
+  增加 [stream module](http://nginx.org/en/docs/stream/ngx_stream_core_module.html) 指令块，默认不构建，和 `upstream` 无关
 
 - `--with-stream_ssl_module`
 

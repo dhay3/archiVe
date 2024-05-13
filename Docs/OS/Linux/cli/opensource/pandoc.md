@@ -101,5 +101,6 @@ pandoc -w html -o pandoc.html pandoc.md
 pandoc  -o pandoc.html pandoc.md
 ```
 
+## Cautions
 
-
+1. pandoc 支持将文件转为 PDF，但是不支持 PDF 转其他格式

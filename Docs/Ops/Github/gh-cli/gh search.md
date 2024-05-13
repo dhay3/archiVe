@@ -42,7 +42,7 @@ gh search repos [<query>] [flags]
 过滤后使用 browser 打开
 ### Examples
 ```
-#可以使用比较符号但是需要注意转译
+#可以使用比较符号但是需要注意转译或者是 single duote
 λ ~/ gh search repos linux --stars \>10000 --forks \>10000 --match name
 #等价,同样需要注意转译
 λ ~/ gh search repos stars:\>10000 forks:\>10000 in:name linux

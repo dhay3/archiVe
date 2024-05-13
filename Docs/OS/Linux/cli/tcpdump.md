@@ -1,16 +1,6 @@
 # Linux tcpdump
 
-ref:
-
-https://www.tcpdump.org/
-
-https://en.wikipedia.org/wiki/Promiscuous_mode
-
-https://superuser.com/questions/925286/does-tcpdump-bypass-iptables
-
-man pcap(3PCAP)
-
-## Digest
+## 0x01 Digest
 
 syntax
 
@@ -31,7 +21,7 @@ syntax
 
 tcpdump 是一个基于 C 开发的 CLI 抓包工具，同样的还有 wireshark 出品的 tshark
 
-## Terms
+## 0x02 Terms
 
 - buffer size
 
@@ -63,7 +53,7 @@ tcpdump 是一个基于 C 开发的 CLI 抓包工具，同样的还有 wireshark
 
   kali wifi attacker 就是使用 monitor mode 来监听数据包，然后 hack WIFI
 
-## Statistics
+## 0x03 Statistics
 
 tcpdump 后会抓包结束后显示抓包的数量
 
@@ -81,7 +71,7 @@ tcpdump 后会抓包结束后显示抓包的数量
 
 3. dropped by kernel, this is the number of packets that were dropped, due to a lack of buffer space, by the packet capture machanism in the OS
 
-## Optional args
+## 0x04 Optional args
 
 ### Common args
 
@@ -244,7 +234,7 @@ tcpdump 后会抓包结束后显示抓包的数量
 
   verbose out，具体查看 man page
 
-## Output format
+## 0x05 Output format
 
 tcpdump 根据协议不同输出的内容的也不同
 
@@ -293,7 +283,7 @@ tcpdump 根据协议不同输出的内容的也不同
   15:03:44.246402 wlp1s0 Out IP 30.131.78.33.53904 > 30.30.30.30.53: 19926+ A? baidu.com. (27)
   ```
 
-## Filter Expressions
+## 0x06 Filter Expressions
 
 > man pcap-filter
 >
@@ -419,7 +409,7 @@ TCP header 通常 20 字节(octets)，除非指定了 TCP options。从 0 开始
 
 `tcp[13] & 2 == 2 and tcp[13] & 16 == 16` 就只会匹配含有 SYN 报文的，不会匹配含有 ACK 报文的
 
-## Capture domain name packets
+## 0x06 Capture domain name packets
 
 tcpdump 和 wireshark 不一样， tcpdump 可以直接抓指定域名的报文
 
@@ -433,7 +423,7 @@ listening on wlp1s0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 ...
 ```
 
-## Tcpdump with iptables DROP
+## 0x07 Tcpdump with iptables DROP
 
 As a matter of fact, *tcpdump* is the first software found after the wire (and the NIC, if you will) on the way *IN*, and the last one on the way *OUT*.  
 
@@ -545,13 +535,13 @@ cpl in ~ λ ip -s link
 
 符合规则，在 iptables 层面丢包
 
-## Tcpdump VS Wireshark
+## 0x08 Tcpdump VS Wireshark
 
 1. tcpdump 不能智能的分析重传的包，但是可以从 seq number 来分析。如果需要 TUI 类型的工具来分析，可以使用 tshark
 2. tcpdump 使用的 filter expressions 和 wireshark 的大相径庭
 
 
-## Examples
+## 0x09 Examples
 
 同时匹配一个包源目IP是192.168.80.200 和 192.168.80.100
 
@@ -576,3 +566,17 @@ tcpdump -i any -G 30 -W 1 -w /tmp/a.pcap
 ```
 tcpdump -nveSA#i ens0 
 ```
+
+将包写入文件的同时，输出到 stdout
+
+```
+ tcpdump -nni any host 10.0.1.75 -w - -U | tee /tmp/a | tcpdump -nnr - 
+```
+
+**references**
+
+[^1]:https://www.tcpdump.org/
+[^2]:https://en.wikipedia.org/wiki/Promiscuous_mode
+[^3]:https://superuser.com/questions/925286/does-tcpdump-bypass-iptables
+[^4]:man pcap(3PCAP)
+[^5]:https://stackoverflow.com/questions/25603831/how-can-i-have-tcpdump-write-to-file-and-standard-output-the-appropriate-data#25604237

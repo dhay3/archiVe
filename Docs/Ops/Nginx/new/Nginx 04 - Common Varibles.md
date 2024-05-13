@@ -142,7 +142,7 @@ http {
 
   current URI in request
 
-  Nginx 中的这个 URI 和传统的 URI 定义不同，这里特指 Host 后的路径（不包含参数），即 URL path
+  这里特指 Host 后的路径（不包含参数），即 URL path
 
   ```
   (base) 0x00 in /etc/nginx λ curl -s 'localhost/path?token=aabb'

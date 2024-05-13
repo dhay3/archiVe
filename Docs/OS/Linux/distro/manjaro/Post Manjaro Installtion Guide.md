@@ -162,8 +162,6 @@ root ALL=(ALL:ALL) ALL
 
 ## Terminal Complation
 
-[]()
-
 ## Sogoupinyin
 
 > use `fcitx-diagnose` for troubleshooting 
@@ -182,11 +180,7 @@ yay -S fcitx-sogoupinyin kcm-fcitx fcitx-configtool
 
 latte-dock
 
-
-
 ### latte-dock
-
-
 
 ## Custom Grub
 
@@ -238,9 +232,9 @@ latte-dock
 | WPS                    | office 套件                                  |
 | Pling Store            | KDE 插件商店                                 |
 | gestures               | libinput-gestures 图形化配置工具             |
-|                        |                                              |
+| DVWA                   | Web 漏洞测试                                 |
 
-### Basic Function Software
+###  Function Software
 
 | Name                                                     | Description                                            |
 | -------------------------------------------------------- | ------------------------------------------------------ |
@@ -264,7 +258,7 @@ latte-dock
 | iat                                                      |                                                        |
 | john                                                     | 爆破工具                                               |
 | ocs-url                                                  | kde store 下载工具                                     |
-| gping                                                    |                                                        |
+| gping                                                    | ping tui 工具                                          |
 | sysstat                                                  |                                                        |
 | manjaro-asian-input-support-fcitx5/fcitx5-chinese-addons | 中文输入法(支持双拼)                                   |
 | aria2                                                    | 下载工具                                               |
@@ -272,7 +266,17 @@ latte-dock
 | ydotool                                                  | 类似 xdotool 但是支持 wayland 和 xorg                  |
 | tf-hack-nerd                                             | lsd 的字体                                             |
 | aur-auto-vote-git                                        | AUR 自动投票工具                                       |
-|                                                          |                                                        |
+| metasploit                                               | payload 工具                                           |
+| hashcat                                                  |                                                        |
+| sherlock                                                 | 社工工具                                               |
+| wifiphisher                                              | WIFI 钓鱼工具                                          |
+| powershell                                               |                                                        |
+| ettercap                                                 |                                                        |
+| macchanger                                               | BIA 修改                                               |
+| steghide                                                 | 文件隐写                                               |
+| hydra                                                    | 爆破工具                                               |
+| beef-xss                                                 |                                                        |
+| sqlmap                                                   | SQL 注入工具                                           |
 
 **references**
 
