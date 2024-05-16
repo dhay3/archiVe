@@ -1148,6 +1148,8 @@ static int writeState(const char *stateFilename)
 
 - `nginx`
 
+  通常使用包管理器下载 nginx 会自动在 `/etc/logrotate.d` 下添加一个 nginx 配置，而如果使用编译安装需要手动添加
+
   ```
   (base) cc in /etc/logrotate.d λ cat nginx
   /var/log/nginx/*log {

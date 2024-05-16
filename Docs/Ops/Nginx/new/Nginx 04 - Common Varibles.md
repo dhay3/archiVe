@@ -50,7 +50,7 @@ Use Curl to verify
 a=A&b=B
 ```
 
-## 0x02 Args
+## 0x02 Variables
 
 > The `ngx_http_core_module` module supports embedded variables with names matching the Apache Server variables. First of all, these are variables representing client request header fields, such as `$http_user_agent`, `$http_cookie`, and so on. Also there are other variables:
 

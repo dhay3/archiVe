@@ -1,8 +1,10 @@
 # ngx_http_core_module
 
-## request relevant
+Nginx http 最核心的模块，编译时自动选择
 
-#### client_max_body_size
+## Request relevant
+
+### client_max_body_size
 
 ```
 Syntax: 	client_max_body_size size;
@@ -14,7 +16,7 @@ Sets the maximum allowed size of the client request body. If the size in a reque
 
 client request body 能承载的最大值，如果为 0 表示无限制。如果超出配置的值会回送 413
 
-#### client_body_timeout
+### client_body_timeout
 
 ```
 Syntax: 	client_body_timeout time;
@@ -24,7 +26,7 @@ Context: 	http, server, location
 
 Defines a timeout for reading client request header. If a client does not transmit the entire header within this time, the request is terminated with the 408 (Request Time-out) error.
 
-#### client_header_buffer_size
+### client_header_buffer_size
 
 ```
 Syntax: 	client_header_buffer_size size;
@@ -34,7 +36,7 @@ Context: 	http, server
 
 Sets buffer size for reading client request header.
 
-#### large_client_header_buffers
+### large_client_header_buffers
 
 ```
 Syntax: 	large_client_header_buffers number size;
@@ -44,9 +46,9 @@ Context: 	http, server
 
 
 
-## response relevant
+## Response relevant
 
-#### alias
+### alias
 
 ```
 Syntax: 	alias path;
@@ -74,7 +76,7 @@ location ~ ^/users/(.+\.(?:gif|jpe?g|png))$ {
 
 最好直接使用 `root` 替代 `alias`
 
-#### default-type
+### default-type
 
 ```
 Syntax: 	default_type mime-type;
@@ -84,7 +86,7 @@ Context: 	http, server, location
 
 Defines the default MIME type of a response. Mapping of file name extensions to MIME types can be set with the [types](http://nginx.org/en/docs/http/ngx_http_core_module.html#types) directive.
 
-#### error_page
+### error_page
 
 ```
 Syntax: 	error_page code ... [=[response]] uri;
@@ -92,7 +94,7 @@ Default: 	—
 Context: 	http, server, location, if in location
 ```
 
-#### etag
+### etag
 
 ```
 Syntax: 	etag on | off;
@@ -113,11 +115,11 @@ Enables or disables automatic generation of the “ETag”[^2] response header f
 
 该参数可以有效节省服务器的带宽
 
-#### internal
+### internal
 
 ## keepalive relevant
 
-#### keepalive_request
+### keepalive_request
 
 ```
 Syntax: 	keepalive_requests number;
@@ -128,7 +130,7 @@ This directive appeared in version 0.8.0.
 
 keepalive 信道允许的最大请求数，超过该数值 keepalive 信道关闭
 
-#### keepalive_time
+### keepalive_time
 
 ```
 Syntax: 	keepalive_time time;
@@ -139,7 +141,7 @@ This directive appeared in version 1.19.10.
 
 keepalive 信道允许打开的最长时间，超过该时间 keepalive 信道关闭
 
-#### keepalive_timeout
+### keepalive_timeout
 
 ```
 Syntax: 	keepalive_timeout timeout [header_timeout];
@@ -153,17 +155,44 @@ The “Keep-Alive: timeout=`*time*`” header field is recognized by Mozilla and
 
 ## server relevant
 
-#### server
+### listen
 
 ```
-Syntax: 	listen address[:port] [default_server] [ssl] [http2 | quic] [proxy_protocol] [setfib=number] [fastopen=number] [backlog=number] [rcvbuf=size] [sndbuf=size] [accept_filter=filter] [deferred] [bind] [ipv6only=on|off] [reuseport] [so_keepalive=on|off|[keepidle]:[keepintvl]:[keepcnt]];
+Syntax: 	
+listen address[:port] [default_server] [ssl] [http2 | quic] [proxy_protocol] [setfib=number] [fastopen=number] [backlog=number] [rcvbuf=size] [sndbuf=size] [accept_filter=filter] [deferred] [bind] [ipv6only=on|off] [reuseport] [so_keepalive=on|off|[keepidle]:[keepintvl]:[keepcnt]];
+
 listen port [default_server] [ssl] [http2 | quic] [proxy_protocol] [setfib=number] [fastopen=number] [backlog=number] [rcvbuf=size] [sndbuf=size] [accept_filter=filter] [deferred] [bind] [ipv6only=on|off] [reuseport] [so_keepalive=on|off|[keepidle]:[keepintvl]:[keepcnt]];
+
 listen unix:path [default_server] [ssl] [http2 | quic] [proxy_protocol] [backlog=number] [rcvbuf=size] [sndbuf=size] [accept_filter=filter] [deferred] [bind] [so_keepalive=on|off|[keepidle]:[keepintvl]:[keepcnt]];
 Default: 	listen *:80 | *:8000;
 Context: 	server
 ```
 
+指定 Nginx 监听具体那个地址的端口，一共 3 种 格式
 
+例如
+
+```
+listen 127.0.0.1:8000;
+listen 127.0.0.1;
+listen 8000;
+listen *:8000;
+listen localhost:8000;
+```
+
+1. 如果只指定了 address 默认使用 80 端口
+2. 如果没有指定 listen directive，如果是以 root 运行 nginx 的，默认 80 端口，如果非 root，默认 8000 端口
+
+### location
+
+```
+Syntax: 	location [ = | ~ | ~* | ^~ ] uri { ... }
+location @name { ... }
+Default: 	—
+Context: 	server, location
+```
+
+具体查看 Direcitves 中的 location.md
 
 **references**
 

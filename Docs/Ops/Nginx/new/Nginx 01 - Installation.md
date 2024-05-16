@@ -713,7 +713,7 @@ configure arguments: --builddir=build --prefix=/opt/nginx --user=nobody --group=
 
   `--with-stream=dynamic`
 
-  增加 [stream module](http://nginx.org/en/docs/stream/ngx_stream_core_module.html) 指令块，默认不构建，和 `upstream` 无关
+  增加 [stream module](http://nginx.org/en/docs/stream/ngx_stream_core_module.html) 指令块，默认不构建，和 `upstream` direcitve 无关
 
 - `--with-stream_ssl_module`
 

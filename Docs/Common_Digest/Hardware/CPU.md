@@ -1,19 +1,5 @@
 # CPU
 
-ref:
-
-https://en.wikipedia.org/wiki/Central_processing_unit
-
-https://stackoverflow.com/questions/40163095/what-is-socket-core-threads-cpu
-
-https://cloud.tencent.com/developer/article/1736628
-
-https://blogs.vmware.com/customer-experience-and-success/2021/06/sockets-cpus-cores-and-threads-the-history-of-x86-processor-terms.html
-
-https://virtual-dba.com/blog/sockets-cores-and-threads/
-
-https://www.digitaltrends.com/computing/how-to-overclock-your-cpu/
-
 ## Digest
 
 Central processsing unit (CPU)，中文通常翻译成中央处理器。主要负责有应用调用的的 basic arithemtic, logic, controlling, and input/ouput(I/O) 。需要和GPU做区别，GPU 通常用只做 I/O 和 main memory。
@@ -36,7 +22,7 @@ Socket 和 CPU 是 1 对 1 的关系，1 个 Socket 只能安装 1 块 CPU
 
 ### Core
 
-历史上传统的CPU通常都是一个完整的物理处理单元，但是由于多核技术的发展，CPU渐渐的转向了容器的概念（think of this a two CPUs sharing the same socket）。而 Core 这变成真正的物理处理单元。一个CPU中可以有多个 Core，各个 Core 之前相互独立，可以并行处理逻辑。每个 Core 都有自己的独立的寄存器，L1/L2 cache 等物理硬件
+历史上传统的CPU通常都是一个完整的物理处理单元，但是由于多核技术的发展，CPU渐渐的转向了容器的概念（think of this a two CPUs sharing the same socket）。而 Core 就变成真正的物理处理单元。一个CPU中可以有多个 Core，各个 Core 之前相互独立，可以并行处理逻辑。每个 Core 都有自己的独立的寄存器，L1/L2 cache 等物理硬件
 
 ![img](https://ask.qcloudimg.com/http-save/yehe-5449215/wa0tx39ep9.jpeg?imageView2/2/w/1620)
 
@@ -68,9 +54,33 @@ the faster the clock, the more instructions and, consequently, the faster the cl
 
 overclocking（超频），用来提升 CPU 的 clock rate 加快 CPU 处理指令的速度，通常可以通过BIOS来或者CPU厂商推出的管理工具来设置超频。同时也有副作用，会导致 CPU 使用寿命减短（CPU 基础功率上升导致温度身高）。另外一般的集显笔记本的U都不支持超频。
 
+## Archtecture
+
+### X86/i386
+
+X86 也被称为 i386, 在 intel/AMD 的处理器上使用，有 32bit 指令集, 即应用在每个 clock cycle 最大支持调用 $2^{32}$ memory locatio(大约 4GB 内存)
+
+### X64/X86_64/Amd64
+
+也被称为 X86_64 或者 Amd64(在 Amd 的帮助下才生成), 在 intel/AMD 的处理器上使用，基于 X86 处理器，有 64bit 指令集, 即应用在每个 clock cycle 最大支持调用 $2^{64}$ memory location(大约 16EB 的内存)
+
+通常在 X86 上编译的应用，同样也可以在 X64 的机器上运行。Linux 上可能需要 32bit 关联的包才可以运行，否则会出现 file or directory not found
+
+### Aarch64/Arm64
+
+Aarch64 也被称为 Arm64, 在 ARM 的处理器上使用，类似 X64 有 64bit 指令集
+
+ARM 对比 Intel/AMD 处理器在于耗电量小，通常被用在手机平板，也有少数电脑会使用(苹果 Macbook m1/m2/m3)，也有一些云提供商使用 ARM 架构的 CPU 做虚拟化。但是功能性以及兼容性上没有 Intel/AMD 强
+
+### RISC-V
+
+开源的指令集
+
+### Arm
+
 ## lscpu
 
-在 linux 中可以通过 `lscpu`或者`lshw -class cpu` 来查看 CPU 相关的性能
+在 linux 中可以通过 `lscpu`或者`lshw -class cpu` 来查看 CPU 相关的性能和架构
 
 ```
 cpl in ~ λ lscpu
@@ -106,3 +116,13 @@ Caches (sum of all):
 $socket \times cores \times thread = Logical CPU$
 
 当然逻辑CPU数字越大，性能越强。另外提一嘴，在 Linux 中还可以通过`cat /proc/cpuinfno`来查看 CPU 信息，其中的 max(processor) 的值就是 LogicalCPU 的值
+
+**refences**
+
+[^1]:https://en.wikipedia.org/wiki/Central_processing_unit
+[^2]:https://stackoverflow.com/questions/40163095/what-is-socket-core-threads-cpu
+[^3]:https://cloud.tencent.com/developer/article/1736628
+[^4]:https://blogs.vmware.com/customer-experience-and-success/2021/06/sockets-cpus-cores-and-threads-the-history-of-x86-processor-terms.html
+[^5]:https://virtual-dba.com/blog/sockets-cores-and-threads/
+[^6]:https://www.digitaltrends.com/computing/how-to-overclock-your-cpu/
+[^7]:https://phoenixnap.com/kb/x64-vs-x86
