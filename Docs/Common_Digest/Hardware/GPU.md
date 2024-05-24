@@ -1,15 +1,5 @@
 # GPU
 
-ref：
-
-https://www.easypc.io/gpu-memory-clock-speed/
-
-https://happyseeker.github.io/kernel/2016/03/01/about-Video-Memory.html
-
-https://zhuanlan.zhihu.com/p/217881237
-
-https://www.intel.com/content/www/us/en/products/docs/processors/what-is-a-gpu.html
-
 ## Digest
 
 > the GPU is used in a wide range of applications, including graphics and video rendering  
@@ -40,3 +30,10 @@ GPU 只要支持如下几个功能
 
   
 
+**references**
+
+[^1]:https://www.easypc.io/gpu-memory-clock-speed/
+[^2]:https://happyseeker.github.io/kernel/2016/03/01/about-Video-Memory.html
+[^3]:https://zhuanlan.zhihu.com/p/217881237
+
+[^4]:https://www.intel.com/content/www/us/en/products/docs/processors/what-is-a-gpu.html
