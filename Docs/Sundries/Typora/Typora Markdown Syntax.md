@@ -233,7 +233,7 @@ X^2^
 
 ### Code Block
 
-代码块
+代码块,还支持 mermaidjs
 
 快捷键：<kbd>ctrl</kbd> + <kbd>shift</kbd> + <kbd>k</kbd>
 

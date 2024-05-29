@@ -54,9 +54,9 @@ Core 物理上是一组晶体管，大概长这样
 
 ### Thread
 
-随着技术的发展出现了 Hyper-Threading(HT), 单个 Core 可以被划分成 2 个逻辑上的 Core(也被称为 Thread)。这些逻辑上的 Core 也有自己的独立 ALU,register,CU,cache 等组件。因为这些逻辑上的 Core 同样也被称为 logical CPU
+随着技术的发展出现了 Hyper-Threading(HT), 单个 Core 可以被划分成 2 个逻辑上的 Core(也被称为 Thread)。这些逻辑上的 Core 也有自己的独立 ALU,register,CU,cache 等组件。因为这些逻辑上的 Core 功能和 CPU 相同也被称为 logical CPU
 
-假设一个有 10 个 Core 的 Processor 开启了 HT 的功能(可以通过 `sudo dmidecode -t processor` 中 flag 是否包含 HTT 来判断，现在的 CPU 默认会开启)，那么就有 20 个逻辑上的 Core，也就是有 20 个 logical CPUs
+假设一个有 10 个 Core 的 Processor 开启了 HT 的功能(可以通过 `sudo dmidecode -t processor` 中 flag 是否包含 HTT 来判断，在出现 HT 之后的 CPU 通常默认会开启)，那么就有 20 个逻辑上的 Core，也就是有 20 个 logical CPUs
 
 Thread 是逻辑上的概念，没有实际的物理形式
 
@@ -98,7 +98,7 @@ Package 是 Processor 的保护外壳(早期的 Processor 并没有 Package)
 
 ### Clock Rate
 
-在说明 Clock Rate 之前，需要先介绍下 Clock Cycle，指的是 2 个 Pulses 之前的时间。一个 Clock Cycle 可以执行一个或者多个 Instruction
+在说明 Clock Rate 之前，需要先介绍下 Clock Cycle，指的是 2 个 Pulses 之间的时间。一个 Clock Cycle 可以执行一个或者多个 Instruction
 
 而 Clock Rate，也被称为 Clock Speed 或者 frequencey(中文叫频率 或者 时脉频率)，指的是每秒包含的 Clock cycle 数量，通常以 Hz 为单位(MHz,GHz)。该值越大，说明每秒能执行的 Instruction 也越多，CPU 性能也越强。
 
@@ -106,13 +106,13 @@ Package 是 Processor 的保护外壳(早期的 Processor 并没有 Package)
 
 ### Turbo Boost
 
-Turbo Boost 中文也叫做睿频，是 Intel 推出的一种技术，可以让 CPU 根据负载动态的调整 Clock Rate
+Turbo Boost 中文也叫做睿频，是 Intel 推出的一种技术，可以让 CPU 根据负载，动态地调整 Clock Rate
 
 ### Base Clock/Current Clock/Boost Clock
 
 > 都可以通过 `inxi -C` 获取
 
-Base Clock 中文也叫基频，指是 CPU 能到的最小 Clock Rate
+Base Clock 中文也叫基频，指是 CPU 能到的最小 Clock Rate，即最基础的工作频率
 
 Current Clock 中文没有明确的叫法，指的是 CPU 当前的 Clock Rate
 
@@ -128,7 +128,9 @@ Underclocking 中文也叫降频，指的是人为降低 Boost Clock 上限这�
 
 > 强烈推荐看注脚的文档
 
-在没有 NUMA 前，假设有一台 2 板卡(意味着有多个 Socket, 这里以 2 个 Socket 为例，就能安装 2 个 Processor，以及若干在不同板卡上的内存条)的服务器， A 板卡上的 CPU 想要获得 B 板卡上内存条的数据，这时 CPU 到 内存条 的信道长度(这里主要指物理意义上的)是影响 throughput 的一个因子，信道越长，throughput 就越小。为了解决这个问题就引入了 Non-Uniform Memory Access(NUMA)[^17] 的逻辑，在系统为应用分配 CPU 以及 内存 资源时，会将其分配在同一板卡上，这样就不存在跨板卡获取数据的问题，CPU 到 内存条 的信道相对也是最短的，throught 比没有使用 NUMA 的就高
+在没有 NUMA 前，假设有一台有 2 板卡(意味着有多个 Socket, 这里以 2 个 Socket 为例，就能安装 2 个 Processor，以及若干在不同板卡上的内存条)的服务器， A 板卡上的 CPU 想要获得 B 板卡上内存条的数据，这时 CPU 到 内存条 的信道长度(这里主要指物理意义上的)是影响 throughput 的一个因子，信道越长，throughput 就越小
+
+为了解决这个问题就引入了 Non-Uniform Memory Access(NUMA)[^17] 的逻辑，在系统为应用分配 CPU 以及 内存 资源时，会将其分配在同一板卡上，这样就不存在跨板卡获取数据的问题，CPU 到 内存条 的信道相对也是最短的，throught 比没有使用 NUMA 的就高
 
 在 NUMA 中，会将一块板卡(英文为 bank)上的 Processor 以及 内存条，作为一个 NUMA Node (通常个人电脑只有一块主板，也就只有一个 NUMA Node)
 
