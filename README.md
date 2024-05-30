@@ -3,14 +3,12 @@
 
 > [!tldr] Summary
 > 
-> It's a repository for personal archvie
-
-
+> It's a repository for personal memos.
 
 # TOC
 
-[[Docs/CloudOps/]]
-[[Stable Diffusion WebUI Installation]]
+
+![[Stable Diffusion WebUI Installation]]
 
 ## [CloudOps](Docs/CloudOps/)
 
