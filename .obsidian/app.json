@@ -1,0 +1,13 @@
+{
+  "alwaysUpdateLinks": true,
+  "useMarkdownLinks": true,
+  "livePreview": false,
+  "showLineNumber": false,
+  "spellcheck": false,
+  "tabSize": 2,
+  "vimMode": false,
+  "showInlineTitle": true,
+  "readableLineLength": false,
+  "newFileLocation": "current",
+  "attachmentFolderPath": "./"
+}

@@ -1,0 +1,11 @@
+{
+  "accentColor": "",
+  "interfaceFontFamily": "Hack Nerd Font",
+  "textFontFamily": "Hack Nerd Font",
+  "monospaceFontFamily": "Hack Nerd Font Mono",
+  "baseFontSize": 19,
+  "cssTheme": "",
+  "theme": "system",
+  "showViewHeader": true,
+  "nativeMenus": false
+}
