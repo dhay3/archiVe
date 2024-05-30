@@ -1,4 +1,4 @@
-# Stable Diffusion WebUI Installation
+
 
 Stable Diffusion WebUI 安装很简单，只需要一行命令
 

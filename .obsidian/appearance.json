@@ -7,5 +7,8 @@
   "cssTheme": "",
   "theme": "system",
   "showViewHeader": true,
-  "nativeMenus": false
+  "nativeMenus": false,
+  "enabledCssSnippets": [
+    "disable-create-file-link-cliked"
+  ]
 }
