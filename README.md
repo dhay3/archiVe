@@ -1,12 +1,15 @@
 
+![](https://img.shields.io/github/repo-size/dhay3/archive)![GitHub commit activity](https://img.shields.io/github/commit-activity/w/dhay3/archive)![](https://img.shields.io/github/last-commit/dhay3/archive)
 
-# Fast Link
+> [!tldr] Summary
+> It's a repository for personal archvie
 
-![](https://img.shields.io/github/last-commit/dhay3/archive)![](https://img.shields.io/github/repo-size/dhay3/archive)
 
-> It’s a note of cyberpelican.
->
-> The plain text means I was already leanrt that, but for somehow I didn’t write these (excuse for effortless). Someday will be make up for it.
+
+# TOC
+
+[[Docs/CloudOps/]]
+[[Stable Diffusion WebUI Installation]]
 
 ## [CloudOps](Docs/CloudOps/)
 

@@ -3,11 +3,6 @@
 layout: post
 title: Blogging Like a Hacker
 ---
-
-
-
-
-
 # Typora Markdown Syntax
 
 ## 0x01 Overview
