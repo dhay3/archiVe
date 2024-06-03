@@ -1,5 +1,5 @@
 *.ppt
-*.pdf
+#*.pdf
 *.txt
 *.
 # Compiled class file
