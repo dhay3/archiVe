@@ -1,6 +1,8 @@
 # General Terms
 
-## Stablediffusion
+## SD
+
+SD 是 Stablediffusion 的简写，大多数模型或者是插件都会以 SD 命名，例如
 
 SD1.5 是 Stablediffusion 1.5 checkpoints 的简称，同理 SD2,SD-XL
 

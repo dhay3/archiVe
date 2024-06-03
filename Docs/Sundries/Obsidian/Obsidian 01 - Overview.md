@@ -2,6 +2,22 @@
 
 ## 0x01 Overview
 
+
+> [!NOTE]
+> 现阶段 Obsidian 在文本编辑的体验上还比不了 Typora
+>
+> 还有一堆 bug
+>
+> 1. 在 list 内的代码块 indent 不能被正确处理，包括创建 code block 以及复制文本到 code block 
+> 2. 在 live preview 在修改表格复杂
+> 3. 如果超链接对应的地址或者文档不存在，会自动创建对应的文档，目前不支持修改
+>
+> 大部分都可以通过 Plugin 来解决
+>
+> 推荐使用 Typora 写文档，Obsidian 来管理文档
+
+
+
 Obisidian 是一个强大笔记管理工具，提供了普通 Markdown 编辑器不具备的功能
 
 - Fine-grained control						
@@ -15,6 +31,9 @@ Obisidian 是一个强大笔记管理工具，提供了普通 Markdown 编辑器
 - Collaboration							
 
   Work with your team on shared files without compromising your private data.
+
+- Plugins
+- etc
 
 写完的文档可以直接往 Hugo 发
 

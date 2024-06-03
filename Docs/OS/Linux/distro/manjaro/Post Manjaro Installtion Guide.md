@@ -233,6 +233,15 @@ latte-dock
 | Pling Store            | KDE 插件商店                                 |
 | gestures               | libinput-gestures 图形化配置工具             |
 | DVWA                   | Web 漏洞测试                                 |
+| Obs                    | 录屏工具                                     |
+| kdenlive               | 视频编辑工具                                 |
+| qbitorrent             | bt 下载工具                                  |
+| geeqie                 | 图片浏览工具                                 |
+| octopi                 | 包管理工具                                   |
+| zenmap                 | 扫描工具                                     |
+| remote-desktop-manager | 远程管理工具                                 |
+| gestures               | lib-gestures GUI 工具                        |
+| vmware remote console  | vcenter 控制台                               | 
 
 ###  Function Software
 
@@ -277,6 +286,8 @@ latte-dock
 | hydra                                                    | 爆破工具                                               |
 | beef-xss                                                 |                                                        |
 | sqlmap                                                   | SQL 注入工具                                           |
+| anacoda                                                  | Python 管理工具                                        |
+| ipython                                                  | 命令行 Python 工具                                                       |
 
 **references**
 

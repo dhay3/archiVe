@@ -1,14 +1,15 @@
 {
-  "accentColor": "",
+  "accentColor": "#664ce6",
   "interfaceFontFamily": "Hack Nerd Font",
   "textFontFamily": "Hack Nerd Font",
   "monospaceFontFamily": "Hack Nerd Font Mono",
   "baseFontSize": 19,
-  "cssTheme": "",
+  "cssTheme": "Things",
   "theme": "system",
   "showViewHeader": true,
   "nativeMenus": false,
   "enabledCssSnippets": [
-    "disable-create-file-link-cliked"
+    "disable-create-file-link-cliked",
+    "cus"
   ]
 }

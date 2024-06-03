@@ -267,10 +267,10 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
 - `--where<='condition'> | -w'<condition>'`
 
-  只导出对应条件下的表条目
+  只导出对应条件下的表条目。==会把表结构也一起导出来，如果只想要对应条目 INSERT 就需要和 `-d` 一起使用
 
   ```
-  $ mysqldump -v -u root test2 -w'col1="t1v1"'
+  $ mysqldump -v -u root test2 -d -w'col1="t1v1"'
   INSERT INTO `table1` VALUES ('t1v2');
   ```
 

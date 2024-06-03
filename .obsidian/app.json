@@ -6,8 +6,9 @@
   "spellcheck": false,
   "tabSize": 2,
   "vimMode": false,
-  "showInlineTitle": true,
+  "showInlineTitle": false,
   "readableLineLength": false,
   "newFileLocation": "current",
-  "attachmentFolderPath": "./"
+  "attachmentFolderPath": "./",
+  "propertiesInDocument": "visible"
 }

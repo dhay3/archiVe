@@ -6,8 +6,12 @@ lastModifiedTime: 2024-05-30-09:03
 draft: true
 tags:
   - Python
-  - AI
 ---
+
+# Conda 02 - CLI
+
+## 0x01 Overview
+
 
 Conda 大体上的命令和 `pip` 类似，可以参考对比下表[^1]
 
@@ -30,6 +34,42 @@ Conda 大体上的命令和 `pip` 类似，可以参考对比下表[^1]
 |Update Python|`conda update python`*|X|X|
 
 也可以参考 Cheatsheet[^2]
+
+## 0x02 Common Commands
+
+- `conda create --name ENVNAME` 
+
+	创建一个名为 ENVNAME 的 envrionment
+- `conda create --clone OLDENV -n NEWENV`
+
+	克隆指定 environment 中所有的 packages 到新的名为 NEWENV 的 environment
+- `conda env list`
+
+	显示所有的 environments
+- `conda activate ENVNAME`
+
+	切换到指定的 environment
+	
+- `conda list -n ENVNAME`
+
+	查看指定 environment 下安装的所有 packages,默认当前 environment
+- `conda search PKGNAME`
+
+	查看指定名字的包
+- `conda install -n ENVNAME PKGNAME=VER`
+
+	安装指定版本的包到指定 environment，默认当前 environment
+- `conda uninstall -n ENVNAME PKGNAME`
+
+	卸载指定 environment 中指定的包，默认当前 environment
+- `conda rename -n OLDNAME NEWNAME`
+
+	重命名 environment
+- `conda remove -n ENVNAME --all`
+
+	删除指定 environment
+
+
 
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*

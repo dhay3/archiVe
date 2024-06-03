@@ -16,7 +16,7 @@
    mv mysql-5.7.43-linux-glibc2.12-x86_64.tar.gz /sharing/env
    tar -xzvf mysql-5.7.43-linux-glibc2.12-x86_64.tar.gz
    mkdir mysql 
-   mv mysql-5.7.43-linux-glibc2.12-x86_64 mysq
+   mv mysql-5.7.43-linux-glibc2.12-x86_64 mysql
    ```
 
 2. 创建配置文件

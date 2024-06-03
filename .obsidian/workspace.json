@@ -36,9 +36,9 @@
                     "useWin32Conhost": true
                   },
                   "serial": {
-                    "columns": 154,
+                    "columns": 141,
                     "data": "",
-                    "rows": 52
+                    "rows": 53
                   }
                 }
               },
@@ -46,13 +46,39 @@
             }
           },
           {
-            "id": "7dc47565cb7beb18",
+            "id": "d0f7cff821a2267c",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
-                "mode": "preview",
+                "file": "Docs/OS/Linux/cli/ldconfig.md",
+                "mode": "source",
+                "backlinks": false,
+                "source": true
+              }
+            }
+          },
+          {
+            "id": "bb472b9ecf2f1d01",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Docs/Ops/MySQL/MySQL 01 - Binary Installation.md",
+                "mode": "source",
+                "backlinks": false,
+                "source": true
+              }
+            }
+          },
+          {
+            "id": "a00145ed8f6685e5",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Template/ObBoilerplate.md",
+                "mode": "source",
                 "backlinks": false,
                 "source": true
               }
@@ -95,20 +121,12 @@
                 "sortOrder": "alphabetical"
               }
             }
-          },
-          {
-            "id": "50bd4623b7a2cb5a",
-            "type": "leaf",
-            "state": {
-              "type": "bookmarks",
-              "state": {}
-            }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 417.5
   },
   "right": {
     "id": "2a185da5487f8581",
@@ -119,7 +137,15 @@
         "type": "tabs",
         "children": [
           {
-            "id": "b19fc4e6ae318dc3",
+            "id": "6812fb0b9e6f55f8",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {}
+            }
+          },
+          {
+            "id": "de3b0b66f3a468e8",
             "type": "leaf",
             "state": {
               "type": "backlink",
@@ -135,13 +161,25 @@
             }
           },
           {
-            "id": "8a39d7c6acf2be2e",
+            "id": "eba843fda3e61533",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "61bf60c60ce377d3",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
               }
             }
           },
@@ -157,43 +195,7 @@
             }
           },
           {
-            "id": "1d30a2d8f7959deb",
-            "type": "leaf",
-            "state": {
-              "type": "outline",
-              "state": {}
-            }
-          },
-          {
-            "id": "9cd0461cd7e4e3b0",
-            "type": "leaf",
-            "state": {
-              "type": "all-properties",
-              "state": {
-                "sortOrder": "frequency",
-                "showSearch": false,
-                "searchQuery": ""
-              }
-            }
-          },
-          {
-            "id": "b97a8303045ee866",
-            "type": "leaf",
-            "state": {
-              "type": "advanced-tables-toolbar",
-              "state": {}
-            }
-          },
-          {
-            "id": "b48aa2ad81a0571d",
-            "type": "leaf",
-            "state": {
-              "type": "copilot-chat-view",
-              "state": {}
-            }
-          },
-          {
-            "id": "d9ada2293b5e74be",
+            "id": "90dde24e336f744c",
             "type": "leaf",
             "state": {
               "type": "file-properties",
@@ -201,7 +203,7 @@
             }
           }
         ],
-        "currentTab": 7
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
@@ -219,41 +221,42 @@
   },
   "active": "ec6984c0e1810670",
   "lastOpenFiles": [
-    "README.md",
-    "().md",
-    "Docs/StableDiffusion.md",
-    "Docs/CommputerArch.md",
-    "Docs/Development/Java.md",
-    "Docs/Hugo.md",
-    "License.md",
-    "Docs/AI/StableDiffusion/Stable Diffusion WebUI Installation.md",
-    "Docs/CloudOps.md",
-    "Pasted image 20240530102358.png",
-    "Docs/Sundries/Obsidian/Obsidian 02 - Markdown Syntax.md",
-    "Docs/Ops/Conda/Conda 02 - CLI.md",
+    "Docs/OS/Linux/cli/ldconfig.md",
+    "Docs/OS/Linux/cli/ldd.md",
+    "Docs/Ops/MySQL/MySQL 01 - Binary Installation.md",
+    "Docs/OS/Linux/distro/manjaro/Post Manjaro Installtion Guide.md",
+    "Docs/Development/Backend/Python/tutorial/12. Virtual Environments and Packages.md",
+    "Docs/Development/Backend/Python/tutorial/2. Using the Python Interpreter.md",
+    "Docs/Development/Backend/Python/Day01 - 解释器 vs 编译器.md",
     "Docs/Ops/Conda/Conda 01 - Overview.md",
-    "ffff.md",
+    "Docs/Development/Backend/Python/tutorial/11. Brief Tour of the Standard Library - Part II.md",
+    "Docs/Development/Backend/Python/tutorial/10. Brief Tour of the Standard Library.md",
+    "Docs/Development/Backend/Python/tutorial/8. Errors and Exceptions.md",
+    "Docs/Development/Backend/Python/tutorial/6. Modules.md",
+    "Docs/Development/Backend/Python/tutorial/5. Data Structures.md",
+    "Docs/Development/Backend/Python/tutorial/4. More Control Flow Tools.md",
+    "Docs/Development/Backend/Python/tutorial/3. An Informal Introduction to Python.md",
+    "Docs/Development/Backend/Python/Day02 - 注释.md",
+    "Docs/OS/Linux/cli/make.md",
     "Template/ObBoilerplate.md",
-    "Docs/OS/Linux/distro/arch/pacman.md",
-    "Docs/AI/StableDiffusion/General Terms.md",
-    "Docs/Sundries/Typora/Typora Markdown Syntax.md",
+    "Docs/OS/Linux/cli/kioclient.md",
+    "Docs/OS/Linux/cli/label.md",
+    "Docs/OS/Linux/cli/ln.md",
+    "Docs/Sundries/Obsidian/Obsidian 01 - Overview.md",
+    "Docs/Ops/MySQL/MySQL Binary Installation.md",
+    "Docs/OS/Linux/cli/cp.md",
+    "Docs/OS/Linux/cli/chmod.md",
+    "Docs/Ops/Github/gh-cli/gh pr.md",
+    "Docs/Ops/MySQL/Untitled",
+    "Pasted image 20240530102358.png",
     "Docs/AI/StableDiffusion",
     "Docs/AI",
     "Appendix/Linux Networking Cookbook.pdf",
-    "Docs/OS/Linux/cli/dd.md",
     "Template",
-    "Ob template/Template.md",
-    "2024-05-29.md",
-    "How to learn Python.md",
-    "Untitled.md.md",
     "Untitled.canvas",
     "Pasted image 20240528173451.png",
     "Pasted image 20240528173447.png",
-    "main.py.md",
     "Ob template",
-    "Untitled 2.md",
-    "Untitled 1.md",
-    "^1.md",
     "Engelbart.jpg"
   ]
 }

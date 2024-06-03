@@ -6,5 +6,9 @@
   "table-editor-obsidian",
   "obsidian-table-generator",
   "sheets",
-  "terminal"
+  "terminal",
+  "dataview",
+  "highlightr-plugin",
+  "code-styler",
+  "obsidian-paste-to-current-indentation"
 ]
