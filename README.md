@@ -15,10 +15,10 @@ draft: false
 # TOC
 
 ## [AI](Docs/AI)
-- [StableDiffusion](Docs/StableDiffusion)
+- [StableDiffusion](Docs/AI/StableDiffusion)
 
 ## [Blog](Docs/Blog)
-- [Hugo](Docs/Hugo)
+- [Hugo](Docs/Blog/Hugo)
 
 ## [CloudOps](Docs/CloudOps)
 - [Aliyun](Docs/CloudOps/Aliyun)

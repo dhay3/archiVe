@@ -6,15 +6,15 @@
 > [!NOTE]
 > 现阶段 Obsidian 在文本编辑的体验上还比不了 Typora
 >
-> 还有一堆 bug
+> 还有一堆 bug 或者是说不人性的地方
 >
-> 1. 在 list 内的代码块 indent 不能被正确处理，包括创建 code block 以及复制文本到 code block 
-> 2. 在 live preview 在修改表格复杂
+> 1. 在 list 内的代码块 indent 不能被正确处理，包括创建 code block 以及复制文本到 code block，以及表格
+> 2. 在 live preview 中修改表格复杂
 > 3. 如果超链接对应的地址或者文档不存在，会自动创建对应的文档，目前不支持修改
 >
-> 大部分都可以通过 Plugin 来解决
+> 大部分都可以通过 Plugin 来解决，但是也有不能处理的
 >
-> 推荐使用 Typora 写文档，Obsidian 来管理文档
+> 所以个人更加倾向于使用 Typora 写文档，Obsidian 来管理文档
 
 
 

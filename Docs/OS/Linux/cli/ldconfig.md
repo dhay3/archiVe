@@ -8,7 +8,7 @@ draft: true
 
 # ldconfig
 
-`ldconfig` 用于生成 cache 
+`ldconfig` 用于生成 dynamic libraries links 以及 cache。简单的可以理解为 `ldconfig` 用于更新 memory 中的 dynamic libraries 指向的地址
 
 ## 0x01 Overview
 

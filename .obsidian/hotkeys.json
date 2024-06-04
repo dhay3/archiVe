@@ -244,5 +244,13 @@
     }
   ],
   "obsidian-auto-link-title:enhance-url-with-title": [],
-  "obsidian-auto-link-title:auto-link-title-normal-paste": []
+  "obsidian-auto-link-title:auto-link-title-normal-paste": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "V"
+    }
+  ]
 }

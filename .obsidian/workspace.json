@@ -51,7 +51,20 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Docs/OS/Linux/cli/ldconfig.md",
+                "file": "Docs/Ops/MySQL/MySQL 01 - Binary Installation.md",
+                "mode": "source",
+                "backlinks": false,
+                "source": true
+              }
+            }
+          },
+          {
+            "id": "7455cbba38180028",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Docs/Sundries/Obsidian/Obsidian 01 - Overview.md",
                 "mode": "source",
                 "backlinks": false,
                 "source": true
@@ -64,20 +77,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Docs/Ops/MySQL/MySQL 01 - Binary Installation.md",
-                "mode": "source",
-                "backlinks": false,
-                "source": true
-              }
-            }
-          },
-          {
-            "id": "a00145ed8f6685e5",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Template/ObBoilerplate.md",
+                "file": "Docs/Ops/MySQL/MySQL Binary Installation.md",
                 "mode": "source",
                 "backlinks": false,
                 "source": true
@@ -214,16 +214,22 @@
       "graph:Open graph view": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
-      "omnisearch:Omnisearch": false,
       "table-editor-obsidian:Advanced Tables Toolbar": false,
-      "terminal:Open terminal": false
+      "terminal:Open terminal": false,
+      "omnisearch:Omnisearch": false
     }
   },
   "active": "ec6984c0e1810670",
   "lastOpenFiles": [
-    "Docs/OS/Linux/cli/ldconfig.md",
-    "Docs/OS/Linux/cli/ldd.md",
+    "Docs/Sundries/Obsidian/Obsidian 01 - Overview.md",
     "Docs/Ops/MySQL/MySQL 01 - Binary Installation.md",
+    "Docs/Ops/MySQL/MySQL Binary Installation.md",
+    "Docs/Ops/keepalived/How to learn keepalived.md",
+    "Docs/Ops/MySQL/MySQL - mysql CLI.md",
+    "Docs/OS/Linux/cli/ldconfig.md",
+    "README.md",
+    "Template/ObBoilerplate.md",
+    "Docs/OS/Linux/cli/ldd.md",
     "Docs/OS/Linux/distro/manjaro/Post Manjaro Installtion Guide.md",
     "Docs/Development/Backend/Python/tutorial/12. Virtual Environments and Packages.md",
     "Docs/Development/Backend/Python/tutorial/2. Using the Python Interpreter.md",
@@ -238,15 +244,9 @@
     "Docs/Development/Backend/Python/tutorial/3. An Informal Introduction to Python.md",
     "Docs/Development/Backend/Python/Day02 - 注释.md",
     "Docs/OS/Linux/cli/make.md",
-    "Template/ObBoilerplate.md",
     "Docs/OS/Linux/cli/kioclient.md",
     "Docs/OS/Linux/cli/label.md",
     "Docs/OS/Linux/cli/ln.md",
-    "Docs/Sundries/Obsidian/Obsidian 01 - Overview.md",
-    "Docs/Ops/MySQL/MySQL Binary Installation.md",
-    "Docs/OS/Linux/cli/cp.md",
-    "Docs/OS/Linux/cli/chmod.md",
-    "Docs/Ops/Github/gh-cli/gh pr.md",
     "Docs/Ops/MySQL/Untitled",
     "Pasted image 20240530102358.png",
     "Docs/AI/StableDiffusion",

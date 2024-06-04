@@ -43,7 +43,7 @@ mysql-<MYSQL_VERSION>-linux-<GLIBC_VERSION>-<ARCH>-[FORMAT].<COMPRESSION>
 - FORMAT
 	可选，只有一种 minimal，表示安装包不包括 debug binaries 以及 regular binaries
 - COMPRESSION
-	安装包使用的压缩算法格式
+	安装包使用的压缩格式
 
 ## 0x03 Prerequisites
 
@@ -74,14 +74,34 @@ mysql-<MYSQL_VERSION>-linux-<GLIBC_VERSION>-<ARCH>-[FORMAT].<COMPRESSION>
 	```
 	执行 `ldconfig` 即可
 
-## 0x04 Download
+## 0x04 Installation
 
+选择 [MySQL Community Server](https://dev.mysql.com/downloads/mysql/) 进入下载页面
 ![](https://github.com/dhay3/image-repo/raw/master/20230802/2023-08-02_20-17.73ke7kx6670g.webp)
+这里以 version 8.4.0 Linux-Generic glib 2.17 x86_64 为例
+1. 下载 binary package
+	```
+	$ sudo wget https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-8.4.0-linux-glibc2.17-x86_64.tar.xz
+	```
 
-选择 [MySQL Community Server](https://dev.mysql.com/downloads/mysql/) 安装
+2. 校验 hash 和 签名，都可以在下载页面获取到
+3. 解压
+	```
+	xz -d mysql-8.4.0-linux-glibc2.17-x86_64.tar.xz && tar -xvf mysql-8.4.0-linux-glibc2.17-x86_64.tar
+	```
+	解压后会包含如下几个目录
+	
+	| Directory       | Contents of Directory                                         |
+	| --------------- | ------------------------------------------------------------- |
+	| `bin`           | mysqldserver, client and utility programs                     |
+	| `docs`          | MySQL manual in Info format                                   |
+	| `man`           | Unix manual pages                                             |
+	| `include`       | Include (header) files                                        |
+	| `lib`           | Libraries                                                     |
+	| `share`         | Error messages, dictionary, and SQL for database installation |
+	| `support-files` | Miscellaneous support files                                   |
+	
 
-
-## 0x05 Installation
 
 
 
