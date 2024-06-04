@@ -1,7 +1,10 @@
 {
   "pinned": [
     "insert-template",
+    "insert-unsplash-image:insert",
     "omnisearch:show-modal",
-    "terminal:open-terminal.integrated.current"
+    "terminal:open-terminal.integrated.current",
+    "obsidian-emoji-toolbar:emoji-picker:open-picker",
+    "editor:toggle-source"
   ]
 }

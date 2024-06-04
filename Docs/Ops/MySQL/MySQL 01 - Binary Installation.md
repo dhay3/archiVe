@@ -7,6 +7,7 @@ draft: true
 ---
 # MySQL 01 - Binary Installation
 
+
 ## 0x01 Overview
 
 MySQL 安装的方式有多种
@@ -77,6 +78,7 @@ mysql-<MYSQL_VERSION>-linux-<GLIBC_VERSION>-<ARCH>-[FORMAT].<COMPRESSION>
 ## 0x04 Installation
 
 选择 [MySQL Community Server](https://dev.mysql.com/downloads/mysql/) 进入下载页面
+
 ![](https://github.com/dhay3/image-repo/raw/master/20230802/2023-08-02_20-17.73ke7kx6670g.webp)
 这里以 version 8.4.0 Linux-Generic glib 2.17 x86_64 为例
 1. 下载 binary package
@@ -101,8 +103,11 @@ mysql-<MYSQL_VERSION>-linux-<GLIBC_VERSION>-<ARCH>-[FORMAT].<COMPRESSION>
 	| `share`         | Error messages, dictionary, and SQL for database installation |
 	| `support-files` | Miscellaneous support files                                   |
 	
-
-
+4. 创建配置文件
+   ```
+	cd mysql-8.4.0-linux-glibc2.17-x86_64 && mkdir etc && cd etc
+	touch my.cnf
+	```
 
 
 

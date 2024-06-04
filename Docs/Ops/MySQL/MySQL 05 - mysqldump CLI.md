@@ -1,4 +1,4 @@
-# MySQL - mysqldump CLI
+# MySQL 05 - mysqldump CLI
 
 ## 0x01 Overview
 
@@ -44,7 +44,7 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
 > 只列举常见参数，具体参数查看官方文档
 
-### Connection args
+### Connection Options
 
 - `--bind-address=#`
 
@@ -110,7 +110,7 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
   只有 `--compression-algorithms=zstd` 时才生效，和 `--compress` 一起使用时才有意义
 
-### Debug args
+### Debug Options
 
 - `--compact`
 
@@ -156,7 +156,7 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
   如果和 `-v` 一起使用，对应的信息将不会输出到 stdout 和 stderr 中
 
-### Display args
+### Display Options
 
 - `-r | --result-file=<file-name>`
 
@@ -196,7 +196,7 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
 - `--fields-terminated-by=`
 
-### Filter args
+### Filter Options
 
 - `-A | --all-databases`
 
@@ -290,7 +290,7 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
   导出 `CREATE PROCEDURE` 和 `CREATE FUNCTION` DDL
 
-### DDL args
+### DDL Options
 
 > 诸如 `CREATE`, `DROP`, `ALTER`, `TUNCATE`, `COMMENT`, `RENAME` 对表结构进行定义的都为 DDL
 
@@ -336,7 +336,7 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
   默认开启，可以使用 `--skip-quote-names` 关闭
 
-### DML args
+### DML Options
 
 > 诸如 `INSERT`, `UPDATE`, `DELETE`, `LOCK` 对表数据进行操作的都为 DML
 
@@ -414,7 +414,7 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
   `--replace` 通常和 `--table-info` 一起使用，更新表条目而不更新表结构 
 
-### Transaction args
+### Transaction Options
 
 > `mysqldump` 默认参数中
 
@@ -423,7 +423,6 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
   导表前会对所有需要导的表上锁
 
   默认开启
-
 
 - `-x | --lock-all-tables`
 
@@ -445,7 +444,7 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
   导数据前会使用 `START TRANSACTION ` 只针对导出数据这一过程，生成的 SQL 并不会包含 `START TRANSACTION`
 
-### Miscellaneous args
+### Miscellaneous Opargstions
 
 - `-V | --version`
 
@@ -457,7 +456,7 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
 ## 0x04 Default values
 
-`mysqldump` 中的每一个参数都可以被写入配置文件中
+`mysqldump` 中的每一个参数都可以被写入 [MySQL 02 - Option files(my.cnf)](MySQL%2002%20-%20Option%20files(my.cnf).md)
 
 例如在 `/etc/my.cnf` 中声明 `user` 和 `password` 就无需使用 `--user` 或者是 `--password`
 

@@ -46,12 +46,12 @@
             }
           },
           {
-            "id": "d0f7cff821a2267c",
+            "id": "c2a0072852592faa",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Docs/Ops/MySQL/MySQL 01 - Binary Installation.md",
+                "file": "Docs/Ops/MySQL/MySQL 02 - Option files(my.cnf).md",
                 "mode": "source",
                 "backlinks": false,
                 "source": true
@@ -59,25 +59,25 @@
             }
           },
           {
-            "id": "7455cbba38180028",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Docs/Sundries/Obsidian/Obsidian 01 - Overview.md",
-                "mode": "source",
-                "backlinks": false,
-                "source": true
-              }
-            }
-          },
-          {
-            "id": "bb472b9ecf2f1d01",
+            "id": "d775b5542ee2e463",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
                 "file": "Docs/Ops/MySQL/MySQL Binary Installation.md",
+                "mode": "source",
+                "backlinks": false,
+                "source": true
+              }
+            }
+          },
+          {
+            "id": "0cad4722e8dfb4a6",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Docs/Ops/MySQL/MySQL 06 - mysqladmin CLI.md",
                 "mode": "source",
                 "backlinks": false,
                 "source": true
@@ -221,14 +221,19 @@
   },
   "active": "ec6984c0e1810670",
   "lastOpenFiles": [
-    "Docs/Sundries/Obsidian/Obsidian 01 - Overview.md",
-    "Docs/Ops/MySQL/MySQL 01 - Binary Installation.md",
+    "Docs/Ops/MySQL/MySQL 02 - Option files(my.cnf).md",
+    "Docs/Ops/MySQL/MySQL 05 - mysqldump CLI.md",
+    "Docs/Ops/MySQL/MySQL 06 - mysqladmin CLI.md",
     "Docs/Ops/MySQL/MySQL Binary Installation.md",
+    "Docs/Ops/MySQL/MySQL 01 - Binary Installation.md",
+    "Docs/Ops/MySQL/MySQL 03 - mysqld CLI.md",
+    "Docs/Ops/MySQL/MySQL 04 - mysql CLI.md",
+    "Docs/Sundries/Obsidian/Obsidian 01 - Overview.md",
+    "Template/ObBoilerplate.md",
+    "Template/Untitled.md",
     "Docs/Ops/keepalived/How to learn keepalived.md",
-    "Docs/Ops/MySQL/MySQL - mysql CLI.md",
     "Docs/OS/Linux/cli/ldconfig.md",
     "README.md",
-    "Template/ObBoilerplate.md",
     "Docs/OS/Linux/cli/ldd.md",
     "Docs/OS/Linux/distro/manjaro/Post Manjaro Installtion Guide.md",
     "Docs/Development/Backend/Python/tutorial/12. Virtual Environments and Packages.md",
@@ -242,11 +247,6 @@
     "Docs/Development/Backend/Python/tutorial/5. Data Structures.md",
     "Docs/Development/Backend/Python/tutorial/4. More Control Flow Tools.md",
     "Docs/Development/Backend/Python/tutorial/3. An Informal Introduction to Python.md",
-    "Docs/Development/Backend/Python/Day02 - 注释.md",
-    "Docs/OS/Linux/cli/make.md",
-    "Docs/OS/Linux/cli/kioclient.md",
-    "Docs/OS/Linux/cli/label.md",
-    "Docs/OS/Linux/cli/ln.md",
     "Docs/Ops/MySQL/Untitled",
     "Pasted image 20240530102358.png",
     "Docs/AI/StableDiffusion",

@@ -1,0 +1,16 @@
+{
+  "insertMode": "remote",
+  "orientation": "not_specified",
+  "insertSize": "",
+  "imageSize": "large",
+  "frontmatter": {
+    "key": "image",
+    "valueFormat": "{image-url}",
+    "appendReferral": false
+  },
+  "imageProvider": "unsplash",
+  "proxyServer": "",
+  "pixabayApiKey": "",
+  "insertBackLink": false,
+  "pexelsApiKey": ""
+}
