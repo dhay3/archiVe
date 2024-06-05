@@ -1,4 +1,5 @@
 *.md linguist-detectable
+Docs/Development/* -linguist-detectable
 Images/* -linguist-documentation
 Appendix/* -linguist-documentation
 .obsidian/* -linguist-documentation
