@@ -36,7 +36,7 @@
                     "useWin32Conhost": true
                   },
                   "serial": {
-                    "columns": 141,
+                    "columns": 175,
                     "data": "",
                     "rows": 53
                   }
@@ -46,12 +46,12 @@
             }
           },
           {
-            "id": "c2a0072852592faa",
+            "id": "88d52b46cb644eeb",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Docs/Ops/MySQL/MySQL 02 - Option files(my.cnf).md",
+                "file": "Docs/Ops/MySQL/MySQL 02 - Options.md",
                 "mode": "source",
                 "backlinks": false,
                 "source": true
@@ -59,12 +59,12 @@
             }
           },
           {
-            "id": "d775b5542ee2e463",
+            "id": "4f03ef974937c8d2",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Docs/Ops/MySQL/MySQL Binary Installation.md",
+                "file": "Docs/Ops/MySQL/MySQL 03 - Option Files(my.cnf).md",
                 "mode": "source",
                 "backlinks": false,
                 "source": true
@@ -72,13 +72,39 @@
             }
           },
           {
-            "id": "0cad4722e8dfb4a6",
+            "id": "058f25fb86f02e30",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Docs/Ops/MySQL/MySQL 06 - mysqladmin CLI.md",
+                "file": "Docs/Ops/MySQL/MySQL 01 - Binary Installation.md",
                 "mode": "source",
+                "backlinks": false,
+                "source": true
+              }
+            }
+          },
+          {
+            "id": "4ffa77d6f684ac26",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Docs/English/English 01 - Overview.md",
+                "mode": "source",
+                "backlinks": false,
+                "source": true
+              }
+            }
+          },
+          {
+            "id": "f232bf5309e284f5",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "README.md",
+                "mode": "preview",
                 "backlinks": false,
                 "source": true
               }
@@ -202,12 +228,12 @@
               "state": {}
             }
           }
-        ],
-        "currentTab": 5
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -216,47 +242,51 @@
       "command-palette:Open command palette": false,
       "table-editor-obsidian:Advanced Tables Toolbar": false,
       "terminal:Open terminal": false,
-      "omnisearch:Omnisearch": false
+      "omnisearch:Omnisearch": false,
+      "workspaces:Manage workspace layouts": false
     }
   },
   "active": "ec6984c0e1810670",
   "lastOpenFiles": [
-    "Docs/Ops/MySQL/MySQL 02 - Option files(my.cnf).md",
-    "Docs/Ops/MySQL/MySQL 05 - mysqldump CLI.md",
-    "Docs/Ops/MySQL/MySQL 06 - mysqladmin CLI.md",
-    "Docs/Ops/MySQL/MySQL Binary Installation.md",
+    "README.md",
+    "Docs/English/English-Grammar-in-Use.pdf",
+    "Docs/English/English 01 - Overview.md",
     "Docs/Ops/MySQL/MySQL 01 - Binary Installation.md",
-    "Docs/Ops/MySQL/MySQL 03 - mysqld CLI.md",
-    "Docs/Ops/MySQL/MySQL 04 - mysql CLI.md",
+    "Docs/English/English 02 - Present and Past.md",
+    "Docs/English/Grammar",
+    "Docs/English/Pronunciation",
+    "Docs/AI/Ollma",
+    "Docs/AI/ollma",
+    "Docs/AI/Suno",
+    "Docs/AI/Untitled.md",
     "Docs/Sundries/Obsidian/Obsidian 01 - Overview.md",
+    "Docs/Ops/MySQL/MySQL 07 - mysqldump CLI.md",
+    "Docs/English/235_7-English-Grammar-in-Use.-Murphy-R.-2019-5th-394p-.pdf.aria2",
+    "Docs/English/235_7-English-Grammar-in-Use.-Murphy-R.-2019-5th-394p-.pdf",
+    "Docs/English",
+    "Docs/AI/Chattts",
+    "Docs/Ops/MySQL/MySQL 02 - Options.md",
+    "Docs/Ops/MySQL/MySQL 03 - Option Files(my.cnf).md",
+    "Docs/Ops/MySQL/MySQL 06 - mysqladmin CLI.md",
+    "Docs/Ops/MySQL/MySQL 05 - mysqld CLI.md",
+    "Docs/Ops/MySQL/MySQL 04 - mysql CLI.md",
+    "Docs/Ops/MySQL/Untitled.md",
+    "Docs/Ops/MySQL/MySQL Binary Installation.md",
     "Template/ObBoilerplate.md",
+    "Docs/Ops/FreeRDP/freerdp.md",
+    "Docs/Sundries/Obsidian/Obsidian 03 - Template.md",
+    "Docs/Sundries/Obsidian/Obsidian 02 - Markdown Syntax.md",
     "Template/Untitled.md",
     "Docs/Ops/keepalived/How to learn keepalived.md",
     "Docs/OS/Linux/cli/ldconfig.md",
-    "README.md",
     "Docs/OS/Linux/cli/ldd.md",
     "Docs/OS/Linux/distro/manjaro/Post Manjaro Installtion Guide.md",
     "Docs/Development/Backend/Python/tutorial/12. Virtual Environments and Packages.md",
     "Docs/Development/Backend/Python/tutorial/2. Using the Python Interpreter.md",
-    "Docs/Development/Backend/Python/Day01 - 解释器 vs 编译器.md",
-    "Docs/Ops/Conda/Conda 01 - Overview.md",
-    "Docs/Development/Backend/Python/tutorial/11. Brief Tour of the Standard Library - Part II.md",
-    "Docs/Development/Backend/Python/tutorial/10. Brief Tour of the Standard Library.md",
-    "Docs/Development/Backend/Python/tutorial/8. Errors and Exceptions.md",
-    "Docs/Development/Backend/Python/tutorial/6. Modules.md",
-    "Docs/Development/Backend/Python/tutorial/5. Data Structures.md",
-    "Docs/Development/Backend/Python/tutorial/4. More Control Flow Tools.md",
-    "Docs/Development/Backend/Python/tutorial/3. An Informal Introduction to Python.md",
-    "Docs/Ops/MySQL/Untitled",
     "Pasted image 20240530102358.png",
-    "Docs/AI/StableDiffusion",
-    "Docs/AI",
-    "Appendix/Linux Networking Cookbook.pdf",
-    "Template",
     "Untitled.canvas",
     "Pasted image 20240528173451.png",
     "Pasted image 20240528173447.png",
-    "Ob template",
     "Engelbart.jpg"
   ]
 }

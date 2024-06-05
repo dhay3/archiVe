@@ -1,5 +1,4 @@
 ---
-title: 01 - MySQL Installation
 author: "0x00"
 createTime: 2024-06-03
 lastModifiedTime: 2024-06-03-11:18

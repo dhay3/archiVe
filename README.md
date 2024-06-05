@@ -1,8 +1,6 @@
 ---
-title: README
 author: "0x00"
 createTime: 2024-05-30
-lastModifiedTime: 2024-05-30-11:41
 draft: false
 ---
 
@@ -10,7 +8,7 @@ draft: false
 
 > [!tldr] Summary
 > 
-> It's a repository for personal memos.
+> It's a repository for personal memos. The architect of this repo whill be restructure some day.
 
 # TOC
 

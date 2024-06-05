@@ -1,4 +1,4 @@
-# MySQL 05 - mysqldump CLI
+# MySQL 07 - mysqldump CLI
 
 ## 0x01 Overview
 
@@ -34,7 +34,7 @@ GRANT SELECT,SHOW VIEW ON *.* to 'test'@'localhost';
 
 ## 0x03 Syntax
 
-如果是单库推荐使用第一种，生成的 SQL 中不包含 `CREATE DATABASE` 和 `USE DATABASE` (不受源目数据库名限制)
+如果是单库推荐使用第一种(且只支持单库)，生成的 SQL 中不包含 `CREATE DATABASE` 和 `USE DATABASE` (不受源目数据库名限制)
 
 ```
 Usage: mysqldump [OPTIONS] <database> [tables]
@@ -42,7 +42,23 @@ OR     mysqldump [OPTIONS] --databases [OPTIONS] DB1 [DB2 DB3...]
 OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 ```
 
-> 只列举常见参数，具体参数查看官方文档
+> 只列举常见参数，具体参数查看官方文档[^1]
+
+### Option-File Options
+
+- `--defaults-file=<filename>`
+
+  使用指定的 option files
+
+- `--print-defaults`
+
+  输出从 option files 中获取的参数
+
+  ```
+  $ bin/mysqldump --defaults-
+  [mysqldump]
+  socket=/opt/mysql-8.4.0-linux-glibc2.17-x86_64/run/mysql.sock
+  ```
 
 ### Connection Options
 
@@ -456,7 +472,7 @@ OR     mysqldump [OPTIONS] --all-databases [OPTIONS]
 
 ## 0x04 Default values
 
-`mysqldump` 中的每一个参数都可以被写入 [MySQL 02 - Option files(my.cnf)](MySQL%2002%20-%20Option%20files(my.cnf).md)
+`mysqldump` 中的每一个参数都可以被写入 [MySQL 03 - Option Files(my.cnf)](MySQL%2003%20-%20Option%20Files(my.cnf).md)
 
 例如在 `/etc/my.cnf` 中声明 `user` 和 `password` 就无需使用 `--user` 或者是 `--password`
 
@@ -466,7 +482,7 @@ user=root
 password=test1234
 ```
 
-默认会按照顺序从如下文件中读取配置
+默认会按照顺序从如下文件中读取配置(可以使用 `mysqldump --help` 查看)
 
 1. `/etc/my.cnf`
 2. `/etc/mysql/my.cnf`

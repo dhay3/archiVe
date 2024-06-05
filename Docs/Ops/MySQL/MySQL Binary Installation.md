@@ -77,7 +77,7 @@
 
    > 如果出现 `./mysql: error while loading shared libraries: libncurses.so.5: cannot open shared object file: No such file or directory` 安装 `ncurses5-compat-libs` 即可
    >
-   > 例如 Arach
+   > 例如 Arch
    >
    > `yay -S aur/ncurses5-compat-libs`
 

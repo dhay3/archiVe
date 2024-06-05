@@ -4,7 +4,7 @@
 
 
 > [!NOTE]
-> 现阶段 Obsidian 在文本编辑的体验上还比不了 Typora
+> 现阶段 Obsidian 在 Markdown 文本编辑的体验上还比不了 Typora
 >
 > 还有一堆 bug 或者是说不人性的地方
 >

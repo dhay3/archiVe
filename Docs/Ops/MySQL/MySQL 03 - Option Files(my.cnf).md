@@ -1,12 +1,11 @@
 ---
-title: MySQL 02 - my.cnf
 author: "0x00"
 createTime: 2024-06-04
 lastModifiedTime: 2024-06-04-10:35
 draft: true
 ---
 
-# MySQL 02 - my.cnf
+# MySQL 03 - Option Files(my.cnf)
 
 ## 0x01 Overview[^1]
 
@@ -33,7 +32,7 @@ Variables (--variable-name=value)
 
 ### Read Order
 
-option files 有读取优先级[^2]，可以使用 `--help` 查看，例如
+option files 有读取优先级[^1]，可以使用 `--help` 查看，例如
 
 ```
 $ mysqldump --help
@@ -65,7 +64,7 @@ The following groups are read: mysqldump client
 
   指定应用的配置集，`[group]` 和 `[group]` 之间 或者 `[group]` 到 EOF 是 group 应用默认使用的参数
 
-  group 的值可以和 应用名相同，也可以不同
+  group 的值可以和 应用名相同，也可以不同(具体看文档)
 
   例如
 
@@ -107,9 +106,24 @@ user=root
 password=t))r
 ```
 
-## 0x04 Options VS Variables
+## 0x04 Cautions
 
-variables[^3] 和 options 都会影响 MySQL 操作，但是 variables 和 options 不同
+1. 如果一些参数的值不合理，MySQL 会将其置为合理
+
+   例如 如下配置
+
+   ```
+   [mysqld]
+   port=999999
+   ```
+
+   实际 mysqld 会监听 65535 端口
+
+2. 如果一个 option 在 option files 中出现多次，就会使用最后一次出现的 option。但是除了 `mysqld` 的 `--user` option 外
+
+## 0x05 Options VS Variables
+
+variables[^2] 和 options 都会影响 MySQL 操作，但是 variables 和 options 不同
 
 
 
@@ -121,6 +135,7 @@ options 可以配置到 option files 中，但是 variables 不能。因为部�
 
 `--password` option 可以写入到 option files，但是并没有 password variable，也就不能使用 `SHOW variables like 'password'` 来查看对应的值
 
+## 0x06 When are Option Files been Used
 
 
 
@@ -130,6 +145,5 @@ options 可以配置到 option files 中，但是 variables 不能。因为部�
 **references**
 
 [^1]:https://dev.mysql.com/doc/refman/8.4/en/option-files.html
-[^2]:https://dev.mysql.com/doc/refman/8.4/en/option-files.html
-
-[^3]:https://dev.mysql.com/doc/refman/8.4/en/server-system-variables.html
+[^2]:https://dev.mysql.com/doc/refman/8.4/en/server-system-variables.html
+[^3]:https://dev.mysql.com/doc/refman/8.4/en/option-file-options.html
