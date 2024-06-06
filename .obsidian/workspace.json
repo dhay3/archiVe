@@ -85,12 +85,12 @@
             }
           },
           {
-            "id": "4ffa77d6f684ac26",
+            "id": "406c6fd55dadcc2f",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Docs/English/English 01 - Overview.md",
+                "file": "Docs/English/English 02 - Present Continuous(I am doing).md",
                 "mode": "source",
                 "backlinks": false,
                 "source": true
@@ -98,13 +98,13 @@
             }
           },
           {
-            "id": "f232bf5309e284f5",
+            "id": "990abbb1ef1bd1ae",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
-                "mode": "preview",
+                "file": "Docs/English/English 03 - Present Simple(I do).md",
+                "mode": "source",
                 "backlinks": false,
                 "source": true
               }
@@ -139,7 +139,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "file:(.pdf)",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -241,18 +241,24 @@
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
       "table-editor-obsidian:Advanced Tables Toolbar": false,
-      "terminal:Open terminal": false,
       "omnisearch:Omnisearch": false,
-      "workspaces:Manage workspace layouts": false
+      "workspaces:Manage workspace layouts": false,
+      "terminal:Open terminal": false
     }
   },
   "active": "ec6984c0e1810670",
   "lastOpenFiles": [
-    "README.md",
-    "Docs/English/English-Grammar-in-Use.pdf",
+    "Docs/English/English 03 - Present Simple(I do).md",
+    "Docs/English/English 02 - Present Continuous(I am doing).md",
     "Docs/English/English 01 - Overview.md",
+    "Docs/English/English-Grammar-in-Use.pdf",
+    "Template/ObBoilerplate.md",
     "Docs/Ops/MySQL/MySQL 01 - Binary Installation.md",
-    "Docs/English/English 02 - Present and Past.md",
+    "Docs/Ops/Docker/Dockerfile.md",
+    "Docs/OS/Linux/general/Linux Redirection.md",
+    "Docs/Ops/Docker/Docker Swarm.md",
+    "Docs/English/1",
+    "README.md",
     "Docs/English/Grammar",
     "Docs/English/Pronunciation",
     "Docs/AI/Ollma",
@@ -264,7 +270,6 @@
     "Docs/English/235_7-English-Grammar-in-Use.-Murphy-R.-2019-5th-394p-.pdf.aria2",
     "Docs/English/235_7-English-Grammar-in-Use.-Murphy-R.-2019-5th-394p-.pdf",
     "Docs/English",
-    "Docs/AI/Chattts",
     "Docs/Ops/MySQL/MySQL 02 - Options.md",
     "Docs/Ops/MySQL/MySQL 03 - Option Files(my.cnf).md",
     "Docs/Ops/MySQL/MySQL 06 - mysqladmin CLI.md",
@@ -272,17 +277,12 @@
     "Docs/Ops/MySQL/MySQL 04 - mysql CLI.md",
     "Docs/Ops/MySQL/Untitled.md",
     "Docs/Ops/MySQL/MySQL Binary Installation.md",
-    "Template/ObBoilerplate.md",
     "Docs/Ops/FreeRDP/freerdp.md",
     "Docs/Sundries/Obsidian/Obsidian 03 - Template.md",
     "Docs/Sundries/Obsidian/Obsidian 02 - Markdown Syntax.md",
     "Template/Untitled.md",
     "Docs/Ops/keepalived/How to learn keepalived.md",
     "Docs/OS/Linux/cli/ldconfig.md",
-    "Docs/OS/Linux/cli/ldd.md",
-    "Docs/OS/Linux/distro/manjaro/Post Manjaro Installtion Guide.md",
-    "Docs/Development/Backend/Python/tutorial/12. Virtual Environments and Packages.md",
-    "Docs/Development/Backend/Python/tutorial/2. Using the Python Interpreter.md",
     "Pasted image 20240530102358.png",
     "Untitled.canvas",
     "Pasted image 20240528173451.png",

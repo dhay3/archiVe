@@ -1,6 +1,6 @@
 ---
 author: "0x00"
-createTime: {{date}}-{{time}}
+createTime: {{date}} {{time}}
 draft: true
 ---
 
