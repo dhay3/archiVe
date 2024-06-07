@@ -90,14 +90,15 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "How to Write Good Commit Messages.md",
                 "mode": "source",
                 "backlinks": false,
                 "source": true
               }
             }
           }
-        ]
+        ],
+        "currentTab": 4
       }
     ],
     "direction": "vertical"
@@ -154,7 +155,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "How to Write Good Commit Messages.md"
+              }
             }
           },
           {
@@ -163,6 +166,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "How to Write Good Commit Messages.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -179,6 +183,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "How to Write Good Commit Messages.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -212,7 +217,9 @@
             "type": "leaf",
             "state": {
               "type": "file-properties",
-              "state": {}
+              "state": {
+                "file": "How to Write Good Commit Messages.md"
+              }
             }
           }
         ]
@@ -233,10 +240,11 @@
       "terminal:Open terminal": false
     }
   },
-  "active": "ec6984c0e1810670",
+  "active": "4dc875013599ceba",
   "lastOpenFiles": [
     "README.md",
-    "How to Write Good Commits.md",
+    "Templates/ObBoilerplate.md",
+    "How to Write Good Commit Messages.md",
     "Docs/Ops/MySQL/MySQL 01 - Binary Installation.md",
     "How to Ask Questions.md",
     "Untitled.md",
@@ -253,7 +261,6 @@
     "Docs/English/English 02 - Present Continuous(I am doing).md",
     "Docs/English/English 01 - Overview.md",
     "Docs/English/English-Grammar-in-Use.pdf",
-    "Template/ObBoilerplate.md",
     "Docs/Ops/Docker/Dockerfile.md",
     "Docs/OS/Linux/general/Linux Redirection.md",
     "Docs/Ops/Docker/Docker Swarm.md",
