@@ -111,6 +111,17 @@ chore: update npm dependency to latest version
 <intention> [scope:?] <message>
 ```
 
+其中 commit title 对应 git commit 中的 message 也就是在 Github Code 页面显示的
+
+```
+gitmoji -c
+? Choose a gitmoji: 📝  - Add or update documentation.
+? Enter the commit title [52/48]: Add "Emojial Commits" in "How to Write Good Commits"
+? Enter the commit message:
+[master 303b0a1] 📝 Add "Emojial Commits" in "How to Write Good Commits"
+ 1 file changed, 55 insertions(+), 21 deletions(-)
+```
+
 ### Intention
 
 > 所有的 emoji 都可以在 [gitmoji | An emoji guide for your commit messages](https://gitmoji.dev/) 可以找到
@@ -142,8 +153,6 @@ chore: update npm dependency to latest version
 ### message
 
 同 [Description](#Description)
-
-
 
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
