@@ -1,8 +1,3 @@
----
-author: "0x00"
-createTime: 2024-05-30
-draft: false
----
 ![GitHub forks](https://img.shields.io/github/forks/dhay3/archive) ![GitHub Repo stars](https://img.shields.io/github/stars/dhay3/archive)
 
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg) ![GitHub License](https://img.shields.io/github/license/dhay3/archive)
@@ -168,6 +163,3 @@ draft: false
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/dhay3/archive)
 ![](https://img.shields.io/github/last-commit/dhay3/archive)
 [![Ashutosh's github activity graph](https://github-readme-activity-graph.vercel.app/graph?username=dhay3&custom_title=Commit%20Activities&theme=github-compact)](https://github.com/ashutosh00710/github-readme-activity-graph)
-
----
-*Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
