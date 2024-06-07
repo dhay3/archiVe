@@ -9,7 +9,8 @@
 
 > [!tldr] Summary
 > 
-> It's a repository for personal memos. The architect of this repo whill be restructure some day.
+> It's a repository for personal memos.
+> The architect and contents of this repo will be restructure some day with Feynman's idea.
 
 # TOC
 
