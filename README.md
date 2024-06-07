@@ -4,7 +4,11 @@ createTime: 2024-05-30
 draft: false
 ---
 
-![](https://img.shields.io/github/repo-size/dhay3/archive)![GitHub commit activity](https://img.shields.io/github/commit-activity/w/dhay3/archive)![](https://img.shields.io/github/last-commit/dhay3/archive)
+![GitHub License](https://img.shields.io/github/license/dhay3/archive)
+![](https://img.shields.io/github/repo-size/dhay3/archive)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/dhay3/archive)
+![](https://img.shields.io/github/last-commit/dhay3/archive)
+![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)(https://conventionalcommits.org)
 
 > [!tldr] Summary
 > 
@@ -155,7 +159,6 @@ draft: false
 - [Obsidian](Docs/SUndries/Obsidian)
 - [Rsshub](Docs/Sundries/Rsshub)
 - [Typora](Docs/Sundries/Typora)
-
 
 
 ---

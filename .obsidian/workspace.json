@@ -109,6 +109,32 @@
                 "source": true
               }
             }
+          },
+          {
+            "id": "295fd6d843b73bb4",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "How to Ask Questions.md",
+                "mode": "source",
+                "backlinks": false,
+                "source": true
+              }
+            }
+          },
+          {
+            "id": "04651ee03176723a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "README.md",
+                "mode": "source",
+                "backlinks": false,
+                "source": true
+              }
+            }
           }
         ]
       }
@@ -248,8 +274,10 @@
   },
   "active": "ec6984c0e1810670",
   "lastOpenFiles": [
-    "How to Ask Questions.md",
     "README.md",
+    "How to Write Good Commits.md",
+    "How to Ask Questions.md",
+    "License.md",
     "Docs/English/English 04 - Present Continuous VS Present Simple.md",
     "Docs/English/Untitled.md",
     "Docs/English/Untitled 1.md",
@@ -284,8 +312,6 @@
     "Docs/Ops/MySQL/MySQL 04 - mysql CLI.md",
     "Docs/Ops/MySQL/Untitled.md",
     "Docs/Ops/MySQL/MySQL Binary Installation.md",
-    "Docs/Ops/FreeRDP/freerdp.md",
-    "Docs/Sundries/Obsidian/Obsidian 03 - Template.md",
     "Pasted image 20240530102358.png",
     "Untitled.canvas",
     "Pasted image 20240528173451.png",
