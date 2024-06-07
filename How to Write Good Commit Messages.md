@@ -94,7 +94,7 @@ commit 主要做了什么，需要符合如下规则
 chore: update npm dependency to latest version
 ```
 
-除此外还可以使用 emoji， 常用的有
+除此外还可以在 description 中加入 emoji， 常用的有
 - :wrench: 🔧 用于 fix
 - :memeo: 📝 用于 docs
 - 
