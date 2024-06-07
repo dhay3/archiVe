@@ -163,7 +163,8 @@ draft: false
 - [Rsshub](Docs/Sundries/Rsshub)
 - [Typora](Docs/Sundries/Typora)
 
-
+![GitHub Created At](https://img.shields.io/github/created-at/dhay3/archive)
+![commits](https://badgen.net/github/commits/dhay3/archive/master)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/dhay3/archive)
 ![](https://img.shields.io/github/last-commit/dhay3/archive)
 [![Ashutosh's github activity graph](https://github-readme-activity-graph.vercel.app/graph?username=dhay3&custom_title=Commit%20Activities&theme=github-compact)](https://github.com/ashutosh00710/github-readme-activity-graph)
