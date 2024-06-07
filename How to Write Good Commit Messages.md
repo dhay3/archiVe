@@ -20,15 +20,30 @@ Commit Message 是你在每次 commit 时必须要填的。你可能会不知道
 
 如果你想要看文件的变更记录，在 Github 上可以通过 History 来查看，在 Git 上可以通过 `git diff <commit1> <commit2>` 来查看。但是不管是 Github 还是 Git 只会显示 commit 对应的 hash 和 commit message。如果你以上述 commit message 的方式记录 commit，就很难将 commit 修改的内容和 commit 的对上。所以需要一套标准，这里在 Conventional Commits[^1] 的基础上总结如下规则
 
-所有 commit messages 按照如下 EBNF 
+所有 commit messages 按照如下 EBNF
 
 ```
-<type>([optional scope]): <description>
+[emoji] <type>([optional scope]): <description>
 ```
+
+### emoji
+除此外还可以在 description 中加入 emoji[^3]
+
+> [!NOTE] 
+> 如果想要在 terminal 中显示 emoji，可以参考 Noto Emoji Color fontconfig for Konsole[^4]
+> 如果享用 emoji 替代 coventional commits 的格式，可参考 gitmoji[^5]
+
+常用的有
+- :bug: 🐛 用于 fix
+- :memeo: 📝 用于 docs
+- :sparkles: ✨ 用于 feat
+- :construction: 🚧 
+
+所有的 emoji 都可以在 [gitmoji | An emoji guide for your commit messages](https://gitmoji.dev/) 找到
 
 ### Type
 
-按照 commit 意图分为如下几类，type 必须全小写
+按照 commit 意图分为如下几类[^2]，type 必须全小写
 
 - init 
 	a project has been initialed
@@ -73,6 +88,8 @@ chore!: drop Node 6 from testing matrix
 docs!: update 'how to use' in readme
 ```
 
+
+
 ### Optional Scope
 
 commits 只关联特定某领域，例如
@@ -94,13 +111,6 @@ commit 主要做了什么，需要符合如下规则
 chore: update npm dependency to latest version
 ```
 
-除此外还可以在 description 中加入 emoji， 常用的有
-- :wrench: 🔧 用于 fix
-- :memeo: 📝 用于 docs
-- 
-
-docs(ai):  add 'installation' for stablediffusion-webui
-
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
 
@@ -109,5 +119,6 @@ docs(ai):  add 'installation' for stablediffusion-webui
 [^1]:[Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0-beta.4/)
 [^2]:[How to Write Better Git Commit Messages – A Step-By-Step Guide](https://www.freecodecamp.org/news/how-to-write-better-git-commit-messages/)
 [^3]:[Understand how to write a good commit message through memes 😉 | by Hritik Jaiswal | Medium](https://medium.com/@hritik.jaiswal/how-to-write-a-good-commit-message-9d2d533b9052)
-
+[^4]:[Noto Emoji Color fontconfig for Konsole · GitHub](https://gist.github.com/IgnoredAmbience/7c99b6cf9a8b73c9312a71d1209d9bbb)
+[^5]:[GitHub - carloscuesta/gitmoji: An emoji guide for your commit messages. 😜](https://github.com/carloscuesta/gitmoji?tab=readme-ov-file)
 

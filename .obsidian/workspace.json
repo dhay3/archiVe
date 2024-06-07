@@ -37,7 +37,7 @@
                   },
                   "serial": {
                     "columns": 175,
-                    "data": "",
+                    "data": "[exited]\u001b[1B\u001b[8D",
                     "rows": 53
                   }
                 }
