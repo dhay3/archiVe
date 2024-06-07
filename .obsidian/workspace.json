@@ -124,7 +124,7 @@
             }
           },
           {
-            "id": "04651ee03176723a",
+            "id": "e61d929cb4681f4a",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -275,8 +275,9 @@
   "active": "ec6984c0e1810670",
   "lastOpenFiles": [
     "README.md",
-    "How to Write Good Commits.md",
     "How to Ask Questions.md",
+    "Untitled.md",
+    "How to Write Good Commits.md",
     "License.md",
     "Docs/English/English 04 - Present Continuous VS Present Simple.md",
     "Docs/English/Untitled.md",
@@ -311,7 +312,6 @@
     "Docs/Ops/MySQL/MySQL 05 - mysqld CLI.md",
     "Docs/Ops/MySQL/MySQL 04 - mysql CLI.md",
     "Docs/Ops/MySQL/Untitled.md",
-    "Docs/Ops/MySQL/MySQL Binary Installation.md",
     "Pasted image 20240530102358.png",
     "Untitled.canvas",
     "Pasted image 20240528173451.png",

@@ -3,12 +3,14 @@ author: "0x00"
 createTime: 2024-05-30
 draft: false
 ---
-
+![GitHub forks](https://img.shields.io/github/forks/dhay3/archive)  
+![GitHub Repo stars](https://img.shields.io/github/stars/dhay3/archive)
+![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 ![GitHub License](https://img.shields.io/github/license/dhay3/archive)
-![](https://img.shields.io/github/repo-size/dhay3/archive)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/w/dhay3/archive)
-![](https://img.shields.io/github/last-commit/dhay3/archive)
-![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)(https://conventionalcommits.org)
+[![Markdown](https://img.shields.io/badge/Markdown-%23000000.svg?logo=markdown&logoColor=white)](https://daringfireball.net/projects/markdown/)
+[![Obsidian](https://img.shields.io/badge/Obsidian-%23483699.svg?&logo=obsidian&logoColor=white)](https://obsidian.md/)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
+
 
 > [!tldr] Summary
 > 
@@ -160,6 +162,10 @@ draft: false
 - [Rsshub](Docs/Sundries/Rsshub)
 - [Typora](Docs/Sundries/Typora)
 
+
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/dhay3/archive)
+![](https://img.shields.io/github/last-commit/dhay3/archive)
+[![Ashutosh's github activity graph](https://github-readme-activity-graph.vercel.app/graph?username=dhay3&custom_title=Commit%20Activities&theme=github-compact)](https://github.com/ashutosh00710/github-readme-activity-graph)
 
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
