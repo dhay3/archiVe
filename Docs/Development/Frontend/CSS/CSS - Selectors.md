@@ -59,7 +59,7 @@ p {
 ```
 会选中所有的 `p` 和 `div` 以及 `span` 标签
 ### ID selector
-ID 选择器，按照标签的 `id` 属性匹配。ID 全局唯一，否则错误
+ID 选择器，按照标签的 `id` 属性匹配。==ID 全局唯一，否则错误(假命题)[^9]==
 
 `#idName` 选中 `<element id="idName">`
 
@@ -480,3 +480,4 @@ div ~ div {
 6. https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators
 7. [https://www.ruanyifeng.com/blog/2009/03/css_selectors.html](https://www.ruanyifeng.com/blog/2009/03/css_selectors.html)
 8. https://stackoverflow.com/questions/2587669/can-i-use-a-before-or-after-pseudo-element-on-an-input-field
+9. [^9]:https://softwareengineering.stackexchange.com/questions/127178/two-html-elements-with-same-id-attribute-how-bad-is-it-really

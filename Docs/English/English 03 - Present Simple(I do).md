@@ -61,28 +61,34 @@ What/Why/When/Where/Which do you/we/they/plural verb
 ## 0x02 When to Use
 
 在如下几种情况下需要使用 present simple
-1. 事物是普遍发生
-2. 事物是不断重复或者是经常的
+1. 事物是普遍发生，过去是，现在是，未来也是。会持续较长的一段时间
+2. 表示动作的频率，通常会在 often,always,usally,twice(表示 times) 出现时使用
 3. 事物是真理
-4. 疑问句中，时间不是关键或者是模糊的
-5. 表示动作的频率，例如 often,always,usally,twice
-6. 
+4. 时间不是重点
+5. 通过 saying somthing do things
 
 ### Rule 01
 
-事物是普遍发生
+事物是普遍发生，过去是，现在是，未来也是。会持续较长的一段时间
 
 例如
 1. Nurses look after patients in hospitals.
 2. Theachers teach students in school.
+3. My parents live in London. They have lived there for their all life.
+4. Joe isn't lazy. He works hard most of time.
 
 ### Rule 02
 
-事物是不断重复或者是经常的
+表示动作的频率，通常会在 often,always,usally,twice(表示 times) 出现时使用
 
 例如
 1. I usually go away at weekends.
 2. The cafe opens at 7.30 in the morning.
+3. I get up at 8 o'clock every morning.
+4. How ofen do you go the dentist?
+5. Julie don't drink tea very often.
+6. Rober usually goes away two or three times a year.
+
 
 ### Rule 03
 
@@ -93,22 +99,26 @@ What/Why/When/Where/Which do you/we/they/plural verb
 
 ### Rule 04
 
-疑问句中，时间不是关键
+时间不是重点
 
 例如
-1. What does this word mean?
+1. What does this word means?
 2. I'm come from Canada. Where do you from?
 3. What do you do? I work in a shop.
+4. He doesn't do anything to help.
+5. I don't wanna go.
 
-### Rule 05
+### Rule 06
 
-表示动作的频率
+通过 saying somthing do things
+
+主要有
+I apologise/I advice/I insist/I agree/I promise/I refuse
 
 例如
-1. I get up at 8 o'clock every morning.
-2. How ofen do you go the dentist?
-3. Julie don't drink tea very often.
-4. Rober usually goes away two or three times a year.
+1. I promise I won't be late.
+2. I refuse I won't do that.
+
 
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*

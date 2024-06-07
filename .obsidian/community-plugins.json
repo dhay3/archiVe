@@ -1,16 +1,16 @@
 [
-  "omnisearch",
-  "obsidian-auto-link-title",
-  "obsidian-emoji-toolbar",
-  "obsidian-pandoc",
   "table-editor-obsidian",
-  "obsidian-table-generator",
-  "sheets",
-  "terminal",
-  "dataview",
-  "highlightr-plugin",
+  "obsidian-auto-link-title",
   "code-styler",
-  "obsidian-paste-to-current-indentation",
+  "dataview",
+  "obsidian-emoji-toolbar",
+  "highlightr-plugin",
   "insert-unsplash-image",
-  "oz-image-plugin"
+  "oz-image-plugin",
+  "omnisearch",
+  "obsidian-pandoc",
+  "obsidian-paste-to-current-indentation",
+  "terminal",
+  "obsidian-table-generator",
+  "sheets"
 ]

@@ -60,7 +60,7 @@ What/Why/When/Where/Which are you/we/they/plural doing
 
 在如下几种情况下，需要使用 present continous
 1. 在说出的时候，动作正在做还没有结束[Rule 01](#Rule%2001)
-2. 在说出的时候，动作正在这个过程中，强调过程[Rule 02](#Rule%2002)
+2. 在说出的时候，动作正在这个过程中，强调整个过程[Rule 02](#Rule%2002)
 3. 当强调 periods arround now 时，例如 today/this week/this year[Rule 03](#Rule%2003)
 4. 当事物在当下正在发生改变时[Rule 03](#Rule%2003)
 
@@ -95,7 +95,7 @@ doing something = is doing at the time of speaking
 > Steve says 'I'm reading ...' but he is not reading the book at the time of speaking.
 > He means he started reading the book, but he hasn't finished yet. He is in the middle of reading it.
 
-在说出的时候，动作正在这个过程中，强调过程
+在说出的时候，动作正在这个过程中，强调整个过程
 
 ```
 doing something = in the middle of doing it
