@@ -37,7 +37,7 @@
                   },
                   "serial": {
                     "columns": 175,
-                    "data": "[exited]\u001b[1B\u001b[8D",
+                    "data": "",
                     "rows": 53
                   }
                 }
@@ -90,15 +90,14 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "How to Write Good Commit Messages.md",
+                "file": "README.md",
                 "mode": "source",
                 "backlinks": false,
                 "source": true
               }
             }
           }
-        ],
-        "currentTab": 4
+        ]
       }
     ],
     "direction": "vertical"
@@ -127,7 +126,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "file:mysqldump",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -136,7 +135,8 @@
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -155,9 +155,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "How to Write Good Commit Messages.md"
-              }
+              "state": {}
             }
           },
           {
@@ -166,7 +164,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "How to Write Good Commit Messages.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -183,7 +180,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "How to Write Good Commit Messages.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -217,9 +213,7 @@
             "type": "leaf",
             "state": {
               "type": "file-properties",
-              "state": {
-                "file": "How to Write Good Commit Messages.md"
-              }
+              "state": {}
             }
           }
         ]
@@ -240,15 +234,16 @@
       "terminal:Open terminal": false
     }
   },
-  "active": "4dc875013599ceba",
+  "active": "ec6984c0e1810670",
   "lastOpenFiles": [
-    "License.md",
-    "License.md~",
     "README.md",
-    "Templates/ObBoilerplate.md",
-    "How to Write Good Commit Messages.md",
-    "Docs/Ops/MySQL/MySQL 01 - Binary Installation.md",
+    "Docs/Ops/MySQL/MySQL 07 - mysqldump CLI.md",
+    "License.md",
     "How to Ask Questions.md",
+    "How to Write Good Commit Messages.md",
+    "License.md~",
+    "Templates/ObBoilerplate.md",
+    "Docs/Ops/MySQL/MySQL 01 - Binary Installation.md",
     "Untitled.md",
     "Docs/English/English 04 - Present Continuous VS Present Simple.md",
     "Docs/English/Untitled.md",
@@ -273,7 +268,6 @@
     "Docs/AI/Suno",
     "Docs/AI/Untitled.md",
     "Docs/Sundries/Obsidian/Obsidian 01 - Overview.md",
-    "Docs/Ops/MySQL/MySQL 07 - mysqldump CLI.md",
     "Docs/Ops/MySQL/MySQL 02 - Options.md",
     "Docs/Ops/MySQL/MySQL 03 - Option Files(my.cnf).md",
     "Docs/Ops/MySQL/MySQL 06 - mysqladmin CLI.md",

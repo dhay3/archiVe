@@ -8,11 +8,25 @@ draft: true
 
 ## 0x01 Overview
 
+在阅读本文时，确保已经熟记 [How To Ask Questions The Smart Way](http://www.catb.org/~esr/faqs/smart-questions.html) 中的每一条准则
+
+## Before Asking
+
+在你问问题前确保自己已经做过如下几步
+
+1. STFW RTFM
+2. Do experimentation to reproduce it
+3. Try to read the source code
 
 
-1. RTFM STFW
+## How to Ask
 
-### Bug report
+1. Display the fact that you have done [these things](#Before%20Asking)
+
+
+
+
+- English is not my native language; please excuse typing errors.
 
 ## Boilerplate
 
@@ -26,7 +40,7 @@ draft: true
 
 **references**
 
-[^1]: [How To Ask Questions The Smart Way](http://www.catb.org/~esr/faqs/smart-questions.html)
+[^1]: 
 
 
 
