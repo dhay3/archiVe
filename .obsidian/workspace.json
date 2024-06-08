@@ -248,8 +248,9 @@
   },
   "active": "ec6984c0e1810670",
   "lastOpenFiles": [
-    "How to Write Good Commit Messages.md",
     "README.md",
+    "Docs/Ops/MySQL/MySQL 02 - Options.md",
+    "How to Write Good Commit Messages.md",
     "Docs/Ops/MySQL/MySQL 07 - mysqldump CLI.md",
     "License.md",
     "How to Ask Questions.md",
@@ -280,7 +281,6 @@
     "Docs/AI/Suno",
     "Docs/AI/Untitled.md",
     "Docs/Sundries/Obsidian/Obsidian 01 - Overview.md",
-    "Docs/Ops/MySQL/MySQL 02 - Options.md",
     "Docs/Ops/MySQL/MySQL 03 - Option Files(my.cnf).md",
     "Docs/Ops/MySQL/MySQL 06 - mysqladmin CLI.md",
     "Docs/Ops/MySQL/MySQL 05 - mysqld CLI.md",
