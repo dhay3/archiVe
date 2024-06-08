@@ -96,6 +96,19 @@
                 "source": true
               }
             }
+          },
+          {
+            "id": "fa8e9f15671de0be",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "How to Write Good Commit Messages.md",
+                "mode": "source",
+                "backlinks": false,
+                "source": true
+              }
+            }
           }
         ]
       }
@@ -135,8 +148,7 @@
               }
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -236,11 +248,11 @@
   },
   "active": "ec6984c0e1810670",
   "lastOpenFiles": [
+    "How to Write Good Commit Messages.md",
     "README.md",
     "Docs/Ops/MySQL/MySQL 07 - mysqldump CLI.md",
     "License.md",
     "How to Ask Questions.md",
-    "How to Write Good Commit Messages.md",
     "License.md~",
     "Templates/ObBoilerplate.md",
     "Docs/Ops/MySQL/MySQL 01 - Binary Installation.md",

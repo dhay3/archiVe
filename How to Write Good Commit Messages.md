@@ -6,7 +6,7 @@ draft: false
 
 # How to Write Good Commit Messages
 
-Commit Message 是你在每次 commit 时必须要填的。你可能会不知道填什么，或者随便填。例如
+Commit Messages 是你在每次 commit 时必须要填的。你可能会不知道填什么，或者随便填。例如
 
 ```
 * c1b5f09 - (3 years, 4 months ago) update content - cyberPelican
@@ -14,11 +14,15 @@ Commit Message 是你在每次 commit 时必须要填的。你可能会不知道
 * 340f176 - (3 years, 4 months ago) modified - cyberPelican
 ```
 
-这些 commit messages 即不美观也不能说明具体 commit 了什么
+这些 commit messages 即不美观，也不能说明具体 commit 了什么
 
-如果你想要看文件的变更记录，在 Github 上可以通过 History 来查看，在 Git 上可以通过 `git diff <commit1> <commit2>` 来查看。但是不管是 Github 还是 Git 只会显示 commit 对应的 hash 和 commit message。如果你以上述 commit message 的方式记录 commit，就很难将 commit 修改的内容和 commit 的对上。所以需要一套标准
+假设你现在想要看某一文件的变更记录，有如下两种方式
+1. 在 Github 上通过文件右上角的 History 来查看
+2. 在 Git 上可以通过 `git diff <commit1> <commit2>` 来查看
 
-按照个人喜好提供 2 种，更推荐 Emoji Commits 图形能表达更多意思
+但是不管是 Github 还是 Git 只会显示 commit 对应的 hash 和 commit message。如果你以上述 commit message 的方式记录 commit，就很难将 commit 修改的内容和 commit 的对上。所以需要一套标准
+
+按照个人喜好提供 2 种，更推荐 Emojial Commits(图形能表达更多意思，且更简洁)
 1. Conventional Commits
 2. Emojial Commits
 
