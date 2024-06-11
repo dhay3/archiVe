@@ -18,15 +18,15 @@ plain 中 do 表示 action
 
 plain-with-not/questions/questions-with-not/5W 中 do 为 particle 后面需要跟 action
 
-### Plain
+### 0x02a Plain
 
 ```
-I do
-he/she/it/singular does
-you/we/they/plural do
+I verb
+he/she/it/singular verb-[s|es|ies]
+you/we/they/plural verb
 ```
 
-### Plain-with-not
+### 0x02b Plain-with-not
 
 ```
 I don't verb
@@ -34,7 +34,7 @@ he/she/it/singular doesn't verb
 you/we/they/plural don't verb
 ```
 
-### Questions
+### 0x02c Questions
 
 ```
 Do I verb
@@ -42,7 +42,7 @@ Does he/she/it/singular verb
 Do you/we/they/plural verb
 ```
 
-### Questions-with-not
+### 0x02d Questions-with-not
 
 ```
 Don't I verb
@@ -50,7 +50,7 @@ Doesn't he/she/it/singular verb
 Don't you/we/they/plural verb
    ```
 
-### 5W
+### 0x02e 5W
 
 ```
 What/Why/When/Where/Which do I verb
@@ -58,7 +58,41 @@ What/Why/When/Where/Which does he/she/it/singular verb
 What/Why/When/Where/Which do you/we/they/plural verb
 ```
 
-## 0x02 When to Use
+## 0x03 verb-\[s|es\|ies]
+
+> 具体查看 Appendix 6 Spelling
+
+在 plain 中和 he/she/it/sigular 一起使用， verb 需要变形。大多数只需要在皆为使用 **-s** 即可，但是有一些特殊情况
+
+### 0x03a Rule 01
+
+以 **-s/-ss/-sh/-ch/-x** 结尾的单词需要使用 **-es**
+
+miss -> misses -> Ellis misses her brother.
+wash -> washes -> she washes her shirt.
+match -> matches -> it matches the whole word.
+box -> boxes -> he boxes the pacakge.
+
+除此外一些特殊的 verb 也需要使用 **-es**
+
+do -> does -> It does nothing but for fun.
+go -> goes -> Tom usually goes to school on him own.
+
+### 0x03b Rule 02
+
+如果单词以 constant(vowel 取反) **-y** 结尾，需要去 **-y** 改为 **-ies**
+
+apply -> applies
+try -> tries
+study -> studies 
+
+如果单词以 vowel(a,e,i,o,u) + **-y** 结尾，不需要去 **-y** 直接使用 **-s**
+
+play -> plays
+enjoy -> enjoys
+buy -> buys
+
+## 0x04 When to Use
 
 在如下几种情况下需要使用 present simple
 1. 事物是普遍发生，过去是，现在是，未来也是。会持续较长的一段时间
@@ -67,7 +101,7 @@ What/Why/When/Where/Which do you/we/they/plural verb
 4. 时间不是重点
 5. 通过 saying somthing do things
 
-### Rule 01
+### 0x04a Rule 01
 
 事物是普遍发生，过去是，现在是，未来也是。会持续较长的一段时间
 
@@ -77,7 +111,7 @@ What/Why/When/Where/Which do you/we/they/plural verb
 3. My parents live in London. They have lived there for their all life.
 4. Joe isn't lazy. He works hard most of time.
 
-### Rule 02
+### 0x04b Rule 02
 
 表示动作的频率，通常会在 often,always,usally,twice(表示 times) 出现时使用
 
@@ -89,15 +123,14 @@ What/Why/When/Where/Which do you/we/they/plural verb
 5. Julie don't drink tea very often.
 6. Rober usually goes away two or three times a year.
 
-
-### Rule 03
+### 0x04c Rule 03
 
 事物是真理
 
 例如
 1. The earth goes around the sun.
 
-### Rule 04
+### 0x04d Rule 04
 
 时间不是重点
 
@@ -108,7 +141,7 @@ What/Why/When/Where/Which do you/we/they/plural verb
 4. He doesn't do anything to help.
 5. I don't wanna go.
 
-### Rule 05
+### 0x04e Rule 05
 
 通过 saying somthing do things
 

@@ -36,7 +36,7 @@
                     "useWin32Conhost": true
                   },
                   "serial": {
-                    "columns": 175,
+                    "columns": 141,
                     "data": "",
                     "rows": 53
                   }
@@ -46,12 +46,12 @@
             }
           },
           {
-            "id": "88d52b46cb644eeb",
+            "id": "741fa7547410af62",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Docs/Ops/MySQL/MySQL 02 - Options.md",
+                "file": "Docs/English/Grammar/English 05 - Past Simple(I did).md",
                 "mode": "source",
                 "backlinks": false,
                 "source": true
@@ -59,7 +59,7 @@
             }
           },
           {
-            "id": "741fa7547410af62",
+            "id": "3b4e16ea410d8da3",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -72,12 +72,12 @@
             }
           },
           {
-            "id": "f03cc3a2ca5a10c9",
+            "id": "81609dc2c520b2f6",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "Docs/English/Grammar/English 04 - Present Continuous VS Present Simple.md",
                 "mode": "source",
                 "backlinks": false,
                 "source": true
@@ -206,8 +206,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -220,21 +219,22 @@
       "terminal:Open terminal": false
     }
   },
-  "active": "f16f2d61b7b3810f",
+  "active": "ec6984c0e1810670",
   "lastOpenFiles": [
-    "README.md",
     "Docs/English/Grammar/English 05 - Past Simple(I did).md",
-    "Docs/English/Grammar/English 03 - Present Simple(I do).md",
     "Docs/English/Grammar/English 04 - Present Continuous VS Present Simple.md",
+    "Docs/English/Grammar/English 03 - Present Simple(I do).md",
+    "Docs/English/Grammar/English 01 - Overview.md",
     "Docs/English/Grammar/English 02 - Present Continuous(I am doing).md",
+    "Docs/English/Grammar/Untitled.md",
+    "Docs/Ops/MySQL/MySQL 02 - Options.md",
+    "README.md",
     "Images/_English/2024-06-11_11-26-51.png",
     "Images/_English/2024-06-11_11-23-33.png",
     "Images/_English",
     "Images/New Folder",
-    "Docs/Ops/MySQL/MySQL 02 - Options.md",
     "Docs/Ops/MySQL/MySQL 03 - Option Files(my.cnf).md",
     "How to Ask Questions.md",
-    "Docs/English/Grammar/English 01 - Overview.md",
     "Docs/English/Grammar/English-Grammar-in-Use.pdf",
     "Docs/English/English 01 - Overview.md",
     "Docs/Sundries/Obsidian/Obsidian 01 - Overview.md",
@@ -253,7 +253,6 @@
     "Docs/Ops/MySQL/MySQL 07 - mysqldump CLI.md",
     "License.md",
     "License.md~",
-    "Templates/ObBoilerplate.md",
     "Attachments/Pasted image 20240607090748.png",
     "Attachments/Pasted image 20240607090847.png",
     "Attachments",

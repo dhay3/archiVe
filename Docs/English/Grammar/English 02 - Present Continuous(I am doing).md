@@ -14,58 +14,123 @@ present 直译过来就是现在，continous 直译过来就是连续的。组�
 
 现在进行时语法如下，其中
 
-plain/plain-with-not/questions/questions-with-not/5W 中 do 均表示 action 非 particle(助词)
-plain/plain-with-not/questions/questions-with-not/5W 中 am/is/are 均表示 particle
+plain/plain-with-not/questions/questions-with-not/5W 中 am/is/are 均表示 particle(助词)
 
-### Plain
-
-```
-I am doing
-he/she/it/singular is doing
-you/we/they/plural are doing
-```
-
-### Plain-with-not
+### 0x02a Plain
 
 ```
-I ain't doing == I am not doing
-he/she/it/singular isn't doing
-you/we/they/plural aren't doing
+I am verb-ing
+he/she/it/singular is verb-ing
+you/we/they/plural are verb-ing
 ```
 
-### Questions
+### 0x02b Plain-with-not
 
 ```
-Am I doing
-Is he/she/it/singular doing
-Are you/we/they/plural doing 
+I ain't verb-ing == I am not verb-ing
+he/she/it/singular isn't verb-ing
+you/we/they/plural aren't verb-ing
 ```
 
-### Questions-with-not
+### 0x02c Questions
 
 ```
-Ain't I doing == Am not I doing
-Isn't he/she/it/singular doing
-Aren't you/we/they/plural doing 
+Am I verb-ing
+Is he/she/it/singular verb-ing
+Are you/we/they/plural verb-ing 
 ```
 
-### 5W
+### 0x02d Questions-with-not
 
 ```
-What/Why/When/Where/Which am I doing
-What/Why/When/Where/Which is he/she/it/singular doing
-What/Why/When/Where/Which are you/we/they/plural doing
+Ain't I verb-ing == Am not I verb-ing
+Isn't he/she/it/singular verb-ing
+Aren't you/we/they/plural verb-ing 
 ```
 
-## 0x03 When to Use
+### 0x02e 5W
+
+```
+What/Why/When/Where/Which am I verb-ing
+What/Why/When/Where/Which is he/she/it/singular verb-ing
+What/Why/When/Where/Which are you/we/they/plural verb-ing
+```
+
+## 0x03 verb-ing
+
+> 具体查看 Appendix 6 Spelling
+
+一些 verb 在使用 **-ing** 需要变形
+
+### 0x03a Rule 01
+
+如果单词以 **-ie** 结尾，需要将 **-ie** 变为 **-y** 然后再加 **-ing**
+
+例如
+die/dying -> It's dying in the summer silently.
+lie/lying -> he's lying to you, don't trust that bullshit.
+tie/tying -> she's tying a knot.
+
+### 0x03b Rule 02
+
+如果单词以 **-e** 结尾，需要去 **-e** 然后再加 **-ing**
+
+例如
+hope/hoping -> I'm hoping the freedom will land in China someday.
+smile/smile -> he's smiling at me for no reason.
+dance/dancing -> The teens are dancing in the ball.
+confuse/confusing -> I'm confusing that why he wrote that letter.
+	
+如果单词以 **-ee** 结尾，就不需要去 **-e**，直接加 **-ing** 即可
+
+例如
+see/seeing -> 通常不会和 present continuous 一起使用
+agree/agreeing -> I'm agreeing with you.
+
+除此外 **be** 也直接使用 **-ing** 
+
+she's being so silly
+
+### 0x03c Rule 03
+
+- 如果单词以 **vowel + consonant** 结尾，一些时候(**sometimes**)需双写 consonant 然后再加 **-ing**
+	stop/stopping
+	rub/rubbing
+- 如果单词有多个 syllables(音节)，且重音在最后一个音节，需要双写 consonant 然后再加 **-ing**
+	permit /pəˈmɪt/ -> permitting
+	begin /bɪˈɡɪn/ -> beginning
+	perfer /prɪˈfɜː/ -> perferring
+	regret /rɪˈɡrɛt/ -> regretting
+- 如果单词有多个 syllables(音节)，但是最后一个音节没有重音，直接加 **-ing**
+	visit /ˈvɪzɪt/ -> visiting
+	develop /dɪˈvɛləp/ -> developping
+	remember /rɪˈmɛmbə/ -> remembering
+	happen /ˈhæpən/ -> happining
+- 在 British English 中，verb 以 **-l** 结尾，不管最后一个 syllables 是否有重音，都需要双写 consonant 然后再加 **-ing**
+	travel/travelling
+	cancel/cancelling
+- 如果单词以 **two consonants** 结尾，无需双写 consonaton，直接加 **-ing** 即可
+	help/helping
+	fuck/fucking
+- 如果单词以 **two vowels + consonant** 结尾，无需双写 consonaton，直接加 **-ing** 即可
+	need/needing
+	read/reading
+	explain/explaining
+- 如果单词以 **-y** 或者 **-w** 结尾，直接加 **-ing** 即可
+	play/playing
+	fly/flying
+	enjoy/enjoying
+	grow/growing
+
+## 0x04 When to Use
 
 在如下几种情况下，需要使用 present continous
-1. 在说出的时候，动作正在做还没有结束[Rule 01](#Rule%2001)
-2. 在说出的时候，动作正在这个过程中，强调整个过程[Rule 02](#Rule%2002)
-3. 当强调 periods arround now 时，例如 today/this week/this year[Rule 03](#Rule%2003)
-4. 当事物在当下正在发生改变时[Rule 03](#Rule%2003)
+1. 在说出的时候，动作正在做还没有结束[0x04a Rule 01](#0x04a%20Rule%2001)
+2. 在说出的时候，动作正在这个过程中，强调整个过程[0x04b Rule 02](#0x04b%20Rule%2002)
+3. 当强调 periods arround now 时，例如 today/this week/this year[0x04c Rule 03](#0x04c%20Rule%2003)
+4. 当事物在当下正在发生改变时[0x04d Rule 04](#0x04d%20Rule%2004)
 
-### Rule 01
+### 0x04a Rule 01
 
 看一个例子
 
@@ -86,7 +151,7 @@ doing something = is doing at the time of speaking
 4. How's your new job? Are you enjoying it?
 5. What's all the noise? What's going on?
 
-### Rule 02
+### 0x04b Rule 02
 
 看一个例子
 
@@ -106,7 +171,7 @@ doing something = in the middle of doing it
 1. Kate wants to work in Italy, so she's learning Itanlian.(but perhaps she isn't learning Itanlian at the time of speaking.)
 2. Some friends of mine are building their own house. Thy hope to finish it next summer.
 
-### Rule 03
+### 0x04c Rule 03
 
 当强调 periods arround now 时，例如 today/this week/this year.
 
@@ -114,7 +179,7 @@ doing something = in the middle of doing it
 1. You're working hard today.
 2. The company I work for isn't doing so well this year.
 
-### Rule 04
+### 0x04d Rule 04
 
 当事物在当下正在发生改变时
 
