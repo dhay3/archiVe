@@ -15,6 +15,7 @@ present 直译过来就是现在，continous 直译过来就是连续的。组�
 现在进行时语法如下，其中
 
 plain/plain-with-not/questions/questions-with-not/5W 中 do 均表示 action 非 particle(助词)
+plain/plain-with-not/questions/questions-with-not/5W 中 am/is/are 均表示 particle
 
 ### Plain
 

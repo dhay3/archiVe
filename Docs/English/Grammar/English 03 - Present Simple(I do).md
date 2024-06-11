@@ -108,7 +108,7 @@ What/Why/When/Where/Which do you/we/they/plural verb
 4. He doesn't do anything to help.
 5. I don't wanna go.
 
-### Rule 06
+### Rule 05
 
 通过 saying somthing do things
 

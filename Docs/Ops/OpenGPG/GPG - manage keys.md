@@ -1,4 +1,4 @@
-# GPG - manage keys
+ **Subkeys:** `D2EAB2617F9C5125` , `EB9C64066C8C2C24`# GPG - manage keys
 
 ref
 [https://www.gnupg.org/gph/en/manual/c14.html#AEN25](https://www.gnupg.org/gph/en/manual/c14.html#AEN25)[https://www.gnupg.org/gph/en/manual/c235.html](https://www.gnupg.org/gph/en/manual/c235.html)
