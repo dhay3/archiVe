@@ -1,10 +1,4 @@
-![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg) ![GitHub License](https://img.shields.io/github/license/dhay3/archive)
-
-[![Markdown](https://img.shields.io/badge/Markdown-%23000000.svg?logo=markdown&logoColor=white)](https://daringfireball.net/projects/markdown/)<br>
-[![Obsidian](https://img.shields.io/badge/Obsidian-%23483699.svg?&logo=obsidian&logoColor=white)](https://obsidian.md/)<br>
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)<br>
-[![gitmoji-%20%F0%9F%98%9C%20%F0%9F%98%8D-FFDD67.svg](https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg?style=flat-square)](https://gitmoji.dev)
-
+[![Markdown](https://img.shields.io/badge/Markdown-%23000000.svg?logo=markdown&logoColor=white)](https://daringfireball.net/projects/markdown/)[![Obsidian](https://img.shields.io/badge/Obsidian-%23483699.svg?&logo=obsidian&logoColor=white)](https://obsidian.md/)[![gitmoji-%20%F0%9F%98%9C%20%F0%9F%98%8D-FFDD67.svg](https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg?style=flat-square)](https://gitmoji.dev)[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 
 > [!tldr] Summary
 > 
