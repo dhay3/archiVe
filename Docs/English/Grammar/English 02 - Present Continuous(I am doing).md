@@ -96,26 +96,32 @@ she's being so silly
 - 如果单词以 **vowel + consonant** 结尾，一些时候(**sometimes**)需双写 consonant 然后再加 **-ing**
 	stop/stopping
 	rub/rubbing
+	
 - 如果单词有多个 syllables(音节)，且重音在最后一个音节，需要双写 consonant 然后再加 **-ing**
 	permit /pəˈmɪt/ -> permitting
 	begin /bɪˈɡɪn/ -> beginning
 	perfer /prɪˈfɜː/ -> perferring
 	regret /rɪˈɡrɛt/ -> regretting
+	
 - 如果单词有多个 syllables(音节)，但是最后一个音节没有重音，直接加 **-ing**
 	visit /ˈvɪzɪt/ -> visiting
 	develop /dɪˈvɛləp/ -> developping
 	remember /rɪˈmɛmbə/ -> remembering
 	happen /ˈhæpən/ -> happining
+	
 - 在 British English 中，verb 以 **-l** 结尾，不管最后一个 syllables 是否有重音，都需要双写 consonant 然后再加 **-ing**
 	travel/travelling
 	cancel/cancelling
+	
 - 如果单词以 **two consonants** 结尾，无需双写 consonaton，直接加 **-ing** 即可
 	help/helping
 	fuck/fucking
+	
 - 如果单词以 **two vowels + consonant** 结尾，无需双写 consonaton，直接加 **-ing** 即可
 	need/needing
 	read/reading
 	explain/explaining
+	
 - 如果单词以 **-y** 或者 **-w** 结尾，直接加 **-ing** 即可
 	play/playing
 	fly/flying
