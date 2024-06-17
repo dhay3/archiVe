@@ -81,7 +81,7 @@ eg
 
 present continuous 和 present simple 在日常使用中，需要注意如下特例
 
-### 0x02a Caution 01
+### 0x02a verbs aren't used in the present continuous
 
 一些 verbs 通常不会和 present continuous 一起使用，主要有
 - like/want/need/prefer
@@ -94,7 +94,7 @@ present continuous 和 present simple 在日常使用中，需要注意如下特
 2. Do you understand what I mean.
 3. Anna doesn't seem very happy right now.
 
-### 0x02b Caution 02
+### 0x02b think
 
 当 think 表示 believe 或者 have an opinion 时，不能和 present continous 一起使用
 1. I think Mary is Canadian, but I'm not suring
@@ -104,7 +104,7 @@ present continuous 和 present simple 在日常使用中，需要注意如下特
 1. I'm thinking about what happend. I ofen think about it.
 2. Nicky is thinking of giving up her job.
 
-### 0x02c Caution 03
+### 0x02c see/hear/smell/taste
 
 感官类动词通常不会和 present continuous 一起使用，主要有
 see/hear/smell/taste
@@ -119,7 +119,7 @@ looks 和 feel 可以使用 present continuous 或者是 present simple，两者
 如何和频率副词一起使用时，只能使用 present simple
 1. I usually feel tired in the morning.(not I'm usually feeling tired in the morning.等价)
 
-### 0x02d Caution 04
+### 0x02d am/is/are being
 
 可以使用 am/is/are being 表示 how somebody is behaving now. 强调 now
 1. I can't understand why he's being so selfish. He isn't usually like that.(being selfish = behaving selfishly now)

@@ -87,7 +87,7 @@ What/Why/When/Where/Which did you/we/they/plural verb
 
 ### 0x03c irregular verbs
 
-> 具体看 Appendix 1
+> 具体看 Appendix 1 1.4 past simple
 
 past simple 中有一些不规则的动词
 
@@ -97,6 +97,9 @@ past simple 中有一些不规则的动词
 - write/wrote
 
 ## 0x04 When to Use
+
+在如下几种情况下，需要使用 past simple
+1. 强调在过去某事已经完成，动作已经完成
 
 ### 0x04a complete action
 

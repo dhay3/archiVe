@@ -4,7 +4,7 @@ createTime: 2024-06-11 14:15
 draft: true
 ---
 
-# English 05 - Past Continuous(I was doing)
+# English 06 - Past Continuous(I was doing)
 
 ## 0x01 Overview
 
@@ -14,7 +14,7 @@ past 直译过来就是过去，continuous 直译过来就是持续的。组合�
 
 一般现在时语法如下，其中
  
-plain-with-not/questions/questions-with-not/5W 中 did 为 particle 后面需要跟 action
+plain/plain-with-not/questions/questions-with-not/5W 中 was/were 均表示 particle(助词)
 
 ### 0x02a Plain
 
@@ -63,6 +63,10 @@ What/Why/When/Where/Which were you/we/they/plural verb-ing
 同 [English 02 - Present Continuous(I am doing)](English%2002%20-%20Present%20Continuous(I%20am%20doing).md) 中相同部分
 
 ## 0x04 When to Use
+
+在如下几种情况下，需要使用 past continuous
+1. 强调在过去某一时间正在做某事，动作没有完成
+2. 在某事发生的过程中，发生某事
 
 ### 0x04a doing something at the certain time in past
 
