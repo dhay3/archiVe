@@ -60,73 +60,87 @@ What/Why/When/Where/Which are you/we/they/plural verb-ing
 
 > 具体查看 Appendix 6 Spelling
 
-一些 verb 在使用 **-ing** 需要变形
+使用 presetn continuous 时， verb 需要变形。大多数只需要在结尾使用 **-ing** 即可，但是有一些特殊情况
 
-### 0x03a Rule 01
+### 0x03a ie
 
 如果单词以 **-ie** 结尾，需要将 **-ie** 变为 **-y** 然后再加 **-ing**
 
 例如
-die/dying -> It's dying in the summer silently.
-lie/lying -> he's lying to you, don't trust that bullshit.
-tie/tying -> she's tying a knot.
+- die/dying -> It's dying in the summer silently.
+- lie/lying -> he's lying to you, don't trust that bullshit.
+- tie/tying -> she's tying a knot.
 
-### 0x03b Rule 02
+### 0x03b e
 
 如果单词以 **-e** 结尾，需要去 **-e** 然后再加 **-ing**
 
 例如
-hope/hoping -> I'm hoping the freedom will land in China someday.
-smile/smile -> he's smiling at me for no reason.
-dance/dancing -> The teens are dancing in the ball.
-confuse/confusing -> I'm confusing that why he wrote that letter.
-	
-如果单词以 **-ee** 结尾，就不需要去 **-e**，直接加 **-ing** 即可
+- hope/hoping -> I'm hoping the freedom will land in China someday.
+- smile/smile -> he's smiling at me for no reason.
+- dance/dancing -> The teens are dancing in the ball.
+- confuse/confusing -> I'm confusing that why he wrote that letter.
 
-例如
-see/seeing -> 通常不会和 present continuous 一起使用
-agree/agreeing -> I'm agreeing with you.
-
-除此外 **be** 也直接使用 **-ing** 
+但是除 **be** 外，直接使用 **-ing** 
 
 she's being so silly
 
-### 0x03c Rule 03
+### 0x03c ee
+
+如果单词以 **-ee** 结尾，就不需要去 **-e**，直接加 **-ing** 即可
+
+例如
+- see/seeing -> 通常不会和 present continuous 一起使用
+- agree/agreeing -> I'm agreeing with you.
+
+### 0x03d consonant
 
 - 如果单词以 **vowel + consonant** 结尾，一些时候(**sometimes**)需双写 consonant 然后再加 **-ing**
-	stop/stopping
-	rub/rubbing
-	
-- 如果单词有多个 syllables(音节)，且重音在最后一个音节，需要双写 consonant 然后再加 **-ing**
-	permit /pəˈmɪt/ -> permitting
-	begin /bɪˈɡɪn/ -> beginning
-	perfer /prɪˈfɜː/ -> perferring
-	regret /rɪˈɡrɛt/ -> regretting
-	
-- 如果单词有多个 syllables(音节)，但是最后一个音节没有重音，直接加 **-ing**
-	visit /ˈvɪzɪt/ -> visiting
-	develop /dɪˈvɛləp/ -> developping
-	remember /rɪˈmɛmbə/ -> remembering
-	happen /ˈhæpən/ -> happining
-	
-- 在 British English 中，verb 以 **-l** 结尾，不管最后一个 syllables 是否有重音，都需要双写 consonant 然后再加 **-ing**
-	travel/travelling
-	cancel/cancelling
-	
+	例如
+	- stop/stopping
+	- rub/rubbing
+
 - 如果单词以 **two consonants** 结尾，无需双写 consonaton，直接加 **-ing** 即可
-	help/helping
-	fuck/fucking
+	例如
+	- help/helping
+	- fuck/fucking
 	
 - 如果单词以 **two vowels + consonant** 结尾，无需双写 consonaton，直接加 **-ing** 即可
-	need/needing
-	read/reading
-	explain/explaining
+	例如
+	- need/needing
+	- read/reading
+	- explain/explaining
+
+### 0x03e syllables
+
+- 如果单词有多个 syllables(音节)，且重音在最后一个音节，需要双写 consonant 然后再加 **-ing**
+	例如
+	- permit /pəˈmɪt/ -> permitting
+	- begin /bɪˈɡɪn/ -> beginning
+	- perfer /prɪˈfɜː/ -> perferring
+	- regret /rɪˈɡrɛt/ -> regretting
 	
-- 如果单词以 **-y** 或者 **-w** 结尾，直接加 **-ing** 即可
-	play/playing
-	fly/flying
-	enjoy/enjoying
-	grow/growing
+- 如果单词有多个 syllables(音节)，但是最后一个音节没有重音，直接加 **-ing**
+	例如
+	- visit /ˈvɪzɪt/ -> visiting
+	- develop /dɪˈvɛləp/ -> developping
+	- remember /rɪˈmɛmbə/ -> remembering
+	- happen /ˈhæpən/ -> happining
+	
+- 在 British English 中，verb 以 **-l** 结尾，不管最后一个 syllables 是否有重音，都需要双写 consonant 然后再加 **-ing**
+	例如
+	- travel/travelling
+	- cancel/cancelling
+	
+### 0x03f y|w
+
+如果单词以 **-y** 或者 **-w** 结尾，直接加 **-ing** 即可
+
+例如
+- play/playing
+- buy/buying
+- enjoy/enjoying
+- grow/growing
 
 ## 0x04 When to Use
 
@@ -136,7 +150,7 @@ she's being so silly
 3. 当强调 periods arround now 时，例如 today/this week/this year[0x04c Rule 03](#0x04c%20Rule%2003)
 4. 当事物在当下正在发生改变时[0x04d Rule 04](#0x04d%20Rule%2004)
 
-### 0x04a Rule 01
+### 0x04a is doing at the time of speaking
 
 看一个例子
 
@@ -157,7 +171,7 @@ doing something = is doing at the time of speaking
 4. How's your new job? Are you enjoying it?
 5. What's all the noise? What's going on?
 
-### 0x04b Rule 02
+### 0x04b in the middle of doing it
 
 看一个例子
 
@@ -177,7 +191,7 @@ doing something = in the middle of doing it
 1. Kate wants to work in Italy, so she's learning Itanlian.(but perhaps she isn't learning Itanlian at the time of speaking.)
 2. Some friends of mine are building their own house. Thy hope to finish it next summer.
 
-### 0x04c Rule 03
+### 0x04c periods arround now
 
 当强调 periods arround now 时，例如 today/this week/this year.
 
@@ -185,7 +199,7 @@ doing something = in the middle of doing it
 1. You're working hard today.
 2. The company I work for isn't doing so well this year.
 
-### 0x04d Rule 04
+### 0x04d a change has started to happen
 
 当事物在当下正在发生改变时
 

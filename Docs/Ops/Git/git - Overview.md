@@ -89,9 +89,7 @@ Git 中会用到类似树结构来管理数据，每个子叶对应一个文件�
 **references**
 
 1. https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control
-
 2. https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F
-
 3. https://git-scm.com/docs/git
 4. https://git-scm.com/about/staging-area
 

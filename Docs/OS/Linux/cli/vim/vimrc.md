@@ -2,11 +2,11 @@
 
 ```
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Maintainer: 
+" Maintainer:
 "    Cyberpelican
 " Version:
-"    0.2
-" 
+"    0.3
+"
 " Common references
 " github.com/amix/vimrc/blob/master/vimrcs/basic.vim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -14,7 +14,7 @@
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General Options
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Common Global Options
 set nocompatible
 set encoding=utf-8
@@ -36,6 +36,7 @@ set tabstop=2
 set expandtab
 set shiftwidth=2
 set shiftround
+set paste
 
 " Search Options
 set hlsearch
@@ -141,7 +142,7 @@ call vundle#end()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
 " vimawesome.com
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plugin 'scrooloose/nerdtree'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'vim-airline/vim-airline'
@@ -154,7 +155,7 @@ Plugin 'junegunn/fzf'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => NERDTree
 " vimawesome.com/plugin/nerdtree-red
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " let g:NERDTreeDirArrowExpandable = '▸'
 " let g:NERDTreeDirArrowCollapsible = '▾'
 
@@ -166,7 +167,7 @@ let g:webDevIconsOS='Manjaro'
 " => Airline
 " vimawesome.com/plugin/vim-airline-superman
 " vimawesome.com/plugin/vim-airline-themes
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='violet'
 
@@ -174,7 +175,7 @@ let g:airline_theme='violet'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Syntastic
 " https://vimawesome.com/plugin/syntastic
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -205,7 +206,7 @@ let g:syntastic_perl_checkers = ['']
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Solarized
 " vimawesome.com/plugin/vim-colors-solarized-ours
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:solarized_termcolors = 256
 set background=dark
 colorscheme solarized

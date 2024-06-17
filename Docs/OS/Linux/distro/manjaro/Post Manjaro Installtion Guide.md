@@ -245,49 +245,51 @@ latte-dock
 
 ###  Function Software
 
-| Name                                                     | Description                                            |
-| -------------------------------------------------------- | ------------------------------------------------------ |
-| bind                                                     | 包含 dig                                               |
-| tmux                                                     | 终端多开工具                                           |
-| ranger                                                   | TUI 文件浏览                                           |
-| vim                                                      | TUI 编辑工具                                           |
-| vagrant                                                  | 虚拟机管理工具                                         |
-| git / git-lfs                                            | 版本控制工具                                           |
-| gh                                                       | github 管理工具                                        |
-| flatpak                                                  | 3 方下载工具                                           |
-| snapd                                                    | 3 方下载工具                                           |
-| nmap                                                     | 网络探测工具                                           |
-| docker                                                   | 镜像工具                                               |
-| manjaro-downgrade                                        | package 版本降级工具,不要使用 downgrade AUR 会有问题的 |
-| uxplay                                                   | apple airplay 投屏                                     |
-| strace                                                   |                                                        |
-| whois                                                    |                                                        |
-| binwalk                                                  |                                                        |
-| ddrescue                                                 |                                                        |
-| iat                                                      |                                                        |
-| john                                                     | 爆破工具                                               |
-| ocs-url                                                  | kde store 下载工具                                     |
-| gping                                                    | ping tui 工具                                          |
-| sysstat                                                  |                                                        |
-| manjaro-asian-input-support-fcitx5/fcitx5-chinese-addons | 中文输入法(支持双拼)                                   |
-| aria2                                                    | 下载工具                                               |
-| libinput-gestures                                        | 自定义 touchpad                                        |
-| ydotool                                                  | 类似 xdotool 但是支持 wayland 和 xorg                  |
-| tf-hack-nerd                                             | lsd 的字体                                             |
-| aur-auto-vote-git                                        | AUR 自动投票工具                                       |
-| metasploit                                               | payload 工具                                           |
-| hashcat                                                  |                                                        |
-| sherlock                                                 | 社工工具                                               |
-| wifiphisher                                              | WIFI 钓鱼工具                                          |
-| powershell                                               |                                                        |
-| ettercap                                                 |                                                        |
-| macchanger                                               | BIA 修改                                               |
-| steghide                                                 | 文件隐写                                               |
-| hydra                                                    | 爆破工具                                               |
-| beef-xss                                                 |                                                        |
-| sqlmap                                                   | SQL 注入工具                                           |
-| anacoda                                                  | Python 管理工具                                        |
-| ipython                                                  | 命令行 Python 工具                                                       |
+| Name                                                     | Description                                                                 |
+| -------------------------------------------------------- | --------------------------------------------------------------------------- |
+| bind                                                     | 包含 dig                                                                    |
+| tmux                                                     | 终端多开工具                                                                |
+| ranger                                                   | TUI 文件浏览                                                                |
+| vim                                                      | TUI 编辑工具                                                                |
+| vagrant                                                  | 虚拟机管理工具                                                              |
+| git / git-lfs                                            | 版本控制工具                                                                |
+| gh                                                       | github 管理工具                                                             |
+| flatpak                                                  | 3 方下载工具                                                                |
+| snapd                                                    | 3 方下载工具                                                                |
+| nmap                                                     | 网络探测工具                                                                |
+| docker                                                   | 镜像工具                                                                    |
+| manjaro-downgrade                                        | package 版本降级工具,不要使用 downgrade AUR 会有问题的                      |
+| uxplay                                                   | apple airplay 投屏                                                          |
+| strace                                                   |                                                                             |
+| whois                                                    |                                                                             |
+| binwalk                                                  |                                                                             |
+| ddrescue                                                 |                                                                             |
+| iat                                                      |                                                                             |
+| john                                                     | 爆破工具                                                                    |
+| ocs-url                                                  | kde store 下载工具                                                          |
+| gping                                                    | ping tui 工具                                                               |
+| sysstat                                                  |                                                                             |
+| manjaro-asian-input-support-fcitx5/fcitx5-chinese-addons | 中文输入法(支持双拼)                                                        |
+| aria2                                                    | 下载工具                                                                    |
+| libinput-gestures                                        | 自定义 touchpad                                                             |
+| ydotool                                                  | 类似 xdotool 但是支持 wayland 和 xorg(如果是 KDE 的功能，可以直接使用 dbus) |
+| tf-hack-nerd                                             | lsd 的字体                                                                  |
+| aur-auto-vote-git                                        | AUR 自动投票工具                                                            |
+| metasploit                                               | payload 工具                                                                |
+| hashcat                                                  |                                                                             |
+| sherlock                                                 | 社工工具                                                                    |
+| wifiphisher                                              | WIFI 钓鱼工具                                                               |
+| powershell                                               |                                                                             |
+| ettercap                                                 |                                                                             |
+| macchanger                                               | BIA 修改                                                                    |
+| steghide                                                 | 文件隐写                                                                    |
+| hydra                                                    | 爆破工具                                                                    |
+| beef-xss                                                 |                                                                             |
+| sqlmap                                                   | SQL 注入工具                                                                |
+| anacoda                                                  | Python 管理工具                                                             |
+| ipython                                                  | 命令行 Python 工具                                                          |
+| yt-dlp                                                   | 视频下载工具                                                                |
+| iotop                                                    | io 监测工具                                                                 | 
 
 **references**
 

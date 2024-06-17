@@ -62,35 +62,37 @@ What/Why/When/Where/Which do you/we/they/plural verb
 
 > 具体查看 Appendix 6 Spelling
 
-在 plain 中和 he/she/it/sigular 一起使用， verb 需要变形。大多数只需要在皆为使用 **-s** 即可，但是有一些特殊情况
+使用 present simple 时，在 plain 中和 he/she/it/sigular 一起使用， verb 需要变形。大多数只需要在结尾使用 **-s** 即可，但是有一些特殊情况
 
-### 0x03a Rule 01
+### 0x03a s|ss|sh|ch|x
 
 以 **-s/-ss/-sh/-ch/-x** 结尾的单词需要使用 **-es**
 
-miss -> misses -> Ellis misses her brother.
-wash -> washes -> she washes her shirt.
-match -> matches -> it matches the whole word.
-box -> boxes -> he boxes the pacakge.
+例如
+- miss/misses -> Ellis misses her brother.
+- wash/washes -> she washes her shirt.
+- match/matches -> it matches the whole word.
+- box/boxes -> he boxes the pacakge.
 
 除此外一些特殊的 verb 也需要使用 **-es**
 
-do -> does -> It does nothing but for fun.
-go -> goes -> Tom usually goes to school on him own.
+例如
+- do/does -> It does nothing but for fun.
+- go/goes -> Tom usually goes to school on him own.
 
-### 0x03b Rule 02
+### 0x03b y
 
-如果单词以 constant(vowel 取反) **-y** 结尾，需要去 **-y** 改为 **-ies**
+如果单词以 **constant(vowel 取反) + -y** 结尾，需要去 **-y** 改为 **-ies**
 
-apply -> applies
-try -> tries
-study -> studies 
+apply/applies
+try/tries
+study/studies 
 
-如果单词以 vowel(a,e,i,o,u) + **-y** 结尾，不需要去 **-y** 直接使用 **-s**
+如果单词以 **vowel(a,e,i,o,u) + -y** 结尾，不需要去 **-y** 直接使用 **-s**
 
-play -> plays
-enjoy -> enjoys
-buy -> buys
+play/plays
+enjoy/enjoys
+buy/buys
 
 ## 0x04 When to Use
 
@@ -101,7 +103,7 @@ buy -> buys
 4. 时间不是重点
 5. 通过 saying somthing do things
 
-### 0x04a Rule 01
+### 0x04a something happens all the time or repeatedly
 
 事物是普遍发生，过去是，现在是，未来也是。会持续较长的一段时间
 
@@ -111,7 +113,7 @@ buy -> buys
 3. My parents live in London. They have lived there for their all life.
 4. Joe isn't lazy. He works hard most of time.
 
-### 0x04b Rule 02
+### 0x04b how often we do things
 
 表示动作的频率，通常会在 often,always,usally,twice(表示 times) 出现时使用
 
@@ -123,14 +125,14 @@ buy -> buys
 5. Julie don't drink tea very often.
 6. Rober usually goes away two or three times a year.
 
-### 0x04c Rule 03
+### 0x04c something is true in general
 
 事物是真理
 
 例如
 1. The earth goes around the sun.
 
-### 0x04d Rule 04
+### 0x04d time is not the essential
 
 时间不是重点
 
@@ -141,7 +143,7 @@ buy -> buys
 4. He doesn't do anything to help.
 5. I don't wanna go.
 
-### 0x04e Rule 05
+### 0x04e do things by saying something
 
 通过 saying somthing do things
 

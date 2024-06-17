@@ -19,41 +19,41 @@ plain-with-not/questions/questions-with-not/5W 中 did 为 particle 后面需要
 ### 0x02a Plain
 
 ```
-I verb-ed
-he/she/it/singular verb-ed
-you/we/they/plural verb-ed
+I was verb-ing
+he/she/it/singular was verb-ing
+you/we/they/plural were verb-ing
 ```
 
 ### 0x02b Plain-with-not
 
 ```
-I didn't verb
-he/she/it/singular didn't verb
-you/we/they/plural didn't verb
+I wasn't verb-ing
+he/she/it/singular wasn't verb-ing
+you/we/they/plural weren't verb-ing
 ```
 
 ### 0x02c Questions
 
 ```
-Did I verb
-Did he/she/it/singular verb
-Did you/we/they/plural verb
+Was I verb-ing
+Was he/she/it/singular verb-ing
+Were you/we/they/plural verb-ing
 ```
 
 ### 0x02d Questions-with-not
 
 ```
-Didn't I verb
-Didn't he/she/it/singular verb
-Didn't you/we/they/plural verb
-   ```
+Wasn't I verb-ing
+Wasn't he/she/it/singular verb-ing
+Weren't you/we/they/plural verb-ing
+```
 
 ### 0x02e 5W
 
 ```
-What/Why/When/Where/Which did I verb
-What/Why/When/Where/Which did he/she/it/singular verb
-What/Why/When/Where/Which did you/we/they/plural verb
+What/Why/When/Where/Which was I verb-ing
+What/Why/When/Where/Which was he/she/it/singular verb-ing
+What/Why/When/Where/Which were you/we/they/plural verb-ing
 ```
 
 ## 0x03 verb-ing
@@ -64,8 +64,7 @@ What/Why/When/Where/Which did you/we/they/plural verb
 
 ## 0x04 When to Use
 
-
-### 0x04a Rule 01
+### 0x04a doing something at the certain time in past
 
 看一个例子
 
@@ -74,7 +73,7 @@ What/Why/When/Where/Which did you/we/they/plural verb
 >
 > they were playing = they were in the middle of playing, they had not finished
 
-在过去某一时间正在做某事
+强调在过去某一时间正在做某事，动作没有完成
 
 ![](https://github.com/dhay3/picx-images-hosting/raw/master/20240611/2024-06-11_17-29-41.1lbo9o8au2.webp)
 
@@ -84,6 +83,33 @@ before this time, but had not finished.
 ```
 
 例如
+1. This time last year I was living in Hong Kong.
+2. What were you doing at 10 o'clock last night.
+3. I waved to Helen, but she wasn't looking.
+
+### 0x04b something happened(past simple) in the middle of something else(past continuous)
+
+在某事发生的过程中，发生某事
+
+例如
+1. Matt phoned while we were having dinner.
+2. It was rainning when I got up.
+3. I saw you in the park yesterday. You were sitting on the grass and reading a book.
+4. I hurt my back while I was working in the garden.
+
+**But we use the past simple to say that one thing happened after another**
+
+如果表示某事发生后，又发生了某事，需要使用 past simple
+
+例如
+
+*When Karen arrived, we were having dinner.(=we had already started before she arrived)*
+
+在 Karen 来之前我们已经开吃了
+
+*When Karen arrived, we had dinner.(=Karen arrived, and then we had dinner)*
+
+在 Karen 来之后我们才开吃
 
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
