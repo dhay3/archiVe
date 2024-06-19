@@ -1,15 +1,15 @@
 # Directories
 **/*尚硅谷*/**
-venv/
-dist/
-eggs/
-spec/
-.idea/
-.eggs/
-.cache/
-.sync/
-.config/
-# .obsidian/
+venv/**
+dist/**
+eggs/**
+spec/**
+.idea/**
+.eggs/**
+.cache/**
+.sync/**
+.config/**
+# .obsidian/**
 
 # General Files
 **/*.ppt
