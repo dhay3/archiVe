@@ -1,4 +1,4 @@
-Docs/**.md linguist-detectable
+*.md linguist-detectable
 
 .obsidian/** linguist-documentation
 Images/** linguist-documentation
