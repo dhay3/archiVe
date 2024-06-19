@@ -192,104 +192,129 @@ latte-dock
 
 ### Basic GUI Software
 
-| Name                   | Description                                  |
-| ---------------------- | -------------------------------------------- |
-| virtualbox             | 虚拟机前端工具                               |
-| google-chrome          | 浏览器                                       |
-| timeshift              | 备份工具                                     |
-| typora                 | markdown 编辑器                              |
-| sublime-text-4         | 文本编辑器                                   |
-| telegram-desktop       | 聊天工具                                     |
-| gparted                | gparted GUI 工具(==卸载 partitionmanager==)  |
-| termius                | 终端连接工具                                 |
-| remmina                | aur/remmina-plugin-rdesktop (rdp)            |
-| wireshark-qt           | 抓包工具                                     |
-| yakuake                | 便捷终端工具                                 |
-| flameshot              | 截图工具                                     |
-| mailspring             | 邮箱工具                                     |
-| localsend-bin          | 传输工具（替代 kde connect），需要开启防火墙 |
-| fcitx-sogoupinyin      | 自然码双拼                                   |
-| idea                   | java 编辑器                                  |
-| pycharm                | python 编辑器                                |
-| goland                 | go 编辑器                                    |
-| datagrip               | 数据库 编辑器                                |
-| webstorm               | 前端 编辑器                                  |
-| clion                  | C 编辑器                                     |
-| visual-studio-code-bin | 万能编辑器                                   |
-| gimp                   | PS 工具                                      |
-| wechat-universal-bwrap | 微信                                         |
-| docker-desktop         | docker 桌面管理工具                          |
-| balena-etcher          | ISO 写盘工具                                 |
-| burpsuite              | 7 层报文抓包工具                             |
-| feedly                 | Rss 阅读工具                                 |
-| spotify                | 音乐                                         |
-| kdiskmark              | hard drive benchmark tool                    |
-| github-desktop         | github 桌面管理                              |
-| nessus                 | 漏洞扫描工具                                 |
-| kvantum                | KDE applications 美化工具                    |
-| Discord                | discord 社区                                 |
-| thunderbird            | 邮箱收发客户端                               |
-| WPS                    | office 套件                                  |
-| Pling Store            | KDE 插件商店                                 |
-| gestures               | libinput-gestures 图形化配置工具             |
-| DVWA                   | Web 漏洞测试                                 |
-| Obs                    | 录屏工具                                     |
-| kdenlive               | 视频编辑工具                                 |
-| qbitorrent             | bt 下载工具                                  |
-| geeqie                 | 图片浏览工具                                 |
-| octopi                 | 包管理工具                                   |
-| zenmap                 | 扫描工具                                     |
-| remote-desktop-manager | 远程管理工具                                 |
-| gestures               | lib-gestures GUI 工具                        |
-| vmware remote console  | vcenter 控制台                               | 
+| Name                     | Description                              |
+| ------------------------ | ---------------------------------------- |
+| virtualbox               | 虚拟机前端                               |
+| brave                    | 替代 chrome                              |
+| tor                      | 一键 tor                                 |
+| timeshift                | 备份                                     |
+| sweeper                  | cache 清理                               |
+| bitwarden                | keepass                                  |
+| qbittorrent              | bt 下载                                  |
+| obsidian                 | 知识库                                   |
+| typora                   | markdown 编辑器                          |
+| ventoy                   | usb 多启动盘                             |
+| balena-etcher            | iso 烧录                                 |
+| sublime-text-4           | 文本编辑器                               |
+| telegram-desktop         | 聊天                                     |
+| discord                  | 聊天                                     |
+| gparted                  | gparted GUI (==卸载 partitionmanager==)  |
+| gns3                     | 网络设备模拟器                           |
+| packettracer             | CISCO 模拟器                             | 
+| remote-desktop-manager   | 终端连接                                 |
+| wireshark-qt             | 抓包                                     |
+| yakuake                  | 便捷终端                                 |
+| flameshot                | 截图                                     |
+| vlc                      | 视频                                     |
+| spotify                  | 听歌                                     |
+| netease cloud music gtk4 | 听歌                                     |
+| thunderbird              | 邮箱                                     |
+| localsend-bin            | 传输（替代 kde connect），需要开启防火墙 |
+| idea                     | java 编辑器                              |
+| pycharm                  | python 编辑器                            |
+| goland                   | go 编辑器                                |
+| datagrip                 | 数据库 编辑器                            |
+| webstorm                 | 前端 编辑器                              |
+| clion                    | C 编辑器                                 |
+| visual-studio-code-bin   | 万能编辑器                               |
+| postman                  | api 调试                                 |
+| gimp                     | PS                                       |
+| wechat-universal-bwrap   | 微信                                     |
+| docker-desktop           | docker 桌面管理                          |
+| burpsuite                | 7 层报文抓包                             |
+| feedly                   | Rss 阅读                                 |
+| spotify                  | 音乐                                     |
+| kdiskmark                | hard drive benchmark tool                |
+| github-desktop           | github 桌面管理                          |
+| nessus                   | 漏洞扫描                                 |
+| johny                    | 爆破 GUI                                 |
+| kvantum                  | KDE applications 美化                    |
+| WPS                      | office 套件                              |
+| Pling Store              | KDE 插件商店                             |
+| gestures                 | libinput-gestures 图形化配置             |
+| DVWA                     | Web 漏洞测试                             |
+| Obs                      | 录屏                                     |
+| kdenlive                 | 视频编辑                                 |
+| kdiff3                   | diff GUI                                 |
+| geeqie                   | 图片浏览                                 |
+| octopi                   | 包管理                                   |
+| zenmap                   | 端口扫描                                 |
+| vmware remote console    | vcenter 控制台                           |
 
 ###  Function Software
 
 | Name                                                     | Description                                                                 |
 | -------------------------------------------------------- | --------------------------------------------------------------------------- |
+| zsh                                                      | Shell                                                                       |
+| tmux                                                     | 终端多开                                                                    |
+| zfs                                                      | filesystem                                                                  |
+| transhell                                                | TUI 翻译                                                                    |
 | bind                                                     | 包含 dig                                                                    |
-| tmux                                                     | 终端多开工具                                                                |
 | ranger                                                   | TUI 文件浏览                                                                |
-| vim                                                      | TUI 编辑工具                                                                |
-| vagrant                                                  | 虚拟机管理工具                                                              |
-| git / git-lfs                                            | 版本控制工具                                                                |
-| gh                                                       | github 管理工具                                                             |
-| flatpak                                                  | 3 方下载工具                                                                |
-| snapd                                                    | 3 方下载工具                                                                |
-| nmap                                                     | 网络探测工具                                                                |
-| docker                                                   | 镜像工具                                                                    |
+| vim                                                      | TUI 编辑                                                                    |
+| vagrant                                                  | 虚拟机管理                                                                  |
+| git / git-lfs                                            | 版本控制                                                                    |
+| gh                                                       | github 管理                                                                 |
+| flatpak                                                  | 3 方下载                                                                    |
+| snapd                                                    | 3 方下载                                                                    |
+| nmap                                                     | 网络探测                                                                    |
+| docker                                                   | 容器                                                                        |
 | manjaro-downgrade                                        | package 版本降级工具,不要使用 downgrade AUR 会有问题的                      |
 | uxplay                                                   | apple airplay 投屏                                                          |
-| strace                                                   |                                                                             |
-| whois                                                    |                                                                             |
-| binwalk                                                  |                                                                             |
-| ddrescue                                                 |                                                                             |
-| iat                                                      |                                                                             |
-| john                                                     | 爆破工具                                                                    |
-| ocs-url                                                  | kde store 下载工具                                                          |
-| gping                                                    | ping tui 工具                                                               |
-| sysstat                                                  |                                                                             |
+| strace                                                   | binary debug                                                                |
+| gdb                                                      | binary debug                                                                |
+| whois                                                    | 域名收集                                                                    |
+| binwalk                                                  | 逆向                                                                        |
+| ddrescue                                                 | 数据恢复                                                                    |
+| iat                                                      | iso 格式转换                                                                |
+| john                                                     | 爆破                                                                        |
+| hashcat                                                  | 爆破                                                                        |
+| ocs-url                                                  | kde store 下载                                                              |
+| gping                                                    | ping TUI                                                                    |
+| sysstat                                                  | 包含 sar                                                                    |
 | manjaro-asian-input-support-fcitx5/fcitx5-chinese-addons | 中文输入法(支持双拼)                                                        |
-| aria2                                                    | 下载工具                                                                    |
-| libinput-gestures                                        | 自定义 touchpad                                                             |
+| aria2                                                    | 下载替代 wget                                                               |
+| libinput-gestures                                        | 自定义 touchpad(不能覆盖 KDE built-in gestures)                             |
 | ydotool                                                  | 类似 xdotool 但是支持 wayland 和 xorg(如果是 KDE 的功能，可以直接使用 dbus) |
-| tf-hack-nerd                                             | lsd 的字体                                                                  |
-| aur-auto-vote-git                                        | AUR 自动投票工具                                                            |
-| metasploit                                               | payload 工具                                                                |
-| hashcat                                                  |                                                                             |
-| sherlock                                                 | 社工工具                                                                    |
-| wifiphisher                                              | WIFI 钓鱼工具                                                               |
-| powershell                                               |                                                                             |
-| ettercap                                                 |                                                                             |
+| nerd-fonts                                               | hack nerd font                                                              |
+| woff2                                                    | WPS 字体                                                                    |
+| aur-auto-vote-git                                        | AUR 自动投票                                                                |
+| metasploit                                               | payload 木马病毒                                                            |
+| sherlock                                                 | 社工                                                                        |
+| wifiphisher                                              | WIFI 钓鱼                                                                   |
+| setoolkits                                               | 社工 钓鱼                                                                   | 
+| ettercap                                                 | DNS 投毒/DOS                                                                |
 | macchanger                                               | BIA 修改                                                                    |
 | steghide                                                 | 文件隐写                                                                    |
+| aircrack-ng                                              | WIFI 破解                                                                   |
 | hydra                                                    | 爆破工具                                                                    |
-| beef-xss                                                 |                                                                             |
-| sqlmap                                                   | SQL 注入工具                                                                |
-| anacoda                                                  | Python 管理工具                                                             |
-| ipython                                                  | 命令行 Python 工具                                                          |
-| yt-dlp                                                   | 视频下载工具                                                                |
-| iotop                                                    | io 监测工具                                                                 | 
+| beef-xss                                                 | XSS                                                                         |
+| sqlmap                                                   | SQL 注入                                                                    |
+| anacoda                                                  | Python env 管理                                                             |
+| ipython                                                  | 命令行 Python                                                               |
+| yt-dlp                                                   | 视频下载                                                                    |
+| iotop                                                    | io 监测                                                                     |
+| btop                                                     | top 替代                                                                    |
+| duf                                                      | df 替代                                                                     |
+| procs                                                    | ps 替代                                                                     |
+| ripgrep                                                  | grep 替代                                                                   |
+| fd                                                       | find 替代                                                                   |
+| dust                                                     | du 替代                                                                     |
+| fastfectch                                               | neofectch 替代                                                              |
+| fuck                                                     | command 提示                                                                |
+| fzf                                                      | zsh 插件                                                                    |
+| pandoc                                                   | 格式转换                                                                    |
+
 
 **references**
 

@@ -8,14 +8,14 @@
         "type": "tabs",
         "children": [
           {
-            "id": "ec6984c0e1810670",
+            "id": "c07c2e31dd1bdc4f",
             "type": "leaf",
             "pinned": true,
             "state": {
               "type": "terminal:terminal",
               "state": {
                 "terminal:terminal": {
-                  "cwd": "/home/cc/GitWD/note/",
+                  "cwd": "/home/cc/GitWD/memos",
                   "focus": false,
                   "profile": {
                     "args": [],
@@ -36,7 +36,7 @@
                     "useWin32Conhost": true
                   },
                   "serial": {
-                    "columns": 120,
+                    "columns": 153,
                     "data": "",
                     "rows": 53
                   }
@@ -83,6 +83,19 @@
                 "source": true
               }
             }
+          },
+          {
+            "id": "87f1b0d009688f98",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Docs/OS/Linux/distro/manjaro/Post Manjaro Installtion Guide.md",
+                "mode": "source",
+                "backlinks": false,
+                "source": true
+              }
+            }
           }
         ]
       }
@@ -122,11 +135,12 @@
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
-    "width": 596.5
+    "width": 311.5
   },
   "right": {
     "id": "2a185da5487f8581",
@@ -215,12 +229,15 @@
       "command-palette:Open command palette": false,
       "workspaces:Manage workspace layouts": false,
       "table-editor-obsidian:Advanced Tables Toolbar": false,
-      "omnisearch:Omnisearch": false,
-      "terminal:Open terminal": false
+      "terminal:Open terminal": false,
+      "omnisearch:Omnisearch": false
     }
   },
-  "active": "ec6984c0e1810670",
+  "active": "c07c2e31dd1bdc4f",
   "lastOpenFiles": [
+    "Docs/OS/Linux/distro/manjaro/Post Manjaro Installtion Guide.md",
+    "Docs/Pentest/Kali/ettercap/Ettercap dos_attack.md",
+    "Docs/English/Grammar/English 07 - Present Perfect(I have done).md",
     "Templates/ObBoilerplate.md",
     "Templates/Untitled.md",
     "Docs/English/Grammar/English 08 - Present Perfect Continuous(I have been doing).md",
@@ -235,7 +252,6 @@
     "Docs/Development/Backend/Python/tutorial/4. More Control Flow Tools.md",
     "Docs/Development/Backend/Python/tutorial/2. Using the Python Interpreter.md",
     "Docs/English/Grammar/English 10 - for and since when...? and how long...?.md",
-    "Docs/English/Grammar/English 07 - Present Perfect(I have done).md",
     "Docs/English/Grammar/English 05 - Past Simple(I did).md",
     "Docs/English/Grammar/English 06 - Past Continuous(I was doing).md",
     "Docs/English/Grammar/English 09 - Present Perfect vs Present Perfect Continuous.md",
@@ -253,8 +269,6 @@
     "Images/_English/2024-06-17_11-21-56.png",
     "Docs/English/Grammar/English 01 - Overview.md",
     "Docs/Ops/Git/cli/git show.md",
-    "Docs/Ops/Git/cli/git fetch.md",
-    "Docs/Ops/Git/cli/git help.md",
     "Docs/Ops/Git/terms",
     "Docs/Ops/Git/new",
     "Docs/OS/Linux/cli/zsh",
