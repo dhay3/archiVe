@@ -70,34 +70,9 @@
                 "source": true
               }
             }
-          },
-          {
-            "id": "18fd9e1b660b90c0",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Templates/ObBoilerplate.md",
-                "mode": "source",
-                "backlinks": false,
-                "source": true
-              }
-            }
-          },
-          {
-            "id": "87f1b0d009688f98",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Docs/OS/Linux/distro/manjaro/Post Manjaro Installtion Guide.md",
-                "mode": "source",
-                "backlinks": false,
-                "source": true
-              }
-            }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -135,8 +110,7 @@
               }
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -155,7 +129,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "Docs/English/Grammar/English 08 - Present Perfect Continuous(I have been doing).md"
+              }
             }
           },
           {
@@ -164,6 +140,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Docs/English/Grammar/English 08 - Present Perfect Continuous(I have been doing).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -180,6 +157,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "Docs/English/Grammar/English 08 - Present Perfect Continuous(I have been doing).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -213,7 +191,9 @@
             "type": "leaf",
             "state": {
               "type": "file-properties",
-              "state": {}
+              "state": {
+                "file": "Docs/English/Grammar/English 08 - Present Perfect Continuous(I have been doing).md"
+              }
             }
           }
         ]
@@ -233,14 +213,14 @@
       "omnisearch:Omnisearch": false
     }
   },
-  "active": "c07c2e31dd1bdc4f",
+  "active": "f16f2d61b7b3810f",
   "lastOpenFiles": [
     "Docs/OS/Linux/distro/manjaro/Post Manjaro Installtion Guide.md",
+    "Docs/English/Grammar/English 08 - Present Perfect Continuous(I have been doing).md",
+    "Templates/ObBoilerplate.md",
     "Docs/Pentest/Kali/ettercap/Ettercap dos_attack.md",
     "Docs/English/Grammar/English 07 - Present Perfect(I have done).md",
-    "Templates/ObBoilerplate.md",
     "Templates/Untitled.md",
-    "Docs/English/Grammar/English 08 - Present Perfect Continuous(I have been doing).md",
     "Docs/OS/Linux/cli/touch.md",
     "Docs/English/Grammar/English 02 - Present Continuous(I am doing).md",
     "Docs/Development/IDE/JetBrain/idea/IDEA-DeBug.md",
