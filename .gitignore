@@ -1,5 +1,5 @@
 # Directories
-*尚硅谷*/
+**/*尚硅谷*/**
 venv/
 dist/
 eggs/
@@ -33,6 +33,7 @@ spec/
 *.rpm
 *.deb
 *.xmind
+*.mmap
 
 # Compiled Files
 *.clas
