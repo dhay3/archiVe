@@ -1,7 +1,8 @@
-*.md linguist-detectable
-Docs/Development/** -linguist-detectable
-Images/** linguist-documentation
-Appendix/** linguist-documentation
+Docs/*.md linguist-detectable
+
 .obsidian/** linguist-documentation
+Images/** linguist-documentation
+Attachment/** linguist-documentation
+
 *.pdf filter=lfs diff=lfs merge=lfs -text
 *.zip filter=lfs diff=lfs merge=lfs -text
