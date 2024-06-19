@@ -209,6 +209,7 @@
   "active": "ec6984c0e1810670",
   "lastOpenFiles": [
     "Docs/English/Grammar/English 08 - Present Perfect Continuous(I have been doing).md",
+    "Templates/ObBoilerplate.md",
     "Docs/OS/Linux/cli/touch.md",
     "Docs/English/Grammar/English 02 - Present Continuous(I am doing).md",
     "Docs/Development/IDE/JetBrain/idea/IDEA-DeBug.md",
@@ -241,7 +242,6 @@
     "Docs/Ops/Git/cli/git fetch.md",
     "Docs/Ops/Git/cli/git help.md",
     "Docs/Ops/Git/git -  Branches.md",
-    "Docs/Ops/Git/git - References.md",
     "Docs/Ops/Git/terms",
     "Docs/Ops/Git/new",
     "Docs/OS/Linux/cli/zsh",
