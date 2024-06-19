@@ -1,39 +1,55 @@
+# Directories
+*尚硅谷*/
+venv/
+dist/
+eggs/
+spec/
+.idea/
+.eggs/
+.cache/
+.sync/
+.config/
+# .obsidian/
+
+# General Files
 *.ppt
-#*.pdf
+*.pptx
+# *.pdf
+*.docs
+*.docx
+*.xls
+*.xlsx
+*.cvs
 *.txt
-*.
-# Compiled class file
-*.class
-
-# Log file
 *.log
-
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.zip.*
-*.tgz
-*.7z
-*.gz
-*.tar.gz
+*.log.*
 *.rar
+*.7z
+*.zip
+*.xz
+*.tar
+*.gz
+*.zst
+*.rpm
+*.deb
+*.xmind
 
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-
-# Test binary, built with `go test -c`
+# Compiled Files
+*.clas
+*.out
 *.test
 
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
-
-.sync/
-
-#.obsidian/
+# Executable Files
+*.AppImage
+*.exe
+*.exe~
+*.iso
+*.iso.*
+*.jar
+*.jar.*
+*.war
+*.war.*
+*.ddl
+*.dylib
+*.so
+*.so.*
