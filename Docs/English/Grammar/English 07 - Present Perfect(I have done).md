@@ -77,8 +77,9 @@ present perfect 中有一些不规则的动词
 1. 强调过去发生的事(动作已结束)对现在有影响或者有联系
 2. just,already,yet 出现的时候
 3. 过去发生的某事，是新消息
-4. 强调过去到现在这段时间
+4. 强调过去到现在这段时间，已经完成的事物
 5. 当某事是第几次发生的时候
+6. 和 been 一起使用表示状态时
 
 ### 0x04a the action in past has a connection with now
 
@@ -127,7 +128,7 @@ present perfect 通常会和 just,already,yet 一起使用
 > Here, Dave and Jane are talking about the places Jane
   has visited in her life, which is a period that continues until now
 
-强调过去到现在的某一段时间
+强调过去到现在这段时间，已经完成的事物
 ![](https://github.com/dhay3/picx-images-hosting/raw/master/20240617/2024-06-17_11-21-56.b8rbk8uz9.webp)
 
 例如
@@ -163,6 +164,12 @@ present perfect 通常会和 just,already,yet 一起使用
 1. It’s the first time he has driven a car.(=He hasn’t driven a car before. or =He has never driven a car before.)
 2. Sarah has lost her passport again. This is the second time this has happened. (not happens)
 3. Andy is phoning his girlfriend again. It’s the third time he’s phoned her this evening.
+
+### 0x04f have been
+
+和 been 一起使用表示状态时
+
+1. They have been married for 20 years.(这里 married 是形容词)
 
 ## 0x05 Cautions
 

@@ -36,7 +36,7 @@
                     "useWin32Conhost": true
                   },
                   "serial": {
-                    "columns": 141,
+                    "columns": 120,
                     "data": "",
                     "rows": 53
                   }
@@ -46,7 +46,7 @@
             }
           },
           {
-            "id": "e6cabf3ce6d03579",
+            "id": "e018a5a2552581dd",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -59,7 +59,7 @@
             }
           },
           {
-            "id": "fc6ca6cb42ddcaf1",
+            "id": "e701110fc8bee78f",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -72,12 +72,12 @@
             }
           },
           {
-            "id": "bdedc68fd9c346fc",
+            "id": "16d4303f62166bc9",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Docs/English/Grammar/English 09 - Present Perfect vs Present Perfect Continuous.md",
+                "file": "Docs/OS/Linux/cli/touch.md",
                 "mode": "source",
                 "backlinks": false,
                 "source": true
@@ -126,7 +126,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 417.5
+    "width": 596.5
   },
   "right": {
     "id": "2a185da5487f8581",
@@ -221,14 +221,33 @@
   },
   "active": "ec6984c0e1810670",
   "lastOpenFiles": [
-    "Docs/English/Grammar/English 09 - Present Perfect vs Present Perfect Continuous.md",
+    "Docs/OS/Linux/cli/touch.md",
+    "Docs/English/Grammar/English 02 - Present Continuous(I am doing).md",
+    "Docs/Development/IDE/JetBrain/idea/IDEA-DeBug.md",
+    "Docs/Development/IDE/JetBrain/idea",
+    "Docs/Development/IDE/JetBrain",
+    "Docs/Development/IDE/vscode",
+    "Docs/Development/IDE",
+    "Docs/Development/Backend/Python/tutorial/3. An Informal Introduction to Python.md",
+    "Docs/Development/Backend/Python/tutorial/4. More Control Flow Tools.md",
+    "Docs/Development/Backend/Python/tutorial/2. Using the Python Interpreter.md",
+    "Docs/English/Grammar/English 10 - for and since when...? and how long...?.md",
     "Docs/English/Grammar/English 08 - Present Perfect Continuous(I have been doing).md",
     "Docs/English/Grammar/English 07 - Present Perfect(I have done).md",
-    "Docs/English/Grammar/English 02 - Present Continuous(I am doing).md",
     "Docs/English/Grammar/English 05 - Past Simple(I did).md",
     "Docs/English/Grammar/English 06 - Past Continuous(I was doing).md",
-    "Docs/English/Grammar/English 04 - Present Continuous VS Present Simple.md",
+    "Docs/English/Grammar/English 09 - Present Perfect vs Present Perfect Continuous.md",
+    "Docs/English/Grammar/English 12 - Present Perfect VS Simple Past(I have done vs I did).md",
+    "Docs/English/Grammar/English 10 - How long have you (been).md",
     "Docs/English/Grammar/English 03 - Present Simple(I do).md",
+    "Docs/English/Grammar/English 04 - Present Continuous VS Present Simple.md",
+    "Docs/English/Grammar/English 68 - Countable and Uncountable.md",
+    "Images/_English/2024-06-17_17-19-18.png",
+    "Docs/English/Grammar/English-Grammar-in-Use.pdf",
+    "Docs/English/Grammar/生物医药安装运行手册.md",
+    "Docs/Ops/Nginx/new/Nginx 01 - Installation.md",
+    "Docs/Ops/Pandoc/pandoc.md",
+    "Docs/English/Grammar/生物医药安装运行手册.docx",
     "Images/_English/2024-06-17_11-21-56.png",
     "Docs/English/Grammar/English 01 - Overview.md",
     "Docs/Ops/Git/cli/git show.md",
@@ -236,37 +255,18 @@
     "Docs/Ops/Git/cli/git help.md",
     "Docs/Ops/Git/git -  Branches.md",
     "Docs/Ops/Git/git - References.md",
-    "Docs/Ops/Git/git -  Object.md",
-    "Docs/Ops/Git/git -  Gitrevisions.md",
-    "Docs/Ops/Git/git - Overview.md",
     "Docs/Ops/Git/terms",
-    "Docs/Ops/Git/cli/git rebase.md",
-    "Docs/Ops/Git/cli/git pull.md",
-    "Docs/Ops/Git/cli/git mergetool.md",
-    "Docs/Ops/Git/cli/git log.md",
-    "Docs/Ops/Git/cli/git merge.md",
-    "Docs/Ops/Git/git -  Credentials.md",
-    "Docs/Ops/Git/git.md",
     "Docs/Ops/Git/new",
-    "Docs/Ops/Git/Git LFS.md",
-    "Docs/Ops/Git/cli/git add.md",
     "Docs/OS/Linux/cli/zsh",
     "Docs/OS/Linux/cli/vim/Vim documentation options.html",
-    "Docs/OS/Linux/cli/vim/quickref.html",
-    "Docs/OS/Linux/cli/vim/usr_txt/Vim usr_01.txt_ About the manual.html",
     "Images/_English/2024-06-11_17-29-41.png",
     "Images/_English/2024-06-11_11-26-51.png",
     "Images/_English/2024-06-11_11-23-33.png",
-    "Images/_English",
-    "Images/New Folder",
-    "Docs/English/Grammar/English-Grammar-in-Use.pdf",
-    "License.md~",
     "Attachments/Pasted image 20240607090748.png",
     "Attachments/Pasted image 20240607090847.png",
     "Pasted image 20240530102358.png",
     "Untitled.canvas",
     "Pasted image 20240528173451.png",
-    "Pasted image 20240528173447.png",
-    "Engelbart.jpg"
+    "Pasted image 20240528173447.png"
   ]
 }

@@ -64,7 +64,7 @@ present perfect continuous 变形的动词规则和 [English 02 - Present Contin
 
 在如下几种情况下，需要使用 present perfect continuous
 1. 某事刚结束
-2. 某事从过去一直持续到现在
+2. 某事在过去一段时间内一直持续，或者从过去到现在一直在持续，通常会和 how long, for ... and since ... 一起使用
 3. 动作在过去一直重复
 
 ### 0x04a an activity that has recently stopped or just stopped
@@ -93,7 +93,7 @@ present perfect continuous 变形的动词规则和 [English 02 - Present Contin
 > How long has it been raining?
 > It’s been raining for two hours. (= It has been ...)
 
-某事从过去一直持续到现在，通常会和 how long, for ... and since ... 一起使用
+某事在过去一段时间内一直持续，或者从过去到现在一直在持续，通常会和 how long, for ... and since ... 一起使用
 
 例如
 1. How long have you been learning English? (= you’re still learning English)
