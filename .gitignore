@@ -12,45 +12,45 @@ spec/
 # .obsidian/
 
 # General Files
-*.ppt
-*.pptx
-# *.pdf
-*.docs
+**/*.ppt
+**/*.pptx
+# **/.pdf
+**/*.docs
 *.docx
-*.xls
-*.xlsx
-*.cvs
-*.txt
-*.log
-*.log.*
-*.rar
-*.7z
-*.zip
-*.xz
-*.tar
-*.gz
-*.zst
-*.rpm
-*.deb
-*.xmind
-*.mmap
+**/*.xls
+**/*.xlsx
+**/*.cvs
+**/*.txt
+**/*.log
+**/*.log.*
+**/*.rar
+**/*.7z
+**/*.zip
+**/*.xz
+**/*.tar
+**/*.gz
+**/*.zst
+**/*.rpm
+**/*.deb
+**/*.xmind
+**/*.mmap
 
 # Compiled Files
-*.clas
-*.out
-*.test
+**/*.clas
+**/*.out
+**/*.test
 
 # Executable Files
-*.AppImage
-*.exe
-*.exe~
-*.iso
-*.iso.*
-*.jar
-*.jar.*
-*.war
-*.war.*
-*.ddl
-*.dylib
-*.so
-*.so.*
+**/*.AppImage
+**/*.exe
+**/*.exe~
+**/*.iso
+**/*.iso.*
+**/*.jar
+**/*.jar.*
+**/*.war
+**/*.war.*
+**/*.ddl
+**/*.dylib
+**/*.so
+**/*.so.*
