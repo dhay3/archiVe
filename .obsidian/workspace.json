@@ -71,8 +71,7 @@
               }
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "vertical"
@@ -129,9 +128,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "Docs/English/Grammar/English 08 - Present Perfect Continuous(I have been doing).md"
-              }
+              "state": {}
             }
           },
           {
@@ -140,7 +137,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Docs/English/Grammar/English 08 - Present Perfect Continuous(I have been doing).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -157,7 +153,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Docs/English/Grammar/English 08 - Present Perfect Continuous(I have been doing).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -191,9 +186,7 @@
             "type": "leaf",
             "state": {
               "type": "file-properties",
-              "state": {
-                "file": "Docs/English/Grammar/English 08 - Present Perfect Continuous(I have been doing).md"
-              }
+              "state": {}
             }
           }
         ]
@@ -213,8 +206,9 @@
       "terminal:Open terminal": false
     }
   },
-  "active": "e701110fc8bee78f",
+  "active": "ec6984c0e1810670",
   "lastOpenFiles": [
+    "Docs/English/Grammar/English 08 - Present Perfect Continuous(I have been doing).md",
     "Docs/OS/Linux/cli/touch.md",
     "Docs/English/Grammar/English 02 - Present Continuous(I am doing).md",
     "Docs/Development/IDE/JetBrain/idea/IDEA-DeBug.md",
@@ -226,7 +220,6 @@
     "Docs/Development/Backend/Python/tutorial/4. More Control Flow Tools.md",
     "Docs/Development/Backend/Python/tutorial/2. Using the Python Interpreter.md",
     "Docs/English/Grammar/English 10 - for and since when...? and how long...?.md",
-    "Docs/English/Grammar/English 08 - Present Perfect Continuous(I have been doing).md",
     "Docs/English/Grammar/English 07 - Present Perfect(I have done).md",
     "Docs/English/Grammar/English 05 - Past Simple(I did).md",
     "Docs/English/Grammar/English 06 - Past Continuous(I was doing).md",

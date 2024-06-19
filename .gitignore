@@ -4,7 +4,7 @@ venv/
 dist/
 eggs/
 spec/
-**/.idea/
+.idea/
 .eggs/
 .cache/
 .sync/
@@ -12,13 +12,13 @@ spec/
 # .obsidian/
 
 # General Files
-**/*.ppt
-**/*.pptx
+*.ppt
+*.pptx
 # *.pdf
 *.docs
 *.docx
 *.xls
-**/*.xlsx
+*.xlsx
 *.cvs
 *.txt
 *.log
@@ -36,9 +36,9 @@ spec/
 *.mmap
 
 # Compiled Files
-**/*.clas
-**/*.out
-**/*.test
+*.clas
+*.out
+*.test
 
 # Executable Files
 *.AppImage
