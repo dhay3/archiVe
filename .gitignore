@@ -36,7 +36,7 @@ spec/
 *.mmap
 
 # Compiled Files
-*.clas
+*.class
 *.out
 *.test
 
