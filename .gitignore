@@ -12,13 +12,13 @@ spec/
 # .obsidian/
 
 # General Files
-*.ppt
-*.pptx
-# **/.pdf
+**/*.ppt
+**/*.pptx
+# *.pdf
 *.docs
 *.docx
 *.xls
-*.xlsx
+**/*.xlsx
 *.cvs
 *.txt
 *.log
