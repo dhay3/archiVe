@@ -1,6 +1,8 @@
 ---
-author: "0x00"
 createTime: {{date}} {{time}}
+tags: 
+ - "#hash1" 
+ - "#hash2"
 ---
 
 # {{title}}
