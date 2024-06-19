@@ -70,6 +70,19 @@
                 "source": true
               }
             }
+          },
+          {
+            "id": "9bd02694b082c4fe",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Templates/ObBoilerplate.md",
+                "mode": "source",
+                "backlinks": false,
+                "source": true
+              }
+            }
           }
         ]
       }
@@ -208,8 +221,8 @@
   },
   "active": "ec6984c0e1810670",
   "lastOpenFiles": [
-    "Docs/English/Grammar/English 08 - Present Perfect Continuous(I have been doing).md",
     "Templates/ObBoilerplate.md",
+    "Docs/English/Grammar/English 08 - Present Perfect Continuous(I have been doing).md",
     "Docs/OS/Linux/cli/touch.md",
     "Docs/English/Grammar/English 02 - Present Continuous(I am doing).md",
     "Docs/Development/IDE/JetBrain/idea/IDEA-DeBug.md",

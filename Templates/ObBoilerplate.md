@@ -1,7 +1,6 @@
 ---
 author: "0x00"
 createTime: {{date}} {{time}}
-draft: true
 ---
 
 # {{title}}
