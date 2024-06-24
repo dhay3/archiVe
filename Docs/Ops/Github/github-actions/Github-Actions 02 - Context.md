@@ -5,7 +5,7 @@ tags:
   - "#hash2"
 ---
 
-# Github-Actions 03 - Context
+# Github-Actions 02 - Context
 
 > Contexts are a way to access information about workflow runs, variables, runner environments, jobs, and steps. Each context is an object that contains properties, which can be strings or other objects.
 

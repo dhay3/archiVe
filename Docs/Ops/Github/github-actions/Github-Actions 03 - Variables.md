@@ -5,13 +5,13 @@ tags:
   - "#CICD"
 ---
 
-# Github-Actions 04 - Variables
+# Github-Actions 03 - Variables
 
 ## 0x01 Overview
 
 > [!warning]
 > github action variables 默认会以明文的方式暴露在 build ouput 中，如果需要存储 密码/密钥 之类的变量参考 [Using secrets in GitHub Actions - GitHub Docs](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions)
-> 也可以参考 [Github-Actions 05 - Sensitive Variables](Github-Actions%2005%20-%20Sensitive%20Variables.md)
+> 也可以参考 [Github-Actions 04 - Sensitive Variables](Github-Actions%2004%20-%20Sensitive%20Variables.md)
 
 github workflows 也可以通过 variables 存储变量，有 2 种形式的 variables
 
@@ -119,6 +119,7 @@ where2 -- no --> m4 --> e4
 有几点需要注意
 1. 如果在不同作用域中存在相同变量名的变量，会使用范围较小的
 2. 变量和大多编程语言中的一样，但是不能以 `GITHUB_` 开头，且变量在同作用域中必须唯一
+3. 可以直接通过 `${{var.varname}}` 来调用 configuration variables，也可以将 configuration variables 赋值给 environment variables，然后通过 `${{env.varname}}` 或者是 `${varname} | $varname` 来调用
 
 ## 0x04 Using context to access variables
 

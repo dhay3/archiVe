@@ -5,11 +5,11 @@ tags:
   - "#CICD"
 ---
 
-# Github-Actions 05 - Sensitive Variables
+# Github-Actions 04 - Sensitive Variables
 
 ## 0x01 Overview
 
-敏感的信息通过 [Github-Actions 04 - Variables](Github-Actions%2004%20-%20Variables.md) 中的方式存储，非常不合理也不安全
+敏感的信息通过 [Github-Actions 03 - Variables](Github-Actions%2003%20-%20Variables.md) 中的方式存储，非常不合理也不安全
 
 github 提供了 2 种安全的方法
 1. repository secrects[^1]

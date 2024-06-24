@@ -305,5 +305,24 @@
       ],
       "key": "0"
     }
+  ],
+  "workspace:close-window": [],
+  "workspace:close": [],
+  "workspace:split-vertical": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "W"
+    }
+  ],
+  "workspace:split-horizontal": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "W"
+    }
   ]
 }

@@ -46,9 +46,9 @@ events 就是 workflows' triggers，例如
 
 > An *action* is a custom application for the GitHub Actions platform that performs a complex but frequently repeated task.
 
-可以将 action 理解成函数，可以被重复在不同的 workflows ymal 中被调用
+可以将 action 理解成函数，可以被不同的 workflows ymal 中被调用
 
-action 商店[^3]
+action market[^3]
 
 ### 0x02e Runner
 
