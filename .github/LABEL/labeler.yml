@@ -1,22 +1,25 @@
 Root:
   - changed-files:
-      - any-glob-to-any-files: *
+      - any-glob-to-any-file: '*'
 Attachments:
   - changed-files:
-      - any-glob-to-any-files: Attachments/**
+      - any-glob-to-any-file: 'Attachments/**'
 Books:
   - changed-files:
-      - any-glob-to-any-files: Books/**
+      - any-glob-to-any-file: 'Books/**'
 Documentation:
   - changed-files:
-      - any-glob-to-any-files: Docs/**/*.md
+      - any-glob-to-any-file: 'Docs/**/*.md'
 Images:
   - changed-files:
-      - any-glob-to-any-files: Images/**
+      - any-glob-to-any-file: 'Images/**'
+Templates:
+  - changed-files:
+      - any-glob-to-any-file: 'Templates/**'
 Workflows:
   - changed-files:
-      - any-glob-to-any-files: .github/**
+      - any-glob-to-any-file: '.github/workflows/**'
 Source:
   - all:
       - changed-files:
-          - any-glob-to-any-files: src/**
+          - any-glob-to-any-file: 'src/**'
