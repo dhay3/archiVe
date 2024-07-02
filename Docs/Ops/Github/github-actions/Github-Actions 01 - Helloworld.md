@@ -26,6 +26,11 @@ workflows 需要以 yaml 的格式编写，并存储在 `.github/workflows/` 下
 
 > you can have one workflow to build and test pull requests, another workflow to deploy your application every time a release is created, and still another workflow that adds a label every time someone opens a new issue.
 
+> [!important] 
+> Workflows 会同时以 parallel 的方式运行
+> 如果想要按照顺序运行，需要使用 `jobs.<job_id>.needs` 或者直接使用 `steps`
+> 所以尽量避免过分解耦生成多个 workflow files，同一大类功能的都应该放在一个 workflow file 中
+
 ### 0x02b Events
 
 > An event is a specific activity in a repository that triggers a workflow run.
@@ -41,6 +46,9 @@ events 就是 workflows' triggers，例如
 一组 steps 或者是 shell scripts 的集合，有如下规则
 1. steps 按照从上到下的顺序执行
 2. steps 之间数据共享(因为在同一个 runner 上运行)
+
+> [!important]
+> jobs 默认以 parallel 的方式运行，如果想要按照顺序执行需要使用 `jobs.<job_id>.needs`
 
 ### 0x02d Actions
 

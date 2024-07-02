@@ -368,6 +368,8 @@ Then, anywhere in the document, you define your link label on a line by itself l
 
 <table><tr><td bgcolor=orange>背景色是：orange</td></tr></table>
 
+<p style="color:green">段落</p>
+
 **references**
 
 [typora]: https://support.typora.io/Markdown-Reference/

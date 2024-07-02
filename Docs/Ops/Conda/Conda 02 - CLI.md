@@ -12,7 +12,6 @@ tags:
 
 ## 0x01 Overview
 
-
 Conda 大体上的命令和 `pip` 类似，可以参考对比下表[^1]
 
 |Task|Conda package and environment manager command|Pip package manager command|Virtualenv environment manager command|
@@ -35,41 +34,143 @@ Conda 大体上的命令和 `pip` 类似，可以参考对比下表[^1]
 
 也可以参考 Cheatsheet[^2]
 
-## 0x02 Common Commands
+## 0x02 Environment relative
 
-- `conda create --name ENVNAME` 
+### 0x02a conda create
 
-	创建一个名为 ENVNAME 的 envrionment
-- `conda create --clone OLDENV -n NEWENV`
+用于创建 environment
 
-	克隆指定 environment 中所有的 packages 到新的名为 NEWENV 的 environment
-- `conda env list`
+```shell
+conda create -n <ENVNAME>
+```
 
-	显示所有的 environments
-- `conda activate ENVNAME`
+还可以在创建 environment 时安装指定的包
+```shell
+conda create -n <ENVNAME> python=3.10.0 selenium=4.22.0
+```
 
-	切换到指定的 environment
-	
-- `conda list -n ENVNAME`
+还可以使用 `--clone` 来克隆 environment
+```shell
+conda create -n <DSTENV> --clone <SRCENV>
+```
 
-	查看指定 environment 下安装的所有 packages,默认当前 environment
-- `conda search PKGNAME`
+### 0x02b conda activate
 
-	查看指定名字的包
-- `conda install -n ENVNAME PKGNAME=VER`
+用于 activate 指定 environment
+```shell
+conda acitvate <ENVNAME>
+```
 
-	安装指定版本的包到指定 environment，默认当前 environment
-- `conda uninstall -n ENVNAME PKGNAME`
+### 0x02c conda deactivate
 
-	卸载指定 environment 中指定的包，默认当前 environment
-- `conda rename -n OLDNAME NEWNAME`
+用于 deactivate 指定 environment 
+```shell
+conda deactivate <ENVNAME>
+```
+如果在一个 environment 中 activate 另外一个 environment，deactivate 不会直接退出到 shell
+如果想要直接退出到 shell，建议直接关掉当前 shell
 
-	重命名 environment
-- `conda remove -n ENVNAME --all`
+### 0x02d conda env
 
-	删除指定 environment
+`conda evn` 由多个 subcommands 组成
+1. config
+2. create
+3. export
+4. list
+5. remove
+6. update
 
+这里只挑几个介绍，具体看 conda 官方文档
 
+**create**
+
+根据 environment definition file(通常是一个 yaml 文件) 创建 environment
+```shell
+conda env create -f /path/to/environment.yml -n <ENVNAME>
+```
+如果在 environment definition file 定义了 `name: <ENVNAME>` 可以无需使用 `-n`
+
+**export**
+
+根据当前 environment 中安装的 package，导出 environment definition file
+```shell
+conda env export --file /path/to/environment.yml
+```
+
+**list**
+
+展示所有的 environments
+```shell
+conda env list
+```
+
+**remove**
+
+删除指定的 environment
+```shell
+conda env remove -n <ENVNAME>
+```
+
+**update**
+
+根据 environment difinition file 更新当前 environment
+```shell
+conda env update -f=/path/to/environment.yml
+```
+
+### 0x02e conda rename
+
+重命名 environment
+```shell
+conda rename -n OLDNAME NEWNAME
+```
+
+## 0x03 Package relative
+
+### 0x03a conda install
+
+从 channels 中安装包，可以安装多个包
+```
+conda install <mathspec[...]>
+```
+
+可以参考 [Conda 06 - Package Install](Conda%2006%20-%20Package%20Install.md)
+eg.
+```
+conda install "conda-forge::selenium=4.1.0" "defaults::lxml=5.2.1"
+conda install "selenium=4.1.0" "lxml=5.2.1"
+```
+
+### 0x03a conda search
+
+从 channels 中搜索包
+```
+conda search <matchspec>
+```
+
+可以参考 [Conda 05 - Package Search](Conda%2005%20-%20Package%20Search.md)
+eg.
+```
+conda search conda-forge::scapy
+conda search conda-forge::scapy=2.4.3
+conda search scapy=2.4.5
+```
+
+### 0x03c conda remove
+
+删除安装的包，可以删除多个包
+```
+conda remove <mathspec[...]>
+```
+
+eg.
+```
+conda remove xz zlib
+```
+
+### 0x03d conda update
+
+更新 package 到最新 compatible version
 
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*

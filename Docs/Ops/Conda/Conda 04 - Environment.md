@@ -12,6 +12,10 @@ tags:
 
 Environments 是 Conda 中的一个概念，是包和软件的集合。每个 Environment 之间互相隔离，Environments 中的包和软件只对当前 Environment 生效。类似于 Python 中的 venv 的概念，但不仅限于包
 
+## 0x02 Create environment
+
+
+
 ## PATH env
 
 在安装 Conda 后，Conda 会 hijack PATH env

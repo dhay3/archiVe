@@ -210,7 +210,7 @@ latte-dock
 | discord                  | 聊天                                     |
 | gparted                  | gparted GUI (==卸载 partitionmanager==)  |
 | gns3                     | 网络设备模拟器                           |
-| packettracer             | CISCO 模拟器                             | 
+| packettracer             | CISCO 模拟器                             |
 | remote-desktop-manager   | 终端连接                                 |
 | wireshark-qt             | 抓包                                     |
 | yakuake                  | 便捷终端                                 |
@@ -250,6 +250,8 @@ latte-dock
 | octopi                   | 包管理                                   |
 | zenmap                   | 端口扫描                                 |
 | vmware remote console    | vcenter 控制台                           |
+| eyedropper               | color picker                             |
+
 
 ###  Function Software
 

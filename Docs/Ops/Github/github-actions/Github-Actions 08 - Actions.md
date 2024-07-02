@@ -35,11 +35,29 @@ Github 提供了 [Action Market](https://github.com/marketplace?type=actions)，
 - [Checkout · Actions · GitHub Marketplace · GitHub](https://github.com/marketplace/actions/checkout)
 	切到指定的 branch，从而让 workflow 可以获取到 branch 中的内容(可以执行 branch 中的脚本)
 - [Upload a Build Artifact · Actions · GitHub Marketplace · GitHub](https://github.com/marketplace/actions/upload-a-build-artifact)
-	可以将 workflow 生成的 artifact 上传到 github(会提供一些下载链接)
+	可以将 workflow 生成的 artifact 上传到 github(会提供下载链接)
+- [Download a Build Artifact · Actions · GitHub Marketplace · GitHub](https://github.com/marketplace/actions/download-a-build-artifact)
+	可以将 workflow 生成的 artifact 下载下来
+- [Create Pull Request · Actions · GitHub Marketplace · GitHub](https://github.com/marketplace/actions/create-pull-request)
+	PRs
+- [Setup Python · Actions · GitHub Marketplace · GitHub](https://github.com/marketplace/actions/setup-python)
+	设置 Python 环境
+- [Setup Java JDK · Actions · GitHub Marketplace · GitHub](https://github.com/marketplace/actions/setup-java-jdk)
+	设置 JDK 环境
+- [GH Release · Actions · GitHub Marketplace · GitHub](https://github.com/marketplace/actions/gh-release)
+	生成 github releases
 
 #### Profile/UI
 - [Metrics embed · Actions · GitHub Marketplace · GitHub](https://github.com/marketplace/actions/metrics-embed)
 	可以写出漂亮的 readme
+- [generate-snake-game-from-github-contribution-grid · Actions · GitHub Marketplace · GitHub](https://github.com/marketplace/actions/generate-snake-game-from-github-contribution-grid)
+	生成 git commit pacman game
+
+#### Service
+- [Hugo setup · Actions · GitHub Marketplace · GitHub](https://github.com/marketplace/actions/hugo-setup)
+	Hugo
+- [Build and push Docker images · Actions · GitHub Marketplace · GitHub](https://github.com/marketplace/actions/build-and-push-docker-images)
+	构建/推送 docker image 
 
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*

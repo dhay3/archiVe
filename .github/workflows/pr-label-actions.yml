@@ -1,5 +1,5 @@
 # https://github.com/marketplace/actions/labeler
-name: github-LABEL-action
+name: github-label-action
 on:
   - pull_request_target
 jobs:
