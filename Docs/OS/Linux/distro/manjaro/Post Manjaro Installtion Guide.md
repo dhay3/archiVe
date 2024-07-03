@@ -192,68 +192,68 @@ latte-dock
 
 ### Basic GUI Software
 
-| Name                     | Description                              |
-| ------------------------ | ---------------------------------------- |
-| virtualbox               | 虚拟机前端                               |
-| brave                    | 替代 chrome                              |
-| tor                      | 一键 tor                                 |
-| timeshift                | 备份                                     |
-| sweeper                  | cache 清理                               |
-| bitwarden                | keepass                                  |
-| qbittorrent              | bt 下载                                  |
-| obsidian                 | 知识库                                   |
-| typora                   | markdown 编辑器                          |
-| ventoy                   | usb 多启动盘                             |
-| balena-etcher            | iso 烧录                                 |
-| sublime-text-4           | 文本编辑器                               |
-| telegram-desktop         | 聊天                                     |
-| discord                  | 聊天                                     |
-| gparted                  | gparted GUI (==卸载 partitionmanager==)  |
-| gns3                     | 网络设备模拟器                           |
-| packettracer             | CISCO 模拟器                             |
-| remote-desktop-manager   | 终端连接                                 |
-| wireshark-qt             | 抓包                                     |
-| yakuake                  | 便捷终端                                 |
-| flameshot                | 截图                                     |
-| vlc                      | 视频                                     |
-| spotify                  | 听歌                                     |
-| netease cloud music gtk4 | 听歌                                     |
-| thunderbird              | 邮箱                                     |
-| localsend-bin            | 传输（替代 kde connect），需要开启防火墙 |
-| idea                     | java 编辑器                              |
-| pycharm                  | python 编辑器                            |
-| goland                   | go 编辑器                                |
-| datagrip                 | 数据库 编辑器                            |
-| webstorm                 | 前端 编辑器                              |
-| clion                    | C 编辑器                                 |
-| visual-studio-code-bin   | 万能编辑器                               |
-| postman                  | api 调试                                 |
-| gimp                     | PS                                       |
-| wechat-universal-bwrap   | 微信                                     |
-| docker-desktop           | docker 桌面管理                          |
-| burpsuite                | 7 层报文抓包                             |
-| feedly                   | Rss 阅读                                 |
-| spotify                  | 音乐                                     |
-| kdiskmark                | hard drive benchmark tool                |
-| github-desktop           | github 桌面管理                          |
-| nessus                   | 漏洞扫描                                 |
-| johny                    | 爆破 GUI                                 |
-| kvantum                  | KDE applications 美化                    |
-| WPS                      | office 套件                              |
-| Pling Store              | KDE 插件商店                             |
-| gestures                 | libinput-gestures 图形化配置             |
-| DVWA                     | Web 漏洞测试                             |
-| Obs                      | 录屏                                     |
-| kdenlive                 | 视频编辑                                 |
-| kdiff3                   | diff GUI                                 |
-| geeqie                   | 图片浏览                                 |
-| octopi                   | 包管理                                   |
-| zenmap                   | 端口扫描                                 |
-| vmware remote console    | vcenter 控制台                           |
-| eyedropper               | color picker                             |
+| Name                     | Description                                    |
+| ------------------------ | ---------------------------------------------- |
+| virtualbox               | 虚拟机前端                                     |
+| brave                    | 替代 chrome                                    |
+| tor                      | 一键 tor                                       |
+| timeshift                | 备份                                           |
+| sweeper                  | cache 清理                                     |
+| bitwarden                | keepass                                        |
+| qbittorrent              | bt 下载                                        |
+| obsidian                 | 知识库                                         |
+| typora                   | markdown 编辑器                                |
+| ventoy                   | usb 多启动盘                                   |
+| balena-etcher            | iso 烧录                                       |
+| sublime-text-4           | 文本编辑器                                     |
+| telegram-desktop         | 聊天                                           |
+| discord                  | 聊天                                           |
+| gparted                  | gparted GUI (==卸载 partitionmanager==)        |
+| gns3                     | 网络设备模拟器                                 |
+| packettracer             | CISCO 模拟器                                   |
+| remote-desktop-manager   | 终端连接                                       |
+| wireshark-qt             | 抓包                                           |
+| yakuake                  | 便捷终端                                       |
+| flameshot                | 截图                                           |
+| vlc                      | 视频                                           |
+| spotify                  | 听歌                                           |
+| netease cloud music gtk4 | 听歌                                           |
+| thunderbird              | 邮箱                                           |
+| localsend-bin            | 传输（替代 kde connect），需要开启防火墙       | 
+| idea                     | java 编辑器                                    |
+| pycharm                  | python 编辑器                                  |
+| goland                   | go 编辑器                                      |
+| datagrip                 | 数据库 编辑器                                  |
+| webstorm                 | 前端 编辑器                                    |
+| clion                    | C 编辑器                                       |
+| visual-studio-code-bin   | 万能编辑器                                     |
+| postman                  | api 调试                                       |
+| gimp                     | PS                                             |
+| wechat-universal-bwrap   | 微信                                           |
+| docker-desktop           | docker 桌面管理                                |
+| burpsuite                | 7 层报文抓包                                   |
+| fluent-reader            | Rss 阅读(在 IOS 上可以配合 inoreader 一起使用) |
+| spotify                  | 音乐                                           |
+| kdiskmark                | hard drive benchmark tool                      |
+| github-desktop           | github 桌面管理                                |
+| nessus                   | 漏洞扫描                                       |
+| johny                    | 爆破 GUI                                       |
+| kvantum                  | KDE applications 美化                          |
+| WPS                      | office 套件                                    |
+| Pling Store              | KDE 插件商店                                   |
+| gestures                 | libinput-gestures 图形化配置                   |
+| DVWA                     | Web 漏洞测试                                   |
+| Obs                      | 录屏                                           |
+| kdenlive                 | 视频编辑                                       |
+| kdiff3                   | diff GUI                                       |
+| geeqie                   | 图片浏览                                       |
+| octopi                   | 包管理                                         |
+| zenmap                   | 端口扫描                                       |
+| vmware remote console    | vcenter 控制台                                 |
+| eyedropper               | color picker                                   |
 
 
-###  Function Software
+###  Functio
 
 | Name                                                     | Description                                                                 |
 | -------------------------------------------------------- | --------------------------------------------------------------------------- |

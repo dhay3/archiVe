@@ -53,3 +53,4 @@ source /path/to/venv/bin/activate
 **references**
 
 [^1]:[venv — Creation of virtual environments — Python 3.12.4 documentation](https://docs.python.org/3/library/venv.html)
+[^2]:[Python Virtual Environments: A Primer – Real Python](https://realpython.com/python-virtual-environments-a-primer/)
