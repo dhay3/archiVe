@@ -16,7 +16,9 @@ Environments 是 Conda 中的一个概念，是包和软件的集合。每个 En
 
 
 
-## PATH env
+## 
+
+## 0x02 PATH env
 
 在安装 Conda 后，Conda 会 hijack PATH env
 每当 activate 或者是 deactivate environment 时， PATH 的值都会变化。会优先使用 Conda 的 bin 目录

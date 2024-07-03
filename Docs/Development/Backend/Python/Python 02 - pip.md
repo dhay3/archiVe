@@ -124,9 +124,9 @@ pip 安装包的位置，根据是否有 venv 或者是 conda 虚拟环境而不
 
 可以使用 `pip show <package>` 来校验
 
-1. 如果没有在 venv 或者是 conda 虚拟环境中，地址为 `/usr/lib/python.x.y.z/site-packages`
-2. 如果在 venv 中，地址为 `/path/to/venv/lib/python.x.y.z/site-packages`
-3. 如果在 conda 中，地位为 `/path/to/env/lib/python.x.y.z/site-packages`
+1. 如果没有在 venv 或者是 conda 虚拟环境中，地址为 `/usr/lib/pythonx.y.z/site-packages`
+2. 如果在 venv 中，地址为 `/path/to/venv/lib/pythonx.y.z/site-packages`
+3. 如果在 conda 中，地位为 `/path/to/env/lib/pythonx.y.z/site-packages`
 
 ## 0x04 pip VS pip3
 

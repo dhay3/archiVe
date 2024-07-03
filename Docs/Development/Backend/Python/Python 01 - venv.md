@@ -11,14 +11,17 @@ tags:
 venv 是 Python 中一个用于创建 virtual environment 的 **built-in module**
 
 - Used to contain a specific Python interpreter and software libraries and binaries which are needed to support a project (library or application). These are by default isolated from software in other virtual environments and Python interpreters and libraries installed in the operating system.
-    
+	在 venv 中调用 `pip install` 安装的包只对当前 venv 中生效 
+
 - Contained in a directory, conventionally either named `venv` or `.venv` in the project directory, or under a container directory for lots of virtual environments, such as `~/.virtualenvs`.
     
 - Not checked into source control systems such as Git.
     
 - Considered as disposable – it should be simple to delete and recreate it from scratch. You don’t place any project code in the environment
-    
+	如果需要重新下载，直接将 venv 删除即可
+
 - Not considered as movable or copyable – you just recreate the same environment in the target location.
+	venv 不可移植，但是可以通过 `pip freeze` 将当前安装包列表输出
 
 ## 0x02 Usage
 
