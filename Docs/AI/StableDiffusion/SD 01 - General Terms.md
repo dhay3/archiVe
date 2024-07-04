@@ -2,7 +2,7 @@
 createTime: 2024-07-04 10:16
 tags:
   - "#hash1"
-  - "#hash2"
+  - ""
 ---
 
 # SD 01 - General Terms
@@ -59,7 +59,7 @@ hypernetwork 功能和逻辑类似 LoRA，但是效率上没有 LoRA 高
 
 > You must have noticed the noisy image gradually turns into a clear one. The **noise schedule** controls the **noise level at each sampling step**. The noise is highest at the first step and gradually reduces to zero at the last step.
 
-Smapling 是一个渐进的过程，而 Schedule 就是控制每一步 denoising 的调度器
+Smapling 是一个渐进的过程，而 Schedule 就是控制 sampler 每一步 denoising 的调度器
 
 
 ---

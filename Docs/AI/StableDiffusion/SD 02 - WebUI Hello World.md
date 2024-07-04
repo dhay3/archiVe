@@ -1,13 +1,10 @@
 ---
-title: Stable Diffusion WebUI
 createTime: 2024-05-30
-lastModifiedTime: 2024-05-30-14:05
-draft: true
 tags:
   - AI
   - Stable-Diffusion
 ---
-# Stable Diffusion WebUI
+# SD 02 - WebUI Hello World
 
 ## 0x01 Overview
 
@@ -152,64 +149,7 @@ eg
 export COMMANDLINE_ARGS="--xformers --medvram --no-half --no-half-vae --listen --tls-keyfile tls/stable-diffusion-webui.pem --tls-certfile tls/stable-diffusion-webui.crt --disable-tls-verify"
 ```
 
-## 0x04 Usage
-
-> [!NOTE]
-> Wiki[^6] 中提供了一组教学使用文档，如果有文字描述不清楚的可以看 SECourses's Playlist
-> hover on button 一般都会有提示
-
-按照 TAB 依次介绍
-
-### 0x04a txt2img/img2img
-
-txt2img/img2img 大体上参数差不多，区别就在于字面上的含义
-
-![](https://github.com/dhay3/picx-images-hosting/raw/master/20240704/2024-07-04_10-00-18.9dcu5q4pjp.webp)
-
-txt2txt/img2img 都有 2 个 prompt 框分别是
-- 想要生成图片的 prompt
-- 想要生成图片中不想要的效果的 prompt
-
-在 textarea 下面有 2 个 向下箭头的按钮 可以列出一组按照类别分类的 prompt
-
-#### txt2img
-
-Generation 面板是 txt2img 对 TODO
-
-##### Smapling method/Schedule type/Sampling steps
-
-> [!important]
-> 去噪的方法以及调度，要想弄明白具体是什么该怎么选可以看 [Stable Diffusion Samplers: A Comprehensive Guide - Stable Diffusion Art](https://stable-diffusion-art.com/samplers/)
-
-为了方便记忆总结如下
-
-**Old-School ODE smaplers**
-
-
-
-**Ancestral samplers**
-
-
-
-推荐使用 
-- Sampling method
-- Schedule
-- Smapling steps
-
-#### img2img
-
-
-### 0x04b Extras
-
-### 0x04c PNG Info
-
-### 0x04d Checkpoint Merger
-
-### 0x04e Train
-
-
-
-## 0x05 Directory
+## 0x04 Directory
 
 一些常用的目录如下
 - `stable-diffusion-webui/models/Stable-diffusion`
@@ -217,24 +157,11 @@ Generation 面板是 txt2img 对 TODO
 - `stable-diffusion-webui/models/Lora`
 	存放 Lora 的目录
 
-## 0x06 Custom
+## 0x05 Custom
 
-### 0x06a [Custom Images Filename Name and Subdirectory](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Custom-Images-Filename-Name-and-Subdirectory)
+### 0x05a [Custom Images Filename Name and Subdirectory](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Custom-Images-Filename-Name-and-Subdirectory)
 
-### 0x06b [Change model folder location](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Change-model-folder-location)
-
-
-## 0x07 [Civitai](https://civitai.com/)
-
-## 0x08 Extensions
-
-WebUI 提供了一组x04c 
-
-## 0x09 Prompt
-
-
-WebUI 支持使用 LLMA 生成 prompt，这里推荐使用 OLLMA 本地部署 0 成本
-
+### 0x05b [Change model folder location](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Change-model-folder-location)
 
 ---
 
@@ -247,4 +174,3 @@ WebUI 支持使用 LLMA 生成 prompt，这里推荐使用 OLLMA 本地部署 0 
 [^3]:[ImportError: cannot import name 'Undefined' from 'pydantic.fields' (D:\\a1111\\stable-diffusion-webui\\venv\\lib\\site-packages\\pydantic\\fields.py) · AUTOMATIC1111/stable-diffusion-webui · Discussion #15557 · GitHub](https://github.com/AUTOMATIC1111/stable-diffusion-webui/discussions/15557)
 [^4]:[\[Bug\]: Using TCMalloc: libtcmalloc.so.4 python3: /home/carlosm/anaconda3/bin/../lib/libstdc++.so.6: version \`GLIBCXX\_3.4.30' not found (required by /usr/lib/libtcmalloc.so.4) · Issue #10208 · AUTOMATIC1111/stable-diffusion-webui · GitHub](https://github.com/AUTOMATIC1111/stable-diffusion-webui/issues/10208)
 [^5]:[Command Line Arguments and Settings · AUTOMATIC1111/stable-diffusion-webui Wiki · GitHub](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Command-Line-Arguments-and-Settings)
-[^6]:[Guides and Tutorials · AUTOMATIC1111/stable-diffusion-webui Wiki · GitHub](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Guides-and-Tutorials)
