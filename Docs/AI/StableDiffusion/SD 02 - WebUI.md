@@ -1,51 +1,59 @@
 ---
 title: Stable Diffusion WebUI
-author: "0x00"
 createTime: 2024-05-30
 lastModifiedTime: 2024-05-30-14:05
 draft: true
 tags:
   - AI
-  - Stable Diffusion
+  - Stable-Diffusion
 ---
 # Stable Diffusion WebUI
 
+## 0x01 Overview
 
-## Installation
+[GitHub - AUTOMATIC1111/stable-diffusion-webui: Stable Diffusion web UI](https://github.com/AUTOMATIC1111/stable-diffusion-webui) 是一个 SD 高客制化开箱即用的 Web UI
 
-### stable-diffusion-webui[^1]
+在食用前先看 [SD 01 - General Terms](SD%2001%20-%20General%20Terms.md)，了解一些 Terms
 
-> [!NOTE]
-> ~~不推荐使用 conda 安装，defaults 以及 conda-forge channel 中缺少很多对应版本的包~~
-> 推荐直接使用 conda 安装！！！
+## 0x02 Installation[^1]
 
-安装环境
-
+Web UI 依赖 Python3.10，使用 Conda 创建一个 Python3.10 的虚拟环境
 ```shell
-sudo pacman -S git python3 -y
+conda create -n sd "python=3.10 git" -y
 ```
 
-克隆 repository 
+切换到新建的 environment
+```shell
+conda activate sd
+```
 
+克隆 web-ui repository 
 ```shell
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui && cd stable-diffusion-webui
 ```
 
-直接运行 `webui.sh` 启动 Web UI 即可
-无需使用 venv 单独创建一个环境，启动脚本 webui.sh 中已实现隔离，以及依赖的安装(具体看源码 `webui.sh`，`launch_utils.py`)
+可以直接运行 `lanuch.py`，将依赖安装到 conda virtual environment 中
+```shell
+python lanuch.py
+```
 
+也可以选择运行 `webui.sh`，会自动创建一个 venv (具体可以看 `webui.sh` 和 `launch_utils.py`)
 ```shell
 ./webui.sh
 ```
 
+这里更推荐通过 `webui.sh` 运行(==如果系统 python 在 3.11 之前，忘记切换 conda 环境就会在系统上安装 Web UI 的依赖==)
+
 默认会下载 [stable-diffusion-v1-5 model](https://huggingface.co/runwayml/stable-diffusion-v1-5)。如果已经有模型了，可以直接将模型放到 `models/stable-diffusion` 下，会跳过下载 sd1.5
 
-### xformers
+### 0x02a xformers[^2]
 
-> 可选
+xformers 是 meta 的一个 library，可以加快图片的生成以及 VRAM 的使用
 
-为了加速图片的生成，还可以安装 meta xformers[^2]
-这里使用 `conda`
+> [!important]
+> 在 20230123 之后不需要手动编译 xformers 了，可以直接通过 `--xformers` 实现自动安装
+> eg `./webui.sh --xformers`
+
 1. go to the webui directory
 2. `source ./venv/bin/activate` 如果使用来 Conda 来管理环境，可以跳过
 3. `cd repositories`
@@ -55,18 +63,177 @@ git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui && cd stable-d
 7. `pip install -r requirements.txt`
 8. `pip install -e .`
 
-### Trouble shooting
+### 0x02b Trouble shooting
 
-1. 运行 `webui.sh` 时出现 `version GLIBCXX_3.4.30 not found (required by /usr/lib/libtcmalloc_minimal.so.4)`
+1. 运行 `webui.sh` 时出现 `version GLIBCXX_3.4.30 not found (required by /usr/lib/libtcmalloc_minimal.so.4)`[^4]
 	建议直接将 `LD_PRELOAD=/lib/libstdc++.so.6` 写入到 `webui-user.sh`
 
 2. 运行 `webui.sh` 时出现 `cannot import name 'Undefined' from 'pydantic.fields'` [^3]
+	```
+	pip install "pydantic==1.10.15" "albumentations==1.4.3" 
+	```
+	可以直接将其写入到 `requirements.txt` 中
 
-## Usage
+## 0x03 ENV and Options[^5]
 
-### Low VRAM Video Cards
+### 0x03a ENV
 
-当 VRAM 小于 4GB 时，可以通过 `--lowram`，`--medram`，`--xformers` 来降低速度以换取空间
+> 这里只列出常用的 ENV，具体可以看 wiki
+
+Web UI 有如下几个常用的 ENV
+
+- COMMANDLINE_ARGS
+	Additional commandline arguments for the main program.
+- SD_WEBUI_LOG_LEVEL
+	Log verbosity. Supports any valid logging level supported by Python's built-in `logging` module. Defaults to `INFO` if not set.
+
+这些 ENV 都可以被写入到 `webui-user.sh` 中，当 Web UI 启动时会从该文件中读取
+
+eg
+```
+export COMMANDLINE_ARGS="--allow-code --xformers --skip-torch-cuda-test --no-half-vae --api --ckpt-dir A:\\stable-diffusion-checkpoints"
+```
+
+### 0x03b Options
+
+> 这里只列出常用的 Options，具体以及默认值可以看 wiki
+
+- `--ckpt-dir`
+	Path to directory with Stable Diffusion checkpoints.
+	推荐将所有的 checkpoints 放到 NAS 里
+- `--lora-dir`
+	Path to directory with Lora networks.
+- `--hypernetwork-dir`
+	hypernetwork directory.
+- `--allow-code`
+	Allow custom script execution from web UI.
+- `--share`
+	Use `share=True` for gradio and make the UI accessible through their site.
+	当前的服务可以从 gradio 公网访问
+- `--listen`
+	Launch gradio with 0.0.0.0 as server name, allowing to respond to network requests.
+	监听所有 interface，可以让 LAN 的机器访问到
+- `--port`
+	Launch gradio with given server port, you need root/admin rights for ports < 1024; defaults to 7860 if available.
+- `--gradio-auth`
+	Set gradio authentication like `username:password`; or comma-delimit multiple like `u1:p1,u2:p2,u3:p3`.
+- `--gradio-auth-path`
+	Set gradio authentication file path ex. `/path/to/auth/file` same auth format as `--gradio-auth`.
+- `--api`
+	Launch web UI with API.
+- `--api-auth`
+	Set authentication for API like `username:password`; or comma-delimit multiple like `u1:p1,u2:p2,u3:p3`.
+- `--tls-keyfile`
+	Partially enables TLS, requires `--tls-certfile` to fully function.
+	TLS 私钥，建议不要设置 passphase
+- `--tls-certfile`
+	Partially enables TLS, requires `--tls-keyfile` to fully function.
+	TLS 证书
+- `--disable-tls-verify`
+	When passed, enables the use of self-signed certificates.
+	允许使用自己签名证书,
+- `--xformers`
+	Enable xformers for cross attention layers.
+- `--no-half`
+	Do not switch the model to 16-bit floats.
+- `--no-half-vae `
+	Do not switch the VAE model to 16-bit floats.
+- `--medvram`
+	Enable Stable Diffusion model optimizations for sacrificing a some performance for low VRAM usage.
+	针对 low VRAM card 非常有用
+- `--lowvram`
+	Enable Stable Diffusion model optimizations for sacrificing a lot of speed for very low VRAM usage.
+	针对 low VRAM card 非常有用
+
+可以在 `webui-user.sh` 添加常用参数
+
+eg
+```
+export COMMANDLINE_ARGS="--xformers --medvram --no-half --no-half-vae --listen --tls-keyfile tls/stable-diffusion-webui.pem --tls-certfile tls/stable-diffusion-webui.crt --disable-tls-verify"
+```
+
+## 0x04 Usage
+
+> [!NOTE]
+> Wiki[^6] 中提供了一组教学使用文档，如果有文字描述不清楚的可以看 SECourses's Playlist
+> hover on button 一般都会有提示
+
+按照 TAB 依次介绍
+
+### 0x04a txt2img/img2img
+
+txt2img/img2img 大体上参数差不多，区别就在于字面上的含义
+
+![](https://github.com/dhay3/picx-images-hosting/raw/master/20240704/2024-07-04_10-00-18.9dcu5q4pjp.webp)
+
+txt2txt/img2img 都有 2 个 prompt 框分别是
+- 想要生成图片的 prompt
+- 想要生成图片中不想要的效果的 prompt
+
+在 textarea 下面有 2 个 向下箭头的按钮 可以列出一组按照类别分类的 prompt
+
+#### txt2img
+
+Generation 面板是 txt2img 对 TODO
+
+##### Smapling method/Schedule type/Sampling steps
+
+> [!important]
+> 去噪的方法以及调度，要想弄明白具体是什么该怎么选可以看 [Stable Diffusion Samplers: A Comprehensive Guide - Stable Diffusion Art](https://stable-diffusion-art.com/samplers/)
+
+为了方便记忆总结如下
+
+**Old-School ODE smaplers**
+
+
+
+**Ancestral samplers**
+
+
+
+推荐使用 
+- Sampling method
+- Schedule
+- Smapling steps
+
+#### img2img
+
+
+### 0x04b Extras
+
+### 0x04c PNG Info
+
+### 0x04d Checkpoint Merger
+
+### 0x04e Train
+
+
+
+## 0x05 Directory
+
+一些常用的目录如下
+- `stable-diffusion-webui/models/Stable-diffusion`
+	存放 SD 模型的目录
+- `stable-diffusion-webui/models/Lora`
+	存放 Lora 的目录
+
+## 0x06 Custom
+
+### 0x06a [Custom Images Filename Name and Subdirectory](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Custom-Images-Filename-Name-and-Subdirectory)
+
+### 0x06b [Change model folder location](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Change-model-folder-location)
+
+
+## 0x07 [Civitai](https://civitai.com/)
+
+## 0x08 Extensions
+
+WebUI 提供了一组x04c 
+
+## 0x09 Prompt
+
+
+WebUI 支持使用 LLMA 生成 prompt，这里推荐使用 OLLMA 本地部署 0 成本
 
 
 ---
@@ -75,6 +242,9 @@ git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui && cd stable-d
 
 **references**
 
-[^1]: [GitHub - AUTOMATIC1111/stable-diffusion-webui: Stable Diffusion web UI](https://github.com/AUTOMATIC1111/stable-diffusion-webui)
+[^1]: [Install and Run on NVidia GPUs · AUTOMATIC1111/stable-diffusion-webui Wiki · GitHub](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Install-and-Run-on-NVidia-GPUs)
 [^2]: [Xformers · AUTOMATIC1111/stable-diffusion-webui Wiki · GitHub](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Xformers)
 [^3]:[ImportError: cannot import name 'Undefined' from 'pydantic.fields' (D:\\a1111\\stable-diffusion-webui\\venv\\lib\\site-packages\\pydantic\\fields.py) · AUTOMATIC1111/stable-diffusion-webui · Discussion #15557 · GitHub](https://github.com/AUTOMATIC1111/stable-diffusion-webui/discussions/15557)
+[^4]:[\[Bug\]: Using TCMalloc: libtcmalloc.so.4 python3: /home/carlosm/anaconda3/bin/../lib/libstdc++.so.6: version \`GLIBCXX\_3.4.30' not found (required by /usr/lib/libtcmalloc.so.4) · Issue #10208 · AUTOMATIC1111/stable-diffusion-webui · GitHub](https://github.com/AUTOMATIC1111/stable-diffusion-webui/issues/10208)
+[^5]:[Command Line Arguments and Settings · AUTOMATIC1111/stable-diffusion-webui Wiki · GitHub](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Command-Line-Arguments-and-Settings)
+[^6]:[Guides and Tutorials · AUTOMATIC1111/stable-diffusion-webui Wiki · GitHub](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Guides-and-Tutorials)

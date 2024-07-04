@@ -1,4 +1,4 @@
-# Huggingface - Downloading models
+# Huggingface 01 - Downloading models
 
 可以直接使用 `git clone git@hf.co:<MODEL ID>` 下载 model，例如 `git clone git@hf.co:bigscience/bloom`
 

@@ -257,7 +257,10 @@ openssl req -new -key key.pem -out req.pem
 #生成一个新的 key.pem 私钥，使用 key.pem 生成 req.pem csr
 openssl req -newkey rsa:2048 -keyout key.pem -out req.pem
 
-#生成 self-signed root certificate(默认有效期 10 天)
+#生成 self-signed root certificate(默认有效期 10 天)，需要 passphrase
+openssl req -x509 -newkey rsa:2048 -keyout fd.pem -out fd.crt
+
+#生成 self-signed root certificate(默认有效期 10 天)，不需要 passphrase
 openssl req -x509 -newkey rsa:2048 -keyout fd.pem -out fd.crt
 
 #以非交互式生成 key.pem 私钥, fd.crt 私钥
