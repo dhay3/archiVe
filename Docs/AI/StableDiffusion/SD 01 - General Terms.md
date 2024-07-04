@@ -1,8 +1,8 @@
 ---
 createTime: 2024-07-04 10:16
 tags:
-  - "#hash1"
-  - ""
+     - AI
+     - Stable-Diffusion
 ---
 
 # SD 01 - General Terms

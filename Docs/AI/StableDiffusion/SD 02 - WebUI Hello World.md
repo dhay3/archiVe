@@ -45,7 +45,7 @@ python lanuch.py
 
 ### 0x02a xformers[^2]
 
-xformers 是 meta 的一个 library，可以加快图片的生成以及 VRAM 的使用
+xformers 是 meta 的一个 library，可以加快图片的生成以及降低 VRAM 的使用
 
 > [!important]
 > 在 20230123 之后不需要手动编译 xformers 了，可以直接通过 `--xformers` 实现自动安装
@@ -131,16 +131,17 @@ export COMMANDLINE_ARGS="--allow-code --xformers --skip-torch-cuda-test --no-hal
 	允许使用自己签名证书,
 - `--xformers`
 	Enable xformers for cross attention layers.
+	启用 xformers 时，必须指定
 - `--no-half`
 	Do not switch the model to 16-bit floats.
 - `--no-half-vae `
 	Do not switch the VAE model to 16-bit floats.
 - `--medvram`
 	Enable Stable Diffusion model optimizations for sacrificing a some performance for low VRAM usage.
-	针对 low VRAM card 非常有用
+	针对 low VRAM card 非常有用，牺牲性能以降低 VRAM 的使用
 - `--lowvram`
 	Enable Stable Diffusion model optimizations for sacrificing a lot of speed for very low VRAM usage.
-	针对 low VRAM card 非常有用
+	针对 low VRAM card 非常有用，牺牲性能以降低 VRAM 的使用
 
 可以在 `webui-user.sh` 添加常用参数
 
