@@ -26,6 +26,8 @@ pacman -Sy yay flatpak snapd
 
 ~~Rip Clash verge & Clash for Windows~~
 
+Use Clash verge rev instead
+
 > Steps to have working tun mode with appimage format.
 > cd "AppImage located folder"
 > ./clash-verge_*.AppImage ---appimage-extract.
@@ -218,8 +220,8 @@ latte-dock
 | vlc                      | 视频                                           |
 | spotify                  | 听歌                                           |
 | netease cloud music gtk4 | 听歌                                           |
-| thunderbird              | 邮箱                                           |
-| localsend-bin            | 传输（替代 kde connect），需要开启防火墙       | 
+| betterbird               | 邮箱                                           |
+| localsend-bin            | 传输（替代 kde connect），需要开启防火墙       |
 | idea                     | java 编辑器                                    |
 | pycharm                  | python 编辑器                                  |
 | goland                   | go 编辑器                                      |

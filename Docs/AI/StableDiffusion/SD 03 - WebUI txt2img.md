@@ -16,6 +16,11 @@ tags:
 
 txt2img 顾名思义就是文本转图片
 
+全文会以如下 prompt 作为示例
+```
+
+```
+
 ## 0x02 Main
 
 先看主面板即(txt2img)
@@ -24,26 +29,30 @@ txt2img 顾名思义就是文本转图片
 
 主要由 2 部分组成
 
-**Prompt part**
-- 第 1 个 textarea 用于填写想要生成图片的 prompt
-- 第 2 个 textarea 用于填写想要生成图片中不想要效果的 prompt
+### 0x02a Prompt
+- 第 1 个 textarea (positive prompt)用于填写想要生成图片的 prompt
+- 第 2 个 textarea (nagative prompt)用于填写想要生成图片中不想要效果的 prompt
 
-在 textarea 下面有 2 个 向下箭头的按钮 可以列出一组按照类别分类的 prompt
+在 2 个 textarea 下面分别有 1 个向下箭头的按钮，可以列出一组按照类别分类的 prompt
 
+![](https://github.com/dhay3/picx-images-hosting/raw/master/20240705/2024-07-05_10-08-28.5xaif2ki50.webp)
 
-**Generate**
+### 0x02b Generate
 
+生成图片的按钮，蓝色的笔刷可以自定义 style profile
 
 ## 0x03 Generation
 
-generation 面板是对图片的一些预设参数，对图片的生成起到至关重要的影响
+generation 面板用于对图片预设一些参数，在图片生成的过程中起到至关重要的影响
 
 ### 0x03a Sampling method/Schedule type/Sampling steps
 
 > [!important]
 > 去噪的方法以及调度，要想弄明白具体是什么该怎么选可以看 [Stable Diffusion Samplers: A Comprehensive Guide - Stable Diffusion Art](https://stable-diffusion-art.com/samplers/)
 
-Sampling method/Schedule type/Sampling steps 决定了图片的 quality(清晰度) 以及 convergence(收敛度，图片收敛度高则生成的图片类似，图片收敛度底则生成的图片差异大)
+Sampling method/Schedule type/Sampling steps 决定了图片的 quality(清晰度) 以及 convergence(收敛度，图片收敛度高则生成的图片类似，图片收敛度低则生成的图片差异大)
+
+
 
 为了方便记忆总结如下
 
@@ -94,7 +103,7 @@ Sampling method/Schedule type/Sampling steps 决定了图片的 quality(清晰�
 
 #### Sampling steps
 
-去噪的步长，步长约长 noise 越少，但是消耗的时间也越大，通常 15 以上几乎看不见噪点
+去噪的步长，步长越长 noise 越少，但是消耗的时间也越大，通常 15 以上几乎看不见噪点
 
 #### **How to choose samplers**[^7]
 
@@ -111,7 +120,25 @@ Sampling method/Schedule type/Sampling steps 决定了图片的 quality(清晰�
 > 3. Avoid using any ancestral samplers if you prefer stable, reproducible images.
 > 4. **Euler** and **Heun** are fine choices if you prefer something simple. Reduce the number of steps for Heun to save time.
 
-### 0x03c Hires.fix
+### 0x03b Hires.fix[^8]
+
+Hires.fix(High resolution fix) 用于 upscale resolution
+
+#### Upscaler
+
+类似 Sampler 是
+
+#### Upscale by
+
+resolution 乘以的倍数
+
+SD 默认会生成 512x512 resolution 的图片，如果设置为 2，就会生成 1024x1024 resolution 的图片
+
+#### Hires steps
+
+#### Denoising strength
+
+denoising 的强度
 
 ### Refiner
 
@@ -125,3 +152,5 @@ Sampling method/Schedule type/Sampling steps 决定了图片的 quality(清晰�
 
 [^6]:[Guides and Tutorials · AUTOMATIC1111/stable-diffusion-webui Wiki · GitHub](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Guides-and-Tutorials)
 [^7]:[Stable Diffusion Samplers: A Comprehensive Guide - Stable Diffusion Art](https://stable-diffusion-art.com/samplers/#Evaluating_samplers)
+[^8]:[How to use HiRes.fix to upscale your Stable Diffusion images in A1111 | by Shyanne Barretto | RenderNet.ai | Medium](https://medium.com/rendernet/using-hires-fix-to-upscale-your-stable-diffusion-images-8d8e2826593e)
+[^9]:[How to use AI image upscaler to improve details - Stable Diffusion Art](https://stable-diffusion-art.com/ai-upscaler/)

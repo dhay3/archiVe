@@ -18,7 +18,7 @@
 
 ## [CloudOps](Docs/CloudOps)
 - [Aliyun](Docs/CloudOps/Aliyun)
-- [AWS](Docs/CloudOps/AWS)
+- [AWS 01 - Free tier EC2](AWS%2001%20-%20Free%20tier%20EC2.md)
 - [Cloudflare](Docs/CloudOps/Cloudflare)
 - [Linode](Docs/CloudOps/Linode)
 
