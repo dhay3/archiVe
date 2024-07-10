@@ -5,6 +5,7 @@ dist/
 eggs/
 spec/
 .idea/
+.venv/
 .eggs/
 .cache/
 .sync/
