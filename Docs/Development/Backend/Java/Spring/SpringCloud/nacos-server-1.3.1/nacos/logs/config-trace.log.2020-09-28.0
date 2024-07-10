@@ -1,3 +1,0 @@
-2020-09-28 09:13:22,677|192.168.8.1|cloudalibaba-sentinel-service|DEFAULT_GROUP|null|null|1601255602589|192.168.8.1|persist|pub|-1|ebd67845a71748e7e79532d0b8afb58b
-2020-09-28 09:13:22,811|192.168.8.1|cloudalibaba-sentinel-service|DEFAULT_GROUP|null|null|1601255602589|192.168.8.1|notify|ok|219|192.168.8.1:8848
-2020-09-28 09:13:22,821|192.168.8.1|cloudalibaba-sentinel-service|DEFAULT_GROUP|null|null|1601255602589|192.168.8.1|dump|ok|232|233

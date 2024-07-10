@@ -10,6 +10,9 @@
 
 # TOC
 
+<!--toc start-->
+<!--toc end-->
+
 ## [AI](Docs/AI)
 - [StableDiffusion](Docs/AI/StableDiffusion)
 
