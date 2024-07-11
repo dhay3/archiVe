@@ -10,7 +10,7 @@ base_path = 'Docs/'
 readme_path = 'README.md'
 
 
-def transverse_toc(path: str, indent: str = '') -> str:
+def transverse_toc(path: str, level: int, flag: bool = True) -> str:
     toc = ''
     with os.scandir(path) as objs:
         sorted_sub_dirs = sorted([_.path for _ in objs
@@ -27,16 +27,18 @@ def transverse_toc(path: str, indent: str = '') -> str:
                 md_name = os.path.basename(sub_dir)
                 md_path = parse.quote(sub_dir)
                 md_link = f'[{md_name}]({md_path})'
-                md_list = f'{indent}- {md_link}'
-                toc += md_list + '\n'
-                toc += transverse_toc(sub_dir, indent + '\t')
+                if flag:
+                    md_toc = f'## {md_link}'
+                else:
+                    md_toc = f'{"  " * level}- {md_link}'
+                toc += md_toc + '\n' + transverse_toc(sub_dir, level + 1, False)
     return toc
 
 
 def toc2readme(path: str) -> None:
     import uuid
     seed = uuid.uuid4()
-    toc = transverse_toc(base_path)
+    toc = transverse_toc(base_path, 0)
     toc_content = f"""{toc_start_comment}
 <!--{seed}-->
 > [!note]
@@ -52,4 +54,5 @@ def toc2readme(path: str) -> None:
 
 
 if __name__ == '__main__':
+    # print(transverse_toc(base_path, 0))
     toc2readme(readme_path)

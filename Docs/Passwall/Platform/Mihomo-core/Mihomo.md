@@ -9,7 +9,7 @@ tags:
 
 ## 0x01 Overview
 
-Mihomo 是在 Clash 基础上二次开发的 
+Mihomo 是在 Clash 基础上二次开发的 Core，支持更多的配置规则 
 从原来的 Clash.meta 改名成 Clash.mihomo
 
 ---
@@ -19,3 +19,5 @@ Mihomo 是在 Clash 基础上二次开发的
 
 [GitHub - MetaCubeX/mihomo: A simple Python Pydantic model for Honkai: Star Rail parsed data from the Mihomo API.](https://github.com/MetaCubeX/mihomo)
 [虚空终端 Docs](https://wiki.metacubex.one/)
+
+[什么是 Clash? | Clash 知识库](https://clash.wiki/)
