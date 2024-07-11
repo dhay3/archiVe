@@ -10,11 +10,11 @@
 
 # TOC
 
-
-
-
 <!--toc start-->
-<!--5c7a8a46-8759-421e-b64b-dbdd91823dd8-->
+<!--83a44f8c-ca30-42be-bb1c-d71aaca533a5-->
+> [!note]
+> Created by Github Workflows
+
 - [AI](Docs/AI)
 	- [Huggingface](Docs/AI/Huggingface)
 	- [LLAM](Docs/AI/LLAM)
@@ -34,7 +34,7 @@
 	- [Aliyun](Docs/CloudOps/Aliyun)
 	- [Contabo](Docs/CloudOps/Contabo)
 	- [DigitalOcean](Docs/CloudOps/DigitalOcean)
-	- [Let's Encrypt](Docs/CloudOps/Let's Encrypt)
+	- [Let's Encrypt](Docs/CloudOps/Let%27s%20Encrypt)
 	- [RackNerd](Docs/CloudOps/RackNerd)
 - [CommonDigest](Docs/CommonDigest)
 	- [Hardware](Docs/CommonDigest/Hardware)
@@ -65,9 +65,9 @@
 				- [SpringBoot](Docs/Development/Backend/Java/Spring/SpringBoot)
 				- [SpringCloud](Docs/Development/Backend/Java/Spring/SpringCloud)
 					- [springcloud](Docs/Development/Backend/Java/Spring/SpringCloud/springcloud)
-						- [pom文件+脑图](Docs/Development/Backend/Java/Spring/SpringCloud/springcloud/pom文件+脑图)
-						- [图片](Docs/Development/Backend/Java/Spring/SpringCloud/springcloud/图片)
-					- [旧版](Docs/Development/Backend/Java/Spring/SpringCloud/旧版)
+						- [pom文件+脑图](Docs/Development/Backend/Java/Spring/SpringCloud/springcloud/pom%E6%96%87%E4%BB%B6%2B%E8%84%91%E5%9B%BE)
+						- [图片](Docs/Development/Backend/Java/Spring/SpringCloud/springcloud/%E5%9B%BE%E7%89%87)
+					- [旧版](Docs/Development/Backend/Java/Spring/SpringCloud/%E6%97%A7%E7%89%88)
 				- [SpringSecurity](Docs/Development/Backend/Java/Spring/SpringSecurity)
 			- [Trouble-Shooting](Docs/Development/Backend/Java/Trouble-Shooting)
 		- [Python](Docs/Development/Backend/Python)
@@ -130,9 +130,9 @@
 		- [config](Docs/OS/Linux/config)
 		- [cron](Docs/OS/Linux/cron)
 		- [custom](Docs/OS/Linux/custom)
-		- [disk&fs](Docs/OS/Linux/disk&fs)
-			- [LVM](Docs/OS/Linux/disk&fs/LVM)
-			- [new](Docs/OS/Linux/disk&fs/new)
+		- [disk&fs](Docs/OS/Linux/disk%26fs)
+			- [LVM](Docs/OS/Linux/disk%26fs/LVM)
+			- [new](Docs/OS/Linux/disk%26fs/new)
 		- [display](Docs/OS/Linux/display)
 			- [wayland](Docs/OS/Linux/display/wayland)
 			- [xorg](Docs/OS/Linux/display/xorg)
@@ -176,19 +176,19 @@
 	- [Powershell](Docs/OS/Powershell)
 	- [Shell](Docs/OS/Shell)
 		- [new](Docs/OS/Shell/new)
-			- [Bash Reference Manual](Docs/OS/Shell/new/Bash Reference Manual)
-		- [实战](Docs/OS/Shell/实战)
+			- [Bash Reference Manual](Docs/OS/Shell/new/Bash%20Reference%20Manual)
+		- [实战](Docs/OS/Shell/%E5%AE%9E%E6%88%98)
 	- [Windows](Docs/OS/Windows)
-		- [bat脚本](Docs/OS/Windows/bat脚本)
+		- [bat脚本](Docs/OS/Windows/bat%E8%84%9A%E6%9C%AC)
 		- [choco](Docs/OS/Windows/choco)
 - [Ops](Docs/Ops)
 	- [Apache2](Docs/Ops/Apache2)
 	- [Clonezilla](Docs/Ops/Clonezilla)
 	- [Conda](Docs/Ops/Conda)
 	- [Docker](Docs/Ops/Docker)
-		- [Docker CLI](Docs/Ops/Docker/Docker CLI)
-			- [复合组件](Docs/Ops/Docker/Docker CLI/复合组件)
-		- [Docker compose](Docs/Ops/Docker/Docker compose)
+		- [Docker CLI](Docs/Ops/Docker/Docker%20CLI)
+			- [复合组件](Docs/Ops/Docker/Docker%20CLI/%E5%A4%8D%E5%90%88%E7%BB%84%E4%BB%B6)
+		- [Docker compose](Docs/Ops/Docker/Docker%20compose)
 		- [new](Docs/Ops/Docker/new)
 	- [FreeDos](Docs/Ops/FreeDos)
 	- [FreeRDP](Docs/Ops/FreeRDP)
@@ -226,7 +226,7 @@
 	- [OpenVPN](Docs/Ops/OpenVPN)
 		- [new](Docs/Ops/OpenVPN/new)
 	- [Packer](Docs/Ops/Packer)
-		- [packer builder](Docs/Ops/Packer/packer builder)
+		- [packer builder](Docs/Ops/Packer/packer%20builder)
 	- [Pandoc](Docs/Ops/Pandoc)
 	- [Postman](Docs/Ops/Postman)
 	- [SaltStack](Docs/Ops/SaltStack)
@@ -234,7 +234,7 @@
 	- [Tmux](Docs/Ops/Tmux)
 	- [Vagrant](Docs/Ops/Vagrant)
 		- [new](Docs/Ops/Vagrant/new)
-			- [Vagrant CLI](Docs/Ops/Vagrant/new/Vagrant CLI)
+			- [Vagrant CLI](Docs/Ops/Vagrant/new/Vagrant%20CLI)
 	- [Ventoy](Docs/Ops/Ventoy)
 	- [Virtualization](Docs/Ops/Virtualization)
 		- [KVM](Docs/Ops/Virtualization/KVM)
@@ -285,7 +285,7 @@
 	- [Rsshub](Docs/Sundries/Rsshub)
 	- [Typora](Docs/Sundries/Typora)
 
-<!--toc end-->   
+<!--toc end-->     
 
 ![GitHub Created At](https://img.shields.io/github/created-at/dhay3/archive)
 ![commits](https://badgen.net/github/commits/dhay3/archive/master)
