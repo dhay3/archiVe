@@ -39,7 +39,8 @@ def toc2readme(path: str) -> None:
     toc_content = f"""
 {toc_start_comment}
 <!--{seed}-->
-Created by Github Workflows
+> [!note]
+> Created by Github Workflows
 {toc}
 {toc_end_comment} """
     with open(path, 'r') as f:
