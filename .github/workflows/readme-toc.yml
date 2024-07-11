@@ -1,0 +1,27 @@
+name: Create README TOC Automatically
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+jobs:
+  create_toc:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.7
+      - name: Setup Python environment
+        uses: actions/setup-python@v5.1.0
+        with:
+          python-version: 3.9
+      - name: Create TOC
+        run: "python toc.py"
+      - name: Commit Change and Push
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -am "🤖 create readme toc automatically"
+          git push
