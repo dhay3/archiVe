@@ -27,10 +27,7 @@ def transverse_toc(path: str, level: int, flag: bool = True) -> str:
                 md_name = os.path.basename(sub_dir)
                 md_path = parse.quote(sub_dir)
                 md_link = f'[{md_name}]({md_path})'
-                if flag:
-                    md_toc = f'## {md_link}'
-                else:
-                    md_toc = f'{"  " * level}- {md_link}'
+                md_toc = f'## {md_link}' if flag else f'{"  " * level}- {md_link}'
                 toc += md_toc + '\n' + transverse_toc(sub_dir, level + 1, False)
     return toc
 
