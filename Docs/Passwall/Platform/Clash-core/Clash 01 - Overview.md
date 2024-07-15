@@ -7,6 +7,9 @@ tags:
 
 # Clash 01 - Overview
 
+> [!important] 
+> Clash Core/Clash Premium Core 已经停止维护，推荐使用 Mihomo Core
+
 ## 0x01 Overview
 
 [Clash](https://clash.wiki/) 是一个 rule-based(在 V2ray 的基础上增加了更多的 rule) 跨平台的代理工具[^1]
@@ -17,7 +20,7 @@ tags:
 	开源的 core (Ps. 因为不可抗力以及从 github 上移除，如果想看源码可以使用该链接 [Index of /Dreamacro/clash](https://opensource.clash.wiki/Dreamacro/clash))
 	现阶段已停止维护
 - Clash Premium core
-	在 Clash 的基础上支持 TUN (通过虚拟的 TUN/TAP NIC 可以实现真正的 全局代理，这是 V2ray-core 不具备的)以及 Script 等等功能，这些功能代码闭源
+	在 Clash 的基础上支持 TUN (通过虚拟的 TUN/TAP NIC 可以实现真正的 全局代理，这是 V2ray-core 不具备的)以及 RuleSet，Script 等等功能，这些功能代码闭源
 	现阶段已停止维护
 
 根据平台不同，也有不同的 GUI client 供用户使用

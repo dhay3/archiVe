@@ -5,7 +5,7 @@ tags:
   - "#hash2"
 ---
 
-# Mihomo
+# Mihomo Core
 
 ## 0x01 Overview
 
