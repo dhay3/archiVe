@@ -11,7 +11,7 @@
 # TOC
 
 <!--toc start-->
-<!--e6c72b65-afa3-4f51-a61e-f877111ad21b-->
+<!--61158997-7ce5-4f6b-ae9d-3fd9c913e43c-->
 > [!note]
 > Created by Github Workflows
 
@@ -235,7 +235,6 @@
   - [Platform](Docs/Passwall/Platform)
     - [Clash-core](Docs/Passwall/Platform/Clash-core)
     - [Hysteria](Docs/Passwall/Platform/Hysteria)
-    - [Mihomo-core](Docs/Passwall/Platform/Mihomo-core)
     - [V2ray-core](Docs/Passwall/Platform/V2ray-core)
     - [Xray-core](Docs/Passwall/Platform/Xray-core)
   - [Protocol](Docs/Passwall/Protocol)
@@ -266,7 +265,7 @@
   - [Rsshub](Docs/Sundries/Rsshub)
   - [Typora](Docs/Sundries/Typora)
 
-<!--toc end-->         
+<!--toc end-->          
 
 ![GitHub Created At](https://img.shields.io/github/created-at/dhay3/archive)
 ![commits](https://badgen.net/github/commits/dhay3/archive/master)
