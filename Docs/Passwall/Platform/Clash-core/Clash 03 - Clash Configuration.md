@@ -88,8 +88,6 @@ Proxies 向指定 URL 发送 HEAD 请求，自动选择 RTT 最小的 Proxy，�
    	  interval: 86400
 ```
 
-
-
 #### fall-back
 
 Proxies 向指定 URL 发送 HEAD 请求，自动选择第一格可用的 Proxy(返回报文的)，一般用作故障转移
@@ -257,6 +255,9 @@ GEOIP,CN,policy
 
 > 如果目标为域名，Clash 会先使用内置的 DNS 将域名解析
 > 可以使用 no-resolve 跳过 DNS 解析
+> 
+> **IPv6 地址必须在 square bracket 中**
+> 例如 \[aaaa::a8aa:ff:fe09:57d8\]
 
 ARGUMENT: IPv4 CIDR
 
@@ -334,8 +335,6 @@ PROCESS-PATH,/usr/local/bin/nc,DIRECT
 
 #### RULE-SET
 
-> 只在 Premium core 中支持该规则
-
 从外部加载规则集，让配置更加简洁
 
 支持 3 种加载方式
@@ -364,16 +363,16 @@ PROCESS-PATH,/usr/local/bin/nc,DIRECT
 
 - ipcidr
 	```yaml
-   	rule-providers:
-   	  local:
-   	    behavior: "ipcidr" # domain, ipcidr or classical (仅限 Clash Premium 内核)
-   	    type: http
-   	    url: "url"
-   	    # format: 'yaml' # or 'text'
-   	    interval: 3600
-   	    path: ./local.yaml
-   	rules:
-   	  - RULE-SET,local,REJECT
+	rule-providers:
+		local:
+			behavior: "ipcidr" # domain, ipcidr or classical (仅限 Clash Premium 内核)
+			type: http
+			url: "url"
+			# format: 'yaml' # or 'text'
+			interval: 3600
+			path: ./local.yaml
+	rules:
+		- RULE-SET,local,REJECT
    	```
 	local.yaml 如下
 	```yaml
@@ -385,16 +384,25 @@ PROCESS-PATH,/usr/local/bin/nc,DIRECT
 - classical
 	只在 Premium core 中支持
 	```yaml
-   	rule-providers:
-   	  google:
-   	    behavior: "classical" # domain, ipcidr or classical (仅限 Clash Premium 内核)
-   	    type: http
-   	    url: "url"
-   	    # format: 'yaml' # or 'text'
-   	    interval: 3600
-   	    path: ./google.yaml
-   	rules:
-   	  - RULE-SET,local,REJECT
+	rule-providers:
+		google:
+			behavior: "classical" # domain, ipcidr or classical (仅限 Clash Premium 内核)
+				​￼rule-providers:
+			   		​￼google:
+			   			behavior: "classical" # domain, ipcidr or classical (仅限 Clash Premium 内核)
+			   			type: http
+			   			url: "url"
+			   			# format: 'yaml' # or 'text'
+			   			interval: 3600
+			   			path: ./google.yaml
+			   	​￼rules:
+			   		- RULE-SET,local,REJECTtype: http
+			url: "url"
+			# format: 'yaml' # or 'text'
+			interval: 3600
+			path: ./google.yaml
+	rules:
+		- RULE-SET,local,REJECT
    	```
 	google.yaml 如下
 	```yaml
@@ -442,7 +450,68 @@ MATCH,policy
 1. Proxy Group
 	将匹配的报文路由到指定的 Proxy Group
 
-## 0x05 DNS
+## 0x05 DNS[^5]
+
+### 0x05a DNS wildcard
+
+> [!NOTE]
+> 包含 `*`，`.`，`+` 的域名必须使用 single quote 包裹
+> 同时静态域名优先级大于含有 wildcard
+> 例如 $foo.example.com > *.example.com > .example.com > +.example.com$
+
+支持 3 种 wildcard
+
+#### asterisk(`*`)
+
+匹配单级域名
+
+| 表达式             | 匹配                            | 不匹配                     |
+| ------------------ | ------------------------------- | -------------------------- |
+| `*.google.com`     | `www.google.com`                | `google.com`               |
+| `*.bar.google.com` | `foo.bar.google.com`            | `bar.google.com`           |
+| `*.*.google.com`   | `thoughtful.sandbox.google.com` | `one.two.three.google.com` |
+
+#### peroid(`.`)
+
+匹配多级域名
+
+| 表达式        | 匹配                            | 不匹配       |
+| ------------- | ------------------------------- | ------------ |
+| `.google.com` | `www.google.com`                | `google.com` |
+| `.google.com` | `thoughtful.sandbox.google.com` | `google.com` |
+| `.google.com` | `one.two.three.google.com`      | `google.com` |
+
+#### plus(`+`)
+
+类似于 DOMAIN-SUFFIX rule
+
+匹配多级域名，最全
+
+| 表达式         | 匹配                            |
+| -------------- | ------------------------------- |
+| `+.google.com` | `google.com`                    |
+| `+.google.com` | `www.google.com`                |
+| `+.google.com` | `thoughtful.sandbox.google.com` |
+| `+.google.com` | `one.two.three.google.com`      |
+
+### 0x05b fake-ip
+
+> [!important] 
+> Clash 和其他 Client 不一样的点在于使用了 fake-ip
+> 本地不会直接解析 DNS，会转由 Proxy 来解析 DNS，在一定程度上可以防止 GFW DNS pollution
+> 
+> 具体可以看 RFC3089 DNS Name Resolving Procedure[^6]
+
+```yaml
+dns:
+  # enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16 # Fake IP 地址池 CIDR
+  # 此列表中的主机名将不会使用 Fake IP 解析
+  # 即, 对这些域名的请求将始终使用其真实 IP 地址进行响应
+  fake-ip-filter:
+     - '*.lan'
+     - localhost.ptlogin2.qq.com
+```
 
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
@@ -453,3 +522,5 @@ MATCH,policy
 [^2]:[Outbound 出站 | Clash 知识库](https://clash.wiki/configuration/outbound.html)
 [^3]:[Rules 规则 | Clash 知识库](https://clash.wiki/configuration/rules.html)
 [^4]:[eTLD - MDN Web Docs Glossary: Definitions of Web-related terms | MDN](https://developer.mozilla.org/en-US/docs/Glossary/eTLD)
+[^5]:[Clash DNS | Clash 知识库](https://clash.wiki/configuration/dns.html)
+[^6]:[RFC 3089:  A SOCKS-based IPv6/IPv4 Gateway Mechanism](https://www.rfc-editor.org/rfc/rfc3089)

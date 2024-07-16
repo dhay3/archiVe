@@ -8,7 +8,7 @@ tags:
 # Clash 01 - Overview
 
 > [!important] 
-> Clash Core/Clash Premium Core 已经停止维护，推荐使用 Mihomo Core
+> Clash Core/Clash Premium Core 已经停止维护，推荐使用 [Mihomo Core](https://wiki.metacubex.one/config/)
 
 ## 0x01 Overview
 
