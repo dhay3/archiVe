@@ -452,6 +452,8 @@ MATCH,policy
 
 ## 0x05 DNS[^5]
 
+DNS 是 Clash 中最复杂也是最让人难理解的部分，同时也是 Clash 最核心的功能之一
+
 ### 0x05a DNS wildcard
 
 > [!NOTE]
@@ -498,19 +500,94 @@ MATCH,policy
 
 > [!important] 
 > Clash 和其他 Client 不一样的点在于使用了 fake-ip
-> 本地不会直接解析 DNS，会转由 Proxy 来解析 DNS，在一定程度上可以防止 GFW DNS pollution
+> 本地不会直接解析 DNS，会转由 Gateway(在 Clash 中为配置中的 DNS server) 来解析 DNS，在一定程度上可以防止 GFW DNS pollution
 > 
 > 具体可以看 RFC3089 DNS Name Resolving Procedure[^6]
 
 ```yaml
 dns:
-  # enhanced-mode: fake-ip
+  enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16 # Fake IP 地址池 CIDR
   # 此列表中的主机名将不会使用 Fake IP 解析
   # 即, 对这些域名的请求将始终使用其真实 IP 地址进行响应
   fake-ip-filter:
      - '*.lan'
      - localhost.ptlogin2.qq.com
+```
+
+### 0x05c default-nameserver
+
+解析 NS records 的 nameserver
+
+```yaml
+dns:
+  # 这些 名称服务器(nameservers) 用于解析下列 DNS 名称服务器主机名.
+  # 仅指定 IP 地址
+  default-nameserver:
+    - 114.114.114.114
+    - 8.8.8.8
+```
+
+### 0x05d nameserver
+
+所有 A/AAAA/NAME record 请求使用的 nameserver
+
+```yaml
+dns:
+  # 支持 UDP、TCP、DoT、DoH. 您可以指定要连接的端口.
+  # 所有 DNS 查询都直接发送到名称服务器, 无需代理
+  # Clash 使用第一个收到的响应作为 DNS 查询的结果.
+  nameserver:
+    - 114.114.114.114 # 默认值
+    - 8.8.8.8 # 默认值
+    - tls://dns.rubyfish.cn:853 # DNS over TLS
+    - https://1.1.1.1/dns-query # DNS over HTTPS
+    - dhcp://en0 # 来自 dhcp 的 dns
+    # - '8.8.8.8#en0'
+```
+
+### 0x05e fallback/fallback-filter
+
+#### fallback
+
+所有 A/AAAA/NAME record 请求使用的备选 nameserver(和 `nameserver` 并发请求)
+
+```yaml
+dns:
+  # 当 `fallback` 存在时, DNS 服务器将向此部分中的服务器
+  # 与 `nameservers` 中的服务器发送并发请求
+  # 当 GEOIP 国家不是 `CN` 时, 将使用 fallback 服务器的响应
+  fallback:
+    - tcp://1.1.1.1
+    - 'tcp://1.1.1.1#en0'
+```
+
+#### fallback-filter
+
+当请求匹配 fallback-filter 会使用 `nameserver` 中的 nameserver 用于 DNS 解析，反之使用 `fallback`
+
+```yaml
+dns:
+  # 如果使用 `nameservers` 解析的 IP 地址在下面指定的子网中,
+  # 则认为它们无效, 并使用 `fallback` 服务器的结果.
+  #
+  # 当 `fallback-filter.geoip` 为 true 且 IP 地址的 GEOIP 为 `CN` 时,
+  # 将使用 `nameservers` 服务器解析的 IP 地址.
+  #
+  # 如果 `fallback-filter.geoip` 为 false(即不按照 geoip 过滤), 且不匹配 `fallback-filter.ipcidr`,
+  # 则始终使用 `nameservers` 服务器的结果(即解析记录在这个段中的，都被认为是污染的，会重新使用 `fallback` 解析)
+  #
+  # 这是对抗 DNS 污染攻击的一种措施.
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    ipcidr:
+      - 240.0.0.0/4
+  # 这些域名直接被认为是污染的，会直接使用 fallback
+    domain:
+      - '+.google.com'
+      - '+.facebook.com'
+      - '+.youtube.com'
 ```
 
 ---

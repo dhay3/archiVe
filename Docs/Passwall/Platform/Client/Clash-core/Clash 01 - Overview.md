@@ -12,7 +12,7 @@ tags:
 
 ## 0x01 Overview
 
-[Clash](https://clash.wiki/) 是一个 rule-based(在 V2ray 的基础上增加了更多的 rule) 跨平台的代理工具[^1]
+[Clash](https://clash.wiki/) 是一个 rule-based(在 V2ray 的基础上增加了更多的 rule) 跨平台的 Client 代理工具[^1]
 
 有 2 个 core
 
@@ -25,7 +25,7 @@ tags:
 
 根据平台不同，也有不同的 GUI client 供用户使用
 - Linux/Windows 推荐使用 [Clash-verge-rev](https://github.com/clash-verge-rev/clash-verge-rev)
-- IOS 推荐使用 sing-box 或者是 shadowracket
+- IOS 推荐使用 sing-box 或者是 shadowrocket
 
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*

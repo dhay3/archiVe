@@ -79,8 +79,8 @@ external-controller: 127.0.0.1:9090
   # 持久化 fakeip
   # store-fake-ip: false
 
-# DNS 服务设置
-# 此部分是可选的. 当不存在时, DNS 服务将被禁用.
+# 是否使用 DNS 服务设置
+# 此部分是可选的. 当不存在时, Clash DNS 服务将被禁用.
 dns:
   enable: false
   listen: 0.0.0.0:53
