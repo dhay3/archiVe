@@ -3,7 +3,7 @@
 # TOC
 
 <!--toc start-->
-<!--ab7dd904-2b7d-4da7-a250-c7dd27cf6b0e-->
+<!--e9a9cad4-b2f3-49f1-8c1c-3dde8f0f6ced-->
 > [!note]
 > Created by Github Workflows
 
@@ -262,7 +262,7 @@
   - [Rsshub](Docs/Sundries/Rsshub)
   - [Typora](Docs/Sundries/Typora)
 
-<!--toc end-->            
+<!--toc end-->             
 
 ![GitHub Created At](https://img.shields.io/github/created-at/dhay3/archive)
 ![commits](https://badgen.net/github/commits/dhay3/archive/master)
