@@ -130,7 +130,7 @@ Mihomo: tun
 
 ### 0x04a Tun disabled
 
-在没有开启 TUN 的情况下，想要流量通过 Clash 需要借助 Socks Protocol。在 `curl` 中可以通过 `-x socks5://` 来指定入站代理的地址(这里为了排除 IPv6 的影响，只使用 IPv4)
+在没有开启 TUN 的情况下，想要流量通过 Clash 需要借助 Socks Protocol。在 `curl` 中可以通过 `-x socks5://` 来指定 Socks server 地址(这里为了排除 IPv6 的影响，只使用 IPv4)
 	
 ```shell
 $ curl -4vLsSo /dev/null -x socks5://127.0.0.1:37897 www.google.com
@@ -236,6 +236,19 @@ tcp stream 4 frame 41th to frame 100th
 10.100.4.222 对应 Inside NAT(公网 NAT 前的地址)
 120.232.63.24 对应节点的地址(推测可能走的是 IPLC)
 
+### 0x04b Tun enabled
+
+在开启 TUN 的情况下， 系统会新增一个 TUN network device，Mihomo core 中默认为
+
+```
+
+```
+
+访问 `www.google.com`，由于使用 PBR 接管了系统的路由，所以无需使用 `-x socks5://` 指定 Socks server 地址
+
+```
+
+```
 
 ## 0x04 System proxy vs Clash tun
 

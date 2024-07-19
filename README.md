@@ -1,13 +1,5 @@
 [![Markdown](https://img.shields.io/badge/Markdown-%23000000.svg?logo=markdown&logoColor=white)](https://daringfireball.net/projects/markdown/)| [![Obsidian](https://img.shields.io/badge/Obsidian-%23483699.svg?&logo=obsidian&logoColor=white)](https://obsidian.md/)| [![PreCommit](https://img.shields.io/badge/PreCommit-%23DAA520?logo=precommit&logoColor=white)](https://pre-commit.com)| [![gitmoji-%20%F0%9F%98%9C%20%F0%9F%98%8D-FFDD67.svg](https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg?style=flat-square)](https://gitmoji.dev)| [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 
-> [!tldr] Summary
-> 
-> It's a repository for personal memos.
-> 
-> The architect and contents of this repo will be restructed.
->
-> Obsidian's rendering engine is quite different from github's, there are might be some issues in the display of github's. 
-
 # TOC
 
 <!--toc start-->
