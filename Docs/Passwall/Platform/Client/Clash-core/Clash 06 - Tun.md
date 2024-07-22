@@ -33,26 +33,18 @@ TUN/TAP 最大的区别就在于
 
 ![](https://upload.wikimedia.org/wikipedia/commons/a/af/Tun-tap-osilayers-diagram.png)
 
-### 0x02b How does TUN/TAP works
+### 0x02b How does TUN work
 
 > [!NOTE]
 > 推荐看看 [Linux Tun/Tap 介绍-赵化冰的博客 | Zhaohuabing Blog](https://www.zhaohuabing.com/post/2020-02-24-linux-taptun/) 这篇博文，写得非常浅显易懂
 
-传统 Physical NIC 
+在使用 Physical NIC 上网时，应用或者系统通过 Socket API 调用系统的网络协议栈，直接将报文发送到 PNIC 并通过 Wire 传输到 endpoints
 
-```mermaid
-sequenceDiagram
-box User Space
-Applications apps
-Socket API 
-end
-box Kernel Space
-Stack stack
-end
+![width:500](../../../../../Excalidraw/Drawing%202024-07-22%2010.32.42.excalidraw)
 
-```
+而在使用 TUN 的过程中，报文会通过 TUN VNIC 发送到监听 TUN VNIC 的应用，由应用决定该怎么发送报文
 
-![](../../../../../Excalidraw/Drawing%202024-07-22%2010.32.42.excalidraw)
+![height:800](../../../../../Excalidraw/Drawing%202024-07-22%2012.57.58.excalidraw)
 
 ## 0x03 Clash TUN
 
