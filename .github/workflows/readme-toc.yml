@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: 3.9
       - name: Create TOC
-        run: "python toc.py"
+        run: "python .github/toc.py"
       - name: Commit Change and Push
         run: |
           git config user.name 'github-actions[bot]'
