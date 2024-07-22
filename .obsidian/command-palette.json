@@ -1,10 +1,11 @@
 {
   "pinned": [
     "insert-template",
-    "insert-unsplash-image:insert",
-    "omnisearch:show-modal",
-    "terminal:open-terminal.integrated.current",
+    "obsidian-excalidraw-plugin:excalidraw-insert-transclusion",
+    "obsidian-excalidraw-plugin:excalidraw-autocreate-newtab",
     "obsidian-emoji-toolbar:emoji-picker:open-picker",
-    "editor:toggle-source"
+    "omnisearch:show-modal",
+    "editor:toggle-source",
+    "terminal:open-terminal.integrated.current"
   ]
 }

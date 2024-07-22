@@ -2,16 +2,12 @@
   "table-editor-obsidian",
   "obsidian-auto-link-title",
   "code-styler",
-  "dataview",
   "obsidian-emoji-toolbar",
-  "highlightr-plugin",
-  "insert-unsplash-image",
   "oz-image-plugin",
   "omnisearch",
-  "obsidian-pandoc",
   "obsidian-paste-to-current-indentation",
   "terminal",
-  "obsidian-table-generator",
   "obsidian-html-tags-autocomplete",
-  "obsidian-html-plugin"
+  "obsidian-html-plugin",
+  "obsidian-excalidraw-plugin"
 ]

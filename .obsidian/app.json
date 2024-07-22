@@ -9,6 +9,8 @@
   "showInlineTitle": false,
   "readableLineLength": false,
   "newFileLocation": "current",
-  "attachmentFolderPath": "./",
-  "propertiesInDocument": "visible"
+  "attachmentFolderPath": "Attachments",
+  "propertiesInDocument": "visible",
+  "showUnsupportedFiles": true,
+  "newLinkFormat": "relative"
 }

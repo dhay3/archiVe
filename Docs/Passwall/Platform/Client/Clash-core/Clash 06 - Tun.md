@@ -9,17 +9,17 @@ tags:
 
 ## 0x01 Overview
 
-Tun 是 Premium core 中最为核心的功能之一，可以让网络中的设备真正得实现==全局代理==
+Tun 是 Premium core 中最为核心的功能之一，可以让网络中的设备真正得实现全局代理
 
 ## 0x02 TUN/TAP
 
-在介绍 Tun 前，需要先了解一下 TUN/TAP
+在介绍 Clash Tun 前，需要先了解一下 TUN/TAP 是什么
 
 > TUN/TAP provides packet reception and transmission for user space programs. It can be seen as a simple Point-to-Point or Ethernet device, which, instead of receiving packets from physical media, receives them from user space program and instead of sending packets via physical media writes them to the user space program.[^1]
 
 TUN(TUN)/TAP 是系统上虚拟的 network devices。可以将经过虚拟 network devices 的数据包发送到**用户态的进程**，从而实现数据包的二次封装(这一过程也被称为 tunnleing encapsulation[^2]) 
 
-可以参考这一实例
+可以参考这一实例，自己构建一个 TUN network device
 [What Is the TUN Interface Used For? | Baeldung on Linux](https://www.baeldung.com/linux/tun-interface-purpose)
 
 ### 0x02a TUN vs TAP[^3]
@@ -29,9 +29,32 @@ TUN/TAP 最大的区别就在于
 - TUN network device 工作在 OSI 3 层(即网络层)，接收 3 层数据包，不可以处理 Ethernet header
 - TAP network device 工作在 OSI 2 层(即数据链路层)，接收 2 层数据包，可以处理 Ethernet header
 
+即 TAP 是 TUN 的超集，TUN 能处理的数据包，TAP 都能处理
+
 ![](https://upload.wikimedia.org/wikipedia/commons/a/af/Tun-tap-osilayers-diagram.png)
 
-## 0x03 Clash tun
+### 0x02b How does TUN/TAP works
+
+> [!NOTE]
+> 推荐看看 [Linux Tun/Tap 介绍-赵化冰的博客 | Zhaohuabing Blog](https://www.zhaohuabing.com/post/2020-02-24-linux-taptun/) 这篇博文，写得非常浅显易懂
+
+传统 Physical NIC 
+
+```mermaid
+sequenceDiagram
+box User Space
+Applications apps
+Socket API 
+end
+box Kernel Space
+Stack stack
+end
+
+```
+
+![](../../../../../Excalidraw/Drawing%202024-07-22%2010.32.42.excalidraw)
+
+## 0x03 Clash TUN
 
 > 如果想要详细了解原理，还需要看源码
 > [GitHub - MetaCubeX/mihomo at Meta](https://github.com/MetaCubeX/mihomo/tree/Meta)
@@ -84,7 +107,7 @@ default via 10.100.12.1 dev wlp5s0 proto dhcp src 10.100.13.47 metric 600
 详细拆解一下开启 Clash tun 后新增的 route rules
 
 - `9000:   from all to 198.18.0.0/30 lookup 2022`
-	到 198.18.0.0/30 (这个地址段通常用于 fake-ip)的 3 层数据包会使用 2022 route table
+	到 198.18.0.0/30 的 3 层数据包会使用 2022 route table
 - `9001:   from all lookup 2022 suppress_prefixlength 0`
 	所有 3 层数据包都使用 2022 table 路由，如果匹配 default route 就会使用下一条 route rule
 	*suppress_prefixlength reject routing decisions that have a prefix length of NUMBER or less.*
@@ -122,9 +145,69 @@ Mihomo: tun
 
 剩下的逻辑就会由 Clash 来处理
 
+### 0x03a stack
+
+stack 指的是 clash 传输流量使用的协议栈，clash 默认提供 2 种
+1. system
+	直接调用系统协议栈，性能以及兼容性最好
+2. gvisor[^5]
+	为应用单独模拟一个系统协议栈，更安全，但是相对的性能和兼容性较差
+
+> [!NOTE]
+> 在 mihomo core 中还支持 mixed 指 tcp 流量使用 system，UDP 流量使用 gvisor
+
+### 0x03b tun configuration
+
+tun 部分相关的配置如下
+
+```yaml
+tun:
+  enable: true
+  stack: system # or gvisor
+  # dns-hijack:
+  #   - 8.8.8.8:53
+  #   - tcp://8.8.8.8:53
+  #   - any:53
+  #   - tcp://any:53
+  auto-route: true # manage `ip route` and `ip rules`
+  auto-redir: true # manage nftable REDIRECT
+  auto-detect-interface: true # 与 `interface-name` 冲突
+```
+
+但是需要提一嘴的是 TUN network device 需要借助 fake-ip-range 来设置 IP
+具体实现代码可以看 [mihomo/config/config.go at Meta · MetaCubeX/mihomo · GitHub](https://github.com/MetaCubeX/mihomo/blob/Meta/config/config.go) 中 `parseTun` 函数
+
+```go
+func parseTun(rawTun RawTun, general *General) error {
+	tunAddressPrefix := T.FakeIPRange()
+	if !tunAddressPrefix.IsValid() {
+		tunAddressPrefix = netip.MustParsePrefix("198.18.0.1/16")
+	}
+	tunAddressPrefix = netip.PrefixFrom(tunAddressPrefix.Addr(), 30)
+
+	if !general.IPv6 || !verifyIP6() {
+		rawTun.Inet6Address = nil
+	}
+```
+
+fake-ip-range 默认为 198.18.0.1/16，从而得出 TUN network device address 为 198.18.0.1/
+30，这一点在 `ip a s dev Mihomo` 中也可以得到证实
+
+```sh
+$ ip a s dev Mihomo
+10: Mihomo: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc cake state UNKNOWN group default qlen 500
+    link/none
+    inet 198.18.0.1/30 brd 198.18.0.3 scope global Mihomo
+       valid_lft forever preferred_lft forever
+    inet6 fe80::9dcb:c7d7:93c9:affb/64 scope link stable-privacy proto kernel_ll
+       valid_lft forever preferred_lft forever
+```
+
+同时可以推出 
+
 ## 0x04 Analyze
 
-> [!NOTE] important
+> [!important]
 > 下面的例子使用 Clash verge rev 均未开启 fake-ip，mixed-port 为 37897 即 local inbound 监听端口
 > 	未在 emulator 中模拟纯净环境，以访问 `www.google.com` 为例
 
@@ -187,11 +270,28 @@ frame 25th to frame 31th
 *   Trying 127.0.0.1:37897...
 * Connected to 127.0.0.1 (127.0.0.1) port 37897
 ```
-	
+
 #### DNS 解析 `www.google.com`
 
 frame 32th to frame 33th
-在 Clash verge rev 中如果没有开启 tun 就不会使用 Clash nameserver 的功能(具体代码逻辑可以看 [clash-verge-rev/src-tauri/src/enhance/tun.rs at main · clash-verge-rev/clash-verge-rev · GitHub](https://github.com/clash-verge-rev/clash-verge-rev/blob/main/src-tauri/src/enhance/tun.rs)，mihomo core 默认只配置 `mixed-port`)，这时只有 client 侧的 DNS nameserver 会处理 DNS query，这里的 nameserver 为局域网中的 172.18.10.11
+在 Clash verge rev 中如果没有开启 tun 就不会使用 Clash nameserver 的功能(mihomo core 默认只配置 `mixed-port`)
+具体代码逻辑可以看 [clash-verge-rev/src-tauri/src/enhance/tun.rs at main · clash-verge-rev/clash-verge-rev · GitHub](https://github.com/clash-verge-rev/clash-verge-rev/blob/main/src-tauri/src/enhance/tun.rs    
+
+```ts
+    // 开启tun将同时开启dns
+    revise!(dns_val, "enable", true);
+
+    append!(dns_val, "enhanced-mode", "fake-ip");
+    append!(dns_val, "fake-ip-range", "198.18.0.1/16");
+    append!(
+        dns_val,
+        "nameserver",
+        vec!["114.114.114.114", "223.5.5.5", "8.8.8.8"]
+    );
+    append!(dns_val, "fallback", vec![] as Vec<&str>);
+```
+
+这时只有 client 侧的 DNS nameserver 会处理 DNS query，这里的 nameserver 为局域网中的 172.18.10.11
 
 这里得出 `www.google.com` A record 为 142.251.43.4
 在 curl 中的表现为
@@ -200,7 +300,7 @@ frame 32th to frame 33th
 * IPv6: (none)
 * IPv4: 142.251.43.4
 ```
-	
+
 #### Socks 求情响应以及发送真实请求
 
 frame 34th to frame 36th
@@ -238,17 +338,45 @@ tcp stream 4 frame 41th to frame 100th
 
 ### 0x04b Tun enabled
 
-在开启 TUN 的情况下， 系统会新增一个 TUN network device，Mihomo core 中默认为
-
-```
-
-```
-
+在开启 TUN 的情况下， 系统会新增一个 TUN network device
 访问 `www.google.com`，由于使用 PBR 接管了系统的路由，所以无需使用 `-x socks5://` 指定 Socks server 地址
 
+```sh
+curl -4vLsSo /dev/null  www.google.com
+* Host www.google.com:80 was resolved.
+* IPv6: (none)
+* IPv4: 142.251.42.228
+*   Trying 142.251.42.228:80...
+* Connected to www.google.com (142.251.42.228) port 80
+> GET / HTTP/1.1
+> Host: www.google.com
+> User-Agent: curl/8.8.0
+> Accept: */*
+>
+* Request completely sent off
+< HTTP/1.1 200 OK
+< Date: Fri, 19 Jul 2024 03:16:38 GMT
+< Expires: -1
+< Cache-Control: private, max-age=0
+< Content-Type: text/html; charset=ISO-8859-1
+< Content-Security-Policy-Report-Only: object-src 'none';base-uri 'self';script-src 'nonce-DaeiFXc4YsAAlWpSBDiuXA' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp
+< P3P: CP="This is not a P3P policy! See g.co/p3phelp for more info."
+< Server: gws
+< X-XSS-Protection: 0
+< X-Frame-Options: SAMEORIGIN
+< Set-Cookie: AEC=AVYB7cq1Hu2oOj3OX9p7GT72STmkrTSAoEi7JisnWOyBsSjQfPyimgAfQA; expires=Wed, 15-Jan-2025 03:16:38 GMT; path=/; domain=.google.com; Secure; HttpOnly; SameSite=lax
+< Set-Cookie: NID=515=B_KXHOfzsSDuRHIRjTOghKjmCh0_6j-La2Px3WCAhTdcfKNtedsV0m0h2RxyxxXv3jM2hOZdEj2LGTxX1nB_m3lrvpNnUxL8YXd8ILri166g93RblVj2CKiNSGg6mqen_iA0cvspCjZ34bcJVRoA5UfDluHUA0pV3Xp9D3MF_5Q; expires=Sat, 18-Jan-2025 03:16:38 GMT; path=/; domain=.google.com; HttpOnly
+< Accept-Ranges: none
+< Vary: Accept-Encoding
+< Transfer-Encoding: chunked
+<
+{ [4997 bytes data]
+* Connection #0 to host www.google.com left intact
 ```
 
-```
+从 curl 的结果中可推出 wireshark filter 应该为
+
+`dns.qry.name eq www.google.com or tcp.port eq 39041 or ip.addr eq 142.251.42.228 or http.host eq www.google.com`
 
 ## 0x04 System proxy vs Clash tun
 
@@ -263,3 +391,4 @@ tcp stream 4 frame 41th to frame 100th
 [^2]:[Tunneling protocol - Wikipedia](https://en.wikipedia.org/wiki/Tunneling_protocol)
 [^3]:[TUN/TAP - Wikipedia](https://en.wikipedia.org/wiki/TUN/TAP)
 [^4]:[RFC 1928:  SOCKS Protocol Version 5](https://www.rfc-editor.org/rfc/rfc1928)
+[^5]:[GitHub - google/gvisor: Application Kernel for Containers](https://github.com/google/gvisor)
