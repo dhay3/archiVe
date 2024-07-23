@@ -1,8 +1,8 @@
 ---
 createTime: 2024-07-16 13:08
 tags:
-  - "#hash1"
-  - "#hash2"
+  - "#Passwall"
+  - "#Clash"
 ---
 
 # Clash 06 - Tun
@@ -46,7 +46,9 @@ TUN/TAP 最大的区别就在于
 
 ![height:800](../../../../../Excalidraw/Drawing%202024-07-22%2012.57.58.excalidraw)
 
-## 0x03 Clash TUN
+## 0x03 Clash Tun Basic Logical
+
+### 0x03a Clash Tun PBR
 
 > 如果想要详细了解原理，还需要看源码
 > [GitHub - MetaCubeX/mihomo at Meta](https://github.com/MetaCubeX/mihomo/tree/Meta)
@@ -137,9 +139,11 @@ Mihomo: tun
 
 剩下的逻辑就会由 Clash 来处理
 
-### 0x03a stack
+***简单的说 Clash Tun 就是通过 PBR 实现真正的全局代理***
 
-stack 指的是 clash 传输流量使用的协议栈，clash 默认提供 2 种
+### 0x03a Tun Stack
+
+Tun stack 指的是 clash 在开启 Tun 的情况下传输流量使用的网络协议栈，clash 默认提供 2 种
 1. system
 	直接调用系统协议栈，性能以及兼容性最好
 2. gvisor[^5]
@@ -148,7 +152,7 @@ stack 指的是 clash 传输流量使用的协议栈，clash 默认提供 2 种
 > [!NOTE]
 > 在 mihomo core 中还支持 mixed 指 tcp 流量使用 system，UDP 流量使用 gvisor
 
-### 0x03b tun configuration
+### 0x03b Clash Tun configuration
 
 tun 部分相关的配置如下
 
@@ -166,9 +170,8 @@ tun:
   auto-detect-interface: true # 与 `interface-name` 冲突
 ```
 
-但是需要提一嘴的是 TUN network device 需要借助 fake-ip-range 来设置 IP
+但是需要提一嘴的是 TUN network device 需要借助 fake-ip-range 来设置 IP Address
 具体实现代码可以看 [mihomo/config/config.go at Meta · MetaCubeX/mihomo · GitHub](https://github.com/MetaCubeX/mihomo/blob/Meta/config/config.go) 中 `parseTun` 函数
-
 ```go
 func parseTun(rawTun RawTun, general *General) error {
 	tunAddressPrefix := T.FakeIPRange()
@@ -182,9 +185,7 @@ func parseTun(rawTun RawTun, general *General) error {
 	}
 ```
 
-fake-ip-range 默认为 198.18.0.1/16，从而得出 TUN network device address 为 198.18.0.1/
-30，这一点在 `ip a s dev Mihomo` 中也可以得到证实
-
+fake-ip-range 默认为 198.18.0.1/16，从而得出 TUN network device address 为 198.18.0.1/30，这一点在 `ip a s dev Mihomo` 中也可以得到证实
 ```sh
 $ ip a s dev Mihomo
 10: Mihomo: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc cake state UNKNOWN group default qlen 500
@@ -195,18 +196,70 @@ $ ip a s dev Mihomo
        valid_lft forever preferred_lft forever
 ```
 
-同时可以推出 
+30 位 netmask 可以推出 mihomo core 使用 198.18.0.2 作为自己的通信 IP
 
-## 0x04 Analyze
+## 0x04 Clash Tun Analyze
 
 > [!important]
-> 下面的例子使用 Clash verge rev 均未开启 fake-ip，mixed-port 为 37897 即 local inbound 监听端口
-> 	未在 emulator 中模拟纯净环境，以访问 `www.google.com` 为例
+> 下面的例子使用 Clash verge rev 作为 GUI client，使用 mihomo core
+> 未在 emulator 中模拟纯净环境，以访问 `www.google.com` 为例
 
-### 0x04a Tun disabled
+通过 Clash verge rev 来启动 mihomo core 默认会按照下面逻辑生成启动配置。具体代码逻辑可以看 [clash-verge-rev/src-tauri/src/config/clash.rs at main · clash-verge-rev/clash-verge-rev · GitHub](https://github.com/clash-verge-rev/clash-verge-rev/blob/main/src-tauri/src/config/clash.rs)
+```ts
+    pub fn template() -> Self {
+        let mut map = Mapping::new();
+        let mut tun = Mapping::new();
+        tun.insert("stack".into(), "gvisor".into());
+        tun.insert("device".into(), "Mihomo".into());
+        tun.insert("auto-route".into(), true.into());
+        tun.insert("strict-route".into(), false.into());
+        tun.insert("auto-detect-interface".into(), true.into());
+        tun.insert("dns-hijack".into(), vec!["any:53"].into());
+        tun.insert("mtu".into(), 1500.into());
+        #[cfg(not(target_os = "windows"))]
+        map.insert("redir-port".into(), 7895.into());
+        #[cfg(target_os = "linux")]
+        map.insert("tproxy-port".into(), 7896.into());
+        map.insert("mixed-port".into(), 7897.into());
+        map.insert("socks-port".into(), 7898.into());
+        map.insert("port".into(), 7899.into());
+        map.insert("log-level".into(), "info".into());
+        map.insert("allow-lan".into(), false.into());
+        map.insert("mode".into(), "rule".into());
+        map.insert("external-controller".into(), "127.0.0.1:9097".into());
+        map.insert("secret".into(), "".into());
+        map.insert("tun".into(), tun.into());
 
-在没有开启 TUN 的情况下，想要流量通过 Clash 需要借助 Socks Protocol。在 `curl` 中可以通过 `-x socks5://` 来指定 Socks server 地址(这里为了排除 IPv6 的影响，只使用 IPv4)
-	
+        Self(map)
+    }
+```
+
+### 0x04a Clash Tun disabled
+
+在没有开启 Clash Tun 的情况下 Clash 全局配置如下(`mixed-port`，`socks-port`，`port` 被手动修改成 37897)
+```yaml
+mode: rule
+mixed-port: 37897
+socks-port: 37898
+port: 37899
+allow-lan: false
+log-level: info
+external-controller: 127.0.0.1:9097
+secret: ''
+bind-address: '*'
+tun:
+  stack: system
+  device: Mihomo
+  auto-route: true
+  auto-detect-interface: true
+  dns-hijack:
+  - any:53
+  strict-route: false
+  mtu: 1500
+  enable: false
+```
+
+数据包不会被直接发送到 Clash，需要借助 Socks Protocol。在 `curl` 中可以通过 `-x socks5://` 来指定 Socks server 地址(这里为了排除 IPv6 的影响，只使用 IPv4)
 ```shell
 $ curl -4vLsSo /dev/null -x socks5://127.0.0.1:37897 www.google.com
 *   Trying 127.0.0.1:37897...
@@ -248,55 +301,55 @@ $ curl -4vLsSo /dev/null -x socks5://127.0.0.1:37897 www.google.com
 `(tcp.port eq 37897 and tcp.stream eq 2) or dns.qry.name eq www.google.com or tcp.port eq 39041 or ip.addr eq 142.251.43.4`
 
 > [!NOTE] 
-> 1. 需要以混杂模式抓包，即 any
-> 2. 在 wireshark 中 Socks Protocol 默认以 1080 端口标识，要想识别非标端口，需要使用 Analyze Decode as 功能 
-> 3. tcp.stream eq 2 由 wireshark context
+> 1. 为了对比 Tun enabled 的情况，需要以混杂模式抓包，即 any
+> 2. 在 wireshark 中 Socks Protocol 默认以 1080 端口标识。要想识别非标端口，需要使用 Analyze Decode as 功能 
+> 3. tcp.stream eq 2 由 wireshark context 推出
 > 4. tcp.port eq 39041 为 vmess 代理的入站端口
 
 ![](https://github.com/dhay3/picx-images-hosting/raw/master/20240718/2024-07-18_14-38-09.6f0kmk3lka.webp)
-#### 建立 Socks over TCP 连接
+#### Intial Socks Over TCP Connection
 
-frame 25th to frame 31th
-这部分逻辑比较简单，对应 curl 中的表现为
+> frame 25th to frame 31th
+
+建立 Socks over TCP 连接 
+
+这部分逻辑比较简单(如果有不明白的，RFC1928[^4] 是你最好的朋友)，对应 curl 中的表现为
 ```shell
 *   Trying 127.0.0.1:37897...
 * Connected to 127.0.0.1 (127.0.0.1) port 37897
 ```
 
-#### DNS 解析 `www.google.com`
+#### `www.google.com` DNS Resolution
 
-frame 32th to frame 33th
-在 Clash verge rev 中如果没有开启 tun 就不会使用 Clash nameserver 的功能(mihomo core 默认只配置 `mixed-port`)
-具体代码逻辑可以看 [clash-verge-rev/src-tauri/src/enhance/tun.rs at main · clash-verge-rev/clash-verge-rev · GitHub](https://github.com/clash-verge-rev/clash-verge-rev/blob/main/src-tauri/src/enhance/tun.rs    
+> [!NOTE]
+> Clash verge rev 在没有开启 Clash TUN 的情况下，默认不会使用 Clash DNS，这点可以从配置文件中看出
 
-```ts
-    // 开启tun将同时开启dns
-    revise!(dns_val, "enable", true);
+> frame 32th to frame 33th
 
-    append!(dns_val, "enhanced-mode", "fake-ip");
-    append!(dns_val, "fake-ip-range", "198.18.0.1/16");
-    append!(
-        dns_val,
-        "nameserver",
-        vec!["114.114.114.114", "223.5.5.5", "8.8.8.8"]
-    );
-    append!(dns_val, "fallback", vec![] as Vec<&str>);
+DNS 解析 `www.google.com` 
+
+应用通常会通过 `getaddrinfo()` 调用系统的 DNS 解析机制来获取 Domain 的解析记录值。假设 `/etc/resolv.conf` 配置如下，那么就会使用 172.18.10.11 作为 nameserver
+```sh
+cat /etc/resolv.conf
+# Generated by NetworkManager
+nameserver 172.18.10.11
+nameserver 218.108.248.200
+nameserver 212.101.172.35
 ```
 
-这时只有 client 侧的 DNS nameserver 会处理 DNS query，这里的 nameserver 为局域网中的 172.18.10.11
-
-这里得出 `www.google.com` A record 为 142.251.43.4
+从报文中可以得出 `www.google.com` A record 为 142.251.43.4
 在 curl 中的表现为
-```shell
-* Host www.google.com:80 was resolved.
-* IPv6: (none)
-* IPv4: 142.251.43.4
-```
+   ```shell
+   * Host www.google.com:80 was resolved.
+   * IPv6: (none)
+   * IPv4: 142.251.43.4
+   ```
 
-#### Socks 求情响应以及发送真实请求
+#### Socks Request/Response and Real Request
 
-frame 34th to frame 36th
-> 如果有不明白的，RFC[^4] 是你最好的朋友
+> frame 34th to frame 36th
+
+Socks 求情响应以及发送真实请求(如果有不明白的，RFC1928[^4] 是你最好的朋友)
 
 client 告诉 Socks server 想要访问 142.251.43.4:80 (对应 `www.google.com`)，对应 frame 34th
 ![](https://github.com/dhay3/picx-images-hosting/raw/master/20240718/2024-07-18_16-44-46.361gpyu2vu.webp)
@@ -319,10 +372,14 @@ Clash 在收到这个报文后就会按照 Profile Rules 去匹配，发现 142.
 - 'MATCH,SG01'
 ```
 
-#### 向代理发送请求并挥手关闭连接
+#### Proxy Request and Close Connection
 
-tcp stream 4 frame 41th to frame 100th
+> [!NOTE] 
 > 节点使用 ws + vmess，所以报文出站也必须使用 ws + vmess 加密，因此不能分辨出具体那个报文是请求
+
+> tcp stream 4 frame 41th to frame 100th
+
+向代理发送请求接受响应并挥手关闭连接
 
 ![](https://github.com/dhay3/picx-images-hosting/raw/master/20240718/2024-07-18_17-36-07.syu8taejl.webp)
 10.100.4.222 对应 Inside NAT(公网 NAT 前的地址)
@@ -330,9 +387,68 @@ tcp stream 4 frame 41th to frame 100th
 
 ### 0x04b Tun enabled
 
-在开启 TUN 的情况下， 系统会新增一个 TUN network device
-访问 `www.google.com`，由于使用 PBR 接管了系统的路由，所以无需使用 `-x socks5://` 指定 Socks server 地址
+在开启 Clash Tun 的情况下 Clash 全局配置如下(`mixed-port`，`socks-port`，`port` 被手动修改成 37897)
+```yaml
+mode: rule
+mixed-port: 37897
+socks-port: 37898
+port: 37899
+allow-lan: false
+log-level: info
+external-controller: 127.0.0.1:9097
+secret: ''
+bind-address: '*'
+tun:
+  stack: system
+  device: Mihomo
+  auto-route: true
+  auto-detect-interface: true
+  dns-hijack:
+  - any:53
+  strict-route: false
+  mtu: 1500
+  enable: true
+dns:
+  enable: true
+  enhanced-mode: normal
+  fake-ip-range: 198.18.0.1/16
+  nameserver:
+  - 114.114.114.114
+  - 223.5.5.5
+  - 8.8.8.8
+  fallback: []
+```
 
+这里新增了 DNS 部分的配置，是因为在 Clash verge rev 中如果开启 tun 就会使用 Clash DNS nameserver 的功能
+具体代码逻辑可以看 [clash-verge-rev/src-tauri/src/enhance/tun.rs at main · clash-verge-rev/clash-verge-rev · GitHub](https://github.com/clash-verge-rev/clash-verge-rev/blob/main/src-tauri/src/enhance/tun.rs) (Clash verge rev 和 mihomo core 的默认配置不同，具体看代码)
+```ts
+    // 开启tun将同时开启dns
+    revise!(dns_val, "enable", true);
+
+    append!(dns_val, "enhanced-mode", "fake-ip");
+    append!(dns_val, "fake-ip-range", "198.18.0.1/16");
+    append!(
+        dns_val,
+        "nameserver",
+        vec!["114.114.114.114", "223.5.5.5", "8.8.8.8"]
+    );
+    append!(dns_val, "fallback", vec![] as Vec<&str>);
+```
+
+`enhanced-mode: fake-ip` 是 Clash 中另外一特性，后面单独讲。为了控制变量，这里通过 Clash verge rev 的 Global Extend Config 将 `enhancemod` 置为 normal
+
+在开启 TUN 的情况下， 系统会新增一个 TUN network device 以及 PBR(具体规则看 [0x03a Clash Tun PBR](#0x03a%20Clash%20Tun%20PBR))
+```sh
+$ ip a s dev Mihomo
+7: Mihomo: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc cake state UNKNOWN group default qlen 500
+    link/none
+    inet 198.18.0.1/30 brd 198.18.0.3 scope global Mihomo
+       valid_lft forever preferred_lft forever
+    inet6 fe80::32a1:b927:db7:b33b/64 scope link stable-privacy proto kernel_ll
+       valid_lft forever preferred_lft forever
+```
+
+访问 `www.google.com`，由于使用 PBR 接管了系统的路由，所以无需使用 `-x socks5://` 指定 Socks server 地址，也就没有 Socks 的建立和请求响应了
 ```sh
 curl -4vLsSo /dev/null  www.google.com
 * Host www.google.com:80 was resolved.
@@ -366,9 +482,77 @@ curl -4vLsSo /dev/null  www.google.com
 * Connection #0 to host www.google.com left intact
 ```
 
+#### `www.google.com` DNS Resolution
+
+在 [0x04a Tun disabled](#0x04a%20Tun%20disabled) 中我们知道 Clash 在没有启用 Tun 时，会调用系统的 DNS nameserver 来解析域名。这部分解析域名的 DNS nameserver 并不是由 Clash 决定的，而是由发起请求的应用来决定的。例如在 `curl` 中通过封装 `getaddrinfo()` 的函数 `struct Curl_addrinfo *Curl_ipv4_resolve_r(const char *hostname,int port)` 来调用系统的 DNS 解析机制，从 `/etc/resolv.conf` 中决定使用那个 nameserver
+
+假设 `/etc/resolv.conf` 内容如下，那么系统就会使用 172.18.10.11 作为 nameserver
+```sh
+cat /etc/resolv.conf
+# Generated by NetworkManager
+nameserver 172.18.10.11
+nameserver 218.108.248.200
+nameserver 212.101.172.35
+```
+
+这时会构建一个 UDP 报文
+```
+src: 198.18.0.1
+sport: random
+dst: 172.18.10.11
+dport: 53
+dns.qry: www.google.com
+type: A
+class: IN
+```
+
+这个 UDP 报文就会通过 Tun network device (这个例子中就是 Mihomo) 发送给 Mihomo core
+Mihomo core 在收到报文后按照 rules 去匹配规则。因为这个是一个私网 IP，机场下发的配置中通常会将其定义为 Direct 策略
+```
+- IP-CIDR,172.16.0.0/12,DIRECT
+```
+
+同时因为配置文件指定了 Clash 使用的 nameserver 如下
+```yaml
+  nameserver:
+  - 114.114.114.114
+  - 223.5.5.5
+  - 8.8.8.8
+```
+
+那么 Clash 在收到上面的 UDP 报文后，会对 UDP 报文解封装，并按照配置中的 nameserver 对报文重新封装
+```
+src: 10.100.4.222
+sport: random
+dst: {114.114.114.114,223.5.5.5,8.8.8.8}
+dport: 53
+dns.qry: www.google.com
+type: A
+class: IN
+```
+
+10.100.4.222 是
+
+具体代码逻辑可以看
+
+```
+
+```
+
+![](https://github.com/dhay3/picx-images-hosting/raw/master/20240722/2024-07-22_19-11-14.3yecdkb9ix.webp)
+
+在没有指定 nameserver 时，
+
+
+
+
+
+
 从 curl 的结果中可推出 wireshark filter 应该为
 
 `dns.qry.name eq www.google.com or tcp.port eq 39041 or ip.addr eq 142.251.42.228 or http.host eq www.google.com`
+
+
 
 ## 0x04 System proxy vs Clash tun
 

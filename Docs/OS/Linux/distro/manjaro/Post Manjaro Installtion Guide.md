@@ -275,7 +275,8 @@ latte-dock
 | docker                                                   | 容器                                                                        |
 | manjaro-downgrade                                        | package 版本降级工具,不要使用 downgrade AUR 会有问题的                      |
 | uxplay                                                   | apple airplay 投屏                                                          |
-| strace                                                   | binary debug                                                                |
+| strace                                                   | binary system calls debug                                                   |
+| ltrace                                                   | binary library calls debug                                                  | 
 | gdb                                                      | binary debug                                                                |
 | whois                                                    | 域名收集                                                                    |
 | binwalk                                                  | 逆向                                                                        |
@@ -296,7 +297,7 @@ latte-dock
 | metasploit                                               | payload 木马病毒                                                            |
 | sherlock                                                 | 社工                                                                        |
 | wifiphisher                                              | WIFI 钓鱼                                                                   |
-| setoolkits                                               | 社工 钓鱼                                                                   | 
+| setoolkits                                               | 社工 钓鱼                                                                   |
 | ettercap                                                 | DNS 投毒/DOS                                                                |
 | macchanger                                               | BIA 修改                                                                    |
 | steghide                                                 | 文件隐写                                                                    |
