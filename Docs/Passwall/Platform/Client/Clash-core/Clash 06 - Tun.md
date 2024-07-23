@@ -51,7 +51,7 @@ TUN/TAP 最大的区别就在于
 ### 0x03a Clash Tun PBR
 
 > 如果想要详细了解原理，还需要看源码
-> [GitHub - MetaCubeX/mihomo at Meta](https://github.com/MetaCubeX/mihomo/tree/Meta)
+> [GitHub - MetaCubeX/Mihomo at Meta](https://github.com/MetaCubeX/mihomo/tree/Meta)
 
 未启用 Clash tun 前，可以观察到系统在收到数据包时，会按照 local/main/default 的 route table 去匹配路由
 
@@ -419,9 +419,11 @@ dns:
   fallback: []
 ```
 
-这里新增了 DNS 部分的配置，是因为在 Clash verge rev 中如果开启 tun 就会使用 Clash DNS nameserver 的功能
+这里新增了 DNS 部分的配置，是因为在 Clash verge rev 中如果开启 tun 就会使用 Clash DNS 的功能（DNS 的流量也被会 Clash 处理）
 具体代码逻辑可以看 [clash-verge-rev/src-tauri/src/enhance/tun.rs at main · clash-verge-rev/clash-verge-rev · GitHub](https://github.com/clash-verge-rev/clash-verge-rev/blob/main/src-tauri/src/enhance/tun.rs) (Clash verge rev 和 mihomo core 的默认配置不同，具体看代码)
 ```ts
+fn use_dns_for_tun(mut config: Mapping) -> Mapping {
+	 ...
     // 开启tun将同时开启dns
     revise!(dns_val, "enable", true);
 
@@ -433,6 +435,8 @@ dns:
         vec!["114.114.114.114", "223.5.5.5", "8.8.8.8"]
     );
     append!(dns_val, "fallback", vec![] as Vec<&str>);
+    ...
+}
 ```
 
 `enhanced-mode: fake-ip` 是 Clash 中另外一特性，后面单独讲。为了控制变量，这里通过 Clash verge rev 的 Global Extend Config 将 `enhancemod` 置为 normal
@@ -506,8 +510,8 @@ type: A
 class: IN
 ```
 
-这个 UDP 报文就会通过 Tun network device (这个例子中就是 Mihomo) 发送给 Mihomo core
-Mihomo core 在收到报文后按照 rules 去匹配规则。因为这个是一个私网 IP，机场下发的配置中通常会将其定义为 Direct 策略
+这个 UDP 报文就会通过 Tun network device (这个例子中就是 Mihomo) 发送给 mihomo core
+mihomo core 在收到报文后按照 rules 去匹配规则。因为这个是一个私网 IP，机场下发的配置中通常会将其定义为 Direct 策略
 ```
 - IP-CIDR,172.16.0.0/12,DIRECT
 ```
@@ -520,7 +524,119 @@ Mihomo core 在收到报文后按照 rules 去匹配规则。因为这个是一�
   - 8.8.8.8
 ```
 
-那么 Clash 在收到上面的 UDP 报文后，会对 UDP 报文解封装，并按照配置中的 nameserver 对报文重新封装
+那么 Clash 在解析配置文件的时候，会生成一个 `NameServer[]` slice
+具体代码看 [mihomo/config/config.go at Meta · MetaCubeX/mihomo · GitHub](https://github.com/MetaCubeX/mihomo/blob/Meta/config/config.go) `func parseNameServer(servers []string, respectRules bool, preferH3 bool) ([]dns.NameServer, error)` 和 `func parsePureDNSServer(server string) string`
+```go
+[
+	{ 
+		Net: udp
+		Addr: 114.114.114.114:53
+		ProxyName: ""
+		Params: ""
+		PerferH3: preferH3
+	},
+	{ 
+		 Net: udp
+		 Addr: 223.5.5.5:53
+		 ProxyName: ""
+		 Params: ""
+		 PerferH3: preferH3
+	},
+	{ 
+		Net: udp
+		Addr: 8.8.8.8:53
+		ProxyName: ""
+		Params: ""
+		PerferH3: preferH3
+	}
+]
+```
+
+这个 slice 会通过 `dns.NewResolver(cfg)` 被调用生成一个 resolver，然后赋值给 `mihomo.component.resolve.DefaultResolver` 类变量 
+具体代码看 [mihomo/hub/executor/executor.go at Meta · MetaCubeX/mihomo · GitHub](https://github.com/MetaCubeX/mihomo/blob/Meta/hub/executor/executor.go)
+```go
+import {
+	...
+	"github.com/metacubex/mihomo/component/resolver"
+	...
+}
+
+func updateDNS(c *config.DNS, generalIPv6 bool) {
+	...
+	cfg := dns.Config{
+		Main:         c.NameServer,
+		Fallback:     c.Fallback,
+		IPv6:         c.IPv6 && generalIPv6,
+		IPv6Timeout:  c.IPv6Timeout,
+		EnhancedMode: c.EnhancedMode,
+		Pool:         c.FakeIPRange,
+		Hosts:        c.Hosts,
+		FallbackFilter: dns.FallbackFilter{
+			GeoIP:     c.FallbackFilter.GeoIP,
+			GeoIPCode: c.FallbackFilter.GeoIPCode,
+			IPCIDR:    c.FallbackFilter.IPCIDR,
+			Domain:    c.FallbackFilter.Domain,
+			GeoSite:   c.FallbackFilter.GeoSite,
+		},
+		Default:        c.DefaultNameserver,
+		Policy:         c.NameServerPolicy,
+		ProxyServer:    c.ProxyServerNameserver,
+		Tunnel:         tunnel.Tunnel,
+		CacheAlgorithm: c.CacheAlgorithm,
+	}
+	
+	r := dns.NewResolver(cfg)
+	...
+	resolver.DefaultResolver = r
+	resolver.DefaultHostMapper = m
+	resolver.DefaultLocalServer = dns.NewLocalServer(r, m)
+	resolver.UseSystemHosts = c.UseSystemHosts
+	...
+}
+```
+
+这个生成的 resolver 会使用配置中指定的 nameservers
+具体代码看 [mihomo/dns/resolver.go at Meta · MetaCubeX/mihomo · GitHub](https://github.com/MetaCubeX/mihomo/blob/Meta/dns/resolver.go)
+```go
+func NewResolver(config Config) *Resolver {
+		...
+		r := &Resolver{
+			ipv6:        config.IPv6,
+			// 指定 DNS Nameservers
+			main:        cacheTransform(config.Main),
+			cache:       cache,
+			hosts:       config.Hosts,
+			ipv6Timeout: time.Duration(config.IPv6Timeout) * time.Millisecond,
+		}
+		...
+	return r
+}
+```
+
+当 TUN network 收到报文后，就会调用 `func (d *DNSDialer) ListenPacket(ctx context.Context, network, addr string) (net.PacketConn, error)` 对 Domain 做解析
+具体代码看 [mihomo/tunnel/dns\_dialer.go at Meta · MetaCubeX/mihomo · GitHub](https://github.com/MetaCubeX/mihomo/blob/Meta/tunnel/dns_dialer.go)
+```go
+import (
+	...
+	"github.com/metacubex/mihomo/component/resolver"
+	...
+)
+...
+func (d *DNSDialer) ListenPacket(ctx context.Context, network, addr string) (net.PacketConn, error) {
+	...
+	if !metadata.Resolved() {
+		// udp must resolve host first
+		dstIP, err := resolver.ResolveIPWithResolver(ctx, metadata.Host, r)
+		if err != nil {
+			return nil, err
+		}
+		metadata.DstIP = dstIP
+	}
+	...
+}
+```
+
+所以在 Clash 在收到上面的 UDP 报文后，会对 UDP 报文解封装，并按照配置中的 nameserver 对报文重新封装(10.100.4.222 为公网互联 IP address)
 ```
 src: 10.100.4.222
 sport: random
@@ -531,26 +647,12 @@ type: A
 class: IN
 ```
 
-10.100.4.222 是
-
-具体代码逻辑可以看
-
-```
-
-```
+从 wireshark 抓包的结果中可知，会同时向 172.18.10.11, 114.114.114.114, 223.5.5.5, 8.8.8.8 这 4 个 DNS nameserver 发送 DNS query request
 
 ![](https://github.com/dhay3/picx-images-hosting/raw/master/20240722/2024-07-22_19-11-14.3yecdkb9ix.webp)
 
-在没有指定 nameserver 时，
+#### Connection
 
-
-
-
-
-
-从 curl 的结果中可推出 wireshark filter 应该为
-
-`dns.qry.name eq www.google.com or tcp.port eq 39041 or ip.addr eq 142.251.42.228 or http.host eq www.google.com`
 
 
 
