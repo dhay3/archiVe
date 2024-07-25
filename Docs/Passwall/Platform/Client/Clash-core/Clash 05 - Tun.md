@@ -5,7 +5,7 @@ tags:
   - "#Clash"
 ---
 
-# Clash 06 - Tun
+# Clash 05 - Tun
 
 ## 0x01 Overview
 
@@ -454,12 +454,12 @@ $ ip a s dev Mihomo
 
 访问 `www.google.com`，由于使用 PBR 接管了系统的路由，所以无需使用 `-x socks5://` 指定 Socks server 地址，也就没有 Socks 的建立和请求响应了
 ```sh
-curl -4vLsSo /dev/null  www.google.com
+$ curl -4vLsSo /dev/null  www.google.com
 * Host www.google.com:80 was resolved.
 * IPv6: (none)
-* IPv4: 142.251.42.228
-*   Trying 142.251.42.228:80...
-* Connected to www.google.com (142.251.42.228) port 80
+* IPv4: 31.13.73.169
+*   Trying 31.13.73.169:80...
+* Connected to www.google.com (31.13.73.169) port 80
 > GET / HTTP/1.1
 > Host: www.google.com
 > User-Agent: curl/8.8.0
@@ -467,24 +467,31 @@ curl -4vLsSo /dev/null  www.google.com
 >
 * Request completely sent off
 < HTTP/1.1 200 OK
-< Date: Fri, 19 Jul 2024 03:16:38 GMT
+< Date: Thu, 25 Jul 2024 01:10:52 GMT
 < Expires: -1
 < Cache-Control: private, max-age=0
 < Content-Type: text/html; charset=ISO-8859-1
-< Content-Security-Policy-Report-Only: object-src 'none';base-uri 'self';script-src 'nonce-DaeiFXc4YsAAlWpSBDiuXA' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp
+< Content-Security-Policy-Report-Only: object-src 'none';base-uri 'self';script-src 'nonce-Eqk2rcdRc0i-2XfqaAyt9w' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp
 < P3P: CP="This is not a P3P policy! See g.co/p3phelp for more info."
 < Server: gws
 < X-XSS-Protection: 0
 < X-Frame-Options: SAMEORIGIN
-< Set-Cookie: AEC=AVYB7cq1Hu2oOj3OX9p7GT72STmkrTSAoEi7JisnWOyBsSjQfPyimgAfQA; expires=Wed, 15-Jan-2025 03:16:38 GMT; path=/; domain=.google.com; Secure; HttpOnly; SameSite=lax
-< Set-Cookie: NID=515=B_KXHOfzsSDuRHIRjTOghKjmCh0_6j-La2Px3WCAhTdcfKNtedsV0m0h2RxyxxXv3jM2hOZdEj2LGTxX1nB_m3lrvpNnUxL8YXd8ILri166g93RblVj2CKiNSGg6mqen_iA0cvspCjZ34bcJVRoA5UfDluHUA0pV3Xp9D3MF_5Q; expires=Sat, 18-Jan-2025 03:16:38 GMT; path=/; domain=.google.com; HttpOnly
+< Set-Cookie: AEC=AVYB7crRQTPB7EefzI8C-293XaQb2RgE2Qjk9mtRSZKRnpQkYF8mUnwRtw; expires=Tue, 21-Jan-2025 01:10:52 GMT; path=/; domain=.google.com; Secure; HttpOnly; SameSite=lax
+< Set-Cookie: NID=516=SSleAG_EVR4NiSn08-GHnza9eZIRqQryHtykMyC5DoyssWz_lKinMWhDBkwthWBa73pHNHS6yrUnDsq4xyc3p3K5whSWXYGslH8J3sBrAHGU3Gc_r4yIlyviv463otpyaH3iZctHi-OtixYtS-dofAFh5TINIsAmaI_KOF-V8oA; expires=Fri, 24-Jan-2025 01:10:52 GMT; path=/; domain=.google.com; HttpOnly
 < Accept-Ranges: none
 < Vary: Accept-Encoding
 < Transfer-Encoding: chunked
 <
-{ [4997 bytes data]
+{ [9093 bytes data]
 * Connection #0 to host www.google.com left intact
+
 ```
+
+从 curl 的结果中可推出 wireshark filter 应该为
+
+`dns.qry.name eq www.google.com and not icmp or tcp.port eq 39041 or ip.addr eq 31.13.73.169`
+
+![](https://github.com/dhay3/picx-images-hosting/raw/master/20240725/2024-07-25_09-19-29.5c0vlas394.webp)
 
 #### `www.google.com` DNS Resolution
 
@@ -636,7 +643,7 @@ func (d *DNSDialer) ListenPacket(ctx context.Context, network, addr string) (net
 }
 ```
 
-所以在 Clash 在收到上面的 UDP 报文后，会对 UDP 报文解封装，并按照配置中的 nameserver 对报文重新封装(10.100.4.222 为公网互联 IP address)
+所以 Clash 除了会对 172.18.10.11 发送 DNS query request，还会向配置中的 nameserver 发送 DNS query request(10.100.4.222 为公网互联 IP address)
 ```
 src: 10.100.4.222
 sport: random
@@ -647,18 +654,19 @@ type: A
 class: IN
 ```
 
-从 wireshark 抓包的结果中可知，会同时向 172.18.10.11, 114.114.114.114, 223.5.5.5, 8.8.8.8 这 4 个 DNS nameserver 发送 DNS query request
+在 Wireshark 中的表现为
+![](https://github.com/dhay3/picx-images-hosting/raw/master/20240725/2024-07-25_09-20-56.9kg2v4k8bt.webp)
 
-![](https://github.com/dhay3/picx-images-hosting/raw/master/20240722/2024-07-22_19-11-14.3yecdkb9ix.webp)
+#### Request Proxy and Response
 
-#### Connection
+在获取到解析的记录值后，就发起请求建立 TCP 连接了
 
+![](https://github.com/dhay3/picx-images-hosting/raw/master/20240725/2024-07-25_09-23-46.7p6w0xngv.webp)
 
-
-
-## 0x04 System proxy vs Clash tun
-
-
+从 frame 25th to frame 34th 可以推出如下几点
+1. 会使用返回的第一个 DNS qry reponse 的记录值做 TCP 连接，这里为 223.5.5.5 返回的 31.13.73.169
+2. 198.18.0.1 和 31.13.73.169 建立的连接其实是假的，从 `ip.ttl == 64` 可以推出，逻辑上也不必和 31.13.73.169 直接建立连接，因为需要按照 rules 分流
+3. 会在发出应用层报文后和代理建立 WS TCP 连接，frame 35th 开始和代理建立连接
 
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
