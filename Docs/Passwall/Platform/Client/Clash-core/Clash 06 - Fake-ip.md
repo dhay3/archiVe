@@ -60,7 +60,7 @@ Gateway 就是为了解决 heterogeneous 的通信问题
 ### DNS Name Resolving Procedure
 
 在网络通信的过程中，我们必须要先获取 IP 地址，才能通信或者转发数据包。如果数据包中是一个域名，就会触发 DNS 解析的机制(不考虑 PTR)。
-现在我们要让 Client C 访问 Destination D。如果 DNS 解析是在 Client C 上发生的，因为在没有 IPv Y 的情况下，DNS Nameserver 就不会返回 IPv Y 的记录值。那么 Client C 就不能和 Destination D 通过 Gateway G 建立连接，同样的如果 Destination 想要访问 Client C，DNS Nameserver 也不会返回 IPv X 的记录值。所有显然 DNS 解析的过程需要发生在 Gateway G 上（必须是 Dual Stack）
+现在我们要让 Client C 访问 Destination D。如果 DNS 解析是在 Client C 上发生的，因为在没有 IPv Y 的情况下，DNS Nameserver 即使返回 IPv Y 的记录值，Client C 也只会使用 IPv X 的记录值。那么 Client C 就不能和 Destination D 通过 Gateway G 建立连接，同样的如果 Destination D 想要访问 Client C，即使 DNS Nameserver 返回 IPv X 的记录值，Destination D 只会使用 IPv Y 的记录值。所有显然 DNS 解析的过程需要发生在 Gateway G 上（必须是 Dual Stack）
 
 但是 DNS 的逻辑中，系统默认只会使用返回的第一条 DNS 记录。而系统通常也会有一个 Local DNS Nameserver，这个 Local DNS 和 Gateway G 同时做 DNS 解析。通过网络传输，系统有可能会使用 Local DNS Nameserver 的记录值，也可能会使用 Gateway G 返回的记录值。所以引入一个 **Fake IP** 的逻辑
 
@@ -175,7 +175,7 @@ curl ipinfo.io/172.253.63.147
 }% 
 ```
 
-所以 DNS 解析的结果不一定能用，而 Fake IP 就是解决这个问题的一种方案
+所以 DNS 解析的结果不一定能用，而 Fake IP 就是解决这个问题的一种方案。==逻辑上就是让 Clash 接管所有的 DNS 流量，Local DNS Nameserver 不会参与 DNS 的处理==
 
 ## 0x02 Clash Fake IP
 
@@ -393,11 +393,258 @@ $ curl -vLsSo /dev/null  www.google.com
 
 在 wireshark 中的表现为
 
-![](https://github.com/dhay3/picx-images-hosting/raw/master/20240726/2024-07-26_09-48-05.99t93fjpb8.webp)
+![](https://github.com/dhay3/picx-images-hosting/raw/master/20240726/2024-07-26_09-48-05.2ven7w4x99.webp)
+
+#### Fake IP DNS Resolution
+
+> frame 17th/frame 18th
+
+Clash 会将 Fake IP 和 `www.google.com` 做一个映射，并将 Fake IP 返回
+
+代码逻辑和 [Clash 05 - Tun](Clash%2005%20-%20Tun.md) 中的 Tun enabled 类似，从 [mihomo/hub/executor/executor.go at Meta · MetaCubeX/mihomo · GitHub](https://github.com/MetaCubeX/mihomo/blob/Meta/hub/executor/executor.go) 中的 `func updateDNS(c *config.DNS, generalIPv6 bool)` 开始看
+
+```go
+func updateDNS(c *config.DNS, generalIPv6 bool) {
+	...
+	cfg := dns.Config{
+		Main:         c.NameServer,
+		Fallback:     c.Fallback,
+		IPv6:         c.IPv6 && generalIPv6,
+		IPv6Timeout:  c.IPv6Timeout,
+		EnhancedMode: c.EnhancedMode,
+		Pool:         c.FakeIPRange,
+		Hosts:        c.Hosts,
+		FallbackFilter: dns.FallbackFilter{
+			GeoIP:     c.FallbackFilter.GeoIP,
+			GeoIPCode: c.FallbackFilter.GeoIPCode,
+			IPCIDR:    c.FallbackFilter.IPCIDR,
+			Domain:    c.FallbackFilter.Domain,
+			GeoSite:   c.FallbackFilter.GeoSite,
+		},
+		Default:        c.DefaultNameserver,
+		Policy:         c.NameServerPolicy,
+		ProxyServer:    c.ProxyServerNameserver,
+		Tunnel:         tunnel.Tunnel,
+		CacheAlgorithm: c.CacheAlgorithm,
+	}
+
+	r := dns.NewResolver(cfg)
+	pr := dns.NewProxyServerHostResolver(r)
+	m := dns.NewEnhancer(cfg)
+	...
+	resolver.DefaultResolver = r
+	resolver.DefaultHostMapper = m
+	resolver.DefaultLocalServer = dns.NewLocalServer(r, m)
+	resolver.UseSystemHosts = c.UseSystemHosts
+}
+```
+
+`m := dns.NewEnhancer(cfg)` 会按照 `enhance-mode` 生成一个 ResolverEnhancer 包含 Fake IP Pool 以及一个映射表。然后将 Resolver 和 ResolverEnhancer 组合生成一个 Handler 赋值给 `resolver.DefaultLocalServer`
+
+具体代码看 [mihomo/dns/middleware.go at Meta · MetaCubeX/mihomo · GitHub](https://github.com/MetaCubeX/mihomo/blob/Meta/dns/middleware.go) `func NewHandler(resolver *Resolver, mapper *ResolverEnhancer) handler`
+
+```go
+func NewHandler(resolver *Resolver, mapper *ResolverEnhancer) handler {
+	middlewares := []middleware{}
+
+	if resolver.hosts != nil {
+		middlewares = append(middlewares, withHosts(R.NewHosts(resolver.hosts), mapper.mapping))
+	}
+
+	if mapper.mode == C.DNSFakeIP {
+		middlewares = append(middlewares, withFakeIP(mapper.fakePool))
+	}
+
+	if mapper.mode != C.DNSNormal {
+		middlewares = append(middlewares, withMapping(mapper.mapping))
+	}
+
+	return compose(middlewares, withResolver(resolver))
+}
+
+```
+
+当 `enhanced-mode` 为 fake-ip 时，会通过 `withFakeIP(mapper.fakePool)` 将对应的 mapping 通过 msg 返回
+
+```go
+func withFakeIP(fakePool *fakeip.Pool) middleware {
+			...
+			rr := &D.A{}
+			rr.Hdr = D.RR_Header{Name: q.Name, Rrtype: D.TypeA, Class: D.ClassINET, Ttl: dnsDefaultTTL}
+			ip := fakePool.Lookup(host)
+			rr.A = ip.AsSlice()
+			msg := r.Copy()
+			msg.Answer = []D.RR{rr}
+			...
+			msg.SetRcode(r, D.RcodeSuccess)
+			msg.Authoritative = true
+			msg.RecursionAvailable = true
+
+			return msg, nil
+		}
+	}
+}
+```
+
+而其中的核心就是 [mihomo/component/fakeip/pool.go at Meta · MetaCubeX/mihomo · GitHub](https://github.com/MetaCubeX/mihomo/blob/Meta/component/fakeip/pool.go) `func (p *Pool) Lookup(host string) netip.Addr`
+
+```go
+// Lookup return a fake ip with host
+func (p *Pool) Lookup(host string) netip.Addr {
+	p.mux.Lock()
+	defer p.mux.Unlock()
+
+	// RFC4343: DNS Case Insensitive, we SHOULD return result with all cases.
+	host = strings.ToLower(host)
+	if ip, exist := p.store.GetByHost(host); exist {
+		return ip
+	}
+
+	ip := p.get(host)
+	p.store.PutByHost(host, ip)
+	return ip
+}
+```
+
+当 HOST 有对应的映射时，会直接通过 `p.store.GetByHost(host)` 获取对应的 IP，当 HOST 没有对应的映射时，通过 `p.store.PutByHost(host, ip)` 将映射存储在 bbolt 中
+
+这里看一下当没有对应映射的逻辑。这时会通过 `p.get(host)` 获取一个 Fake IP(地址循环递增)，并将 Fake IP 和 HOST 映射存储在 bbolt 中，同时在 `func (p *Pool) Lookup(host string) netip.Addr` 中也会将 HOST 和 Fake IP 映射存储在 bbolt 中。这样不管你是用 Host 或者是 Fake IP 都能按照 Rules 进行分流代理
+
+```go
+func (p *Pool) get(host string) netip.Addr {
+	p.offset = p.offset.Next()
+
+	if !p.offset.Less(p.last) {
+		p.cycle = true
+		p.offset = p.first
+	}
+
+	if p.cycle || p.store.Exist(p.offset) {
+		p.store.DelByIP(p.offset)
+	}
+
+	p.store.PutByIP(p.offset, host)
+	return p.offset
+}
+```
+
+DNS 部分剩下的逻辑和 [Clash 05 - Tun](Clash%2005%20-%20Tun.md) 中 Clash Tun Enabled 相同，会使用第一个返回记录值 31.13.73.9 作为真实的 Destination
+
+这里我们可以对这部分做一个实验
+
+> 这样不管你是用 Host 或者是 Fake IP 都能按照 Rules 进行分流代理
+
+先使用 curl 访问 `example.org`
+
+```sh
+ curl -4vLsS example.org
+* Host example.org:80 was resolved.
+* IPv6: (none)
+* IPv4: 198.40.0.14
+*   Trying 198.40.0.14:80...
+* Connected to example.org (198.40.0.14) port 80
+> GET / HTTP/1.1
+> Host: example.org
+> User-Agent: curl/8.8.0
+> Accept: */*
+>
+* Request completely sent off
+< HTTP/1.1 200 OK
+< Accept-Ranges: bytes
+< Age: 185415
+< Cache-Control: max-age=604800
+< Content-Type: text/html; charset=UTF-8
+< Date: Fri, 26 Jul 2024 07:54:02 GMT
+< Etag: "3147526947+gzip"
+< Expires: Fri, 02 Aug 2024 07:54:02 GMT
+< Last-Modified: Thu, 17 Oct 2019 07:18:26 GMT
+< Server: ECAcc (sed/5906)
+< Vary: Accept-Encoding
+< X-Cache: HIT
+< Content-Length: 1256
+...
+
+```
+
+然后使用 telnet 手动构造一个 HTTP request
+
+```sh
+$ telnet 198.40.0.14 80
+Trying 198.40.0.14...
+Connected to 198.40.0.14.
+Escape character is '^]'.
+GET / HTTP/1.1
+HOST: example.org
 
 
+HTTP/1.1 200 OK
+Accept-Ranges: bytes
+Age: 185469
+Cache-Control: max-age=604800
+Content-Type: text/html; charset=UTF-8
+Date: Fri, 26 Jul 2024 07:54:56 GMT
+Etag: "3147526947+gzip"
+Expires: Fri, 02 Aug 2024 07:54:56 GMT
+Last-Modified: Thu, 17 Oct 2019 07:18:26 GMT
+Server: ECAcc (sed/5906)
+Vary: Accept-Encoding
+X-Cache: HIT
+Content-Length: 1256
+...
+```
+
+这里可以发现 Response Header Last-Modified 值均相同，说明可以通过这个 Fake IP 直接和 Destination 建立连接，但是有限制
+1. Cache 会过期
+2. Fake IP Pool 有范围
+
+#### Request Proxy and Response
+
+> frame 35th/ frame 62th to frame 180th
+
+细心的人可能已经发现，TCP three-way handshake 竟然发生在了 DNS qry reponse 之前
+
+![](https://github.com/dhay3/picx-images-hosting/raw/master/20240726/2024-07-26_15-33-27.9dcv1howm0.webp)
+
+因为 Clash 为了提高效率，让这一过程异步发生了（目前未找到代码的佐证，先自圆其说）
+
+剩下 frame 62th to frame 180th 就是发送请求并响应关闭 TCP 连接
+
+![](https://github.com/dhay3/picx-images-hosting/raw/master/20240726/2024-07-26_15-29-57.7p3i4au77m.webp)
+
+
+## 0x03 Clash Fake IP Drawback
+
+> 这里有一个隐含的条件就是开启了 Clash Tun，只有开启 Clash Tun 才能真正利用 Fake IP
+
+说了这么多 Fake IP 的好处，以及原理。但是 Fake IP 并不是只有好处的。缺点很明显，就是不能直观的获取域名实际对应的解析，即使你指定 DNS Nameserver
+
+```sh
+$ dig @8.8.8.8 +nocookie google.com
+
+; <<>> DiG 9.18.27 <<>> @8.8.8.8 +nocookie google.com
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 32843
+;; flags: qr aa rd ra ad; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; MBZ: 0x0001, udp: 1232
+;; QUESTION SECTION:
+;google.com.                    IN      A
+
+;; ANSWER SECTION:
+google.com.             1       IN      A       198.40.0.28
+
+;; Query time: 0 msec
+;; SERVER: 8.8.8.8#53(8.8.8.8) (UDP)
+;; WHEN: Fri Jul 26 16:05:28 CST 2024
+;; MSG SIZE  rcvd: 55
+```
 
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
 
 **references**
+
+[^1]:[关于 Clash 科学上网的最佳实践](https://www.pupboss.com/post/2024/clash-tun-fake-ip-best-practice/#topic-2)
