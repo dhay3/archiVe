@@ -12,22 +12,26 @@ tags:
 > [!NOTE]
 > Prequestion: [Clash 05 - Tun](Clash%2005%20-%20Tun.md)
 
-fake-ip 是 Clash 中防止 DNS Pollution 的一种手段。这一的概念来自 [RFC3089](https://tools.ietf.org/rfc/rfc3089)
+Fake IP 是 Clash 中防止 DNS Pollution 的一种手段
+
+在详细介绍 Fake IP 前，我们需要知道 Fake IP 出现的背景
 
 ## 0x01 Originate
 
-在介绍 fake-ip 前，需要先明白为什么需要 fake-ip，以及 fake-ip 是为了解决什么
+Fake IP 这一的概念来自 [RFC3089](https://tools.ietf.org/rfc/rfc3089)
 
 ### Socks-based IPv4/IPv6 Gateway Mechanism
 
-我们都知道 IPv4 的地址可以和 IPv4 的地址互相通信，IPv6 的地址可以和 IPv6 的地址互相通信。现在想要 IPv4 的地址和 IPv6 的地址互相通信，那么就需要借助 Gateway 即
+我们都知道 IPv4 的地址可以和 IPv4 的地址互相通信，IPv6 的地址可以和 IPv6 的地址互相通信。现在想要 IPv4 的地址和 IPv6 的地址互相通信，那么就需要借助 Gateway(必须 Dual Stack)
 
-- A      IPv4     IPv4       homogeneous
-- B      IPv4     IPv6       heterogeneous
+例如
+
+- A      IPv4     IPv4       homogeneous(同质)
+- B      IPv4     IPv6       heterogeneous(异质)
 - C      IPv6     IPv4       heterogeneous
 - D      IPv6     IPv6       homogeneous
 
-Gateway 就是为了解决 heterogeneous 的通信问题
+而 Gateway 就是为了解决 heterogeneous 的通信问题
 
 假设 Client C IPv X 想要访问 Destination D IPvY
 
@@ -56,8 +60,9 @@ Gateway 就是为了解决 heterogeneous 的通信问题
 
 这一机制也被称为 **Socks-based IPv4/IPv6 Gateway Mechanism**
 
+但是这里并没有考虑到 DNS 的存在
 
-### DNS Name Resolving Procedure
+### DNS Name Resolving Procedure(Fake IP)
 
 在网络通信的过程中，我们必须要先获取 IP 地址，才能通信或者转发数据包。如果数据包中是一个域名，就会触发 DNS 解析的机制(不考虑 PTR)。
 现在我们要让 Client C 访问 Destination D。如果 DNS 解析是在 Client C 上发生的，因为在没有 IPv Y 的情况下，DNS Nameserver 即使返回 IPv Y 的记录值，Client C 也只会使用 IPv X 的记录值。那么 Client C 就不能和 Destination D 通过 Gateway G 建立连接，同样的如果 Destination D 想要访问 Client C，即使 DNS Nameserver 返回 IPv X 的记录值，Destination D 只会使用 IPv Y 的记录值。所有显然 DNS 解析的过程需要发生在 Gateway G 上（必须是 Dual Stack）
@@ -77,7 +82,7 @@ The detailed internal procedure of the "DNS name resolving delegation" and addre
 7. The *Gateway* obtains the "real IP" address from a DNS server, and creates a "socket".  The "real IP" address information is used as an element of the "socket".
 8. The *Gateway* calls socket APIs (e.g., connect()) to communicate with the Destination D.  The "socket" is used as an argument of the APIs.
 
-核心的逻辑就是 DNS 的数据包通过 SDN 传输到应用。应用在收到这个 DNS 数据包后，生成一个关于 k(Domain) v(Fake IP) 或者是 k(Fake IP) v(Domain) 的映射，并将 Fake IP 返回给 Client。然后 Client 会和 Fake IP 和建立 Socket 连接。应用在收到通过这个 Fake IP 传输的报文后，会从映射表中找到对应的 Domain，将 FQDN 转发到 Dual Stack Gateway，Gateway 解析 FQND 并和 Domain 实际的解析建连。剩下就会交给 Socks 处理
+核心的逻辑就是 DNS 的数据包传输到应用。应用在收到这个 DNS 数据包后，生成一个关于 k(Domain) v(Fake IP) 或者是 k(Fake IP) v(Domain) 的映射，并将 Fake IP 返回给 Client。然后 Client 会和 Fake IP 和建立 Socket 连接。应用在收到通过这个 Fake IP 传输的报文后，会从映射表中找到对应的 Domain，将 FQDN 转发到 Dual Stack Gateway，Gateway 解析 FQND 并和 Domain 实际的解析建连。剩下就会交给 Socks 处理
 
 ### Why Clash Needs Fake IP
 
@@ -177,7 +182,7 @@ curl ipinfo.io/172.253.63.147
 }% 
 ```
 
-所以 DNS 解析的结果不一定能用，而 Fake IP 就是解决这个问题的一种方案
+所以 DNS 解析的结果不一定能用，而 Fake IP 的逻辑就能很好的解决这个问题
 
 ## 0x02 Clash Fake IP
 
@@ -185,7 +190,7 @@ Clash Fake IP 和 RFC3089 逻辑上大体相同。只不过 Clash 自己充当�
 
 ### Clash Tun Disabled
 
-开启 Fake IP 非常简单，只需要将 `dns.enhanced-mode` 置为 `fake-ip` 即可。但是想要完全启用 Fake IP 还需要开启 Clash tun
+开启 Fake IP 非常简单，只需要将 `dns.enhanced-mode` 置为 `fake-ip` 即可。但是想要完全启用 Fake IP 还需要开启 Clash Tun(让 Clash 接管系统的 DNS 流量)
 
 例如 mihomo core 配置如下
 
@@ -609,12 +614,17 @@ Content-Length: 1256
 
 ![](https://github.com/dhay3/picx-images-hosting/raw/master/20240726/2024-07-26_15-33-27.9dcv1howm0.webp)
 
-因为 Clash 为了提高效率，让这一过程异步发生了（目前未找到代码的佐证，先自圆其说）
+回想一下 [DNS Name Resolving Procedure(Fake IP)](#DNS%20Name%20Resolving%20Procedure(Fake%20IP)) 的过程(没有找到具体佐证的代码)
+
+> 3. The application receives the "fake IP" address, and prepares a "socket".  The "fake IP" address information is used as an element of the "socket".  The application calls socket APIs (e.g. connect()) to start a communication.  The "socket" is used as an argument of the APIs.
+>  4. Since the *Socks Lib* has replaced such socket APIs, the real socket function is not called.  The IP address information of the argued socket is checked.  If the address belongs to the special address space for the fake address, the matched registered "FQDN" information of the "fake IP" address is obtained from the mapping table.
+ > 5. The "FQDN" information is transferred to the *Gateway* on the relay server (Gateway G) by using the SOCKS command that is matched to the called socket APIs.  (e.g., for connect(), the CONNECT command is used.)
+
+Client 会先和 Fake IP 建立 Socket 连接，然后将 DNS qry request 转发到 Gateway(这里是 Clash，然后让 Clash Nameservers 做解析) 
 
 剩下 frame 62th to frame 180th 就是发送请求并响应关闭 TCP 连接
 
 ![](https://github.com/dhay3/picx-images-hosting/raw/master/20240726/2024-07-26_15-29-57.7p3i4au77m.webp)
-
 
 ## 0x03 Clash Fake IP Drawback
 
