@@ -234,7 +234,7 @@ $ ip a s dev Mihomo
     }
 ```
 
-### 0x04a Clash Tun disabled
+### 0x04a Clash Tun Disabled
 
 在没有开启 Clash Tun 的情况下 Clash 全局配置如下(`mixed-port`，`socks-port`，`port` 被手动修改成 37897)
 ```yaml
@@ -385,7 +385,7 @@ Clash 在收到这个报文后就会按照 Profile Rules 去匹配，发现 142.
 10.100.4.222 对应 Inside NAT(公网 NAT 前的地址)
 120.232.63.24 对应节点的地址(推测可能走的是 IPLC)
 
-### 0x04b Tun enabled
+### 0x04b Tun Enabled
 
 在开启 Clash Tun 的情况下 Clash 全局配置如下(`mixed-port`，`socks-port`，`port` 被手动修改成 37897)
 ```yaml
@@ -664,8 +664,8 @@ class: IN
 ![](https://github.com/dhay3/picx-images-hosting/raw/master/20240725/2024-07-25_09-23-46.7p6w0xngv.webp)
 
 从 frame 25th to frame 34th 可以推出如下几点
-1. 会使用返回的第一个 DNS qry reponse 的记录值做 TCP 连接，这里为 223.5.5.5 返回的 31.13.73.169
-2. 198.18.0.1 和 31.13.73.169 建立的连接其实是假的，从 `ip.ttl == 64` 可以推出，逻辑上也不必和 31.13.73.169 直接建立连接，因为需要按照 rules 分流
+1. 会使用返回的第一个 DNS qry reponse 的记录值做 TCP 连接(也就不能保证 DNS 解析结果不被污染，所以 Clash 引入一个 [Clash 06 - Fake-ip](Clash%2006%20-%20Fake-ip.md) 的功能来防止 DNS Pollution)，这里为 223.5.5.5 返回的 31.13.73.169
+2. 198.18.0.1 和 31.13.73.169 建立的连接其实是假的(SYN-ACK 由 Clash 代答)，从 `ip.ttl == 64` 可以推出，逻辑上也不必和 31.13.73.169 直接建立连接，因为需要按照 rules 分流
 3. 会在发出应用层报文后和代理建立 WS TCP 连接，frame 35th 开始和代理建立连接
 
 ---

@@ -1,3 +1,14 @@
+---
+createTime: 2024-07-25 11:28
+tags:
+  - "#hash1"
+  - "#hash2"
+---
+
+# Clash 08 - Example Configuration
+
+## 0x01 Official Configuration
+
 ```yaml
 # HTTP(S) 代理服务端口
 port: 7890
@@ -467,3 +478,12 @@ rules:
   - RULE-SET,apple,REJECT # 仅 Premium 版本支持
   - MATCH,auto
 ```
+
+## 0x02 Personal Configuration
+
+
+---
+*Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
+
+**references**
+
