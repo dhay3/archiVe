@@ -137,7 +137,7 @@ $ curl ipinfo.io/31.13.94.49
 在 United State Ashburn 的服务器上解析
 
 ```sh
-dig www.google.com
+$ dig www.google.com
 
 ; <<>> DiG 9.16.48-Ubuntu <<>> www.google.com
 ;; global options: +cmd
@@ -167,7 +167,7 @@ www.google.com.         195     IN      A       172.253.63.99
 这里可以发现 172.253.63.68/25 这个段才是 google 的
 
 ```sh
-curl ipinfo.io/172.253.63.147
+$ curl ipinfo.io/172.253.63.147
 {
   "ip": "172.253.63.147",
   "hostname": "bi-in-f147.1e100.net",
@@ -288,7 +288,7 @@ tcp              ESTAB              0                  0                        
 如果想要 curl 使用 Socks Server 做 DNS 解析，要使用 `--sock5s-hostname`
 
 ```sh
- curl -vLsSo /dev/null --socks5-hostname 127.0.0.1:37897 www.google.com
+$ curl -vLsSo /dev/null --socks5-hostname 127.0.0.1:37897 www.google.com
 *   Trying 127.0.0.1:37897...
 * Connected to 127.0.0.1 (127.0.0.1) port 37897
 * SOCKS5 connect to www.google.com:80 (remotely resolved)
@@ -546,7 +546,7 @@ DNS 部分剩下的逻辑和 [Clash 05 - Tun](Clash%2005%20-%20Tun.md) 中 Clash
 先使用 curl 访问 `example.org`
 
 ```sh
- curl -4vLsS example.org
+$ curl -4vLsS example.org
 * Host example.org:80 was resolved.
 * IPv6: (none)
 * IPv4: 198.40.0.14
@@ -602,13 +602,13 @@ Content-Length: 1256
 ...
 ```
 
-这里可以发现 Response Header Last-Modified 值均相同，说明可以通过这个 Fake IP 直接和 Destination 建立连接，但是有限制
+这里可以发现 Response Header Last-Modified 值均相同，说明可以通过这个 Fake IP 直接和 Destination 建立连接。但是有限制
 1. Cache 会过期
 2. Fake IP Pool 有范围
 
 #### Request Proxy and Response
 
-> frame 35th/ frame 62th to frame 180th
+> frame 35th/frame 62th to frame 180th
 
 细心的人可能已经发现，TCP three-way handshake 竟然发生在了 DNS qry reponse 之前
 
