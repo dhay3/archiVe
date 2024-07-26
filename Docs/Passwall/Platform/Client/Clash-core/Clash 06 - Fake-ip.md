@@ -77,6 +77,8 @@ The detailed internal procedure of the "DNS name resolving delegation" and addre
 7. The *Gateway* obtains the "real IP" address from a DNS server, and creates a "socket".  The "real IP" address information is used as an element of the "socket".
 8. The *Gateway* calls socket APIs (e.g., connect()) to communicate with the Destination D.  The "socket" is used as an argument of the APIs.
 
+核心的逻辑就是 DNS 的数据包通过 SDN 传输到应用。应用在收到这个 DNS 数据包后，生成一个关于 k(Domain) v(Fake IP) 或者是 k(Fake IP) v(Domain) 的映射，并将 Fake IP 返回给 Client。然后 Client 会和 Fake IP 和建立 Socket 连接。应用在收到通过这个 Fake IP 传输的报文后，会从映射表中找到对应的 Domain，将 FQDN 转发到 Dual Stack Gateway，Gateway 解析 FQND 并和 Domain 实际的解析建连。剩下就会交给 Socks 处理
+
 ### Why Clash Needs Fake IP
 
 那么为什么 Clash 需要 Fake IP 呢？ 可以参考一下 [关于 Clash 科学上网的最佳实践](https://www.pupboss.com/post/2024/clash-tun-fake-ip-best-practice/#topic-2) 这篇博文
@@ -175,13 +177,15 @@ curl ipinfo.io/172.253.63.147
 }% 
 ```
 
-所以 DNS 解析的结果不一定能用，而 Fake IP 就是解决这个问题的一种方案。==逻辑上就是让 Clash 接管所有的 DNS 流量，Local DNS Nameserver 不会参与 DNS 的处理==
+所以 DNS 解析的结果不一定能用，而 Fake IP 就是解决这个问题的一种方案
 
 ## 0x02 Clash Fake IP
 
+Clash Fake IP 和 RFC3089 逻辑上大体相同。只不过 Clash 自己充当了 Gateway
+
 ### Clash Tun Disabled
 
-Clash Fake IP 和 RFC3089 逻辑上大体相同。开启 Fake IP 非常简单，只需要将 `dns.enhanced-mode` 置为 `fake-ip` 即可。但是想要完全启用 Fake IP 还需要开启 Clash tun
+开启 Fake IP 非常简单，只需要将 `dns.enhanced-mode` 置为 `fake-ip` 即可。但是想要完全启用 Fake IP 还需要开启 Clash tun
 
 例如 mihomo core 配置如下
 
@@ -317,7 +321,7 @@ tcp              ESTAB              0                  0                        
 ![](https://github.com/dhay3/picx-images-hosting/raw/master/20240726/2024-07-26_09-05-42.839xusmunu.webp)
 Clash 在收到 frame 39th 和 frame 41th 的数据包后，会将这两个数据包直接转发到代理服务器。由代理服务器完成 DNS 解析以及 HTTP 请求，并将 HTTP 响应回传
 
-所以可以得出要想完全开启 Fake IP 的功能就需要，将 `enhanced-mode` 置为 `fake-ip` 且开启 Clash Tun
+所以可以得出要想完全开启 Fake IP 的功能就需要，将 `enhanced-mode` 置为 `fake-ip` 且开启 Clash Tun。从而让 Clash 接管所有的 DNS 流量，Local DNS Nameserver 不会参与 DNS 的处理
 
 ### Clash Tun Enabled
 
