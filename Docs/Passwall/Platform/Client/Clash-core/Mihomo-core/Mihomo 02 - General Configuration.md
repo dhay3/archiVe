@@ -1,8 +1,8 @@
 ---
 createTime: 2024-07-16 10:06
 tags:
-  - "#hash1"
-  - "#hash2"
+  - "#Passwall"
+  - "#Clash"
 ---
 
 # Mihomo 02 - General Configuration
@@ -89,7 +89,7 @@ log-level: info
 ipv6: true
 ```
 
-## 0x05 GEOIP
+## 0x05 GEOIP/GEOSITE
 
 ```yaml
 #geoip 数据模式
@@ -104,6 +104,12 @@ geodata-loader: memconservative
 geo-auto-update: false
 #更新间隔单位 hour
 geo-update-interval: 24
+#自定义 GEOIP/GEOSITE 下载地址
+geox-url:
+  geoip: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
+  geosite: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat"
+  mmdb: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/country.mmdb"
+  asn: "https://github.com/xishang0128/geoip/releases/download/latest/GeoLite2-ASN.mmdb"
 ```
 
 ## 0x06 Miscellaneous

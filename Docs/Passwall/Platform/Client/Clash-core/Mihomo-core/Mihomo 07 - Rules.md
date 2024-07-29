@@ -1,8 +1,8 @@
 ---
 createTime: 2024-07-29 09:12
 tags:
-  - "#hash1"
-  - "#hash2"
+  - "#Passwall"
+  - "#Clash"
 ---
 
 # Mihomo 07 - Rules

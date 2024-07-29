@@ -1,8 +1,8 @@
 ---
 createTime: 2024-07-16 11:01
 tags:
-  - "#hash1"
-  - "#hash2"
+  - "#Passwall"
+  - "#Clash"
 ---
 
 # Mihomo 03 - DNS Configuration
