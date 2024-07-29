@@ -67,7 +67,7 @@ mixed-port: 7890
 
 #### relay
 
-代理服务器作为 relay 中继，不支持 UDP，通常不会使用
+代理服务器作为 relay 中继，从而实现链式代理，不支持 UDP
 
 #### url-test
 
@@ -90,7 +90,7 @@ Proxies 向指定 URL 发送 HEAD 请求，自动选择 RTT 最小的 Proxy，�
 
 #### fall-back
 
-Proxies 向指定 URL 发送 HEAD 请求，自动选择第一格可用的 Proxy(返回报文的)，一般用作故障转移
+Proxies 向指定 URL 发送 HEAD 请求，自动选择第一个可用的 Proxy(返回报文的)，一般用作故障转移
 
 ```yaml
    proxy-groups:
@@ -205,7 +205,7 @@ IP-CIDR,91.108.4.0/22,policy,no-resolve
 
 ### 0x04a TYPE,ARGUMENT
 
-规则(类似于 iptables 中的 matches)
+和网络设备中的 ACL 相同，按照从上往下的优先级去匹配
 
 #### DOMAIN
 
@@ -448,7 +448,7 @@ MATCH,policy
 	DOMAIN-SUFFIX,google.com,SG-A1
 	```
 1. Proxy Group
-	将匹配的报文路由到指定的 Proxy Group
+	将匹配的报文路由到指定的 [0x03b Proxy Groups](#0x03b%20Proxy%20Groups)
 
 ## 0x05 DNS[^5]
 
