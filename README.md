@@ -3,7 +3,7 @@
 # TOC
 
 <!--toc start-->
-<!--f4655b60-bdf3-4068-a826-f70aa992ad7d-->
+<!--0aa22f36-4a03-4d26-8695-ef63c33a1209-->
 > [!note]
 > Created by Github Workflows
 
@@ -229,6 +229,7 @@
     - [Client](Docs/Passwall/Platform/Client)
       - [Clash-core](Docs/Passwall/Platform/Client/Clash-core)
         - [Mihomo-core](Docs/Passwall/Platform/Client/Clash-core/Mihomo-core)
+      - [Sing-box](Docs/Passwall/Platform/Client/Sing-box)
     - [Client Server](Docs/Passwall/Platform/Client%20Server)
       - [V2ray-core](Docs/Passwall/Platform/Client%20Server/V2ray-core)
       - [Xray-core](Docs/Passwall/Platform/Client%20Server/Xray-core)
@@ -262,7 +263,7 @@
   - [Rsshub](Docs/Sundries/Rsshub)
   - [Typora](Docs/Sundries/Typora)
 
-<!--toc end-->                        
+<!--toc end-->                         
 
 ![GitHub Created At](https://img.shields.io/github/created-at/dhay3/archive)
 ![commits](https://badgen.net/github/commits/dhay3/archive/master)
