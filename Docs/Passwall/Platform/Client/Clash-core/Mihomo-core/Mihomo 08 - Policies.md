@@ -30,13 +30,13 @@ Mihomo core 的 Policies 整体和 Clash core 的相同
 
 Mihomo core 和 Clash core 一样，也支持直接使用 Proxy 做为 Policy
 
-```
+```yaml
 - DOMAIN-SUFFIX,ipinfo.io,🇯🇵日本 01 | 专线
 ```
 
 但是在 Clash verge rev 中的 Edit Rules 不能直接将 Proxy 作为 Policy。如果想要直接使用 Proxy 可以通过 Global Extend Script 实现
 
-```
+```ts
 // Define main function (script entry)
 function main(config) {
   let rules = [
@@ -53,8 +53,8 @@ function main(config) {
 可以将多个 proxies 定义成一个 proxy group，从而让某些 rules 使用这个 proxy group 实现定向分流
 
 例如
-```
-proxy-groups
+```yaml
+proxy-groups:
 	- name: 国外媒体
 	  type: select
 	  proxies:
@@ -81,7 +81,7 @@ Proxy groups 支持 5 种类型
 
 手动选择 proxy group 使用的 proxy
 
-```
+```yaml
 proxy-groups:
 - name: Proxy
   type: select
@@ -96,7 +96,7 @@ proxy-groups:
 
 Proxies 向指定 URL 发送 HEAD 请求，自动选择 RTT 最小的 Proxy，一般用作自动选择
 
-```
+```yaml
 proxy-groups:
 - name: "自动选择"
   type: url-test
@@ -113,7 +113,7 @@ proxy-groups:
 
 Proxies 向指定 URL 发送 HEAD 请求，自动选择第一个可用的 Proxy(返回报文的)，一般用作故障转移
 
-```
+```yaml
 proxy-groups:
 - name: "fallback"
   type: fallback
@@ -132,7 +132,7 @@ proxy-groups:
 1. `consistent-hashing` 将会把相同顶级域名的请求分配给策略组内的同一个代理节点
 2. `round-robin` 将会把所有的请求分配给策略组内不同的代理节点
 
-```
+```yaml
 proxy-groups:
 - name: "load-balance"
   type: load-balance
@@ -150,7 +150,7 @@ proxy-groups:
 
 按照 proxies 的先后顺序，链式代理
 
-```
+```yaml
 proxy-groups:
 # Traffic: Clash <-> http <-> vmess <-> ss1 <-> ss2 <-> Internet
 - name: "relay"

@@ -34,12 +34,14 @@ Github 提供了 [Action Market](https://github.com/marketplace?type=actions)，
 #### Essential Tools
 - [Checkout · Actions · GitHub Marketplace · GitHub](https://github.com/marketplace/actions/checkout)
 	切到指定的 branch，从而让 workflow 可以获取到 branch 中的内容(可以执行 branch 中的脚本)
+	你无需拥有 repository 的所有权也可以使用 checkout action 获取 repository 中的内容，可以参考
+	https://github.com/MetaCubeX/meta-rules-dat/blob/master/.github/workflows/run.yml
 - [Upload a Build Artifact · Actions · GitHub Marketplace · GitHub](https://github.com/marketplace/actions/upload-a-build-artifact)
 	可以将 workflow 生成的 artifact 上传到 github(会提供下载链接)
 - [Download a Build Artifact · Actions · GitHub Marketplace · GitHub](https://github.com/marketplace/actions/download-a-build-artifact)
 	可以将 workflow 生成的 artifact 下载下来
 - [Create Pull Request · Actions · GitHub Marketplace · GitHub](https://github.com/marketplace/actions/create-pull-request)
-	PRs
+	生成 PRs
 - [Setup Python · Actions · GitHub Marketplace · GitHub](https://github.com/marketplace/actions/setup-python)
 	设置 Python 环境
 - [Setup Java JDK · Actions · GitHub Marketplace · GitHub](https://github.com/marketplace/actions/setup-java-jdk)

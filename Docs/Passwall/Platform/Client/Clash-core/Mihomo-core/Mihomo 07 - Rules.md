@@ -247,6 +247,9 @@ Mihomo 支持如下几种 Rules
 
 ### 0x03a rule-providers
 
+> 推荐使用 [ios\_rule\_script/rule/Clash at master · blackmatrix7/ios\_rule\_script · GitHub](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash) 作为上游
+> 参考 [GitHub - Loyalsoldier/clash-rules: 🦄️ 🎃 👻 Clash Premium 规则集(RULE-SET)，兼容 ClashX Pro、Clash for Windows 等基于 Clash Premium 内核的客户端。](https://github.com/Loyalsoldier/clash-rules?tab=readme-ov-file)
+
 具体字段含义看 [规则集合 - 虚空终端 Docs](https://wiki.metacubex.one/config/rule-providers/)
 
 ```yaml
@@ -255,7 +258,7 @@ rule-providers:
     type: http
     path: ./rule1.yaml 
     url: "https://raw.githubusercontent.com/../Google.yaml"
-    interval: 600
+    interval: 1440
     proxy: DIRECT
     behavior: classical
     format: yaml
