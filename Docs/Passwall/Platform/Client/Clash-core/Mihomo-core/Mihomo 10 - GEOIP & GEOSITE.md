@@ -36,32 +36,41 @@ GEOIP 和 GEOSITE 分别是 Internet geolocation 的 2 种实现
 > [!NOTE] 
 > 这里不分析 V2ray-core 的代码
 
-Mihomo 查询 geoip.dat 和 geosite.dat 的这种机制继承自 V2ray-core[^2]
+Mihomo GEOIP GEOSITE 的逻辑继承自 V2ray-core[^2]
 
 例如 
 
-v2ray core 配置中的 `geoip:` 和 `geosite:` 指令分别查询 geoip.dat 和 geosite.dat
+v2ray core 配置中指定 `geoip:` 或者 `geosite:` 指令，会分别查询 geoip.dat 和 geosite.dat。当有因子命中时，会打上指定的 Tag，然后按照 Tag 执行指定的出站策略
 
 ```json
-      "ip": [
-           "0.0.0.0/8",
-           "10.0.0.0/8",
-           "fc00::/7",
-           "fe80::/10",
-           "geoip:cn",
-           "geoip:!cn",
-           "ext:customizedGeoIPFile.dat:cn",
-           "ext:customizedGeoIPFile.dat:!cn",
-           "ext-ip:customizedGeoIPFile.dat:cn",
-           "ext-ip:customizedGeoIPFile.dat:!cn"
-       ],
-       "domains": [
-           "baidu.com",
-           "qq.com",
-           "geosite:cn",
-           "ext:customizedGeoSiteFile.dat:cn"
-       ],
-   ```
+{
+    "domainMatcher": "mph",
+    "type": "field",
+    "domains": [
+        "geosite:cn"
+    ],
+    "ip": [
+        "geoip:cn",
+    ],
+    "port": "53,443,1000-2000",
+    "sourcePort": "53,443,1000-2000",
+    "network": "tcp",
+    "user": [
+        "love@v2ray.com"
+    ],
+    "inboundTag": [
+        "tag-vmess"
+    ],
+    "protocol": [
+        "http",
+        "tls",
+        "bittorrent"
+    ],
+    "attrs": "attrs[':method'] == 'GET'",
+    "outboundTag": "direct",
+    "balancerTag": "balancer"
+}
+```
 
 ### 0x02a geoip.dat
 
@@ -118,17 +127,6 @@ geosite:steam@cn
 
 ## 0x03 Mihomo GEOIP/GEOSITE
 
-
-
-
-
-
-
-
-
-
-
-
 Mihomo core 通过 GEOIP 和 GEOSITE 指令分别查询 geoip.dat 和 geosite.dat
 
 ```yaml
@@ -138,9 +136,7 @@ Mihomo core 通过 GEOIP 和 GEOSITE 指令分别查询 geoip.dat 和 geosite.da
 - GEOSITE,category-ads-all,REJECT
 ```
 
-Mihomo core 和 V2ray core 的 geoip 和 geosite 使用的逻辑上大体相同，但是 2 者的  geoip.dat 和 geosite.dat 绝对不能混用，后面会分析
-
-Mihomo core 默认会从 [GitHub - MetaCubeX/meta-rules-dat: rules-dat for mihomo](https://github.com/MetaCubeX/meta-rules-dat?tab=readme-ov-file) 同步 geoip.dat 和 geosite.dat(具体代码看 [mihomo/config/config.go at Meta · MetaCubeX/mihomo · GitHub](https://github.com/MetaCubeX/mihomo/blob/Meta/config/config.go))
+而在 [Mihomo 09 - Configuration Procedure](Mihomo%2009%20-%20Configuration%20Procedure.md) 中分析了 Clash 解析配置的过程，显然可以得出默认会使用如下几个链接获取 GEOIP GEOSITE 相关的信息
 
 ```go
 		...
@@ -153,9 +149,7 @@ Mihomo core 默认会从 [GitHub - MetaCubeX/meta-rules-dat: rules-dat for mihom
 		...
 ```
 
-
-
-但是在 GUI client 中同步方式可能不一样。但是在 Clash Verge Rev 会同样使用 MetaCubeX/meta-rules-dat 中的 geoip.dat 和 geosite.dat(具体代码看 [clash-verge-rev/scripts/check.mjs at main · clash-verge-rev/clash-verge-rev · GitHub](https://github.com/clash-verge-rev/clash-verge-rev/blob/main/scripts/check.mjs))
+但是在 GUI client 中同步方式可能不一样。但在 Clash Verge Rev 会同样使用 MetaCubeX/meta-rules-dat 中的 geoip.dat 和 geosite.dat(具体代码看 [clash-verge-rev/scripts/check.mjs at main · clash-verge-rev/clash-verge-rev · GitHub](https://github.com/clash-verge-rev/clash-verge-rev/blob/main/scripts/check.mjs))
 
 ```ts
 const resolveMmdb = () =>
@@ -175,6 +169,7 @@ const resolveGeoIP = () =>
   });
 ```
 
+ 
 ### 0x03a geoip.dat
 
 Mihomo core 使用的 geoip.dat 虽然来自 MetaCubeX/meta-rules-dat 但是实际来自 [Loyalsoldier/v2ray-rules-dat](https://github.com/Loyalsoldier/v2ray-rules-dat) (README 中已经声明) 
@@ -326,25 +321,105 @@ Mihomo 中通过 `GEOSITE` 指令来查询 geosite.dat
 
 GEOSITE 所有可用的参数可以参考 [meta-rules-dat/geo/geosite at meta · MetaCubeX/meta-rules-dat · GitHub](https://github.com/MetaCubeX/meta-rules-dat/tree/meta/geo/geosite) 中的文件名
 
-### 0x03c dat db metadb[^5]
+### 0x03c File Formats[^5]
+
+> [!NOTE] 
+> 以 geoip 为切入点，geosite 逻辑上相同
 
 MetaCubeX/meta-rules-dat 中关于 geoip geosite 有 3 种格式的文件，但是文档里并没有介绍几者之间的区别。如果我们要想搞清楚区别，就需要从 Mihomo 源码入手
 
+#### db metadb
 
+geoip.db 和 geoip.metadb 会在 [func (p \*path) MMDB()](https://github.com/MetaCubeX/mihomo/blob/Meta/constant/path.go#L95) 中被引用
 
+```go
+func (p *path) MMDB() string {
+	files, err := os.ReadDir(p.homeDir)
+	if err != nil {
+		return ""
+	}
+	for _, fi := range files {
+		if fi.IsDir() {
+			// 目录则直接跳过
+			continue
+		} else {
+			if strings.EqualFold(fi.Name(), "Country.mmdb") ||
+				strings.EqualFold(fi.Name(), "geoip.db") ||
+				strings.EqualFold(fi.Name(), "geoip.metadb") {
+				GeoipName = fi.Name()
+				return P.Join(p.homeDir, fi.Name())
+			}
+		}
+	}
+	return P.Join(p.homeDir, "geoip.metadb")
+}
+```
 
+然后会在 [IPInstance()](https://github.com/MetaCubeX/mihomo/blob/Meta/component/mmdb/mmdb.go#L60) 被调用
 
+```go
+func IPInstance() IPReader {
+	IPonce.Do(func() {
+		mmdbPath := C.Path.MMDB()
+		log.Infoln("Load MMDB file: %s", mmdbPath)
+		mmdb, err := maxminddb.Open(mmdbPath)
+		if err != nil {
+			log.Fatalln("Can't load MMDB: %s", err.Error())
+		}
+		IPreader = IPReader{Reader: mmdb}
+		switch mmdb.Metadata.DatabaseType {
+		case "sing-geoip":
+			IPreader.databaseType = typeSing
+		case "Meta-geoip0":
+			IPreader.databaseType = typeMetaV0
+		default:
+			IPreader.databaseType = typeMaxmind
+		}
+	})
 
-除了 geoip.dat 和 geosite.dat 你在 MetaCubeX/meta-rules-dat 上还会看到 geoip.db geoip.metadb geosite.db geosite.meta
+	return IPreader
+}
+```
 
-实际上 db 结尾的文件是用于 singbox 的，而 meta 结尾的文件是用于 meta 的
+这里可以看到会根据 `maxminddb.Open(mmdbPath)` 封装的 `mmdb.Metadata.DatabaseType` 类型来生成 IPreader。 
 
-这点可以从 workflows 中大概推测出来
+而 IPreader 会在 [Match(metadata \*C.Metadata)](https://github.com/MetaCubeX/mihomo/blob/Meta/rules/common/geoip.go#L34) 中用于对比数据包中目的 IP 的 GEO CODE 和 IPreader 中载入的 geoip.db 或者是 geoip.metadb (这里只讨论目的 IP)
+
+```go
+func (g *GEOIP) Match(metadata *C.Metadata) (bool, string) {
+	ip := metadata.DstIP
+	...
+	// C.GeodataMode 取值的逻辑在 https://github.com/MetaCubeX/mihomo/blob/Meta/main.go
+	// flag.BoolVar(&geodataMode, "m", false, "set geodata mode")
+	// if geodataMode {
+	//	C.GeodataMode = true
+	//}
+	// geodataMode 需要通过 -m 参数传递，默认为 false
+	if !C.GeodataMode {
+		...
+		metadata.DstGeoIP = mmdb.IPInstance().LookupCode(ip.AsSlice())
+		for _, code := range metadata.DstGeoIP {
+			if g.country == code {
+				return true, g.adapter
+			}
+		}
+		...
+	}
+	...
+}
+```
+
+虽然 `IPInstance()` 会根据 `mmdb.Metadata.DatabaseType` 值返回不同的 IPreader，但是最后只有一个 code 会被使用到，所以 geoip.db 和 geoip.meta 在使用上其实没有什么不同(也可以得出 country.mmdb 在使用上也相同)
+
+到目前为止并不能发现有什么特殊的区别。那就需要知道 geoip.db 和 geoip.metadb 是怎么生成的，`sing-geoip` 和 `Meta-geoip0` 又是什么东西
+
+geoip.db 和 geoip.metadb 会在 [meta-rules-dat/.github/workflows/run.yml at master · MetaCubeX/meta-rules-dat · GitHub](https://github.com/MetaCubeX/meta-rules-dat/blob/master/.github/workflows/run.yml) 中生成
 
 ```yaml
       - name: Build db and metadb file
         env:
           NO_SKIP: true
+        # geo convert ip -i <input_type> -o <output_type> -f [output_filename] input_filename
         run: |
           go install -trimpath -ldflags="-s -w -buildid=" github.com/metacubex/geo/cmd/geo@master
           geo convert site -i v2ray -o sing -f geosite.db ./custom/publish/geosite.dat
@@ -355,93 +430,188 @@ MetaCubeX/meta-rules-dat 中关于 geoip geosite 有 3 种格式的文件，但�
           geo convert ip -i v2ray -o meta -f geoip-lite.metadb ./geoip-lite.dat
 ```
 
-也可以在官网得到证实 [GeoIP - sing-box](https://sing-box.sagernet.org/configuration/route/geoip/#download_detour)
+而 `sing-geoip` 和 `Meta-geoip0` 会分别在 `V2RayIPToSing(geoipList []*v2raygeo.GeoIP, output io.Writer)` 和 `V2RayIPToMetaV0(geoipList []*v2raygeo.GeoIP, output io.Writer)` 中被引用。而相应的 `V2RayIPToSing(geoipList []*v2raygeo.GeoIP, output io.Writer)` 和 `V2RayIPToMetaV0(geoipList []*v2raygeo.GeoIP, output io.Writer)` 会在 [ip(cmd \*cobra.Command, args []string)](https://github.com/MetaCubeX/geo/blob/master/cmd/geo/internal/convert/ip.go) 中被调用
 
-
-
-
-这里需要注意的一点是 Mihomo geoip.dat 和 V2ray geoip.dat 不能混用，上面的 worklflow 也已经说明了，需要经过 convert 转换才可以
-
-对比 V2ray core geoip metadb 和 Mihomo core geoip metadb 也可以证明
-
-[V2ray core geoip metadb private.txt](https://github.com/v2fly/geoip/blob/release/text/private.txt)
-
-```
-0.0.0.0/8
-10.0.0.0/8
-100.64.0.0/10
-127.0.0.0/8
-169.254.0.0/16
-172.16.0.0/12
-192.0.0.0/24
-192.0.2.0/24
-192.88.99.0/24
-192.168.0.0/16
-198.18.0.0/15
-198.51.100.0/24
-203.0.113.0/24
-224.0.0.0/3
-::/127
-fc00::/7
-fe80::/10
-ff00::/8
-```
-
-[Clash core geoip metadb private](https://github.com/MetaCubeX/meta-rules-dat/blob/meta/geo/geoip/private.yaml)
-
-> Mihomo 实际上支持多种格式 txt、mrs、txt
-
-```yaml
-payload:
-    - 0.0.0.0/8
-    - 10.0.0.0/8
-    - 100.64.0.0/10
-    - 127.0.0.0/8
-    - 169.254.0.0/16
-    - 172.16.0.0/12
-    - 192.0.0.0/24
-    - 192.0.2.0/24
-    - 192.88.99.0/24
-    - 192.168.0.0/16
-    - 198.18.0.0/15
-    - 198.51.100.0/24
-    - 203.0.113.0/24
-    - 224.0.0.0/3
-    - ::/127
-    - fc00::/7
-    - fe80::/10
-    - ff00::/8
-```
-
-
-```yaml
-    # 使用 MetaCubeX/meta-rules-converter 中的 main.go 将 geoip.dat 转为 ../meta-rule/geo/geoip 
-    # commandIP.PersistentFlags().StringVarP(&inPath, "file", "f", "", "Input File Path")
-	# commandIP.PersistentFlags().StringVarP(&outType, "type", "t", "", "Output Type")
-	# commandIP.PersistentFlags().StringVarP(&outDir, "out", "o", "", "Output Path")
-      - name: Convert geo to meta-rule-set
-        env:
-          NO_SKIP: true
-        run: |
-          mkdir -p meta-rule/geo/geosite && mkdir -p meta-rule/geo/geoip
-          cd convert
-          ...
-          go run ./ geoip -f ../geoip.dat -o ../meta-rule/geo/geoip
+```go
+...
+func init() {
+	CommandIP.PersistentFlags().StringVarP(&fromType, "from-type", "i", "", "specify input database type")
+	CommandIP.PersistentFlags().StringVarP(&toType, "to-type", "o", "meta", "set output database type")
+	CommandIP.PersistentFlags().StringVarP(&output, "output-name", "f", "", "specify output filename")
+}
+...
+func ip(cmd *cobra.Command, args []string) error {
+	var (
+		buffer   bytes.Buffer
+		...
+	)
 	...
+	fileContent, err := os.ReadFile(args[0])
+	...
+	buffer.Grow(8 * 1024 * 1024) // 8 MiB
+	...
+	switch strings.ToLower(fromType) {
+	...
+	case "v2ray":
+		var geoipList []*v2raygeo.GeoIP
+		geoipList, err = v2raygeo.LoadIP(fileContent)
+		if err != nil {
+			return err
+		}
+		switch strings.ToLower(toType) {
+		case "sing", "sing-geoip":
+			err = convert.V2RayIPToSing(geoipList, &buffer)
+			if err != nil {
+				return err
+			}
+			filename += ".db"
+
+		case "meta", "meta0", "meta-geoip0":
+			err = convert.V2RayIPToMetaV0(geoipList, &buffer)
+			if err != nil {
+				return err
+			}
+			filename += ".metadb"
+
+		default:
+			return E.New("unsupported output GeoIP database type: ", toType)
+		}
+	...
+	err = os.WriteFile(filename, buffer.Bytes(), 0o666)
+	...
+}
+
 ```
 
-```yaml
-    # 将原 v2ray 格式的 geoip.dat 转为 meta(mihomo) 格式的 metadb
-    # geo convert ip -i <input_type> -o <output_type> -f [output_filename] input_filename
-      - name: Build db and metadb file
-        env:
-          NO_SKIP: true
-        run: |
-          go install -trimpath -ldflags="-s -w -buildid=" github.com/metacubex/geo/cmd/geo@master
-          ...
-          geo convert ip -i v2ray -o meta -f geoip.metadb ./geoip.dat
-          ...
-    ...
+当 cmd 为 `geo convert ip -i v2ray -o sing -f geoip.db ./geoip.dat`，就会调用 `convert.V2RayIPToSing(geoipList, &buffer)`；当 cmd 为 `geo convert ip -i v2ray -o meta -f geoip.metadb ./geoip.dat`，就会调用 `convert.V2RayIPToMetaV0(geoipList, &buffer)`
+
+对比 `V2RayIPToSing` 和 `V2RayIPToMetaV0` 这两个函数，就可以发现
+- geoip.db 只包含 CIDR 和 GEO CODE
+- geoip.metadata 会根据 geoip.dat 中的内容，来判断生成的内容
+```go
+func V2RayIPToSing(geoipList []*v2raygeo.GeoIP, output io.Writer) error {
+	writer, err := mmdbwriter.New(mmdbwriter.Options{
+		DatabaseType: "sing-geoip",
+		Languages: common.Map(geoipList, func(it *v2raygeo.GeoIP) string {
+			return strings.ToLower(it.CountryCode)
+		}),
+		IPVersion:               6,
+		RecordSize:              24,
+		Inserter:                inserter.ReplaceWith,
+		DisableIPv4Aliasing:     true,
+		IncludeReservedNetworks: true,
+	})
+	...
+	for _, geoipEntry := range geoipList {
+		for _, cidrEntry := range geoipEntry.Cidr {
+			ipAddress := net.IP(cidrEntry.Ip)
+			...
+			ipNet := net.IPNet{
+				IP:   ipAddress,
+				Mask: net.CIDRMask(int(cidrEntry.Prefix), len(ipAddress)*8),
+			}
+			err = writer.Insert(&ipNet, mmdbtype.String(strings.ToLower(geoipEntry.CountryCode)))
+			...
+		}
+	}
+	...
+}
+
+func V2RayIPToMetaV0(geoipList []*v2raygeo.GeoIP, output io.Writer) error {
+	writer, err := mmdbwriter.New(mmdbwriter.Options{
+		DatabaseType:            "Meta-geoip0",
+		IPVersion:               6,
+		RecordSize:              24,
+		Inserter:                inserter.ReplaceWith,
+		DisableIPv4Aliasing:     true,
+		IncludeReservedNetworks: true,
+	})
+	...
+	included := make([]netip.Prefix, 0, 4*len(geoipList))
+	codeMap := make(map[netip.Prefix][]string, 4*len(geoipList))
+	for _, geoipEntry := range geoipList {
+		code := strings.ToLower(geoipEntry.CountryCode)
+		for _, cidrEntry := range geoipEntry.Cidr {
+			addr, ok := netip.AddrFromSlice(cidrEntry.Ip)
+			...
+			prefix := netip.PrefixFrom(addr, int(cidrEntry.Prefix))
+			included = append(included, prefix)
+			codeMap[prefix] = append(codeMap[prefix], code)
+		}
+	}
+	included = common.Uniq(included)
+	...
+	for _, prefix := range included {
+		ipAddress := net.IP(prefix.Addr().AsSlice())
+		ipNet := net.IPNet{
+			IP:   ipAddress,
+			Mask: net.CIDRMask(prefix.Bits(), len(ipAddress)*8),
+		}
+		codes := codeMap[prefix]
+		_, record := writer.Get(ipAddress)
+		switch typedRecord := record.(type) {
+		case nil:
+			if len(codes) == 1 {
+				record = mmdbtype.String(codes[0])
+			} else {
+				record = mmdbtype.Slice(common.Map(codes, func(it string) mmdbtype.DataType {
+					return mmdbtype.String(it)
+				}))
+			}
+		case mmdbtype.String:
+			recordSlice := make(mmdbtype.Slice, 0, 1+len(codes))
+			recordSlice = append(recordSlice, typedRecord)
+			for _, code := range codes {
+				recordSlice = append(recordSlice, mmdbtype.String(code))
+			}
+			recordSlice = common.Uniq(recordSlice)
+			if len(recordSlice) == 1 {
+				record = recordSlice[0]
+			} else {
+				record = recordSlice
+			}
+		case mmdbtype.Slice:
+			recordSlice := typedRecord
+			for _, code := range codes {
+				recordSlice = append(recordSlice, mmdbtype.String(code))
+			}
+			recordSlice = common.Uniq(recordSlice)
+			record = recordSlice
+		default:
+			panic("bad record type")
+		}
+		err = writer.Insert(&ipNet, record)
+		...
+	}
+	...
+}
+```
+
+所以结论就是 geoip.db 和 geoip.metadb 在使用其实没有什么区别(也包括 country.mmdb)，但是 geoip.metadb 包含的信息可能比 geoip.db 更多。同理 geosite
+
+#### dat
+
+在 [0x02a geoip.dat](#0x02a%20geoip.dat) workflows 部分已经分析了 Mihomo 使用的 geoip.dat 和 Loyalsoldier/geoip 中的 geoip.dat 一致，但是入口和 db 以及 metadb 并不相同
+
+```go
+func (p *path) GeoIP() string {
+	files, err := os.ReadDir(p.homeDir)
+	if err != nil {
+		return ""
+	}
+	for _, fi := range files {
+		if fi.IsDir() {
+			// 目录则直接跳过
+			continue
+		} else {
+			if strings.EqualFold(fi.Name(), "GeoIP.dat") {
+				GeoipName = fi.Name()
+				return P.Join(p.homeDir, fi.Name())
+			}
+		}
+	}
+	return P.Join(p.homeDir, "GeoIP.dat")
+}
 ```
 
 ## 0x04 Configuration

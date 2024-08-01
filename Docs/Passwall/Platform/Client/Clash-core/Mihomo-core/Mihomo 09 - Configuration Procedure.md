@@ -110,7 +110,7 @@ func Parse(buf []byte) (*Config, error) {
 }
 ```
 
-会生成一个缺省的基础的配置(**即在配置文件中虽然没有声明，但是实际会使用这些配置项**)
+会生成一个逻辑上缺省的基础配置(**即在配置文件中虽然没有声明，但是实际会使用这些配置项**)
 
 ```go
 func UnmarshalRawConfig(buf []byte) (*RawConfig, error) {
@@ -267,7 +267,7 @@ func ParseRawConfig(rawCfg *RawConfig) (*Config, error) {
 	etc.
 ```
 
-在各个 `parseXxx(cfg *RawConfig)` 中对 config 的封装类或者是对 const 赋值，例如 [parseGeneral(cfg \*RawConfig)](https://github.com/MetaCubeX/mihomo/blob/Meta/config/config.go#L638)
+在各个 `parseXxx(cfg *RawConfig)` 中对 config 的封装类或者是对 const 赋值(同时也会对`UnmarshalRawConfig(buf []byte) ` 中生产逻辑上缺省的基础配置进行覆写)，例如 [parseGeneral(cfg \*RawConfig)](https://github.com/MetaCubeX/mihomo/blob/Meta/config/config.go#L638)
 
 ```go
 func parseGeneral(cfg *RawConfig) (*General, error) {
