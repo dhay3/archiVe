@@ -3,7 +3,7 @@
 # TOC
 
 <!--toc start-->
-<!--15dc842e-f74d-4236-9200-179e82644fdd-->
+<!--4e094c34-6835-4998-8ff6-23567bdee6e0-->
 > [!note]
 > Created by Github Workflows
 
@@ -75,6 +75,7 @@
   - [IDE](Docs/Development/IDE)
     - [JetBrain](Docs/Development/IDE/JetBrain)
       - [idea](Docs/Development/IDE/JetBrain/idea)
+## [Encryption](Docs/Encryption)
 ## [English](Docs/English)
   - [Grammar](Docs/English/Grammar)
 ## [Net](Docs/Net)
@@ -245,7 +246,6 @@
     - [Hackthebox](Docs/Pentest/CTF/Hackthebox)
   - [CVE](Docs/Pentest/CVE)
   - [Cowrie](Docs/Pentest/Cowrie)
-  - [Encryption](Docs/Pentest/Encryption)
   - [Kali](Docs/Pentest/Kali)
     - [burpsuite](Docs/Pentest/Kali/burpsuite)
       - [new](Docs/Pentest/Kali/burpsuite/new)
@@ -264,7 +264,7 @@
   - [Rsshub](Docs/Sundries/Rsshub)
   - [Typora](Docs/Sundries/Typora)
 
-<!--toc end-->                           
+<!--toc end-->                            
 
 ![GitHub Created At](https://img.shields.io/github/created-at/dhay3/archive)
 ![commits](https://badgen.net/github/commits/dhay3/archive/master)
