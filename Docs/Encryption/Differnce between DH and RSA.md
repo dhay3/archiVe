@@ -1,4 +1,4 @@
-# differnce between DH and RSA
+# Differnce between DH and RSA
 
 参考：
 

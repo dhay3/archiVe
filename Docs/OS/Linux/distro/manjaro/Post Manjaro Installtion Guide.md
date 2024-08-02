@@ -200,6 +200,7 @@ latte-dock
 | brave                    | 替代 chrome                                    |
 | tor                      | 一键 tor                                       |
 | timeshift                | 备份                                           |
+| clash verge rev          | 代理客户端                                     | 
 | sweeper                  | cache 清理                                     |
 | bitwarden                | keepass                                        |
 | qbittorrent              | bt 下载                                        |

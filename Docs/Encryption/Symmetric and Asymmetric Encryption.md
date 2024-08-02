@@ -1,4 +1,4 @@
-# symmetric and asymmetric encryption
+# Symmetric and Asymmetric Encryption
 
 ## key
 
@@ -77,7 +77,7 @@ $$
 - 若 A 要抵赖曾发送报文给 B，B 可将明文和对应的密文出示给第三者。第三者很容易用 A 的公钥去证实 A 确实发送 X 给 B。
 - 反之，若 B 将 X 伪造成 X‘，则 B 不能在第三者前出示对应的密文。这样就证明了 B 伪造了报文。  
 
-<img src="/home/cpl/note/docs/Net/net security/..\..\..\imgs\_Net\计算机网络\Snipaste_2020-08-25_17-00-11.png"/>
+![](https://github.com/dhay3/picx-images-hosting/raw/master/20240802/Snipaste_2020-08-25_17-00-11.3rb4xdwx74.webp)
 
 > 非对称加密和解密是对称的，私钥和公钥可以加密也可以解密，==但是根据内容和方向分为加密和签名。==
 
