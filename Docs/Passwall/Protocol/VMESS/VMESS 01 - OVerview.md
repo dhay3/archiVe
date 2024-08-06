@@ -15,6 +15,9 @@ VMess 是一个基于 TCP 的加密协议，由 v2ray 原创。
 
 VMess 请求和响应无需握手直接可以传输数据(但是需要完成 TCP 握手)。当 VMess client 发起一次请求，VMess server 会判断请求是否来自一个合法的 client。如验证通过，则转发该请求，并把获得的响应发回给客户端。 VMess 报文使用非对称格式，即客户端发出的请求和服务器端的响应使用了不同的格式。
 
+3. VMess 使用了 UUID 替代了 Shadowsocks 中的密码
+4. VMess 基于时间，需要确保 Client/Server 差值在 正负 30 秒内
+
 ### 0x02a Client Request
 
 Request 由 3 部分组成

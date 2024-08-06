@@ -479,10 +479,6 @@ rules:
   - MATCH,auto
 ```
 
-## 0x02 Personal Configuration
-
-具体看 
-
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
 

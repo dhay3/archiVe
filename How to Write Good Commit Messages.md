@@ -1,12 +1,12 @@
 ---
-author: "0x00"
 createTime: 2024-06-07 10:26
-draft: false
 ---
 
 # How to Write Good Commit Messages
 
-Commit Messages 是你在每次 commit 时必须要填的。你可能会不知道填什么，或者随便填。例如
+## 0x01 Overview
+
+Commit Messages 是你在每次 git commit 时必须要填的。你可能会不知道填什么，或者随便填。例如
 
 ```
 * c1b5f09 - (3 years, 4 months ago) update content - cyberPelican
@@ -26,7 +26,7 @@ Commit Messages 是你在每次 commit 时必须要填的。你可能会不知�
 1. Conventional Commits
 2. Emojial Commits
 
-## Conventional Commits
+## 0x02 Conventional Commits
 
 这里在 Conventional Commits[^1] 的基础上总结如下规则
 
@@ -36,9 +36,9 @@ Commit Messages 是你在每次 commit 时必须要填的。你可能会不知�
 <type>[!]([optional scope]): <description>
 ```
 
-### Type
+### 0x02a Type
 
-按照 commit 意图分为如下几类[^2]，type 必须全小写
+按照 commit 意图分为如下几类，type 必须全小写
 
 - init 
 	a project has been initialed
@@ -83,7 +83,7 @@ chore!: drop Node 6 from testing matrix
 docs!: update 'how to use' in readme
 ```
 
-### Optional Scope
+### 0x02b Optional Scope
 
 commits 只关联特定某领域，例如
 
@@ -93,7 +93,7 @@ docs(ops)!: add 'how to install docker'
 docs(lang): add polish language
 ```
 
-### Description
+### 0x02c Description
 
 commit 主要做了什么，需要符合如下规则
 
@@ -104,12 +104,12 @@ commit 主要做了什么，需要符合如下规则
 chore: update npm dependency to latest version
 ```
 
-## Emojial Commits
+## 0x03 Emojial Commits
 
 > [!tip] 
-> 如果想要在 terminal 中显示 emoji，可以参考 Noto Emoji Color fontconfig for Konsole[^4]
+> 如果想要在 terminal 中显示 emoji，可以参考 Noto Emoji Color fontconfig for Konsole[^3]
 
-借助 gitmoji-cli[^3]
+借助 gitmoji-cli[^2]
 
 ```
 <intention> [scope:?] <message>
@@ -126,7 +126,7 @@ gitmoji -c
  1 file changed, 55 insertions(+), 21 deletions(-)
 ```
 
-### Intention
+### 0x03a Intention
 
 > 所有的 emoji 都可以在 [gitmoji | An emoji guide for your commit messages](https://gitmoji.dev/) 可以找到
 > 
@@ -150,22 +150,25 @@ gitmoji -c
 - ⬇️ Downgrade dependencies
 - ⏪️ Revert changes.
   
-### Scope
+### 0x03b Scope
 
 同 [Conventional Commits#Optional Scope](#Optional%20Scope) 相同
 
-### message
+### 0x03c message
 
 同 [Description](#Description)
 
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
 
-**references**
+## *References*
+
+- [How to Write Better Git Commit Messages – A Step-By-Step Guide](https://www.freecodecamp.org/news/how-to-write-better-git-commit-messages/)
+
+## *FootNotes*
 
 [^1]:[Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0-beta.4/)
-[^2]:[How to Write Better Git Commit Messages – A Step-By-Step Guide](https://www.freecodecamp.org/news/how-to-write-better-git-commit-messages/)
-[^3]:[GitHub - carloscuesta/gitmoji: An emoji guide for your commit messages. 😜](https://github.com/carloscuesta/gitmoji?tab=readme-ov-file)
-[^4]:[Noto Emoji Color fontconfig for Konsole · GitHub](https://gist.github.com/IgnoredAmbience/7c99b6cf9a8b73c9312a71d1209d9bbb)
+[^2]:[GitHub - carloscuesta/gitmoji: An emoji guide for your commit messages. 😜](https://github.com/carloscuesta/gitmoji?tab=readme-ov-file)
+[^3]:[Noto Emoji Color fontconfig for Konsole · GitHub](https://gist.github.com/IgnoredAmbience/7c99b6cf9a8b73c9312a71d1209d9bbb)
 
 

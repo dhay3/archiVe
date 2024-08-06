@@ -277,7 +277,7 @@ latte-dock
 | manjaro-downgrade                                        | package 版本降级工具,不要使用 downgrade AUR 会有问题的                      |
 | uxplay                                                   | apple airplay 投屏                                                          |
 | strace                                                   | binary system calls debug                                                   |
-| ltrace                                                   | binary library calls debug                                                  | 
+| ltrace                                                   | binary library calls debug                                                  |
 | gdb                                                      | binary debug                                                                |
 | whois                                                    | 域名收集                                                                    |
 | binwalk                                                  | 逆向                                                                        |
@@ -311,6 +311,7 @@ latte-dock
 | yt-dlp                                                   | 视频下载                                                                    |
 | iotop                                                    | io 监测                                                                     |
 | btop                                                     | top 替代                                                                    |
+| nexttrace                                                | traceroute 替代                                                             | 
 | duf                                                      | df 替代                                                                     |
 | procs                                                    | ps 替代                                                                     |
 | ripgrep                                                  | grep 替代                                                                   |

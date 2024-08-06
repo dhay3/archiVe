@@ -1,4 +1,8 @@
-[![Markdown](https://img.shields.io/badge/Markdown-%23000000.svg?logo=markdown&logoColor=white)](https://daringfireball.net/projects/markdown/)| [![Obsidian](https://img.shields.io/badge/Obsidian-%23483699.svg?&logo=obsidian&logoColor=white)](https://obsidian.md/)| [![PreCommit](https://img.shields.io/badge/PreCommit-%23DAA520?logo=precommit&logoColor=white)](https://pre-commit.com)| [![gitmoji-%20%F0%9F%98%9C%20%F0%9F%98%8D-FFDD67.svg](https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg?style=flat-square)](https://gitmoji.dev)| [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
+[![Markdown](https://img.shields.io/badge/Markdown-%23000000.svg?logo=markdown&logoColor=white)](https://daringfireball.net/projects/markdown/)
+| [![Obsidian](https://img.shields.io/badge/Obsidian-%23483699.svg?&logo=obsidian&logoColor=white)](https://obsidian.md/)
+| [![PreCommit](https://img.shields.io/badge/PreCommit-%23DAA520?logo=precommit&logoColor=white)](https://pre-commit.com)
+| [![gitmoji-%20%F0%9F%98%9C%20%F0%9F%98%8D-FFDD67.svg](https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg?style=flat-square)](https://gitmoji.dev)
+| [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 
 # TOC
 
@@ -272,8 +276,13 @@
 
 <!--toc end-->                             
 
+# License
+
+
+
 ![GitHub Created At](https://img.shields.io/github/created-at/dhay3/archive)
 ![commits](https://badgen.net/github/commits/dhay3/archive/master)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/dhay3/archive)
 ![](https://img.shields.io/github/last-commit/dhay3/archive)
+
 [![Ashutosh's github activity graph](https://github-readme-activity-graph.vercel.app/graph?username=dhay3&custom_title=Commit%20Activities&theme=github-compact)](https://github.com/ashutosh00710/github-readme-activity-graph)

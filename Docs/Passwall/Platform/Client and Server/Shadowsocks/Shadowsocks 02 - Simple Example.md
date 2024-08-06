@@ -5,7 +5,10 @@ tags:
   - "#hash2"
 ---
 
-# Shadowsocks 01 - Overview
+# Shadowsocks 02 - Simple Example
+
+> [!note]
+> 在 Shadowsocks 的作者 clowwindy 被请去喝茶后，[shadowsocks/shadowsocks](https://github.com/shadowsocks/shadowsocks) 项目停止维护
 
 ## 0x01 Overview
 
@@ -27,7 +30,7 @@ client <--> ss-local <--encrypted--> ss-remote <--> target
 
 ## 0x02 Simple Example
 
-推荐使用 shadowsocks-libev[^2] 用作 shadowsocks 的实现，使用非常简单
+这里使用 shadowsocks-libev[^2] 用作 shadowsocks 的实现，使用非常简单
 
 假设 
 
@@ -142,8 +145,6 @@ Server Ubuntu 20.04 IP 23.94.117.197/24 Ashburn VPS
 	* Connection #0 to host ipinfo.io left intact
 	}
 	```
-
-## 0x03 Analyze
 
 
 ---

@@ -15,27 +15,27 @@ subconvert[^1] 是一个订阅地址转换工具(将一个 client 的配置转�
 
 > 实测发现也支持 singbox, targe=singbox
 
-|类型|作为源类型|作为目标类型|参数|
-|---|:-:|:-:|---|
-|Clash|✓|✓|clash|
-|ClashR|✓|✓|clashr|
-|Quantumult (完整配置)|✓|✓|quan|
-|Quantumult X (完整配置)|✓|✓|quanx|
-|Loon|✓|✓|loon|
-|Mellow|✓|✓|mellow|
-|SS (SIP002)|✓|✓|ss|
-|SS (软件订阅/SIP008)|✓|✓|sssub|
-|SSD|✓|✓|ssd|
-|SSR|✓|✓|ssr|
-|Surfboard|✓|✓|surfboard|
-|Surge 2|✓|✓|surge&ver=2|
-|Surge 3|✓|✓|surge&ver=3|
-|Surge 4|✓|✓|surge&ver=4|
-|Trojan|✓|✓|trojan|
-|V2Ray|✓|✓|v2ray|
-|类 TG 代理的 HTTP/Socks 链接|✓|×|仅支持 `&url=` 调用|
-|Mixed|×|✓|mixed|
-|Auto|×|✓|auto|
+| 类型                         | 作为源类型 | 作为目标类型 | 参数                |
+| ---------------------------- |:----------:|:------------:| ------------------- |
+| Clash                        |     ✓      |      ✓       | clash               |
+| ClashR                       |     ✓      |      ✓       | clashr              |
+| Quantumult (完整配置)        |     ✓      |      ✓       | quan                |
+| Quantumult X (完整配置)      |     ✓      |      ✓       | quanx               |
+| Loon                         |     ✓      |      ✓       | loon                |
+| Mellow                       |     ✓      |      ✓       | mellow              |
+| SS (SIP002)                  |     ✓      |      ✓       | ss                  |
+| SS (软件订阅/SIP008)         |     ✓      |      ✓       | sssub               |
+| SSD                          |     ✓      |      ✓       | ssd                 |
+| SSR                          |     ✓      |      ✓       | ssr                 |
+| Surfboard                    |     ✓      |      ✓       | surfboard           |
+| Surge 2                      |     ✓      |      ✓       | surge&ver=2         |
+| Surge 3                      |     ✓      |      ✓       | surge&ver=3         | 
+| Surge 4                      |     ✓      |      ✓       | surge&ver=4         |
+| Trojan                       |     ✓      |      ✓       | trojan              |
+| V2Ray                        |     ✓      |      ✓       | v2ray               |
+| 类 TG 代理的 HTTP/Socks 链接 |     ✓      |      ×       | 仅支持 `&url=` 调用 |
+| Mixed                        |     ×      |      ✓       | mixed               |
+| Auto                         |     ×      |      ✓       | auto                |
 
 ## 0x02 Installation
 
@@ -90,6 +90,7 @@ Simple Usage 只有 3 个参数
 例如 `https://dler.cloud/subscribe/ABCDE?surge=ss`
 
 1. 先将订阅地址做 URLencode
+	
 	可以通过 python 的 urllib 模块实现
 	
 	```sh
@@ -98,13 +99,17 @@ Simple Usage 只有 3 个参数
 	```
 
 2. 拼接参数
+	
 	因为需要转为 clash ，所以 `target=clash` 
+	
 	原订阅地址为 `https://dler.cloud/subscribe/ABCDE?surge=ss`，encode 后所以为 `url=https%3A//dler.cloud/subscribe/ABCDE%3Fsurge%3Dss`
 	
 3. 拼接 new sub URL
+	
 	```
 	http://127.0.0.1:25500/sub?target=clash&url=https%3A%2F%2Fdler.cloud%2Fsubscribe%2FABCDE%3Fsurge%3Dss
 	```
+	
 	这个 URL 就可以作为新的订阅地址(subconvert container 必须是启动的)。如果想转存订阅地址中的配置直接使用 `curl -o` 即可
 
 ### 0x03b One More Sub Convertion
@@ -117,21 +122,25 @@ Simple Usage 只有 3 个参数
 - `https://rich.cloud/subscribe/ABCDE?clash=vmess`
 
 1. 先使用管道符(`|`)将订阅地址分隔
+	
 	```
 	https://dler.cloud/subscribe/ABCDE?surge=ss|https://rich.cloud/subscribe/ABCDE?clash=vmess
 	```
 
 2. 将使用管道符拼接的地址做 URLencode
+	
 	```
 	python3 -c 'import urllib.parse; print(urllib.parse.quote("https://dler.cloud/subscribe/ABCDE?surge=ss|https://rich.cloud/subscribe/ABCDE?clash=vmess"))'
 	https%3A//dler.cloud/subscribe/ABCDE%3Fsurge%3Dss%7Chttps%3A//rich.cloud/subscribe/ABCDE%3Fclash%3Dvmess
 	```
 
 3. 拼接参数
+	
 	`target=clash`
 	`url=https%3A//dler.cloud/subscribe/ABCDE%3Fsurge%3Dss%7Chttps%3A//rich.cloud/subscribe/ABCDE%3Fclash%3Dvmess`
 	
 4. 拼接 new sub URL 
+	
 	```
 	http://127.0.0.1:25500/sub?target=clash&url=https%3A%2F%2Fdler.cloud%2Fsubscribe%2FABCDE%3Fsurge%3Dss
 	```
