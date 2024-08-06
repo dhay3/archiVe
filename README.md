@@ -7,7 +7,7 @@
 # TOC
 
 <!--toc start-->
-<!--c23f12ab-ae0b-4078-8c69-936f49ce7e5a-->
+<!--d63b3867-8a93-4472-b00e-fab5ddc991fd-->
 > [!note]
 > Created by Github Workflows
 
@@ -237,6 +237,7 @@
             - [Mihomo-core](Docs/Passwall/Platform/Client/PC/Clash/Clash-core/Mihomo-core)
         - [Qv2ray](Docs/Passwall/Platform/Client/PC/Qv2ray)
       - [Phone](Docs/Passwall/Platform/Client/Phone)
+        - [Quantumult X](Docs/Passwall/Platform/Client/Phone/Quantumult%20X)
         - [Shadowrocket](Docs/Passwall/Platform/Client/Phone/Shadowrocket)
       - [Sing-box](Docs/Passwall/Platform/Client/Sing-box)
     - [OpenWrt](Docs/Passwall/Platform/OpenWrt)
@@ -246,6 +247,7 @@
   - [Protocol](Docs/Passwall/Protocol)
     - [Hysteria](Docs/Passwall/Protocol/Hysteria)
     - [Reality](Docs/Passwall/Protocol/Reality)
+    - [Shadowsocks](Docs/Passwall/Protocol/Shadowsocks)
     - [Socks5](Docs/Passwall/Protocol/Socks5)
     - [Trojan](Docs/Passwall/Protocol/Trojan)
     - [VLESS](Docs/Passwall/Protocol/VLESS)
@@ -274,7 +276,7 @@
   - [Rsshub](Docs/Sundries/Rsshub)
   - [Typora](Docs/Sundries/Typora)
 
-<!--toc end-->                             
+<!--toc end-->                              
 
 # License
 
