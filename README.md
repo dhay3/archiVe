@@ -7,7 +7,7 @@
 # TOC
 
 <!--toc start-->
-<!--d63b3867-8a93-4472-b00e-fab5ddc991fd-->
+<!--e953eece-851e-4231-851f-bff9f8918631-->
 > [!note]
 > Created by Github Workflows
 
@@ -230,29 +230,30 @@
     - [V2board](Docs/Passwall/Board/V2board)
     - [XUI](Docs/Passwall/Board/XUI)
   - [Platform](Docs/Passwall/Platform)
-    - [Client](Docs/Passwall/Platform/Client)
-      - [PC](Docs/Passwall/Platform/Client/PC)
-        - [Clash](Docs/Passwall/Platform/Client/PC/Clash)
-          - [Clash-core](Docs/Passwall/Platform/Client/PC/Clash/Clash-core)
-            - [Mihomo-core](Docs/Passwall/Platform/Client/PC/Clash/Clash-core/Mihomo-core)
-        - [Qv2ray](Docs/Passwall/Platform/Client/PC/Qv2ray)
-      - [Phone](Docs/Passwall/Platform/Client/Phone)
-        - [Quantumult X](Docs/Passwall/Platform/Client/Phone/Quantumult%20X)
-        - [Shadowrocket](Docs/Passwall/Platform/Client/Phone/Shadowrocket)
-      - [Sing-box](Docs/Passwall/Platform/Client/Sing-box)
+    - [Client Only](Docs/Passwall/Platform/Client%20Only)
+      - [Clash](Docs/Passwall/Platform/Client%20Only/Clash)
+        - [Clash-core](Docs/Passwall/Platform/Client%20Only/Clash/Clash-core)
+          - [Mihomo-core](Docs/Passwall/Platform/Client%20Only/Clash/Clash-core/Mihomo-core)
+      - [Quantumult X](Docs/Passwall/Platform/Client%20Only/Quantumult%20X)
+      - [Qv2ray](Docs/Passwall/Platform/Client%20Only/Qv2ray)
+      - [Shadowrocket](Docs/Passwall/Platform/Client%20Only/Shadowrocket)
+      - [Sing-box](Docs/Passwall/Platform/Client%20Only/Sing-box)
+    - [Client and Server](Docs/Passwall/Platform/Client%20and%20Server)
+      - [Shadowsocks](Docs/Passwall/Platform/Client%20and%20Server/Shadowsocks)
+      - [V2ray-core](Docs/Passwall/Platform/Client%20and%20Server/V2ray-core)
+        - [new](Docs/Passwall/Platform/Client%20and%20Server/V2ray-core/new)
+      - [Xray-core](Docs/Passwall/Platform/Client%20and%20Server/Xray-core)
     - [OpenWrt](Docs/Passwall/Platform/OpenWrt)
-    - [Server](Docs/Passwall/Platform/Server)
-      - [V2ray-core](Docs/Passwall/Platform/Server/V2ray-core)
-      - [Xray-core](Docs/Passwall/Platform/Server/Xray-core)
   - [Protocol](Docs/Passwall/Protocol)
     - [Hysteria](Docs/Passwall/Protocol/Hysteria)
     - [Reality](Docs/Passwall/Protocol/Reality)
     - [Shadowsocks](Docs/Passwall/Protocol/Shadowsocks)
-    - [Socks5](Docs/Passwall/Protocol/Socks5)
     - [Trojan](Docs/Passwall/Protocol/Trojan)
     - [VLESS](Docs/Passwall/Protocol/VLESS)
     - [VMESS](Docs/Passwall/Protocol/VMESS)
-  - [Subconvert](Docs/Passwall/Subconvert)
+    - [XLTS](Docs/Passwall/Protocol/XLTS)
+  - [Tools](Docs/Passwall/Tools)
+  - [VPS](Docs/Passwall/VPS)
 ## [Pentest](Docs/Pentest)
   - [CTF](Docs/Pentest/CTF)
     - [Hackthebox](Docs/Pentest/CTF/Hackthebox)
@@ -276,7 +277,7 @@
   - [Rsshub](Docs/Sundries/Rsshub)
   - [Typora](Docs/Sundries/Typora)
 
-<!--toc end-->                              
+<!--toc end-->                               
 
 # License
 
