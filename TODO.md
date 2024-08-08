@@ -1,0 +1,3 @@
+- [ ] Create PR to [tldr](https://github.com/tldr-pages/tldr)
+- [ ] MockDocs
+- [ ] Browsers and Plugins
