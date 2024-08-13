@@ -140,7 +140,7 @@ freerdp 同时也支持类似 Virtualbox 中的 <kbd>Right-Ctrl</kbd> 临时切�
 
 在 freerdp 中使用 <kbd>Alt</kbd> + <kbd>Right-Ctrl</kbd> 中实现
 
-目前 freerdp 中还有一个 bug 就是连续点击 2 次 <kbd>Right-Ctrl</kbd> 会导致 freerdp lose focus[^4]（ungrab），只能点击 freerdp 的 window boarder 才会重新 focus on freerdp。目前已经被修复，但是没有被整合到 mainline
+目前 freerdp 中还有一个 bug 就是连续点击 2 次 <kbd>Right-Ctrl</kbd> 会导致 freerdp lose focus[^4]（ungrab），只能点击 freerdp 的 window boarder 才会重新 focus on freerdp。目前已经被修复~~，但是没有被整合到 mainline~~
 
 ## 0x05 HDPI Display
 
