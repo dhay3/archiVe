@@ -7,7 +7,7 @@ tags:
 
 # How to Choose Licenses
 
-## 0x01 Overview
+## 0x01 Preface
 
 创建过 Github repository 的同学一定会注意到 Choose a license 这一选项
 

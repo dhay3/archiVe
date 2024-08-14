@@ -199,8 +199,9 @@ latte-dock
 | virtualbox               | 虚拟机前端                                     |
 | brave                    | 替代 chrome                                    |
 | tor                      | 一键 tor                                       |
+| browsh                   | tty  browser                                   | 
 | timeshift                | 备份                                           |
-| clash verge rev          | 代理客户端                                     | 
+| clash verge rev          | 代理客户端                                     |
 | sweeper                  | cache 清理                                     |
 | bitwarden                | keepass                                        |
 | qbittorrent              | bt 下载                                        |
@@ -219,7 +220,7 @@ latte-dock
 | yakuake                  | 便捷终端                                       |
 | flameshot                | 截图                                           |
 | vlc                      | 视频                                           |
-| spotify                  | 听歌                                           |
+| spotube                  | 听歌 替代 spotify                              |
 | netease cloud music gtk4 | 听歌                                           |
 | betterbird               | 邮箱                                           |
 | localsend-bin            | 传输（替代 kde connect），需要开启防火墙       |

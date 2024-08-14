@@ -1,18 +1,29 @@
 ---
 author: "0x00"
-createTime: 2024-06-07 10:00
-draft: true
+createTime: 2024-08-14 09:09
+tags:
+  - "#hash1"
+  - "#hash2"
 ---
 
 # How to Ask Questions
 
-## 0x01 Overview
+## 0x01 Preface
 
-同样一个问题，表达的方式不同，得到的回复也不同
-本文在 [How To Ask Questions The Smart Way](http://www.catb.org/~esr/faqs/smart-questions.html) 的基础上总结如下规则
+你发现某个软件有非预期的现象，且能 100% 复现，但是你目前并不能解决
+
+```
+
+```
+
+同样一个问题，表达的方式不同，得到的回复也不同。如何问一个问题，才可以得到你想要的问题，这非常重要
+
+本文在 [How To Ask Questions The Smart Way](http://www.catb.org/~esr/faqs/smart-questions.html) 的基础上按照如下及部分划分
+
+总结如下规则
 
 1. Before asking
-2. 
+2. Pretent to 
 
 ## Before Asking
 
@@ -24,7 +35,7 @@ draft: true
 2. RTFM - Try to find an answer by reading the manual
 	Read the Fucking Manual
 	不管
-1. 
+1. ATFL
 
 在你问问题前确保自己已经做过如下几步
 
@@ -49,12 +60,14 @@ draft: true
 
 ```
 
+
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
 
-**references**
+***References***
 
-[^1]: 
 
+
+***FootNotes***
 
 

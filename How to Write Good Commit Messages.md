@@ -4,7 +4,7 @@ createTime: 2024-06-07 10:26
 
 # How to Write Good Commit Messages
 
-## 0x01 Overview
+## 0x01 Preface
 
 Commit Messages 是你在每次 git commit 时必须要填的。你可能会不知道填什么，或者随便填。例如
 
