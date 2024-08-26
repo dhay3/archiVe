@@ -4,4 +4,12 @@
 - [ ] setcap command
 - [ ] Details of Websocket
 - [ ] Gmail GPG Passby
-- [ ] English Grammer 
+- [ ] English Grammer
+- [ ] LLM prompt
+- [ ] Template for Doc and Issue
+- [ ] Port vim to Neovim
+- [ ] Port sublimetext to vscode
+- [ ] Port Plasma to Hyprland
+- [ ] Port Manjaro to Arch with ZFS(and learn RAID)
+- [ ] Port conf github repo to Zpc
+- [ ] Might be porting jetbrain to VScode

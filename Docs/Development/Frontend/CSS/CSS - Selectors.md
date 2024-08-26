@@ -330,6 +330,7 @@ article p::first-line {
 basic selectors 之间可以互相组合，例如
 
 - `.class1.class2.class3`
+- `p.class1`
 - `p[attr*=value],div`
 - `#id[attr~=value] p`
 - `.class[attr]::after`

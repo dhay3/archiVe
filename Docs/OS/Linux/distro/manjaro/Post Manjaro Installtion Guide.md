@@ -257,71 +257,72 @@ latte-dock
 | eyedropper               | color picker                                   |
 
 
-###  Functio
+###  Function
 
-| Name                                                     | Description                                                                 |
-| -------------------------------------------------------- | --------------------------------------------------------------------------- |
-| zsh                                                      | Shell                                                                       |
-| tmux                                                     | 终端多开                                                                    |
-| zfs                                                      | filesystem                                                                  |
-| transhell                                                | TUI 翻译                                                                    |
-| bind                                                     | 包含 dig                                                                    |
-| ranger                                                   | TUI 文件浏览                                                                |
-| vim                                                      | TUI 编辑                                                                    |
-| vagrant                                                  | 虚拟机管理                                                                  |
-| git / git-lfs                                            | 版本控制                                                                    |
-| gh                                                       | github 管理                                                                 |
-| flatpak                                                  | 3 方下载                                                                    |
-| snapd                                                    | 3 方下载                                                                    |
-| nmap                                                     | 网络探测                                                                    |
-| docker                                                   | 容器                                                                        |
-| manjaro-downgrade                                        | package 版本降级工具,不要使用 downgrade AUR 会有问题的                      |
-| uxplay                                                   | apple airplay 投屏                                                          |
-| strace                                                   | binary system calls debug                                                   |
-| ltrace                                                   | binary library calls debug                                                  |
-| gdb                                                      | binary debug                                                                |
-| whois                                                    | 域名收集                                                                    |
-| binwalk                                                  | 逆向                                                                        |
-| ddrescue                                                 | 数据恢复                                                                    |
-| iat                                                      | iso 格式转换                                                                |
-| john                                                     | 爆破                                                                        |
-| hashcat                                                  | 爆破                                                                        |
-| ocs-url                                                  | kde store 下载                                                              |
-| gping                                                    | ping TUI                                                                    |
-| sysstat                                                  | 包含 sar                                                                    |
-| manjaro-asian-input-support-fcitx5/fcitx5-chinese-addons | 中文输入法(支持双拼)                                                        |
-| aria2                                                    | 下载替代 wget                                                               |
-| libinput-gestures                                        | 自定义 touchpad(不能覆盖 KDE built-in gestures)                             |
-| ydotool                                                  | 类似 xdotool 但是支持 wayland 和 xorg(如果是 KDE 的功能，可以直接使用 dbus) |
-| nerd-fonts                                               | hack nerd font                                                              |
-| woff2                                                    | WPS 字体                                                                    |
-| aur-auto-vote-git                                        | AUR 自动投票                                                                |
-| metasploit                                               | payload 木马病毒                                                            |
-| sherlock                                                 | 社工                                                                        |
-| wifiphisher                                              | WIFI 钓鱼                                                                   |
-| setoolkits                                               | 社工 钓鱼                                                                   |
-| ettercap                                                 | DNS 投毒/DOS                                                                |
-| macchanger                                               | BIA 修改                                                                    |
-| steghide                                                 | 文件隐写                                                                    |
-| aircrack-ng                                              | WIFI 破解                                                                   |
-| hydra                                                    | 爆破工具                                                                    |
-| beef-xss                                                 | XSS                                                                         |
-| sqlmap                                                   | SQL 注入                                                                    |
-| anacoda                                                  | Python env 管理                                                             |
-| ipython                                                  | 命令行 Python                                                               |
-| yt-dlp                                                   | 视频下载                                                                    |
-| iotop                                                    | io 监测                                                                     |
-| btop                                                     | top 替代                                                                    |
-| nexttrace                                                | traceroute 替代                                                             | 
-| duf                                                      | df 替代                                                                     |
-| procs                                                    | ps 替代                                                                     |
-| ripgrep                                                  | grep 替代                                                                   |
-| fd                                                       | find 替代                                                                   |
-| dust                                                     | du 替代                                                                     |
-| fastfectch                                               | neofectch 替代                                                              |
-| fuck                                                     | command 提示                                                                |
-| fzf                                                      | zsh 插件                                                                    |
-| pandoc                                                   | 格式转换                                                                    |
+| Name                                                     | Description                                            |
+| -------------------------------------------------------- | ------------------------------------------------------ |
+| zsh                                                      | Shell                                                  |
+| kitty                                                    | GPU 终端                                               |
+| tmux                                                     | 终端多开                                               |
+| zfs                                                      | filesystem                                             |
+| transhell                                                | TUI 翻译                                               |
+| bind                                                     | 包含 dig                                               |
+| yazi                                                     | TUI 文件浏览                                           |
+| mpv                                                      | TUI 视频浏览                                           |
+| vim/nvim                                                 | TUI 编辑                                               |
+| vagrant                                                  | 虚拟机管理                                             |
+| git/git-lfs                                              | 版本控制                                               |
+| gh                                                       | github 管理                                            |
+| flatpak                                                  | 3 方下载                                               |
+| nmap                                                     | 网络探测                                               |
+| docker                                                   | 容器                                                   |
+| manjaro-downgrade                                        | package 版本降级工具,不要使用 downgrade AUR 会有问题的 | 
+| uxplay                                                   | apple airplay 投屏                                     |
+| strace                                                   | binary system calls debug                              |
+| ltrace                                                   | binary library calls debug                             |
+| gdb                                                      | binary debug                                           |
+| whois                                                    | 域名收集                                               |
+| binwalk                                                  | 逆向                                                   |
+| ddrescue                                                 | 数据恢复                                               |
+| iat                                                      | iso 格式转换                                           |
+| john                                                     | 爆破                                                   |
+| hashcat                                                  | 爆破                                                   |
+| ocs-url                                                  | kde store 下载                                         |
+| gping                                                    | ping TUI                                               |
+| sysstat                                                  | 包含 sar                                               |
+| manjaro-asian-input-support-fcitx5/fcitx5-chinese-addons | 中文输入法(支持双拼)                                   |
+| aria2                                                    | 下载替代 wget                                          |
+| libinput-gestures                                        | 自定义 touchpad(不能覆盖 KDE built-in gestures)        |
+| nerd-fonts                                               | hack nerd font                                         |
+| woff2                                                    | WPS 字体                                               |
+| aur-auto-vote-git                                        | AUR 自动投票                                           |
+| metasploit                                               | payload 木马病毒                                       |
+| sherlock                                                 | 社工                                                   |
+| wifiphisher                                              | WIFI 钓鱼                                              |
+| setoolkits                                               | 社工 钓鱼                                              |
+| ettercap                                                 | DNS 投毒/DOS                                           |
+| macchanger                                               | BIA 修改                                               |
+| steghide                                                 | 文件隐写                                               |
+| aircrack-ng                                              | WIFI 破解                                              |
+| hydra                                                    | 爆破工具                                               |
+| beef-xss                                                 | XSS                                                    |
+| sqlmap                                                   | SQL 注入                                               |
+| anacoda                                                  | Python env 管理                                        |
+| ipython                                                  | 命令行 Python                                          |
+| iotop                                                    | io 监测                                                |
+| btop                                                     | top 替代                                               |
+| nexttrace                                                | traceroute 替代                                        |
+| duf                                                      | df 替代                                                |
+| procs                                                    | ps 替代                                                |
+| ripgrep                                                  | grep 替代                                              |
+| fd                                                       | find 替代                                              |
+| dust                                                     | du 替代                                                |
+| fastfectch                                               | neofectch 替代                                         |
+| fuck                                                     | command 提示                                           |
+| fzf                                                      | zsh 插件                                               |
+| pandoc                                                   | 格式转换                                               |
+| figlet                                                   | toliet  替代                                           |
+| gum                                                      | funny script                                           |
 
 
 **references**
