@@ -198,8 +198,8 @@ latte-dock
 | ------------------------ | ---------------------------------------------- |
 | virtualbox               | 虚拟机前端                                     |
 | brave                    | 替代 chrome                                    |
-| tor                      | 一键 tor                                       |
-| browsh                   | tty  browser                                   | 
+| zen browser              | 替代 firefox                                   |
+| tor browser              | 一键 tor                                       |
 | timeshift                | 备份                                           |
 | clash verge rev          | 代理客户端                                     |
 | sweeper                  | cache 清理                                     |
@@ -209,6 +209,7 @@ latte-dock
 | typora                   | markdown 编辑器                                |
 | ventoy                   | usb 多启动盘                                   |
 | balena-etcher            | iso 烧录                                       |
+| beless hex editor        | binary 编辑器                                  |
 | sublime-text-4           | 文本编辑器                                     |
 | telegram-desktop         | 聊天                                           |
 | discord                  | 聊天                                           |
@@ -237,11 +238,10 @@ latte-dock
 | docker-desktop           | docker 桌面管理                                |
 | burpsuite                | 7 层报文抓包                                   |
 | fluent-reader            | Rss 阅读(在 IOS 上可以配合 inoreader 一起使用) |
-| spotify                  | 音乐                                           |
 | kdiskmark                | hard drive benchmark tool                      |
 | github-desktop           | github 桌面管理                                |
 | nessus                   | 漏洞扫描                                       |
-| johny                    | 爆破 GUI                                       |
+| johnny                   | 爆破 GUI                                       |
 | kvantum                  | KDE applications 美化                          |
 | WPS                      | office 套件                                    |
 | Pling Store              | KDE 插件商店                                   |
@@ -269,6 +269,8 @@ latte-dock
 | bind                                                     | 包含 dig                                               |
 | yazi                                                     | TUI 文件浏览                                           |
 | mpv                                                      | TUI 视频浏览                                           |
+| spotify-tui/spotifyd                                     | spotify  tui 需要 premium 账号                         |
+| yt-dlp                                                   | YouTube 下载工具                                       |
 | vim/nvim                                                 | TUI 编辑                                               |
 | vagrant                                                  | 虚拟机管理                                             |
 | git/git-lfs                                              | 版本控制                                               |
@@ -276,7 +278,7 @@ latte-dock
 | flatpak                                                  | 3 方下载                                               |
 | nmap                                                     | 网络探测                                               |
 | docker                                                   | 容器                                                   |
-| manjaro-downgrade                                        | package 版本降级工具,不要使用 downgrade AUR 会有问题的 | 
+| manjaro-downgrade                                        | package 版本降级工具,不要使用 downgrade AUR 会有问题的 |
 | uxplay                                                   | apple airplay 投屏                                     |
 | strace                                                   | binary system calls debug                              |
 | ltrace                                                   | binary library calls debug                             |
@@ -291,6 +293,7 @@ latte-dock
 | gping                                                    | ping TUI                                               |
 | sysstat                                                  | 包含 sar                                               |
 | manjaro-asian-input-support-fcitx5/fcitx5-chinese-addons | 中文输入法(支持双拼)                                   |
+| rime/rime-ice-double-pinyin                              | 跨平台双拼                                             |
 | aria2                                                    | 下载替代 wget                                          |
 | libinput-gestures                                        | 自定义 touchpad(不能覆盖 KDE built-in gestures)        |
 | nerd-fonts                                               | hack nerd font                                         |
@@ -308,6 +311,7 @@ latte-dock
 | beef-xss                                                 | XSS                                                    |
 | sqlmap                                                   | SQL 注入                                               |
 | anacoda                                                  | Python env 管理                                        |
+| nix                                                      | cross platform 包管理器                                |
 | ipython                                                  | 命令行 Python                                          |
 | iotop                                                    | io 监测                                                |
 | btop                                                     | top 替代                                               |
@@ -323,6 +327,8 @@ latte-dock
 | pandoc                                                   | 格式转换                                               |
 | figlet                                                   | toliet  替代                                           |
 | gum                                                      | funny script                                           |
+| stow                                                     | 批量 symlink 配置文件管理                              | 
+| gitmoji                                                  | git commit                                             |
 
 
 **references**

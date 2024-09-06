@@ -13,3 +13,13 @@
 - [ ] Port Manjaro to Arch with ZFS(and learn RAID)
 - [ ] Port conf github repo to Zpc
 - [ ] Might be porting jetbrain to VScode
+- [ ] Stow and fzf
+- [ ] Passwall
+- [ ] ETH
+- [ ] lazygit
+- [ ] glow
+- [ ] rime
+- [ ] zen browser
+- [ ] Nix file manager
+- [ ] relearn rsync
+- [ ] dotfiles repo
