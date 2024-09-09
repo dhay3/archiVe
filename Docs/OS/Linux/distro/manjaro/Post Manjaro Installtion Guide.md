@@ -255,6 +255,7 @@ latte-dock
 | zenmap                   | 端口扫描                                       |
 | vmware remote console    | vcenter 控制台                                 |
 | eyedropper               | color picker                                   |
+| upscayl                  | 图片修复/steghide                              | 
 
 
 ###  Function
@@ -268,6 +269,7 @@ latte-dock
 | transhell                                                | TUI 翻译                                               |
 | bind                                                     | 包含 dig                                               |
 | yazi                                                     | TUI 文件浏览                                           |
+| asciinema                                                | 终端录屏                                               |
 | mpv                                                      | TUI 视频浏览                                           |
 | spotify-tui/spotifyd                                     | spotify  tui 需要 premium 账号                         |
 | yt-dlp                                                   | YouTube 下载工具                                       |
@@ -327,9 +329,10 @@ latte-dock
 | pandoc                                                   | 格式转换                                               |
 | figlet                                                   | toliet  替代                                           |
 | gum                                                      | funny script                                           |
-| stow                                                     | 批量 symlink 配置文件管理                              | 
+| stow                                                     | 批量 symlink 配置文件管理                              |
 | gitmoji                                                  | git commit                                             |
-
+| lazygit                                                  | 懒人 git                                               | 
+| cowsay/lolcat                                            | garbage                                                |
 
 **references**
 
