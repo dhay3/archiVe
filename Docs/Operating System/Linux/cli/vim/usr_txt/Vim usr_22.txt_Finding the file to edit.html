@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en"><script type="text/javascript">try {
+(function injectPageScriptAPI(scriptName, shouldOverrideWebSocket, shouldOverrideWebRTC, isInjected) { 
+
+    'use strict';
+
+    /**
+     * If script have been injected into a frame via contentWindow then we can simply take the copy of messageChannel left for us by parent document
+     * Otherwise creates new message channel that sends a message to the content-script to check if request should be allowed or not.
+     */
+    var messageChannel = isInjected ? window[scriptName] : (function () {
+
+        // Save original postMessage and addEventListener functions to prevent webpage from tampering both.
+        var postMessage = window.postMessage;
+        var addEventListener = window.addEventListener;
+
+        // Current request ID (incremented every time we send a new message)
+        var currentRequestId = 0;
+        var requestsMap = {};
+
+        /**
+         * Handles messages sent from the content script back to the page script.
+         *
+         * @param event Event with necessary data
+         */
+        var onMessageReceived = function (event) {
+
+            if (!event.data || !event.data.direction || event.data.direction !== "to-page-script@abu") {
+                return;
+            }
+
+            var requestData = requestsMap[event.data.requestId];
+            if (requestData) {
+                var wrapper = requestData.wrapper;
+                requestData.onResponseReceived(wrapper, event.data.block);
+                delete requestsMap[event.data.requestId];
+            }
+        };
+
+        /**
+         * @param url                The URL to which wrapped object is willing to connect
+         * @param requestType        Request type ( WEBSOCKET or WEBRTC)
+         * @param wrapper            WebSocket wrapper instance
+         * @param onResponseReceived Called when response is received
+         */
+        var sendMessage = function (url, requestType, wrapper, onResponseReceived) {
+
+            if (currentRequestId === 0) {
+                // Subscribe to response when this method is called for the first time
+                addEventListener.call(window, "message", onMessageReceived, false);
+            }
+
+            var requestId = ++currentRequestId;
+            requestsMap[requestId] = {
+                wrapper: wrapper,
+                onResponseReceived: onResponseReceived
+            };
+
+            var message = {
+                requestId: requestId,
+                direction: 'from-page-script@abu',
+                elementUrl: url,
+                documentUrl: document.URL,
+                requestType: requestType
+            };
+
+            // Send a message to the background page to check if the request should be blocked
+            postMessage.call(window, message, "*");
+        };
+
+        return {
+            sendMessage: sendMessage
+        };
+
+    })();
+
+    /*
+     * In some case Chrome won't run content scripts inside frames.
+     * So we have to intercept access to contentWindow/contentDocument and manually inject wrapper script into this context
+     *
+     * Based on: https://github.com/adblockplus/adblockpluschrome/commit/1aabfb3346dc0821c52dd9e97f7d61b8c99cd707
+     */
+    var injectedToString = Function.prototype.toString.bind(injectPageScriptAPI);
+
+    var injectedFramesAdd;
+    var injectedFramesHas;
+    if (window.WeakSet instanceof Function) {
+        var injectedFrames = new WeakSet();
+        injectedFramesAdd = WeakSet.prototype.add.bind(injectedFrames);
+        injectedFramesHas = WeakSet.prototype.has.bind(injectedFrames);
+    } else {
+        var frames = [];
+        injectedFramesAdd = function (el) {
+            if (frames.indexOf(el) < 0) {
+                frames.push(el);
+            }
+        };
+        injectedFramesHas = function (el) {
+            return frames.indexOf(el) >= 0;
+        };
+    }
+
+    /**
+     * Injects wrapper's script into passed window
+     * @param contentWindow Frame's content window
+     */
+    function injectPageScriptAPIInWindow(contentWindow) {
+        try {
+            if (contentWindow && !injectedFramesHas(contentWindow)) {
+                injectedFramesAdd(contentWindow);
+                contentWindow[scriptName] = messageChannel; // Left message channel for the injected script
+                var args = "'" + scriptName + "', " + shouldOverrideWebSocket + ", " + shouldOverrideWebRTC + ", true";
+                contentWindow.eval("(" + injectedToString() + ")(" + args + ");");
+                delete contentWindow[scriptName];
+            }
+        } catch (e) {
+        }
+    }
+
+    /**
+     * Overrides access to contentWindow/contentDocument for the passed HTML element's interface (iframe, frame, object)
+     * If the content of one of these objects is requested we will inject our wrapper script.
+     * @param iface HTML element's interface
+     */
+    function overrideContentAccess(iface) {
+
+        var contentWindowDescriptor = Object.getOwnPropertyDescriptor(iface.prototype, "contentWindow");
+        var contentDocumentDescriptor = Object.getOwnPropertyDescriptor(iface.prototype, "contentDocument");
+
+        // Apparently in HTMLObjectElement.prototype.contentWindow does not exist
+        // in older versions of Chrome such as 42.
+        if (!contentWindowDescriptor) {
+            return;
+        }
+
+        var getContentWindow = Function.prototype.call.bind(contentWindowDescriptor.get);
+        var getContentDocument = Function.prototype.call.bind(contentDocumentDescriptor.get);
+
+        contentWindowDescriptor.get = function () {
+            var contentWindow = getContentWindow(this);
+            injectPageScriptAPIInWindow(contentWindow);
+            return contentWindow;
+        };
+        contentDocumentDescriptor.get = function () {
+            injectPageScriptAPIInWindow(getContentWindow(this));
+            return getContentDocument(this);
+        };
+
+        Object.defineProperty(iface.prototype, "contentWindow", contentWindowDescriptor);
+        Object.defineProperty(iface.prototype, "contentDocument", contentDocumentDescriptor);
+    }
+
+    var interfaces = [HTMLFrameElement, HTMLIFrameElement, HTMLObjectElement];
+    for (var i = 0; i < interfaces.length; i++) {
+        overrideContentAccess(interfaces[i]);
+    }
+
+    /**
+     * Defines properties in destination object
+     * @param src Source object
+     * @param dest Destination object
+     * @param properties Properties to copy
+     */
+    var copyProperties = function (src, dest, properties) {
+        for (var i = 0; i < properties.length; i++) {
+            var prop = properties[i];
+            var descriptor = Object.getOwnPropertyDescriptor(src, prop);
+            // Passed property may be undefined
+            if (descriptor) {
+                Object.defineProperty(dest, prop, descriptor);
+            }
+        }
+    };
+
+    /**
+     * Check request by sending message to content script
+     * @param url URL to block
+     * @param type Request type
+     * @param callback Result callback
+     */
+    var checkRequest = function (url, type, callback) {
+        messageChannel.sendMessage(url, type, this, function (wrapper, blockConnection) {
+            callback(blockConnection);
+        });
+    };
+
+    /**
+     * The function overrides window.WebSocket with our wrapper, that will check url with filters through messaging with content-script.
+     *
+     * IMPORTANT NOTE:
+     * This function is first loaded as a content script. The only purpose of it is to call
+     * the "toString" method and use resulting string as a text content for injected script.
+     */
+    var overrideWebSocket = function () { 
+
+        if (!(window.WebSocket instanceof Function)) {
+            return;
+        }
+
+        /**
+         * WebSocket wrapper implementation.
+         * https://github.com/AdguardTeam/AdguardBrowserExtension/issues/349
+         *
+         * Based on:
+         * https://github.com/adblockplus/adblockpluschrome/commit/457a336ee55a433217c3ffe5d363e5c6980f26f4
+         */
+
+        /**
+         * As far as possible we must track everything we use that could be sabotaged by the website later in order to circumvent us.
+         */
+        var RealWebSocket = WebSocket;
+        var closeWebSocket = Function.prototype.call.bind(RealWebSocket.prototype.close);
+
+        function WrappedWebSocket(url, protocols) {
+            // Throw correct exceptions if the constructor is used improperly.
+            if (!(this instanceof WrappedWebSocket)) {
+                return RealWebSocket();
+            }
+            if (arguments.length < 1) {
+                return new RealWebSocket();
+            }
+
+            var websocket = new RealWebSocket(url, protocols);
+
+            // This is the key point: checking if this WS should be blocked or not
+            // Don't forget that the type of 'websocket.url' is String, but 'url 'parameter might have another type.
+            checkRequest(websocket.url, 'WEBSOCKET', function (blocked) {
+                if (blocked) {
+                    closeWebSocket(websocket);
+                }
+            });
+
+            return websocket;
+        }
+
+        // https://github.com/AdguardTeam/AdguardBrowserExtension/issues/488
+        WrappedWebSocket.prototype = RealWebSocket.prototype;
+        window.WebSocket = WrappedWebSocket.bind();
+
+        copyProperties(RealWebSocket, WebSocket, ["CONNECTING", "OPEN", "CLOSING", "CLOSED", "name", "prototype"]);
+
+        RealWebSocket.prototype.constructor = WebSocket;
+
+    };
+
+    /**
+     * The function overrides window.RTCPeerConnection with our wrapper, that will check ice servers URLs with filters through messaging with content-script.
+     *
+     * IMPORTANT NOTE:
+     * This function is first loaded as a content script. The only purpose of it is to call
+     * the "toString" method and use resulting string as a text content for injected script.
+     */
+    var overrideWebRTC = function () { 
+
+
+        if (!(window.RTCPeerConnection instanceof Function) &&
+            !(window.webkitRTCPeerConnection instanceof Function)) {
+            return;
+        }
+
+        /**
+         * RTCPeerConnection wrapper implementation.
+         * https://github.com/AdguardTeam/AdguardBrowserExtension/issues/588
+         *
+         * Based on:
+         * https://github.com/adblockplus/adblockpluschrome/commit/af0585137be19011eace1cf68bf61eed2e6db974
+         *
+         * Chromium webRequest API doesn't allow the blocking of WebRTC connections
+         * https://bugs.chromium.org/p/chromium/issues/detail?id=707683
+         */
+
+        var RealRTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection;
+        var closeRTCPeerConnection = Function.prototype.call.bind(RealRTCPeerConnection.prototype.close);
+
+        var RealArray = Array;
+        var RealString = String;
+        var createObject = Object.create;
+        var defineProperty = Object.defineProperty;
+
+        /**
+         * Convert passed url to string
+         * @param url URL
+         * @returns {string}
+         */
+        function urlToString(url) {
+            if (typeof url !== "undefined") {
+                return RealString(url);
+            }
+        }
+
+        /**
+         * Creates new immutable array from original with some transform function
+         * @param original
+         * @param transform
+         * @returns {*}
+         */
+        function safeCopyArray(original, transform) {
+
+            if (original === null || typeof original !== "object") {
+                return original;
+            }
+
+            var immutable = RealArray(original.length);
+            for (var i = 0; i < immutable.length; i++) {
+                defineProperty(immutable, i, {
+                    configurable: false, enumerable: false, writable: false,
+                    value: transform(original[i])
+                });
+            }
+            defineProperty(immutable, "length", {
+                configurable: false, enumerable: false, writable: false,
+                value: immutable.length
+            });
+            return immutable;
+        }
+
+        /**
+         * Protect configuration from mutations
+         * @param configuration RTCPeerConnection configuration object
+         * @returns {*}
+         */
+        function protectConfiguration(configuration) {
+
+            if (configuration === null || typeof configuration !== "object") {
+                return configuration;
+            }
+
+            var iceServers = safeCopyArray(
+                configuration.iceServers,
+                function (iceServer) {
+
+                    var url = iceServer.url;
+                    var urls = iceServer.urls;
+
+                    // RTCPeerConnection doesn't iterate through pseudo Arrays of urls.
+                    if (typeof urls !== "undefined" && !(urls instanceof RealArray)) {
+                        urls = [urls];
+                    }
+
+                    return createObject(iceServer, {
+                        url: {
+                            configurable: false, enumerable: false, writable: false,
+                            value: urlToString(url)
+                        },
+                        urls: {
+                            configurable: false, enumerable: false, writable: false,
+                            value: safeCopyArray(urls, urlToString)
+                        }
+                    });
+                }
+            );
+
+            return createObject(configuration, {
+                iceServers: {
+                    configurable: false, enumerable: false, writable: false,
+                    value: iceServers
+                }
+            });
+        }
+
+        /**
+         * Check WebRTC connection's URL and close if it's blocked by rule
+         * @param connection Connection
+         * @param url URL to check
+         */
+        function checkWebRTCRequest(connection, url) {
+            checkRequest(url, 'WEBRTC', function (blocked) {
+                if (blocked) {
+                    try {
+                        closeRTCPeerConnection(connection);
+                    } catch (e) {
+                        // Ignore exceptions
+                    }
+                }
+            });
+        }
+
+        /**
+         * Check each URL of ice server in configuration for blocking.
+         *
+         * @param connection RTCPeerConnection
+         * @param configuration Configuration for RTCPeerConnection
+         * https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration
+         */
+        function checkConfiguration(connection, configuration) {
+
+            if (!configuration || !configuration.iceServers) {
+                return;
+            }
+
+            var iceServers = configuration.iceServers;
+            for (var i = 0; i < iceServers.length; i++) {
+
+                var iceServer = iceServers[i];
+                if (!iceServer) {
+                    continue;
+                }
+
+                if (iceServer.url) {
+                    checkWebRTCRequest(connection, iceServer.url);
+                }
+
+                if (iceServer.urls) {
+                    for (var j = 0; j < iceServer.urls.length; j++) {
+                        checkWebRTCRequest(connection, iceServer.urls[j]);
+                    }
+                }
+            }
+        }
+
+        /**
+         * Overrides setConfiguration method
+         * https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/setConfiguration
+         */
+        if (RealRTCPeerConnection.prototype.setConfiguration) {
+
+            var realSetConfiguration = Function.prototype.call.bind(RealRTCPeerConnection.prototype.setConfiguration);
+
+            RealRTCPeerConnection.prototype.setConfiguration = function (configuration) {
+                configuration = protectConfiguration(configuration);
+                // Call the real method first, so that validates the configuration
+                realSetConfiguration(this, configuration);
+                checkConfiguration(this, configuration);
+            };
+        }
+
+        function WrappedRTCPeerConnection(configuration, arg) {
+
+            if (!(this instanceof WrappedRTCPeerConnection)) {
+                return RealRTCPeerConnection();
+            }
+
+            configuration = protectConfiguration(configuration);
+
+            /**
+             * The old webkitRTCPeerConnection constructor takes an optional second argument and we must pass it.
+             */
+            var connection = new RealRTCPeerConnection(configuration, arg);
+            checkConfiguration(connection, configuration);
+            return connection;
+        }
+
+        WrappedRTCPeerConnection.prototype = RealRTCPeerConnection.prototype;
+
+        var boundWrappedRTCPeerConnection = WrappedRTCPeerConnection.bind();
+        copyProperties(RealRTCPeerConnection, boundWrappedRTCPeerConnection, ["caller", "generateCertificate", "name", "prototype"]);
+        RealRTCPeerConnection.prototype.constructor = boundWrappedRTCPeerConnection;
+
+        if ("RTCPeerConnection" in window) {
+            window.RTCPeerConnection = boundWrappedRTCPeerConnection;
+        }
+        if ("webkitRTCPeerConnection" in window) {
+            window.webkitRTCPeerConnection = boundWrappedRTCPeerConnection;
+        }
+    };
+
+    if (shouldOverrideWebSocket) {
+        overrideWebSocket();
+    }
+
+    if (shouldOverrideWebRTC) {
+        overrideWebRTC();
+    }
+})('wrapper-script-14389384000831518', false, true);
+} catch (ex) { console.error('Error executing AG js: ' + ex); }
+(function () {
+            var current = document.currentScript;
+            var parent = current && current.parentNode;
+            if (parent) {
+                parent.removeChild(current);
+            }
+        })();</script><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Vim help pages, always up-to-date">
+<title>Vim: usr_22.txt</title>
+<link rel="shortcut icon" href="https://vimhelp.org/favicon.ico">
+<!-- favicon is based on http://amnoid.de/tmp/vim_solidbright_512.png and is used with permission by its author -->
+<link rel="stylesheet" href="Vim%20usr_22.txt_Finding%20the%20file%20to%20edit_files/vimhelp.css" type="text/css">
+
+<link rel="stylesheet" class="select2-css" href="Vim%20usr_22.txt_Finding%20the%20file%20to%20edit_files/select2.min.css" integrity="sha256-zaSoHBhwFdle0scfGEFUCwggPN7F+ip9XRglo8IWb4w=" crossorigin="anonymous">
+<script defer="defer" src="Vim%20usr_22.txt_Finding%20the%20file%20to%20edit_files/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script defer="defer" src="Vim%20usr_22.txt_Finding%20the%20file%20to%20edit_files/select2.min.js" integrity="sha256-9yRP/2EFlblE92vzCA10469Ctd0jT48HnmmMw5rJZrA=" crossorigin="anonymous"></script>
+<script defer="defer" src="Vim%20usr_22.txt_Finding%20the%20file%20to%20edit_files/vimhelp.js"></script>
+</head><body>
+<div class="bar">
+  <div class="ql">
+Quick links:
+<a href="https://vimhelp.org/">help overview</a> ·
+<a href="https://vimhelp.org/quickref.txt.html">quick reference</a> ·
+<a href="https://vimhelp.org/usr_toc.txt.html">user manual toc</a> ·
+<a href="https://vimhelp.org/#reference_toc">reference manual toc</a>
+· <a href="https://vimhelp.org/vim_faq.txt.html">faq</a></div>
+  <div class="srch">
+    <select id="vh-select-tag" data-select2-id="select2-data-vh-select-tag" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true" style="display: inline-block;"></select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-1-15z2" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-vh-select-tag-container" aria-controls="select2-vh-select-tag-container"><span class="select2-selection__rendered" id="select2-vh-select-tag-container" role="textbox" aria-readonly="true" title="Go to keyword"><span class="select2-selection__placeholder">Go to keyword</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+  </div>
+  <form class="srch" action="https://duckduckgo.com" method="get" target="_blank" rel="noopener noreferrer">
+    <input type="hidden" name="sites" value="vimhelp.org">
+    <input type="search" name="q" id="vh-srch-input" placeholder="Site search">
+  </form>
+</div>
+
+<main>
+<div id="vh-content">
+<pre><span id="usr_22.txt" class="t">usr_22.txt</span>    For <span class="i">Vim version 9.0.</span>  Last change: 2020 Mar 28
+
+                     VIM USER MANUAL <a href="https://vimhelp.org/motion.txt.html#-" class="d">-</a> by <a href="https://vimhelp.org/intro.txt.html#Bram" class="d">Bram</a> <a href="https://vimhelp.org/intro.txt.html#Moolenaar" class="d">Moolenaar</a>
+
+                           Finding the file to edit
+
+
+Files can be found everywhere.  So how <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> you find them?  Vim offers <a href="https://vimhelp.org/various.txt.html#various" class="d">various</a>
+ways to browse the directory tree.  There are commands to jump to <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file that
+<a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> mentioned in another.  And Vim remembers which files have been edited
+before.
+
+<a href="#22.1" class="l">22.1</a>  The file browser
+<a href="#22.2" class="l">22.2</a>  The current directory
+<a href="#22.3" class="l">22.3</a>  Finding <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file
+<a href="#22.4" class="l">22.4</a>  The buffer <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a>
+
+     Next chapter: <a href="https://vimhelp.org/usr_23.txt.html#usr_23.txt" class="l">usr_23.txt</a>  Editing other files
+ Previous chapter: <a href="https://vimhelp.org/usr_21.txt.html#usr_21.txt" class="l">usr_21.txt</a>  Go away and come back
+Table of contents: <a href="https://vimhelp.org/usr_toc.txt.html#usr_toc.txt" class="l">usr_toc.txt</a>
+
+<span class="h">==============================================================================</span>
+<span id="22.1" class="t">22.1</span>  The file browser
+
+Vim has <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/usr_05.txt.html#plugin" class="d">plugin</a> that makes <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> possible to edit <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> directory.  Try this: 
+<span class="e"></span>
+<span class="e">        :edit .</span>
+<span class="e"></span>
+Through the magic of <a href="https://vimhelp.org/autocmd.txt.html#autocommands" class="d">autocommands</a> and Vim scripts, the <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> will be filled
+with the contents of the directory.  It looks like this:
+
+<span class="h">" ============================================================================ </span>
+<span class="h">" Netrw Directory Listing                                        (netrw v109) </span>
+<span class="h">"   Sorted by      name </span>
+<span class="h">"   Sort sequence: [\/]$,\.h$,\.c$,\.cpp$,*,\.info$,\.swp$,\.o$\.obj$,\.bak$ </span>
+<span class="h">"   Quick Help: &lt;F1&gt;:help  -:go up dir  D:delete  R:rename  s:sort-by  x:exec </span>
+<span class="h">" ============================================================================ </span>
+<span class="h">../ </span>
+<span class="h">./ </span>
+<span class="h">check/ </span>
+<span class="h">Makefile </span>
+<span class="h">autocmd.txt </span>
+<span class="h">change.txt </span>
+<span class="h">eval.txt~ </span>
+<span class="h">filetype.txt~ </span>
+<span class="h">help.txt.info </span>
+
+You can see these items:
+
+1.  The name of the browsing tool and its version number
+2.  The name of the browsing directory
+3.  The <a href="https://vimhelp.org/eval.txt.html#method" class="d">method</a> of <a href="https://vimhelp.org/change.txt.html#sorting" class="d">sorting</a> (may be by name, time, or size)
+4.  How names are to be sorted (directories first, then *.h files,
+    *.c files, etc)
+5.  How to get <a href="https://vimhelp.org/helphelp.txt.html#help" class="d">help</a> (use the <a href="https://vimhelp.org/helphelp.txt.html#%3CF1%3E" class="s">&lt;F1&gt;</a> key), and an abbreviated listing
+    of available commands
+6.  <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> listing of files, including "../"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> which allows one to <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a>
+    the parent directory.
+
+If you have <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> highlighting enabled, the different parts are highlighted
+so <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> to make <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> easier to spot them.
+
+You can use <a href="https://vimhelp.org/intro.txt.html#Normal" class="d">Normal</a> mode Vim commands to move around in the text.  For example,
+move the cursor atop <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file and press <a href="https://vimhelp.org/intro.txt.html#%3CEnter%3E" class="s">&lt;Enter&gt;</a>; you will then be editing that
+file.  To <a href="https://vimhelp.org/motion.txt.html#go" class="d">go</a> back to the browser use "<a href="https://vimhelp.org/editing.txt.html#%3Aedit" class="d">:edit</a> <a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>" again, or use "<a href="https://vimhelp.org/pi_netrw.txt.html#%3AExplore" class="d">:Explore</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+<a href="https://vimhelp.org/motion.txt.html#CTRL-O" class="k">CTRL-O</a> also works.
+
+Try using <a href="https://vimhelp.org/intro.txt.html#%3CEnter%3E" class="s">&lt;Enter&gt;</a> while the cursor <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> atop <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> directory name.  The result <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a>
+that the file browser moves into that directory and displays the items found
+there.  Pressing <a href="https://vimhelp.org/intro.txt.html#%3CEnter%3E" class="s">&lt;Enter&gt;</a> on the first directory "../" moves you one level
+higher.  Pressing "<a href="https://vimhelp.org/motion.txt.html#-" class="d">-</a>" does the same thing, without the need to move to the
+"../" item first.
+
+You can press <a href="https://vimhelp.org/helphelp.txt.html#%3CF1%3E" class="s">&lt;F1&gt;</a> to get <a href="https://vimhelp.org/helphelp.txt.html#help" class="d">help</a> on the things you can <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> in the <a href="https://vimhelp.org/pi_netrw.txt.html#netrw" class="d">netrw</a> file
+browser.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> what you get: 
+<span class="e"></span>
+<span class="e">    9. Directory Browsing        netrw-browse   netrw-dir   netrw-list   netrw-help</span>
+<span class="e"></span>
+<span class="e">    MAPS                                                                 netrw-maps</span>
+<span class="e">         &lt;F1&gt;.............Help.......................................|netrw-help|</span>
+<span class="e">         &lt;cr&gt;.............Browsing...................................|netrw-cr|</span>
+<span class="e">         &lt;del&gt;............Deleting Files or Directories..............|netrw-delete|</span>
+<span class="e">         -................Going Up...................................|netrw--|</span>
+<span class="e">         a................Hiding Files or Directories................|netrw-a|</span>
+<span class="e">         mb...............Bookmarking a Directory....................|netrw-mb|</span>
+<span class="e">         gb...............Changing to a Bookmarked Directory.........|netrw-gb|</span>
+<span class="e">         cd...............Make Browsing Directory The Current Dir....|netrw-c|</span>
+<span class="e">         d................Make A New Directory.......................|netrw-d|</span>
+<span class="e">         D................Deleting Files or Directories..............|netrw-D|</span>
+<span class="e">         &lt;c-h&gt;............Edit File/Directory Hiding List............|netrw-ctrl-h|</span>
+<span class="e">         i................Change Listing Style.......................|netrw-i|</span>
+<span class="e">         &lt;c-l&gt;............Refreshing the Listing.....................|netrw-ctrl-l|</span>
+<span class="e">         o................Browsing with a Horizontal Split...........|netrw-o|</span>
+<span class="e">         p................Use Preview Window.........................|netrw-p|</span>
+<span class="e">         P................Edit in Previous Window....................|netrw-p|</span>
+<span class="e">         q................Listing Bookmarks and History..............|netrw-qb|</span>
+<span class="e">         r................Reversing Sorting Order....................|netrw-r|</span>
+       (etc)
+
+The <a href="https://vimhelp.org/helphelp.txt.html#%3CF1%3E" class="s">&lt;F1&gt;</a> key thus brings you to <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/pi_netrw.txt.html#netrw" class="d">netrw</a> directory browsing contents <a href="https://vimhelp.org/helphelp.txt.html#help" class="d">help</a> page.
+It's <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> regular <a href="https://vimhelp.org/helphelp.txt.html#help" class="d">help</a> page; use the usual <a href="https://vimhelp.org/tagsrch.txt.html#CTRL-%5D" class="l">CTRL-]</a> to jump to tagged <a href="https://vimhelp.org/helphelp.txt.html#help" class="d">help</a> items
+and <a href="https://vimhelp.org/motion.txt.html#CTRL-O" class="l">CTRL-O</a> to jump back.
+
+To select files for display and editing: (with the cursor <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> atop <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> filename)
+
+        <span class="s">&lt;enter&gt;</span>         Open the file in the current window.       <a href="https://vimhelp.org/pi_netrw.txt.html#netrw-cr" class="l">netrw-cr</a>
+        <a href="https://vimhelp.org/insert.txt.html#o" class="d">o</a>               Horizontally split <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> and display file <a href="https://vimhelp.org/pi_netrw.txt.html#netrw-o" class="l">netrw-o</a>
+        <a href="https://vimhelp.org/visual.txt.html#v" class="d">v</a>               Vertically split <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> and display file   <a href="https://vimhelp.org/pi_netrw.txt.html#netrw-v" class="l">netrw-v</a>
+        <a href="https://vimhelp.org/change.txt.html#p" class="d">p</a>               Use the <a href="https://vimhelp.org/windows.txt.html#preview-window" class="l">preview-window</a>                   <a href="https://vimhelp.org/pi_netrw.txt.html#netrw-p" class="l">netrw-p</a>
+        <a href="https://vimhelp.org/change.txt.html#P" class="d">P</a>               Edit in the previous <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a>                <a href="https://vimhelp.org/pi_netrw.txt.html#netrw-P" class="l">netrw-P</a>
+        <a href="https://vimhelp.org/motion.txt.html#t" class="d">t</a>               Open file in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> new <a href="https://vimhelp.org/intro.txt.html#tab" class="d">tab</a>                     <a href="https://vimhelp.org/pi_netrw.txt.html#netrw-t" class="l">netrw-t</a>
+
+The following normal-mode commands may be used to <a href="https://vimhelp.org/intro.txt.html#control" class="d">control</a> the browser display:
+
+        <a href="https://vimhelp.org/insert.txt.html#i" class="d">i</a>               Controls listing style (thin, long, wide, and tree).
+                        The long listing includes size and date information.
+        <a href="https://vimhelp.org/change.txt.html#s" class="d">s</a>               Repeatedly pressing <a href="https://vimhelp.org/change.txt.html#s" class="d">s</a> will change the way the files
+                        are sorted; one may sort on name, modification time,
+                        or size.
+        <a href="https://vimhelp.org/change.txt.html#r" class="d">r</a>               Reverse the <a href="https://vimhelp.org/change.txt.html#sorting" class="d">sorting</a> order.
+
+As <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> sampling of extra normal-mode commands:
+
+        cd              Change Vim's notion of the current directory to be
+                        the same <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> the browser directory.  (see
+                        <a href="https://vimhelp.org/pi_netrw.txt.html#g%3Anetrw_keepdir" class="l">g:netrw_keepdir</a> to <a href="https://vimhelp.org/intro.txt.html#control" class="d">control</a> this, too)
+        <a href="https://vimhelp.org/change.txt.html#R" class="d">R</a>               Rename the file or directory under the cursor; <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+                        prompt will be issued for the new name.
+        <a href="https://vimhelp.org/change.txt.html#D" class="d">D</a>               Delete the file or directory under the cursor; <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+                        confirmation request will be issued.
+        mb gb           Make bookmark/goto <a href="https://vimhelp.org/usr_03.txt.html#bookmark" class="d">bookmark</a>
+
+
+One may also use command mode; again, just <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> sampling:
+
+        <a href="https://vimhelp.org/pi_netrw.txt.html#%3AExplore" class="d">:Explore</a> <span class="s">[directory]</span>    Browse specified/current directory
+        :NetrwSettings          <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> comprehensive <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> of your current <a href="https://vimhelp.org/pi_netrw.txt.html#netrw" class="d">netrw</a>
+                                settings with <a href="https://vimhelp.org/helphelp.txt.html#help" class="d">help</a> linkage.
+
+The <a href="https://vimhelp.org/pi_netrw.txt.html#netrw" class="d">netrw</a> browser <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not limited to just your local machine; one may use
+urls such as:    (that trailing <a href="https://vimhelp.org/pattern.txt.html#%2F" class="d">/</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> important)
+
+        <a href="https://vimhelp.org/pi_netrw.txt.html#%3AExplore" class="d">:Explore</a> <a class="u" href="ftp://somehost/path/to/dir/">ftp://somehost/path/to/dir/</a>
+        <a href="https://vimhelp.org/editing.txt.html#%3Ae" class="d">:e</a> scp://somehost/path/to/dir/
+
+See <a href="https://vimhelp.org/pi_netrw.txt.html#netrw-browse" class="l">netrw-browse</a> for more.
+
+<span class="h">==============================================================================</span>
+<span id="22.2" class="t">22.2</span>  The current directory
+
+Just like the shell, Vim has the concept of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> current directory.  Suppose you
+are in your <a href="https://vimhelp.org/intro.txt.html#home" class="d">home</a> directory and want to edit several files in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> directory
+"VeryLongFileName"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  You could do: 
+<span class="e"></span>
+<span class="e">        :edit VeryLongFileName/file1.txt</span>
+<span class="e">        :edit VeryLongFileName/file2.txt</span>
+<span class="e">        :edit VeryLongFileName/file3.txt</span>
+<span class="e"></span>
+To avoid much of the typing, <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> this: 
+<span class="e"></span>
+<span class="e">        :cd VeryLongFileName</span>
+<span class="e">        :edit file1.txt</span>
+<span class="e">        :edit file2.txt</span>
+<span class="e">        :edit file3.txt</span>
+<span class="e"></span>
+The "<a href="https://vimhelp.org/editing.txt.html#%3Acd" class="d">:cd</a>" command changes the current directory.  You can see what the current
+directory <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> with the "<a href="https://vimhelp.org/editing.txt.html#%3Apwd" class="d">:pwd</a>" command: 
+<span class="e"></span>
+<span class="e">        :pwd</span>
+<span class="e">        /home/Bram/VeryLongFileName</span>
+<span class="e"></span>
+Vim remembers the last directory that you used.  Use "cd <a href="https://vimhelp.org/motion.txt.html#-" class="d">-</a>" to <a href="https://vimhelp.org/motion.txt.html#go" class="d">go</a> back to it.
+Example: 
+<span class="e"></span>
+<span class="e">        :pwd</span>
+<span class="e">        /home/Bram/VeryLongFileName</span>
+<span class="e">        :cd /etc</span>
+<span class="e">        :pwd</span>
+<span class="e">        /etc</span>
+<span class="e">        :cd -</span>
+<span class="e">        :pwd</span>
+<span class="e">        /home/Bram/VeryLongFileName</span>
+<span class="e">        :cd -</span>
+<span class="e">        :pwd</span>
+<span class="e">        /etc</span>
+<span class="e"></span>
+<span class="e"></span>
+<span class="c">WINDOW LOCAL DIRECTORY</span>
+
+When you split <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> window, both <a href="https://vimhelp.org/windows.txt.html#windows" class="d">windows</a> use the same current directory.  When
+you want to edit <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> number of files somewhere else in the new window, you can
+make <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> use <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> different directory, without <a href="https://vimhelp.org/change.txt.html#changing" class="d">changing</a> the current directory in
+the other window.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> called <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> local directory. 
+<span class="e"></span>
+<span class="e">        :pwd</span>
+<span class="e">        /home/Bram/VeryLongFileName</span>
+<span class="e">        :split</span>
+<span class="e">        :lcd /etc</span>
+<span class="e">        :pwd</span>
+<span class="e">        /etc</span>
+<span class="e">        CTRL-W w</span>
+<span class="e">        :pwd</span>
+<span class="e">        /home/Bram/VeryLongFileName</span>
+<span class="e"></span>
+So long <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> no <span class="e">:lcd</span> command has been used, all <a href="https://vimhelp.org/windows.txt.html#windows" class="d">windows</a> share the same current
+directory.  Doing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <span class="e">:cd</span> command in one <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> will also change the current
+directory of the other window.
+   For <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> where <span class="e">:lcd</span> has been used <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> different current directory <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a>
+remembered.  Using <span class="e">:cd</span> or <span class="e">:lcd</span> in other <a href="https://vimhelp.org/windows.txt.html#windows" class="d">windows</a> will not change it.
+   When using <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <span class="e">:cd</span> command in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> that uses <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> different current
+directory, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> will <a href="https://vimhelp.org/motion.txt.html#go" class="d">go</a> back to using the shared directory.
+
+
+<span class="c">TAB LOCAL DIRECTORY</span>
+
+When you open <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> new <a href="https://vimhelp.org/intro.txt.html#tab" class="d">tab</a> page, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> uses the directory of the <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> in the
+previous <a href="https://vimhelp.org/intro.txt.html#tab" class="d">tab</a> page from which the new <a href="https://vimhelp.org/intro.txt.html#tab" class="d">tab</a> page was opened. You can change the
+directory of the current <a href="https://vimhelp.org/intro.txt.html#tab" class="d">tab</a> page using the <span class="e">:tcd</span> command. All the <a href="https://vimhelp.org/windows.txt.html#windows" class="d">windows</a> in
+<a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/intro.txt.html#tab" class="d">tab</a> page share this directory except for <a href="https://vimhelp.org/windows.txt.html#windows" class="d">windows</a> with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> window-local
+directory. Any new <a href="https://vimhelp.org/windows.txt.html#windows" class="d">windows</a> opened in this <a href="https://vimhelp.org/intro.txt.html#tab" class="d">tab</a> page will use this directory <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a>
+the current working directory. Using <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <span class="e">:cd</span> command in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/intro.txt.html#tab" class="d">tab</a> page will not
+change the working directory of <a href="https://vimhelp.org/intro.txt.html#tab" class="d">tab</a> pages which have <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/intro.txt.html#tab" class="d">tab</a> local directory.
+When the global working directory <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> changed using the <span class="e">:cd</span> command in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/intro.txt.html#tab" class="d">tab</a>
+page, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> will also change the current <a href="https://vimhelp.org/intro.txt.html#tab" class="d">tab</a> page working directory.
+
+
+<span class="h">==============================================================================</span>
+<span id="22.3" class="t">22.3</span>  Finding <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file
+
+You are editing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/change.txt.html#C" class="d">C</a> program that contains this line:
+
+<span class="h">        #include "inits.h" </span>
+
+You want to see what <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> in that "inits.h" file.  Move the cursor on the name
+of the file and type: 
+<span class="e"></span>
+<span class="e">        gf</span>
+<span class="e"></span>
+Vim will find the file and edit it.
+   What if the file <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not in the current directory?  Vim will use the <a href="https://vimhelp.org/options.txt.html#%27path%27" class="o">'path'</a>
+option to find the file.  This option <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> of directory names where to
+look for your file.
+   Suppose you have your include files located in "c:/prog/include"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  This
+command will add <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> to the <a href="https://vimhelp.org/options.txt.html#%27path%27" class="o">'path'</a> option: 
+<span class="e"></span>
+<span class="e">        :set path+=c:/prog/include</span>
+<span class="e"></span>
+This directory <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> an absolute path.  No matter where you are, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> will be the
+same place.  What if you have located files in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> subdirectory, below where the
+file is?  Then you can specify <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> relative path name.  This starts with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> dot:
+
+<span class="e">        :set path+=./proto</span>
+<span class="e"></span>
+This tells Vim to look in the directory "proto"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> below the directory where the
+file in which you use "<a href="https://vimhelp.org/editing.txt.html#gf" class="d">gf</a>" is.  Thus using "<a href="https://vimhelp.org/editing.txt.html#gf" class="d">gf</a>" on "inits.h" will make Vim
+look for "proto/inits.h"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> <a href="https://vimhelp.org/starting.txt.html#starting" class="d">starting</a> in the directory of the file.
+   Without the "./"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> thus "proto"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> Vim would look in the "proto" directory
+below the current directory.  And the current directory might not be where the
+file that you are editing <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> located.
+
+The <a href="https://vimhelp.org/options.txt.html#%27path%27" class="o">'path'</a> option allows specifying the directories where to search for files
+in many more ways.  See the <a href="https://vimhelp.org/helphelp.txt.html#help" class="d">help</a> on the <a href="https://vimhelp.org/options.txt.html#%27path%27" class="o">'path'</a> option.
+   The <a href="https://vimhelp.org/options.txt.html#%27isfname%27" class="o">'isfname'</a> option <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used to decide which characters are included in the
+file name, and which ones are not (e.g., the " character in the example
+above).
+
+When you know the file name, but it's not to be found in the file, you can
+type it: 
+<span class="e"></span>
+<span class="e">        :find inits.h</span>
+<span class="e"></span>
+Vim will then use the <a href="https://vimhelp.org/options.txt.html#%27path%27" class="o">'path'</a> option to try and locate the file.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the
+same <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> the "<a href="https://vimhelp.org/editing.txt.html#%3Aedit" class="d">:edit</a>" command, except for the use of <a href="https://vimhelp.org/options.txt.html#%27path%27" class="o">'path'</a>.
+
+To open the found file in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> new <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> use <a href="https://vimhelp.org/index.txt.html#CTRL-W" class="k">CTRL-W</a> <a href="https://vimhelp.org/motion.txt.html#f" class="d">f</a> instead of "<a href="https://vimhelp.org/editing.txt.html#gf" class="d">gf</a>"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> or use
+"<a href="https://vimhelp.org/windows.txt.html#%3Asfind" class="d">:sfind</a>" instead of "<a href="https://vimhelp.org/editing.txt.html#%3Afind" class="d">:find</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+
+
+<a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> nice way to directly start Vim to edit <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file somewhere in the <a href="https://vimhelp.org/options.txt.html#%27path%27" class="o">'path'</a>: 
+<span class="e"></span>
+<span class="e">        vim "+find stdio.h"</span>
+<span class="e"></span>
+This finds the file "stdio.h" in your value of <a href="https://vimhelp.org/options.txt.html#%27path%27" class="o">'path'</a>.  The <a href="https://vimhelp.org/quotes.txt.html#quotes" class="d">quotes</a> are
+necessary to have one argument <a href="https://vimhelp.org/starting.txt.html#-%2Bc" class="l">-+c</a><a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+
+<span class="h">==============================================================================</span>
+<span id="22.4" class="t">22.4</span>  The buffer <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a>
+
+The Vim editor uses the term buffer to describe <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file being edited.
+Actually, <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> buffer <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> copy of the file that you edit.  When you finish
+<a href="https://vimhelp.org/change.txt.html#changing" class="d">changing</a> the buffer, you write the contents of the buffer to the file.
+Buffers not only contain file contents, but also all the marks, settings, and
+other stuff that goes with it.
+
+
+<span class="c">HIDDEN BUFFERS</span>
+
+Suppose you are editing the file one.txt and need to edit the file two.txt.
+You could simply use "<a href="https://vimhelp.org/editing.txt.html#%3Aedit" class="d">:edit</a> two.txt"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> but since you made changes to one.txt
+that won't work.  You also don't want to write one.txt yet.  Vim has <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+solution for you: 
+<span class="e"></span>
+<span class="e">        :hide edit two.txt</span>
+<span class="e"></span>
+The buffer "one.txt" disappears from the screen, but Vim still knows that you
+are editing this buffer, so <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> keeps the modified text.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> called <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+hidden buffer: The buffer contains text, but you can't see it.
+   The argument of "<a href="https://vimhelp.org/windows.txt.html#%3Ahide" class="d">:hide</a>" <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> another command.  "<a href="https://vimhelp.org/windows.txt.html#%3Ahide" class="d">:hide</a>" makes that command
+behave <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> if the <a href="https://vimhelp.org/options.txt.html#%27hidden%27" class="o">'hidden'</a> option was set.  You could also set this option
+yourself.  The effect <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> that when any buffer <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> abandoned, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> becomes hidden.
+   Be careful!  When you have hidden <a href="https://vimhelp.org/windows.txt.html#buffers" class="d">buffers</a> with changes, don't exit Vim
+without making sure you have saved all the buffers.
+
+
+<span class="c">INACTIVE BUFFERS</span>
+
+   When <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> buffer has been used once, Vim remembers some information about it.
+When <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not displayed in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> and <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not hidden, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> still in the
+buffer list.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> called an inactive buffer.  Overview:
+
+   Active               Appears in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> window, text loaded.
+   Hidden               Not in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> window, text loaded.
+   Inactive             Not in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> window, no text loaded.
+
+The inactive <a href="https://vimhelp.org/windows.txt.html#buffers" class="d">buffers</a> are remembered, because Vim keeps information about them,
+like marks.  And remembering the file name <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> useful too, so that you can see
+which files you have edited.  And edit them again.
+
+
+<span class="c">LISTING BUFFERS</span>
+
+<a href="https://vimhelp.org/starting.txt.html#View" class="d">View</a> the buffer <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> with this command: 
+<span class="e"></span>
+<span class="e">        :buffers</span>
+<span class="e"></span>
+<a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> command which does the same, <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not so obvious to <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> buffers, but <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> much
+shorter to type: 
+<span class="e"></span>
+<span class="e">        :ls</span>
+<span class="e"></span>
+The output could look like this:
+
+<span class="h">  1 #h   "help.txt"                     line 62 </span>
+<span class="h">  2 %a + "usr_21.txt"                   line 1 </span>
+<span class="h">  3      "usr_toc.txt"                  line 1 </span>
+
+The first column contains the buffer number.  You can use this to edit the
+buffer without having to type the name, see below.
+   After the buffer number come the flags.  Then the name of the file
+and the line number where the cursor was the last time.
+   The flags that can appear are these (from left to right):
+
+        <a href="https://vimhelp.org/undo.txt.html#u" class="d">u</a>       Buffer <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> unlisted <a href="https://vimhelp.org/windows.txt.html#unlisted-buffer" class="l">unlisted-buffer</a><a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+         <a href="https://vimhelp.org/motion.txt.html#%25" class="d">%</a>      Current buffer.
+         <a href="https://vimhelp.org/pattern.txt.html#%23" class="d">#</a>      Alternate buffer.
+          <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>     Buffer <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> loaded and displayed.
+          <a href="https://vimhelp.org/motion.txt.html#h" class="d">h</a>     Buffer <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> loaded but hidden.
+           <a href="https://vimhelp.org/change.txt.html#%3D" class="d">=</a>    Buffer <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> read-only.
+           <a href="https://vimhelp.org/motion.txt.html#-" class="d">-</a>    Buffer <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not modifiable, the <a href="https://vimhelp.org/options.txt.html#%27modifiable%27" class="o">'modifiable'</a> option <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> off.
+            <a href="https://vimhelp.org/motion.txt.html#%2B" class="d">+</a>   Buffer has been modified.
+
+
+<span class="c">EDITING A BUFFER</span>
+
+You can edit <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> buffer by its number.  That avoids having to type the file
+name: 
+<span class="e"></span>
+<span class="e">        :buffer 2</span>
+<span class="e"></span>
+But the only way to know the number <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> by looking in the buffer list.  You can
+use the name, or part of it, instead: 
+<span class="e"></span>
+<span class="e">        :buffer help</span>
+<span class="e"></span>
+Vim will find the best match for the name you type.  If there <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> only one
+buffer that matches the name, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> will be used.  In this <a href="https://vimhelp.org/change.txt.html#case" class="d">case</a> "<a href="https://vimhelp.org/#help.txt" class="d">help.txt</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+   To open <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> buffer in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> new window: 
+<span class="e"></span>
+<span class="e">        :sbuffer 3</span>
+<span class="e"></span>
+This works with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> name <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> well.
+
+
+<span class="c">USING THE BUFFER LIST</span>
+
+You can move around in the buffer <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> with these commands:
+
+        <a href="https://vimhelp.org/windows.txt.html#%3Abnext" class="d">:bnext</a>          <a href="https://vimhelp.org/motion.txt.html#go" class="d">go</a> to next buffer
+        <a href="https://vimhelp.org/windows.txt.html#%3Abprevious" class="d">:bprevious</a>      <a href="https://vimhelp.org/motion.txt.html#go" class="d">go</a> to previous buffer
+        <a href="https://vimhelp.org/windows.txt.html#%3Abfirst" class="d">:bfirst</a>         <a href="https://vimhelp.org/motion.txt.html#go" class="d">go</a> to the first buffer
+        <a href="https://vimhelp.org/windows.txt.html#%3Ablast" class="d">:blast</a>          <a href="https://vimhelp.org/motion.txt.html#go" class="d">go</a> to the last buffer
+
+To remove <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> buffer from the list, use this command: 
+<span class="e"></span>
+<span class="e">        :bdelete 3</span>
+<span class="e"></span>
+Again, this also works with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> name.
+   If you delete <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> buffer that was active (visible in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> window), that <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a>
+will be closed.  If you delete the current buffer, the current <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> will be
+closed.  If <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> was the last window, Vim will find another buffer to edit.  You
+can't be editing nothing!
+
+        <span class="n">Note:</span>
+        Even after removing the buffer with "<a href="https://vimhelp.org/windows.txt.html#%3Abdelete" class="d">:bdelete</a>" Vim still remembers it.
+        It's actually made "unlisted"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> no longer appears in the <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> from
+        "<a href="https://vimhelp.org/windows.txt.html#%3Abuffers" class="d">:buffers</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  The ":buffers!" command will <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> unlisted <a href="https://vimhelp.org/windows.txt.html#buffers" class="d">buffers</a> (yes,
+        Vim can <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> the impossible).  To really make Vim forget about <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> buffer,
+        use "<a href="https://vimhelp.org/windows.txt.html#%3Abwipe" class="d">:bwipe</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  Also see the <a href="https://vimhelp.org/options.txt.html#%27buflisted%27" class="o">'buflisted'</a> option.
+
+<span class="h">==============================================================================</span>
+
+Next chapter: <a href="https://vimhelp.org/usr_23.txt.html#usr_23.txt" class="l">usr_23.txt</a>  Editing other files
+
+Copyright: see <a href="https://vimhelp.org/usr_01.txt.html#manual-copyright" class="l">manual-copyright</a>  vim:tw=78:ts=8:noet:ft=help:norl:
+
+
+</pre>
+</div>
+<div id="vh-sidebar" style="visibility: visible; position: sticky; left: 117.683px;"><ul><li><a href="#">↑Top↑</a></li><li><a href="#22.1">The file browser</a></li><li><a href="#22.2">The current directory</a></li><li><a href="#22.3">Finding a file</a></li><li><a href="#22.4">The buffer list</a></li></ul></div>
+</main>
+<p>
+Quick links:
+<a href="https://vimhelp.org/">help overview</a> ·
+<a href="https://vimhelp.org/quickref.txt.html">quick reference</a> ·
+<a href="https://vimhelp.org/usr_toc.txt.html">user manual toc</a> ·
+<a href="https://vimhelp.org/#reference_toc">reference manual toc</a>
+· <a href="https://vimhelp.org/vim_faq.txt.html">faq</a></p>
+<footer>This site is maintained by Carlo Teubner (<i>(my first name) at cteubner dot net</i>).</footer>
+
+
+<div id="sourcegraph-app-background" data-platform="firefox-extension" data-version="22.11.24.1820" style="display: none;"></div></body></html>

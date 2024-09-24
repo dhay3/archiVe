@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en"><script type="text/javascript">try {
+(function injectPageScriptAPI(scriptName, shouldOverrideWebSocket, shouldOverrideWebRTC, isInjected) { 
+
+    'use strict';
+
+    /**
+     * If script have been injected into a frame via contentWindow then we can simply take the copy of messageChannel left for us by parent document
+     * Otherwise creates new message channel that sends a message to the content-script to check if request should be allowed or not.
+     */
+    var messageChannel = isInjected ? window[scriptName] : (function () {
+
+        // Save original postMessage and addEventListener functions to prevent webpage from tampering both.
+        var postMessage = window.postMessage;
+        var addEventListener = window.addEventListener;
+
+        // Current request ID (incremented every time we send a new message)
+        var currentRequestId = 0;
+        var requestsMap = {};
+
+        /**
+         * Handles messages sent from the content script back to the page script.
+         *
+         * @param event Event with necessary data
+         */
+        var onMessageReceived = function (event) {
+
+            if (!event.data || !event.data.direction || event.data.direction !== "to-page-script@abu") {
+                return;
+            }
+
+            var requestData = requestsMap[event.data.requestId];
+            if (requestData) {
+                var wrapper = requestData.wrapper;
+                requestData.onResponseReceived(wrapper, event.data.block);
+                delete requestsMap[event.data.requestId];
+            }
+        };
+
+        /**
+         * @param url                The URL to which wrapped object is willing to connect
+         * @param requestType        Request type ( WEBSOCKET or WEBRTC)
+         * @param wrapper            WebSocket wrapper instance
+         * @param onResponseReceived Called when response is received
+         */
+        var sendMessage = function (url, requestType, wrapper, onResponseReceived) {
+
+            if (currentRequestId === 0) {
+                // Subscribe to response when this method is called for the first time
+                addEventListener.call(window, "message", onMessageReceived, false);
+            }
+
+            var requestId = ++currentRequestId;
+            requestsMap[requestId] = {
+                wrapper: wrapper,
+                onResponseReceived: onResponseReceived
+            };
+
+            var message = {
+                requestId: requestId,
+                direction: 'from-page-script@abu',
+                elementUrl: url,
+                documentUrl: document.URL,
+                requestType: requestType
+            };
+
+            // Send a message to the background page to check if the request should be blocked
+            postMessage.call(window, message, "*");
+        };
+
+        return {
+            sendMessage: sendMessage
+        };
+
+    })();
+
+    /*
+     * In some case Chrome won't run content scripts inside frames.
+     * So we have to intercept access to contentWindow/contentDocument and manually inject wrapper script into this context
+     *
+     * Based on: https://github.com/adblockplus/adblockpluschrome/commit/1aabfb3346dc0821c52dd9e97f7d61b8c99cd707
+     */
+    var injectedToString = Function.prototype.toString.bind(injectPageScriptAPI);
+
+    var injectedFramesAdd;
+    var injectedFramesHas;
+    if (window.WeakSet instanceof Function) {
+        var injectedFrames = new WeakSet();
+        injectedFramesAdd = WeakSet.prototype.add.bind(injectedFrames);
+        injectedFramesHas = WeakSet.prototype.has.bind(injectedFrames);
+    } else {
+        var frames = [];
+        injectedFramesAdd = function (el) {
+            if (frames.indexOf(el) < 0) {
+                frames.push(el);
+            }
+        };
+        injectedFramesHas = function (el) {
+            return frames.indexOf(el) >= 0;
+        };
+    }
+
+    /**
+     * Injects wrapper's script into passed window
+     * @param contentWindow Frame's content window
+     */
+    function injectPageScriptAPIInWindow(contentWindow) {
+        try {
+            if (contentWindow && !injectedFramesHas(contentWindow)) {
+                injectedFramesAdd(contentWindow);
+                contentWindow[scriptName] = messageChannel; // Left message channel for the injected script
+                var args = "'" + scriptName + "', " + shouldOverrideWebSocket + ", " + shouldOverrideWebRTC + ", true";
+                contentWindow.eval("(" + injectedToString() + ")(" + args + ");");
+                delete contentWindow[scriptName];
+            }
+        } catch (e) {
+        }
+    }
+
+    /**
+     * Overrides access to contentWindow/contentDocument for the passed HTML element's interface (iframe, frame, object)
+     * If the content of one of these objects is requested we will inject our wrapper script.
+     * @param iface HTML element's interface
+     */
+    function overrideContentAccess(iface) {
+
+        var contentWindowDescriptor = Object.getOwnPropertyDescriptor(iface.prototype, "contentWindow");
+        var contentDocumentDescriptor = Object.getOwnPropertyDescriptor(iface.prototype, "contentDocument");
+
+        // Apparently in HTMLObjectElement.prototype.contentWindow does not exist
+        // in older versions of Chrome such as 42.
+        if (!contentWindowDescriptor) {
+            return;
+        }
+
+        var getContentWindow = Function.prototype.call.bind(contentWindowDescriptor.get);
+        var getContentDocument = Function.prototype.call.bind(contentDocumentDescriptor.get);
+
+        contentWindowDescriptor.get = function () {
+            var contentWindow = getContentWindow(this);
+            injectPageScriptAPIInWindow(contentWindow);
+            return contentWindow;
+        };
+        contentDocumentDescriptor.get = function () {
+            injectPageScriptAPIInWindow(getContentWindow(this));
+            return getContentDocument(this);
+        };
+
+        Object.defineProperty(iface.prototype, "contentWindow", contentWindowDescriptor);
+        Object.defineProperty(iface.prototype, "contentDocument", contentDocumentDescriptor);
+    }
+
+    var interfaces = [HTMLFrameElement, HTMLIFrameElement, HTMLObjectElement];
+    for (var i = 0; i < interfaces.length; i++) {
+        overrideContentAccess(interfaces[i]);
+    }
+
+    /**
+     * Defines properties in destination object
+     * @param src Source object
+     * @param dest Destination object
+     * @param properties Properties to copy
+     */
+    var copyProperties = function (src, dest, properties) {
+        for (var i = 0; i < properties.length; i++) {
+            var prop = properties[i];
+            var descriptor = Object.getOwnPropertyDescriptor(src, prop);
+            // Passed property may be undefined
+            if (descriptor) {
+                Object.defineProperty(dest, prop, descriptor);
+            }
+        }
+    };
+
+    /**
+     * Check request by sending message to content script
+     * @param url URL to block
+     * @param type Request type
+     * @param callback Result callback
+     */
+    var checkRequest = function (url, type, callback) {
+        messageChannel.sendMessage(url, type, this, function (wrapper, blockConnection) {
+            callback(blockConnection);
+        });
+    };
+
+    /**
+     * The function overrides window.WebSocket with our wrapper, that will check url with filters through messaging with content-script.
+     *
+     * IMPORTANT NOTE:
+     * This function is first loaded as a content script. The only purpose of it is to call
+     * the "toString" method and use resulting string as a text content for injected script.
+     */
+    var overrideWebSocket = function () { 
+
+        if (!(window.WebSocket instanceof Function)) {
+            return;
+        }
+
+        /**
+         * WebSocket wrapper implementation.
+         * https://github.com/AdguardTeam/AdguardBrowserExtension/issues/349
+         *
+         * Based on:
+         * https://github.com/adblockplus/adblockpluschrome/commit/457a336ee55a433217c3ffe5d363e5c6980f26f4
+         */
+
+        /**
+         * As far as possible we must track everything we use that could be sabotaged by the website later in order to circumvent us.
+         */
+        var RealWebSocket = WebSocket;
+        var closeWebSocket = Function.prototype.call.bind(RealWebSocket.prototype.close);
+
+        function WrappedWebSocket(url, protocols) {
+            // Throw correct exceptions if the constructor is used improperly.
+            if (!(this instanceof WrappedWebSocket)) {
+                return RealWebSocket();
+            }
+            if (arguments.length < 1) {
+                return new RealWebSocket();
+            }
+
+            var websocket = new RealWebSocket(url, protocols);
+
+            // This is the key point: checking if this WS should be blocked or not
+            // Don't forget that the type of 'websocket.url' is String, but 'url 'parameter might have another type.
+            checkRequest(websocket.url, 'WEBSOCKET', function (blocked) {
+                if (blocked) {
+                    closeWebSocket(websocket);
+                }
+            });
+
+            return websocket;
+        }
+
+        // https://github.com/AdguardTeam/AdguardBrowserExtension/issues/488
+        WrappedWebSocket.prototype = RealWebSocket.prototype;
+        window.WebSocket = WrappedWebSocket.bind();
+
+        copyProperties(RealWebSocket, WebSocket, ["CONNECTING", "OPEN", "CLOSING", "CLOSED", "name", "prototype"]);
+
+        RealWebSocket.prototype.constructor = WebSocket;
+
+    };
+
+    /**
+     * The function overrides window.RTCPeerConnection with our wrapper, that will check ice servers URLs with filters through messaging with content-script.
+     *
+     * IMPORTANT NOTE:
+     * This function is first loaded as a content script. The only purpose of it is to call
+     * the "toString" method and use resulting string as a text content for injected script.
+     */
+    var overrideWebRTC = function () { 
+
+
+        if (!(window.RTCPeerConnection instanceof Function) &&
+            !(window.webkitRTCPeerConnection instanceof Function)) {
+            return;
+        }
+
+        /**
+         * RTCPeerConnection wrapper implementation.
+         * https://github.com/AdguardTeam/AdguardBrowserExtension/issues/588
+         *
+         * Based on:
+         * https://github.com/adblockplus/adblockpluschrome/commit/af0585137be19011eace1cf68bf61eed2e6db974
+         *
+         * Chromium webRequest API doesn't allow the blocking of WebRTC connections
+         * https://bugs.chromium.org/p/chromium/issues/detail?id=707683
+         */
+
+        var RealRTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection;
+        var closeRTCPeerConnection = Function.prototype.call.bind(RealRTCPeerConnection.prototype.close);
+
+        var RealArray = Array;
+        var RealString = String;
+        var createObject = Object.create;
+        var defineProperty = Object.defineProperty;
+
+        /**
+         * Convert passed url to string
+         * @param url URL
+         * @returns {string}
+         */
+        function urlToString(url) {
+            if (typeof url !== "undefined") {
+                return RealString(url);
+            }
+        }
+
+        /**
+         * Creates new immutable array from original with some transform function
+         * @param original
+         * @param transform
+         * @returns {*}
+         */
+        function safeCopyArray(original, transform) {
+
+            if (original === null || typeof original !== "object") {
+                return original;
+            }
+
+            var immutable = RealArray(original.length);
+            for (var i = 0; i < immutable.length; i++) {
+                defineProperty(immutable, i, {
+                    configurable: false, enumerable: false, writable: false,
+                    value: transform(original[i])
+                });
+            }
+            defineProperty(immutable, "length", {
+                configurable: false, enumerable: false, writable: false,
+                value: immutable.length
+            });
+            return immutable;
+        }
+
+        /**
+         * Protect configuration from mutations
+         * @param configuration RTCPeerConnection configuration object
+         * @returns {*}
+         */
+        function protectConfiguration(configuration) {
+
+            if (configuration === null || typeof configuration !== "object") {
+                return configuration;
+            }
+
+            var iceServers = safeCopyArray(
+                configuration.iceServers,
+                function (iceServer) {
+
+                    var url = iceServer.url;
+                    var urls = iceServer.urls;
+
+                    // RTCPeerConnection doesn't iterate through pseudo Arrays of urls.
+                    if (typeof urls !== "undefined" && !(urls instanceof RealArray)) {
+                        urls = [urls];
+                    }
+
+                    return createObject(iceServer, {
+                        url: {
+                            configurable: false, enumerable: false, writable: false,
+                            value: urlToString(url)
+                        },
+                        urls: {
+                            configurable: false, enumerable: false, writable: false,
+                            value: safeCopyArray(urls, urlToString)
+                        }
+                    });
+                }
+            );
+
+            return createObject(configuration, {
+                iceServers: {
+                    configurable: false, enumerable: false, writable: false,
+                    value: iceServers
+                }
+            });
+        }
+
+        /**
+         * Check WebRTC connection's URL and close if it's blocked by rule
+         * @param connection Connection
+         * @param url URL to check
+         */
+        function checkWebRTCRequest(connection, url) {
+            checkRequest(url, 'WEBRTC', function (blocked) {
+                if (blocked) {
+                    try {
+                        closeRTCPeerConnection(connection);
+                    } catch (e) {
+                        // Ignore exceptions
+                    }
+                }
+            });
+        }
+
+        /**
+         * Check each URL of ice server in configuration for blocking.
+         *
+         * @param connection RTCPeerConnection
+         * @param configuration Configuration for RTCPeerConnection
+         * https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration
+         */
+        function checkConfiguration(connection, configuration) {
+
+            if (!configuration || !configuration.iceServers) {
+                return;
+            }
+
+            var iceServers = configuration.iceServers;
+            for (var i = 0; i < iceServers.length; i++) {
+
+                var iceServer = iceServers[i];
+                if (!iceServer) {
+                    continue;
+                }
+
+                if (iceServer.url) {
+                    checkWebRTCRequest(connection, iceServer.url);
+                }
+
+                if (iceServer.urls) {
+                    for (var j = 0; j < iceServer.urls.length; j++) {
+                        checkWebRTCRequest(connection, iceServer.urls[j]);
+                    }
+                }
+            }
+        }
+
+        /**
+         * Overrides setConfiguration method
+         * https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/setConfiguration
+         */
+        if (RealRTCPeerConnection.prototype.setConfiguration) {
+
+            var realSetConfiguration = Function.prototype.call.bind(RealRTCPeerConnection.prototype.setConfiguration);
+
+            RealRTCPeerConnection.prototype.setConfiguration = function (configuration) {
+                configuration = protectConfiguration(configuration);
+                // Call the real method first, so that validates the configuration
+                realSetConfiguration(this, configuration);
+                checkConfiguration(this, configuration);
+            };
+        }
+
+        function WrappedRTCPeerConnection(configuration, arg) {
+
+            if (!(this instanceof WrappedRTCPeerConnection)) {
+                return RealRTCPeerConnection();
+            }
+
+            configuration = protectConfiguration(configuration);
+
+            /**
+             * The old webkitRTCPeerConnection constructor takes an optional second argument and we must pass it.
+             */
+            var connection = new RealRTCPeerConnection(configuration, arg);
+            checkConfiguration(connection, configuration);
+            return connection;
+        }
+
+        WrappedRTCPeerConnection.prototype = RealRTCPeerConnection.prototype;
+
+        var boundWrappedRTCPeerConnection = WrappedRTCPeerConnection.bind();
+        copyProperties(RealRTCPeerConnection, boundWrappedRTCPeerConnection, ["caller", "generateCertificate", "name", "prototype"]);
+        RealRTCPeerConnection.prototype.constructor = boundWrappedRTCPeerConnection;
+
+        if ("RTCPeerConnection" in window) {
+            window.RTCPeerConnection = boundWrappedRTCPeerConnection;
+        }
+        if ("webkitRTCPeerConnection" in window) {
+            window.webkitRTCPeerConnection = boundWrappedRTCPeerConnection;
+        }
+    };
+
+    if (shouldOverrideWebSocket) {
+        overrideWebSocket();
+    }
+
+    if (shouldOverrideWebRTC) {
+        overrideWebRTC();
+    }
+})('wrapper-script-05401072021462272', false, true);
+} catch (ex) { console.error('Error executing AG js: ' + ex); }
+(function () {
+            var current = document.currentScript;
+            var parent = current && current.parentNode;
+            if (parent) {
+                parent.removeChild(current);
+            }
+        })();</script><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Vim help pages, always up-to-date">
+<title>Vim: usr_26.txt</title>
+<link rel="shortcut icon" href="https://vimhelp.org/favicon.ico">
+<!-- favicon is based on http://amnoid.de/tmp/vim_solidbright_512.png and is used with permission by its author -->
+<link rel="stylesheet" href="Vim%20usr_26.txt_Repeating_files/vimhelp.css" type="text/css">
+
+<link rel="stylesheet" class="select2-css" href="Vim%20usr_26.txt_Repeating_files/select2.min.css" integrity="sha256-zaSoHBhwFdle0scfGEFUCwggPN7F+ip9XRglo8IWb4w=" crossorigin="anonymous">
+<script defer="defer" src="Vim%20usr_26.txt_Repeating_files/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script defer="defer" src="Vim%20usr_26.txt_Repeating_files/select2.min.js" integrity="sha256-9yRP/2EFlblE92vzCA10469Ctd0jT48HnmmMw5rJZrA=" crossorigin="anonymous"></script>
+<script defer="defer" src="Vim%20usr_26.txt_Repeating_files/vimhelp.js"></script>
+</head><body>
+<div class="bar">
+  <div class="ql">
+Quick links:
+<a href="https://vimhelp.org/">help overview</a> ·
+<a href="https://vimhelp.org/quickref.txt.html">quick reference</a> ·
+<a href="https://vimhelp.org/usr_toc.txt.html">user manual toc</a> ·
+<a href="https://vimhelp.org/#reference_toc">reference manual toc</a>
+· <a href="https://vimhelp.org/vim_faq.txt.html">faq</a></div>
+  <div class="srch">
+    <select id="vh-select-tag" data-select2-id="select2-data-vh-select-tag" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true" style="display: inline-block;"></select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-1-nlzw" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-vh-select-tag-container" aria-controls="select2-vh-select-tag-container"><span class="select2-selection__rendered" id="select2-vh-select-tag-container" role="textbox" aria-readonly="true" title="Go to keyword"><span class="select2-selection__placeholder">Go to keyword</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+  </div>
+  <form class="srch" action="https://duckduckgo.com" method="get" target="_blank" rel="noopener noreferrer">
+    <input type="hidden" name="sites" value="vimhelp.org">
+    <input type="search" name="q" id="vh-srch-input" placeholder="Site search">
+  </form>
+</div>
+
+<main>
+<div id="vh-content">
+<pre><span id="usr_26.txt" class="t">usr_26.txt</span>    For <span class="i">Vim version 9.0.</span>  Last change: 2006 Apr 24
+
+                     VIM USER MANUAL <a href="https://vimhelp.org/motion.txt.html#-" class="d">-</a> by <a href="https://vimhelp.org/intro.txt.html#Bram" class="d">Bram</a> <a href="https://vimhelp.org/intro.txt.html#Moolenaar" class="d">Moolenaar</a>
+
+                                  Repeating
+
+
+An editing task <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> hardly ever unstructured.  <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> change often needs to be made
+several times.  In this chapter <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> number of useful ways to repeat <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> change
+will be explained.
+
+<a href="#26.1" class="l">26.1</a>  Repeating with <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode
+<a href="#26.2" class="l">26.2</a>  Add and subtract
+<a href="#26.3" class="l">26.3</a>  Making <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> change in many files
+<a href="#26.4" class="l">26.4</a>  Using Vim from <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> shell <a href="https://vimhelp.org/usr_41.txt.html#script" class="d">script</a>
+
+     Next chapter: <a href="https://vimhelp.org/usr_27.txt.html#usr_27.txt" class="l">usr_27.txt</a>  Search commands and patterns
+ Previous chapter: <a href="https://vimhelp.org/usr_25.txt.html#usr_25.txt" class="l">usr_25.txt</a>  Editing formatted text
+Table of contents: <a href="https://vimhelp.org/usr_toc.txt.html#usr_toc.txt" class="l">usr_toc.txt</a>
+
+<span class="h">==============================================================================</span>
+<span id="26.1" class="t">26.1</span>  Repeating with <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode
+
+<a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> very handy for making <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> change in any sequence of lines.  You
+can see the highlighted text, thus you can check if the correct lines are
+changed.  But making the selection takes some typing.  The "<a href="https://vimhelp.org/visual.txt.html#gv" class="d">gv</a>" command
+selects the same area again.  This allows you to <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> another operation on the
+same text.
+   Suppose you have some lines where you want to change "2001" to "2002" and
+"2000" to "2001"<a href="https://vimhelp.org/cmdline.txt.html#%3A" class="d">:</a>
+
+<span class="h">        The financial results for 2001 are better </span>
+<span class="h">        than for 2000.  The income increased by 50%, </span>
+<span class="h">        even though 2001 had more rain than 2000. </span>
+<span class="h">                        2000            2001 </span>
+<span class="h">        income          45,403          66,234 </span>
+
+First change "2001" to "2002"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  <a href="https://vimhelp.org/visual.txt.html#Select" class="d">Select</a> the lines in <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode, and use: 
+<span class="e"></span>
+<span class="e">        :s/2001/2002/g</span>
+<span class="e"></span>
+Now use "<a href="https://vimhelp.org/visual.txt.html#gv" class="d">gv</a>" to reselect the same text.  It doesn't matter where the cursor
+is.  Then use ":s/2000/2001/g" to make the second change.
+   Obviously, you can repeat these changes several times.
+
+<span class="h">==============================================================================</span>
+<span id="26.2" class="t">26.2</span>  Add and subtract
+
+When <a href="https://vimhelp.org/repeat.txt.html#repeating" class="d">repeating</a> the change of one number into another, you often have <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> fixed
+offset.  In the example above, one was added to each year.  Instead of typing
+<a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> substitute command for each year that appears, the <a href="https://vimhelp.org/change.txt.html#CTRL-A" class="k">CTRL-A</a> command can be
+used.
+   Using the same text <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> above, search for <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> year: 
+<span class="e"></span>
+<span class="e">        /19[0-9][0-9]\|20[0-9][0-9]</span>
+<span class="e"></span>
+Now press <a href="https://vimhelp.org/change.txt.html#CTRL-A" class="k">CTRL-A</a>.  The year will be increased by one:
+
+<span class="h">        The financial results for 2002 are better </span>
+<span class="h">        than for 2000.  The income increased by 50%, </span>
+<span class="h">        even though 2001 had more rain than 2000. </span>
+<span class="h">                        2000            2001 </span>
+<span class="h">        income          45,403          66,234 </span>
+
+Use "<a href="https://vimhelp.org/pattern.txt.html#n" class="d">n</a>" to find the next year, and press "<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>" to repeat the <a href="https://vimhelp.org/change.txt.html#CTRL-A" class="k">CTRL-A</a> <a href="https://vimhelp.org/motion.txt.html#%28" class="d">(</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>" <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+bit quicker to type).  Repeat "<a href="https://vimhelp.org/pattern.txt.html#n" class="d">n</a>" and "<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>" for all years that appear.
+   Hint: set the <a href="https://vimhelp.org/options.txt.html#%27hlsearch%27" class="o">'hlsearch'</a> option to see the matches you are going to change,
+then you can look ahead and <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> faster.
+
+Adding more than one can be done by prepending the number to <a href="https://vimhelp.org/change.txt.html#CTRL-A" class="k">CTRL-A</a>.  Suppose
+you have this list:
+
+<span class="h">        1.  item four </span>
+<span class="h">        2.  item five </span>
+<span class="h">        3.  item six </span>
+
+Move the cursor to "1." and type: 
+<span class="e"></span>
+<span class="e">        3 CTRL-A</span>
+<span class="e"></span>
+The "1." will change to "4."<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  Again, you can use "<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>" to repeat this on the
+other numbers.
+
+Another example:
+
+<span class="h">        006     foo bar </span>
+<span class="h">        007     foo bar </span>
+
+Using <a href="https://vimhelp.org/change.txt.html#CTRL-A" class="k">CTRL-A</a> on these numbers results in:
+
+<span class="h">        007     foo bar </span>
+<span class="h">        010     foo bar </span>
+
+7 plus one <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> 10?  What happened here <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> that Vim recognized "007" <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> an <a href="https://vimhelp.org/eval.txt.html#octal" class="d">octal</a>
+number, because there <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> leading zero.  This <a href="https://vimhelp.org/intro.txt.html#notation" class="d">notation</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> often used in <a href="https://vimhelp.org/change.txt.html#C" class="d">C</a>
+programs.  If you <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> not want <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> number with leading zeros to be handled <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a>
+octal, use this: 
+<span class="e"></span>
+<span class="e">        :set nrformats-=octal</span>
+<span class="e"></span>
+The <a href="https://vimhelp.org/change.txt.html#CTRL-X" class="k">CTRL-X</a> command does subtraction in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> similar way.
+
+<span class="h">==============================================================================</span>
+<span id="26.3" class="t">26.3</span>  Making <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> change in many files
+
+Suppose you have <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> variable called "x_cnt" and you want to change <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> to
+"x_counter"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  This variable <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used in several of your <a href="https://vimhelp.org/change.txt.html#C" class="d">C</a> files.  You need to
+change <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> in all files.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> how you <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> it.
+   Put all the relevant files in the argument list: 
+<span class="e"></span>
+<span class="e">        :args *.c</span>
+
+This finds all <a href="https://vimhelp.org/change.txt.html#C" class="d">C</a> files and edits the first one.  Now you can perform <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+substitution command on all these files: 
+<span class="e"></span>
+<span class="e">        :argdo %s/\&lt;x_cnt\&gt;/x_counter/ge | update</span>
+<span class="e"></span>
+The "<a href="https://vimhelp.org/editing.txt.html#%3Aargdo" class="d">:argdo</a>" command takes an argument that <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> another command.  That command
+will be executed on all files in the argument list.
+   The "%s" substitute command that follows works on all lines.  It finds the
+<a href="https://vimhelp.org/motion.txt.html#word" class="d">word</a> "x_cnt" with "\&lt;x_cnt\&gt;"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  The "\&lt;" and "\&gt;" are used to match the whole
+<a href="https://vimhelp.org/motion.txt.html#word" class="d">word</a> only, and not "px_cnt" or "x_cnt2"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+   The flags for the substitute command include "<a href="https://vimhelp.org/index.txt.html#g" class="d">g</a>" to replace all occurrences
+of "x_cnt" in the same line.  The "<a href="https://vimhelp.org/motion.txt.html#e" class="d">e</a>" flag <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used to avoid an error message
+when "x_cnt" does not appear in the file.  Otherwise "<a href="https://vimhelp.org/editing.txt.html#%3Aargdo" class="d">:argdo</a>" would abort on
+the first file where "x_cnt" was not found.
+   The "|" separates two commands.  The following "update" command writes the
+file only if <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> was changed.  If no "x_cnt" was changed to "x_counter" nothing
+happens.
+
+There <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> also the "<a href="https://vimhelp.org/windows.txt.html#%3Awindo" class="d">:windo</a>" command, which executes its argument in all
+windows.  And "<a href="https://vimhelp.org/windows.txt.html#%3Abufdo" class="d">:bufdo</a>" executes its argument on all buffers.  Be careful with
+this, because you might have more files in the buffer <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> than you think.
+Check this with the "<a href="https://vimhelp.org/windows.txt.html#%3Abuffers" class="d">:buffers</a>" command (or "<a href="https://vimhelp.org/windows.txt.html#%3Als" class="d">:ls</a>").
+
+<span class="h">==============================================================================</span>
+<span id="26.4" class="t">26.4</span>  Using Vim from <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> shell <a href="https://vimhelp.org/usr_41.txt.html#script" class="d">script</a>
+
+Suppose you have <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> lot of files in which you need to change the <a href="https://vimhelp.org/eval.txt.html#string" class="d">string</a>
+"-person-" to "Jones" and then print it.  How <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> you <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> that?  One way <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> to
+<a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> lot of typing.  The other <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> to write <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> shell <a href="https://vimhelp.org/usr_41.txt.html#script" class="d">script</a> to <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> the work.
+   The Vim editor does <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> superb <a href="https://vimhelp.org/channel.txt.html#job" class="d">job</a> <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> screen-oriented editor when using
+<a href="https://vimhelp.org/intro.txt.html#Normal" class="d">Normal</a> mode commands.  For batch processing, however, <a href="https://vimhelp.org/intro.txt.html#Normal" class="d">Normal</a> mode commands <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a>
+not result in clear, commented command files; so here you will use <a href="https://vimhelp.org/intro.txt.html#Ex" class="d">Ex</a> mode
+instead.  This mode gives you <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> nice command-line interface that makes <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/starting.txt.html#easy" class="d">easy</a>
+to <a href="https://vimhelp.org/change.txt.html#put" class="d">put</a> into <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> batch file.  <a href="https://vimhelp.org/motion.txt.html#%28" class="d">(</a>"<a href="https://vimhelp.org/intro.txt.html#Ex" class="d">Ex</a> command" <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> just another name for <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+command-line (:) command.)
+   The <a href="https://vimhelp.org/intro.txt.html#Ex" class="d">Ex</a> mode commands you need are <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> follows: 
+<span class="e"></span>
+<span class="e">        %s/-person-/Jones/g</span>
+<span class="e">        write tempfile</span>
+<span class="e">        quit</span>
+<span class="e"></span>
+You <a href="https://vimhelp.org/change.txt.html#put" class="d">put</a> these commands in the file "change.vim"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  Now to run the editor in
+batch mode, use this shell script: 
+<span class="e"></span>
+<span class="e">        for file in *.txt; do</span>
+<span class="e">          vim -e -s $file &lt; change.vim</span>
+<span class="e">          lpr -r tempfile</span>
+<span class="e">        done</span>
+<span class="e"></span>
+The for-done loop <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> shell construct to repeat the two lines in between,
+while the $file variable <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> set to <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> different file name each time.
+   The second line runs the Vim editor in <a href="https://vimhelp.org/intro.txt.html#Ex" class="d">Ex</a> mode (-e argument) on the file
+$file and reads commands from the file "change.vim"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  The <a href="https://vimhelp.org/starting.txt.html#-s" class="d">-s</a> argument tells
+Vim to operate in silent mode.  In other words, <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> not keep outputting the
+:prompt, or any other prompt for that matter.
+   The "lpr <a href="https://vimhelp.org/starting.txt.html#-r" class="d">-r</a> <a href="https://vimhelp.org/change.txt.html#tempfile" class="d">tempfile</a>" command prints the resulting "<a href="https://vimhelp.org/change.txt.html#tempfile" class="d">tempfile</a>" and deletes
+<a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> (that's what the <a href="https://vimhelp.org/starting.txt.html#-r" class="d">-r</a> argument does).
+
+
+<span class="c">READING FROM STDIN</span>
+
+Vim can read text on standard input.  Since the normal way <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> to read commands
+there, you <a href="https://vimhelp.org/vim_faq.txt.html#must" class="d">must</a> tell Vim to read text instead.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> done by passing the
+"<a href="https://vimhelp.org/motion.txt.html#-" class="d">-</a>" argument in place of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file.  Example: 
+<span class="e"></span>
+<span class="e">        ls | vim -</span>
+<span class="e"></span>
+This allows you to edit the output of the "ls" command, without first saving
+the text in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file.
+   If you use the standard input to read text from, you can use the "<a href="https://vimhelp.org/starting.txt.html#-S" class="d">-S</a>"
+argument to read <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> script: 
+<span class="e"></span>
+<span class="e">        producer | vim -S change.vim -</span>
+<span class="e"></span>
+<span class="e"></span>
+<span class="c">NORMAL MODE SCRIPTS</span>
+
+If you really want to use <a href="https://vimhelp.org/intro.txt.html#Normal" class="d">Normal</a> mode commands in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> script, you can use <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a>
+like this: 
+<span class="e"></span>
+<span class="e">        vim -s script file.txt ...</span>
+
+        <span class="n">Note:</span>
+        "<a href="https://vimhelp.org/starting.txt.html#-s" class="d">-s</a>" has <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> different meaning when <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used without "<a href="https://vimhelp.org/starting.txt.html#-e" class="d">-e</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  Here <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a>
+        means to source the "<a href="https://vimhelp.org/usr_41.txt.html#script" class="d">script</a>" <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> <a href="https://vimhelp.org/intro.txt.html#Normal" class="d">Normal</a> mode commands.  When used with
+        "<a href="https://vimhelp.org/starting.txt.html#-e" class="d">-e</a>" <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> means to be silent, and doesn't use the next argument <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+        file name.
+
+The commands in "<a href="https://vimhelp.org/usr_41.txt.html#script" class="d">script</a>" are executed like you typed them.  Don't forget that
+<a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> line break <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> interpreted <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> pressing <a href="https://vimhelp.org/intro.txt.html#%3CEnter%3E" class="s">&lt;Enter&gt;</a>.  In <a href="https://vimhelp.org/intro.txt.html#Normal" class="d">Normal</a> mode that moves
+the cursor to the next line.
+   To create the <a href="https://vimhelp.org/usr_41.txt.html#script" class="d">script</a> you can edit the <a href="https://vimhelp.org/usr_41.txt.html#script" class="d">script</a> file and type the commands.
+You need to imagine what the result would be, which can be <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> bit difficult.
+Another way <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> to record the commands while you perform them manually.  This
+<a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> how you <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> that: 
+<span class="e"></span>
+<span class="e">        vim -w script file.txt ...</span>
+<span class="e"></span>
+All typed keys will be written to "<a href="https://vimhelp.org/usr_41.txt.html#script" class="d">script</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  If you make <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> small mistake you
+can just continue and remember to edit the <a href="https://vimhelp.org/usr_41.txt.html#script" class="d">script</a> later.
+   The "<a href="https://vimhelp.org/starting.txt.html#-w" class="d">-w</a>" argument appends to an existing script.  That <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> good when you
+want to record the <a href="https://vimhelp.org/usr_41.txt.html#script" class="d">script</a> bit by bit.  If you want to start from scratch and
+start all over, use the "<a href="https://vimhelp.org/starting.txt.html#-W" class="d">-W</a>" argument.  It overwrites any existing file.
+
+<span class="h">==============================================================================</span>
+
+Next chapter: <a href="https://vimhelp.org/usr_27.txt.html#usr_27.txt" class="l">usr_27.txt</a>  Search commands and patterns
+
+Copyright: see <a href="https://vimhelp.org/usr_01.txt.html#manual-copyright" class="l">manual-copyright</a>  vim:tw=78:ts=8:noet:ft=help:norl:
+
+
+</pre>
+</div>
+<div id="vh-sidebar" style="visibility: visible; position: sticky; left: 97.8084px;"><ul><li><a href="#">↑Top↑</a></li><li><a href="#26.1">Repeating with Visual mode</a></li><li><a href="#26.2">Add and subtract</a></li><li><a href="#26.3">Making a change in many files</a></li><li><a href="#26.4">Using Vim from a shell script</a></li></ul></div>
+</main>
+<p>
+Quick links:
+<a href="https://vimhelp.org/">help overview</a> ·
+<a href="https://vimhelp.org/quickref.txt.html">quick reference</a> ·
+<a href="https://vimhelp.org/usr_toc.txt.html">user manual toc</a> ·
+<a href="https://vimhelp.org/#reference_toc">reference manual toc</a>
+· <a href="https://vimhelp.org/vim_faq.txt.html">faq</a></p>
+<footer>This site is maintained by Carlo Teubner (<i>(my first name) at cteubner dot net</i>).</footer>
+
+
+<div id="sourcegraph-app-background" data-platform="firefox-extension" data-version="22.11.24.1820" style="display: none;"></div><div id="simple-translate" class="simple-translate-light-theme"><div><div style="background-image: url(&quot;moz-extension://60a33c9f-71a8-4283-9abc-f90639c1fcd0/icons/512.png&quot;); height: 22px; width: 22px; top: 447px; left: 1053px;" class="simple-translate-button isShow"></div><div class="simple-translate-panel " style="width: 300px; height: 200px; top: 0px; left: 0px; font-size: 17px;"><div class="simple-translate-result-wrapper" style="overflow: hidden;"><div class="simple-translate-move" draggable="true"></div><div class="simple-translate-result-contents"><p class="simple-translate-result" dir="auto"></p><p class="simple-translate-candidate" dir="auto"></p></div></div></div></div></div></body></html>

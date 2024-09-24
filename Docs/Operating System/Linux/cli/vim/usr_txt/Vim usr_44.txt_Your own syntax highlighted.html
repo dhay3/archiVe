@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en"><script type="text/javascript">try {
+(function injectPageScriptAPI(scriptName, shouldOverrideWebSocket, shouldOverrideWebRTC, isInjected) { 
+
+    'use strict';
+
+    /**
+     * If script have been injected into a frame via contentWindow then we can simply take the copy of messageChannel left for us by parent document
+     * Otherwise creates new message channel that sends a message to the content-script to check if request should be allowed or not.
+     */
+    var messageChannel = isInjected ? window[scriptName] : (function () {
+
+        // Save original postMessage and addEventListener functions to prevent webpage from tampering both.
+        var postMessage = window.postMessage;
+        var addEventListener = window.addEventListener;
+
+        // Current request ID (incremented every time we send a new message)
+        var currentRequestId = 0;
+        var requestsMap = {};
+
+        /**
+         * Handles messages sent from the content script back to the page script.
+         *
+         * @param event Event with necessary data
+         */
+        var onMessageReceived = function (event) {
+
+            if (!event.data || !event.data.direction || event.data.direction !== "to-page-script@abu") {
+                return;
+            }
+
+            var requestData = requestsMap[event.data.requestId];
+            if (requestData) {
+                var wrapper = requestData.wrapper;
+                requestData.onResponseReceived(wrapper, event.data.block);
+                delete requestsMap[event.data.requestId];
+            }
+        };
+
+        /**
+         * @param url                The URL to which wrapped object is willing to connect
+         * @param requestType        Request type ( WEBSOCKET or WEBRTC)
+         * @param wrapper            WebSocket wrapper instance
+         * @param onResponseReceived Called when response is received
+         */
+        var sendMessage = function (url, requestType, wrapper, onResponseReceived) {
+
+            if (currentRequestId === 0) {
+                // Subscribe to response when this method is called for the first time
+                addEventListener.call(window, "message", onMessageReceived, false);
+            }
+
+            var requestId = ++currentRequestId;
+            requestsMap[requestId] = {
+                wrapper: wrapper,
+                onResponseReceived: onResponseReceived
+            };
+
+            var message = {
+                requestId: requestId,
+                direction: 'from-page-script@abu',
+                elementUrl: url,
+                documentUrl: document.URL,
+                requestType: requestType
+            };
+
+            // Send a message to the background page to check if the request should be blocked
+            postMessage.call(window, message, "*");
+        };
+
+        return {
+            sendMessage: sendMessage
+        };
+
+    })();
+
+    /*
+     * In some case Chrome won't run content scripts inside frames.
+     * So we have to intercept access to contentWindow/contentDocument and manually inject wrapper script into this context
+     *
+     * Based on: https://github.com/adblockplus/adblockpluschrome/commit/1aabfb3346dc0821c52dd9e97f7d61b8c99cd707
+     */
+    var injectedToString = Function.prototype.toString.bind(injectPageScriptAPI);
+
+    var injectedFramesAdd;
+    var injectedFramesHas;
+    if (window.WeakSet instanceof Function) {
+        var injectedFrames = new WeakSet();
+        injectedFramesAdd = WeakSet.prototype.add.bind(injectedFrames);
+        injectedFramesHas = WeakSet.prototype.has.bind(injectedFrames);
+    } else {
+        var frames = [];
+        injectedFramesAdd = function (el) {
+            if (frames.indexOf(el) < 0) {
+                frames.push(el);
+            }
+        };
+        injectedFramesHas = function (el) {
+            return frames.indexOf(el) >= 0;
+        };
+    }
+
+    /**
+     * Injects wrapper's script into passed window
+     * @param contentWindow Frame's content window
+     */
+    function injectPageScriptAPIInWindow(contentWindow) {
+        try {
+            if (contentWindow && !injectedFramesHas(contentWindow)) {
+                injectedFramesAdd(contentWindow);
+                contentWindow[scriptName] = messageChannel; // Left message channel for the injected script
+                var args = "'" + scriptName + "', " + shouldOverrideWebSocket + ", " + shouldOverrideWebRTC + ", true";
+                contentWindow.eval("(" + injectedToString() + ")(" + args + ");");
+                delete contentWindow[scriptName];
+            }
+        } catch (e) {
+        }
+    }
+
+    /**
+     * Overrides access to contentWindow/contentDocument for the passed HTML element's interface (iframe, frame, object)
+     * If the content of one of these objects is requested we will inject our wrapper script.
+     * @param iface HTML element's interface
+     */
+    function overrideContentAccess(iface) {
+
+        var contentWindowDescriptor = Object.getOwnPropertyDescriptor(iface.prototype, "contentWindow");
+        var contentDocumentDescriptor = Object.getOwnPropertyDescriptor(iface.prototype, "contentDocument");
+
+        // Apparently in HTMLObjectElement.prototype.contentWindow does not exist
+        // in older versions of Chrome such as 42.
+        if (!contentWindowDescriptor) {
+            return;
+        }
+
+        var getContentWindow = Function.prototype.call.bind(contentWindowDescriptor.get);
+        var getContentDocument = Function.prototype.call.bind(contentDocumentDescriptor.get);
+
+        contentWindowDescriptor.get = function () {
+            var contentWindow = getContentWindow(this);
+            injectPageScriptAPIInWindow(contentWindow);
+            return contentWindow;
+        };
+        contentDocumentDescriptor.get = function () {
+            injectPageScriptAPIInWindow(getContentWindow(this));
+            return getContentDocument(this);
+        };
+
+        Object.defineProperty(iface.prototype, "contentWindow", contentWindowDescriptor);
+        Object.defineProperty(iface.prototype, "contentDocument", contentDocumentDescriptor);
+    }
+
+    var interfaces = [HTMLFrameElement, HTMLIFrameElement, HTMLObjectElement];
+    for (var i = 0; i < interfaces.length; i++) {
+        overrideContentAccess(interfaces[i]);
+    }
+
+    /**
+     * Defines properties in destination object
+     * @param src Source object
+     * @param dest Destination object
+     * @param properties Properties to copy
+     */
+    var copyProperties = function (src, dest, properties) {
+        for (var i = 0; i < properties.length; i++) {
+            var prop = properties[i];
+            var descriptor = Object.getOwnPropertyDescriptor(src, prop);
+            // Passed property may be undefined
+            if (descriptor) {
+                Object.defineProperty(dest, prop, descriptor);
+            }
+        }
+    };
+
+    /**
+     * Check request by sending message to content script
+     * @param url URL to block
+     * @param type Request type
+     * @param callback Result callback
+     */
+    var checkRequest = function (url, type, callback) {
+        messageChannel.sendMessage(url, type, this, function (wrapper, blockConnection) {
+            callback(blockConnection);
+        });
+    };
+
+    /**
+     * The function overrides window.WebSocket with our wrapper, that will check url with filters through messaging with content-script.
+     *
+     * IMPORTANT NOTE:
+     * This function is first loaded as a content script. The only purpose of it is to call
+     * the "toString" method and use resulting string as a text content for injected script.
+     */
+    var overrideWebSocket = function () { 
+
+        if (!(window.WebSocket instanceof Function)) {
+            return;
+        }
+
+        /**
+         * WebSocket wrapper implementation.
+         * https://github.com/AdguardTeam/AdguardBrowserExtension/issues/349
+         *
+         * Based on:
+         * https://github.com/adblockplus/adblockpluschrome/commit/457a336ee55a433217c3ffe5d363e5c6980f26f4
+         */
+
+        /**
+         * As far as possible we must track everything we use that could be sabotaged by the website later in order to circumvent us.
+         */
+        var RealWebSocket = WebSocket;
+        var closeWebSocket = Function.prototype.call.bind(RealWebSocket.prototype.close);
+
+        function WrappedWebSocket(url, protocols) {
+            // Throw correct exceptions if the constructor is used improperly.
+            if (!(this instanceof WrappedWebSocket)) {
+                return RealWebSocket();
+            }
+            if (arguments.length < 1) {
+                return new RealWebSocket();
+            }
+
+            var websocket = new RealWebSocket(url, protocols);
+
+            // This is the key point: checking if this WS should be blocked or not
+            // Don't forget that the type of 'websocket.url' is String, but 'url 'parameter might have another type.
+            checkRequest(websocket.url, 'WEBSOCKET', function (blocked) {
+                if (blocked) {
+                    closeWebSocket(websocket);
+                }
+            });
+
+            return websocket;
+        }
+
+        // https://github.com/AdguardTeam/AdguardBrowserExtension/issues/488
+        WrappedWebSocket.prototype = RealWebSocket.prototype;
+        window.WebSocket = WrappedWebSocket.bind();
+
+        copyProperties(RealWebSocket, WebSocket, ["CONNECTING", "OPEN", "CLOSING", "CLOSED", "name", "prototype"]);
+
+        RealWebSocket.prototype.constructor = WebSocket;
+
+    };
+
+    /**
+     * The function overrides window.RTCPeerConnection with our wrapper, that will check ice servers URLs with filters through messaging with content-script.
+     *
+     * IMPORTANT NOTE:
+     * This function is first loaded as a content script. The only purpose of it is to call
+     * the "toString" method and use resulting string as a text content for injected script.
+     */
+    var overrideWebRTC = function () { 
+
+
+        if (!(window.RTCPeerConnection instanceof Function) &&
+            !(window.webkitRTCPeerConnection instanceof Function)) {
+            return;
+        }
+
+        /**
+         * RTCPeerConnection wrapper implementation.
+         * https://github.com/AdguardTeam/AdguardBrowserExtension/issues/588
+         *
+         * Based on:
+         * https://github.com/adblockplus/adblockpluschrome/commit/af0585137be19011eace1cf68bf61eed2e6db974
+         *
+         * Chromium webRequest API doesn't allow the blocking of WebRTC connections
+         * https://bugs.chromium.org/p/chromium/issues/detail?id=707683
+         */
+
+        var RealRTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection;
+        var closeRTCPeerConnection = Function.prototype.call.bind(RealRTCPeerConnection.prototype.close);
+
+        var RealArray = Array;
+        var RealString = String;
+        var createObject = Object.create;
+        var defineProperty = Object.defineProperty;
+
+        /**
+         * Convert passed url to string
+         * @param url URL
+         * @returns {string}
+         */
+        function urlToString(url) {
+            if (typeof url !== "undefined") {
+                return RealString(url);
+            }
+        }
+
+        /**
+         * Creates new immutable array from original with some transform function
+         * @param original
+         * @param transform
+         * @returns {*}
+         */
+        function safeCopyArray(original, transform) {
+
+            if (original === null || typeof original !== "object") {
+                return original;
+            }
+
+            var immutable = RealArray(original.length);
+            for (var i = 0; i < immutable.length; i++) {
+                defineProperty(immutable, i, {
+                    configurable: false, enumerable: false, writable: false,
+                    value: transform(original[i])
+                });
+            }
+            defineProperty(immutable, "length", {
+                configurable: false, enumerable: false, writable: false,
+                value: immutable.length
+            });
+            return immutable;
+        }
+
+        /**
+         * Protect configuration from mutations
+         * @param configuration RTCPeerConnection configuration object
+         * @returns {*}
+         */
+        function protectConfiguration(configuration) {
+
+            if (configuration === null || typeof configuration !== "object") {
+                return configuration;
+            }
+
+            var iceServers = safeCopyArray(
+                configuration.iceServers,
+                function (iceServer) {
+
+                    var url = iceServer.url;
+                    var urls = iceServer.urls;
+
+                    // RTCPeerConnection doesn't iterate through pseudo Arrays of urls.
+                    if (typeof urls !== "undefined" && !(urls instanceof RealArray)) {
+                        urls = [urls];
+                    }
+
+                    return createObject(iceServer, {
+                        url: {
+                            configurable: false, enumerable: false, writable: false,
+                            value: urlToString(url)
+                        },
+                        urls: {
+                            configurable: false, enumerable: false, writable: false,
+                            value: safeCopyArray(urls, urlToString)
+                        }
+                    });
+                }
+            );
+
+            return createObject(configuration, {
+                iceServers: {
+                    configurable: false, enumerable: false, writable: false,
+                    value: iceServers
+                }
+            });
+        }
+
+        /**
+         * Check WebRTC connection's URL and close if it's blocked by rule
+         * @param connection Connection
+         * @param url URL to check
+         */
+        function checkWebRTCRequest(connection, url) {
+            checkRequest(url, 'WEBRTC', function (blocked) {
+                if (blocked) {
+                    try {
+                        closeRTCPeerConnection(connection);
+                    } catch (e) {
+                        // Ignore exceptions
+                    }
+                }
+            });
+        }
+
+        /**
+         * Check each URL of ice server in configuration for blocking.
+         *
+         * @param connection RTCPeerConnection
+         * @param configuration Configuration for RTCPeerConnection
+         * https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration
+         */
+        function checkConfiguration(connection, configuration) {
+
+            if (!configuration || !configuration.iceServers) {
+                return;
+            }
+
+            var iceServers = configuration.iceServers;
+            for (var i = 0; i < iceServers.length; i++) {
+
+                var iceServer = iceServers[i];
+                if (!iceServer) {
+                    continue;
+                }
+
+                if (iceServer.url) {
+                    checkWebRTCRequest(connection, iceServer.url);
+                }
+
+                if (iceServer.urls) {
+                    for (var j = 0; j < iceServer.urls.length; j++) {
+                        checkWebRTCRequest(connection, iceServer.urls[j]);
+                    }
+                }
+            }
+        }
+
+        /**
+         * Overrides setConfiguration method
+         * https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/setConfiguration
+         */
+        if (RealRTCPeerConnection.prototype.setConfiguration) {
+
+            var realSetConfiguration = Function.prototype.call.bind(RealRTCPeerConnection.prototype.setConfiguration);
+
+            RealRTCPeerConnection.prototype.setConfiguration = function (configuration) {
+                configuration = protectConfiguration(configuration);
+                // Call the real method first, so that validates the configuration
+                realSetConfiguration(this, configuration);
+                checkConfiguration(this, configuration);
+            };
+        }
+
+        function WrappedRTCPeerConnection(configuration, arg) {
+
+            if (!(this instanceof WrappedRTCPeerConnection)) {
+                return RealRTCPeerConnection();
+            }
+
+            configuration = protectConfiguration(configuration);
+
+            /**
+             * The old webkitRTCPeerConnection constructor takes an optional second argument and we must pass it.
+             */
+            var connection = new RealRTCPeerConnection(configuration, arg);
+            checkConfiguration(connection, configuration);
+            return connection;
+        }
+
+        WrappedRTCPeerConnection.prototype = RealRTCPeerConnection.prototype;
+
+        var boundWrappedRTCPeerConnection = WrappedRTCPeerConnection.bind();
+        copyProperties(RealRTCPeerConnection, boundWrappedRTCPeerConnection, ["caller", "generateCertificate", "name", "prototype"]);
+        RealRTCPeerConnection.prototype.constructor = boundWrappedRTCPeerConnection;
+
+        if ("RTCPeerConnection" in window) {
+            window.RTCPeerConnection = boundWrappedRTCPeerConnection;
+        }
+        if ("webkitRTCPeerConnection" in window) {
+            window.webkitRTCPeerConnection = boundWrappedRTCPeerConnection;
+        }
+    };
+
+    if (shouldOverrideWebSocket) {
+        overrideWebSocket();
+    }
+
+    if (shouldOverrideWebRTC) {
+        overrideWebRTC();
+    }
+})('wrapper-script-48024297570970265', false, true);
+} catch (ex) { console.error('Error executing AG js: ' + ex); }
+(function () {
+            var current = document.currentScript;
+            var parent = current && current.parentNode;
+            if (parent) {
+                parent.removeChild(current);
+            }
+        })();</script><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Vim help pages, always up-to-date">
+<title>Vim: usr_44.txt</title>
+<link rel="shortcut icon" href="https://vimhelp.org/favicon.ico">
+<!-- favicon is based on http://amnoid.de/tmp/vim_solidbright_512.png and is used with permission by its author -->
+<link rel="stylesheet" href="Vim%20usr_44.txt_Your%20own%20syntax%20highlighted_files/vimhelp.css" type="text/css">
+
+<link rel="stylesheet" class="select2-css" href="Vim%20usr_44.txt_Your%20own%20syntax%20highlighted_files/select2.min.css" integrity="sha256-zaSoHBhwFdle0scfGEFUCwggPN7F+ip9XRglo8IWb4w=" crossorigin="anonymous">
+<script defer="defer" src="Vim%20usr_44.txt_Your%20own%20syntax%20highlighted_files/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script defer="defer" src="Vim%20usr_44.txt_Your%20own%20syntax%20highlighted_files/select2.min.js" integrity="sha256-9yRP/2EFlblE92vzCA10469Ctd0jT48HnmmMw5rJZrA=" crossorigin="anonymous"></script>
+<script defer="defer" src="Vim%20usr_44.txt_Your%20own%20syntax%20highlighted_files/vimhelp.js"></script>
+</head><body>
+<div class="bar">
+  <div class="ql">
+Quick links:
+<a href="https://vimhelp.org/">help overview</a> ·
+<a href="https://vimhelp.org/quickref.txt.html">quick reference</a> ·
+<a href="https://vimhelp.org/usr_toc.txt.html">user manual toc</a> ·
+<a href="https://vimhelp.org/#reference_toc">reference manual toc</a>
+· <a href="https://vimhelp.org/vim_faq.txt.html">faq</a></div>
+  <div class="srch">
+    <select id="vh-select-tag" data-select2-id="select2-data-vh-select-tag" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true" style="display: inline-block;"></select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-1-j58y" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-vh-select-tag-container" aria-controls="select2-vh-select-tag-container"><span class="select2-selection__rendered" id="select2-vh-select-tag-container" role="textbox" aria-readonly="true" title="Go to keyword"><span class="select2-selection__placeholder">Go to keyword</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+  </div>
+  <form class="srch" action="https://duckduckgo.com" method="get" target="_blank" rel="noopener noreferrer">
+    <input type="hidden" name="sites" value="vimhelp.org">
+    <input type="search" name="q" id="vh-srch-input" placeholder="Site search">
+  </form>
+</div>
+
+<main>
+<div id="vh-content">
+<pre><span id="usr_44.txt" class="t">usr_44.txt</span>    For <span class="i">Vim version 9.0.</span>  Last change: 2017 May 06
+
+                     VIM USER MANUAL <a href="https://vimhelp.org/motion.txt.html#-" class="d">-</a> by <a href="https://vimhelp.org/intro.txt.html#Bram" class="d">Bram</a> <a href="https://vimhelp.org/intro.txt.html#Moolenaar" class="d">Moolenaar</a>
+
+                         Your own <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> highlighted
+
+
+Vim comes with highlighting for <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> couple of hundred different file types.  If
+the file you are editing isn't included, read this chapter to find out how to
+get this type of file highlighted.  Also see <a href="https://vimhelp.org/syntax.txt.html#%3Asyn-define" class="l">:syn-define</a> in the <a href="https://vimhelp.org/intro.txt.html#reference" class="d">reference</a>
+manual.
+
+<a href="#44.1" class="l">44.1</a>  Basic <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> commands
+<a href="#44.2" class="l">44.2</a>  Keywords
+<a href="#44.3" class="l">44.3</a>  Matches
+<a href="#44.4" class="l">44.4</a>  Regions
+<a href="#44.5" class="l">44.5</a>  Nested items
+<a href="#44.6" class="l">44.6</a>  Following groups
+<a href="#44.7" class="l">44.7</a>  Other arguments
+<a href="#44.8" class="l">44.8</a>  Clusters
+<a href="#44.9" class="l">44.9</a>  Including another <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file
+<a href="#44.10" class="l">44.10</a> Synchronizing
+<a href="#44.11" class="l">44.11</a> Installing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file
+<a href="#44.12" class="l">44.12</a> Portable <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file layout
+
+     Next chapter: <a href="https://vimhelp.org/usr_45.txt.html#usr_45.txt" class="l">usr_45.txt</a>  <a href="https://vimhelp.org/visual.txt.html#Select" class="d">Select</a> your language
+ Previous chapter: <a href="https://vimhelp.org/usr_43.txt.html#usr_43.txt" class="l">usr_43.txt</a>  Using <a href="https://vimhelp.org/filetype.txt.html#filetypes" class="d">filetypes</a>
+Table of contents: <a href="https://vimhelp.org/usr_toc.txt.html#usr_toc.txt" class="l">usr_toc.txt</a>
+
+<span class="h">==============================================================================</span>
+<span id="44.1" class="t">44.1</span>  Basic <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> commands
+
+Using an existing <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file to start with will save you <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> lot of time.  Try
+finding <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file in $VIMRUNTIME/syntax for <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> language that <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> similar.
+These files will also show you the normal layout of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file.  To
+understand it, you need to read the following.
+
+Let's start with the basic arguments.  Before we start defining any new
+syntax, we need to clear out any old definitions: 
+<span class="e"></span>
+<span class="e">        :syntax clear</span>
+<span class="e"></span>
+This isn't required in the final <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file, but very useful when
+experimenting.
+
+There are more simplifications in this chapter.  If you are <a href="https://vimhelp.org/editing.txt.html#writing" class="d">writing</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a>
+file to be used by others, read all the way through the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> to find out the
+details.
+
+
+<span class="c">LISTING DEFINED ITEMS</span>
+
+To check which <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> items are currently defined, use this command: 
+<span class="e"></span>
+<span class="e">        :syntax</span>
+<span class="e"></span>
+You can use this to check which items have actually been defined.  Quite
+useful when you are experimenting with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> new <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file.  It also shows the
+colors used for each item, which helps to find out what <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> what.
+   To <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> the items in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> specific <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> group use: 
+<span class="e"></span>
+<span class="e">        :syntax list {group-name}</span>
+<span class="e"></span>
+This also can be used to <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> clusters (explained in <a href="#44.8" class="l">44.8</a>).  Just include
+the <a href="https://vimhelp.org/repeat.txt.html#%40" class="d">@</a> in the name.
+
+
+<span class="c">MATCHING CASE</span>
+
+Some languages are not <a href="https://vimhelp.org/change.txt.html#case" class="d">case</a> sensitive, such <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> Pascal.  Others, such <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> C, are
+<a href="https://vimhelp.org/change.txt.html#case" class="d">case</a> sensitive.  You need to tell which type you have with the following
+commands: 
+<span class="e">        :syntax case match</span>
+<span class="e">        :syntax case ignore</span>
+<span class="e"></span>
+The "match" argument means that Vim will match the <a href="https://vimhelp.org/change.txt.html#case" class="d">case</a> of <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> elements.
+Therefore, "int" differs from "Int" and "INT"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  If the "ignore" argument <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a>
+used, the following are equivalent: "Procedure"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> "PROCEDURE" and "procedure"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+   The "<a href="https://vimhelp.org/syntax.txt.html#%3Asyntax" class="d">:syntax</a> <a href="https://vimhelp.org/change.txt.html#case" class="d">case</a>" commands can appear anywhere in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file and affect
+the <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> <a href="https://vimhelp.org/intro.txt.html#definitions" class="d">definitions</a> that follow.  In most cases, you have only one "<a href="https://vimhelp.org/syntax.txt.html#%3Asyntax" class="d">:syntax</a>
+<a href="https://vimhelp.org/change.txt.html#case" class="d">case</a>" command in your <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file; if you work with an unusual language that
+contains both case-sensitive and non-case-sensitive elements, however, you can
+scatter the "<a href="https://vimhelp.org/syntax.txt.html#%3Asyntax" class="d">:syntax</a> <a href="https://vimhelp.org/change.txt.html#case" class="d">case</a>" command throughout the file.
+
+<span class="h">==============================================================================</span>
+<span id="44.2" class="t">44.2</span>  Keywords
+
+The most basic <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> elements are keywords.  To define <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> keyword, use the
+following form: 
+<span class="e"></span>
+<span class="e">        :syntax keyword {group} {keyword} ...</span>
+<span class="e"></span>
+The <span class="s">{group}</span> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the name of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> group.  With the "<a href="https://vimhelp.org/syntax.txt.html#%3Ahighlight" class="d">:highlight</a>" command you
+can assign colors to <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <span class="s">{group}</span>.  The <span class="s">{keyword}</span> argument <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> an actual keyword.
+Here are <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> few examples: 
+<span class="e"></span>
+<span class="e">        :syntax keyword xType int long char</span>
+<span class="e">        :syntax keyword xStatement if then else endif</span>
+<span class="e"></span>
+This example uses the group names "xType" and "xStatement"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  By convention,
+each group name <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> prefixed by the <a href="https://vimhelp.org/filetype.txt.html#filetype" class="d">filetype</a> for the language being defined.
+This example defines <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> for the <a href="https://vimhelp.org/change.txt.html#x" class="d">x</a> language (eXample language without an
+interesting name).  In <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file for "csh" scripts the name "cshType"
+would be used.  Thus the prefix <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> equal to the value of <a href="https://vimhelp.org/options.txt.html#%27filetype%27" class="o">'filetype'</a>.
+   These commands cause the words "int"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> "long" and "char" to be highlighted
+one way and the words "if"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> "then"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> "else" and "endif" to be highlighted
+another way.  Now you need to connect the <a href="https://vimhelp.org/change.txt.html#x" class="d">x</a> group names to standard Vim
+names.  You <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> this with the following commands: 
+<span class="e"></span>
+<span class="e">        :highlight link xType Type</span>
+<span class="e">        :highlight link xStatement Statement</span>
+<span class="e"></span>
+This tells Vim to highlight "xType" like "Type" and "xStatement" like
+"Statement"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  See <a href="https://vimhelp.org/syntax.txt.html#group-name" class="l">group-name</a> for the standard names.
+
+
+<span class="c">UNUSUAL KEYWORDS</span>
+
+The characters used in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> keyword <a href="https://vimhelp.org/vim_faq.txt.html#must" class="d">must</a> be in the <a href="https://vimhelp.org/options.txt.html#%27iskeyword%27" class="o">'iskeyword'</a> option.  If you
+use another character, the <a href="https://vimhelp.org/motion.txt.html#word" class="d">word</a> will never match.  Vim doesn't give <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> warning
+message for this.
+   The <a href="https://vimhelp.org/change.txt.html#x" class="d">x</a> language uses the '-' character in keywords.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> how it's done:
+
+<span class="e">        :setlocal iskeyword+=-</span>
+<span class="e">        :syntax keyword xStatement when-not</span>
+<span class="e"></span>
+The "<a href="https://vimhelp.org/options.txt.html#%3Asetlocal" class="d">:setlocal</a>" command <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used to change <a href="https://vimhelp.org/options.txt.html#%27iskeyword%27" class="o">'iskeyword'</a> only for the current
+buffer.  Still <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> does change the behavior of commands like "<a href="https://vimhelp.org/motion.txt.html#w" class="d">w</a>" and "*"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  If
+that <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not wanted, don't define <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> keyword but use <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> match (explained in the
+next section).
+
+The <a href="https://vimhelp.org/change.txt.html#x" class="d">x</a> language allows for abbreviations.  For example, "next" can be
+abbreviated to "<a href="https://vimhelp.org/pattern.txt.html#n" class="d">n</a>"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> "ne" or "nex"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  You can define them by using this command:
+
+<span class="e">        :syntax keyword xStatement n[ext]</span>
+<span class="e"></span>
+This doesn't match "nextone"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> keywords always match whole words only.
+
+<span class="h">==============================================================================</span>
+<span id="44.3" class="t">44.3</span>  Matches
+
+Consider defining something <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> bit more complex.  You want to match ordinary
+identifiers.  To <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> this, you define <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> match <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> item.  This one matches
+any <a href="https://vimhelp.org/motion.txt.html#word" class="d">word</a> consisting of only <a href="https://vimhelp.org/change.txt.html#lowercase" class="d">lowercase</a> letters: 
+<span class="e"></span>
+<span class="e">        :syntax match xIdentifier /\&lt;\l\+\&gt;/</span>
+
+        <span class="n">Note:</span>
+        Keywords overrule any other <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> item.  Thus the keywords "if"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a>
+        "then"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> etc., will be keywords, <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> defined with the "<a href="https://vimhelp.org/syntax.txt.html#%3Asyntax" class="d">:syntax</a> keyword"
+        commands above, even though they also match the <a href="https://vimhelp.org/pattern.txt.html#pattern" class="d">pattern</a> for
+        xIdentifier.
+
+The part <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> pattern, like it's used for searching.  The <a href="https://vimhelp.org/version7.txt.html#%2F%2F" class="d">//</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a>
+used to surround the <a href="https://vimhelp.org/pattern.txt.html#pattern" class="d">pattern</a> (like how it's done in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> "<a href="https://vimhelp.org/change.txt.html#%3Asubstitute" class="d">:substitute</a>" command).
+You can use any other character, like <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> plus or <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/change.txt.html#quote." class="d">quote.</a>
+
+Now define <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> match for <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> comment.  In the <a href="https://vimhelp.org/change.txt.html#x" class="d">x</a> language <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> anything from <a href="https://vimhelp.org/pattern.txt.html#%23" class="d">#</a> to
+the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> line: 
+<span class="e"></span>
+<span class="e">        :syntax match xComment /#.*/</span>
+<span class="e"></span>
+Since you can use any search pattern, you can highlight very complex things
+with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> match item.  See <a href="https://vimhelp.org/pattern.txt.html#pattern" class="l">pattern</a> for <a href="https://vimhelp.org/helphelp.txt.html#help" class="d">help</a> on search patterns.
+
+<span class="h">==============================================================================</span>
+<span id="44.4" class="t">44.4</span>  Regions
+
+In the example <a href="https://vimhelp.org/change.txt.html#x" class="d">x</a> language, strings are enclosed in double quotation marks <a href="https://vimhelp.org/motion.txt.html#%28" class="d">(</a>").
+To highlight strings you define <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> region.  You need <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> region start (double
+quote) and <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> region <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> (double quote).  The definition <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> follows: 
+<span class="e"></span>
+<span class="e">        :syntax region xString start=/"/ end=/"/</span>
+<span class="e"></span>
+The "start" and "<a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a>" directives define the patterns used to find the start
+and <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of the region.  But what about strings that look like this?
+
+<span class="h">        "A string with a double quote (\") in it" </span>
+
+This creates <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> problem: The double quotation marks in the middle of the <a href="https://vimhelp.org/eval.txt.html#string" class="d">string</a>
+will <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> the region.  You need to tell Vim to skip over any escaped double
+<a href="https://vimhelp.org/quotes.txt.html#quotes" class="d">quotes</a> in the string.  Do this with the skip keyword: 
+<span class="e"></span>
+<span class="e">        :syntax region xString start=/"/ skip=/\\"/ end=/"/</span>
+<span class="e"></span>
+The double <a href="https://vimhelp.org/intro.txt.html#backslash" class="d">backslash</a> matches <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> single backslash, since the <a href="https://vimhelp.org/intro.txt.html#backslash" class="d">backslash</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+special character in search patterns.
+
+When to use <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> region instead of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> match?  The main difference <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> that <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> match
+item <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> single pattern, which <a href="https://vimhelp.org/vim_faq.txt.html#must" class="d">must</a> match <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> whole.  <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> region starts <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a>
+soon <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> the "start" <a href="https://vimhelp.org/pattern.txt.html#pattern" class="d">pattern</a> matches.  Whether the "<a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a>" <a href="https://vimhelp.org/pattern.txt.html#pattern" class="d">pattern</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> found or
+not doesn't matter.  Thus when the item depends on the "<a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a>" <a href="https://vimhelp.org/pattern.txt.html#pattern" class="d">pattern</a> to match,
+you cannot use <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> region.  Otherwise, regions are often simpler to define.  And
+<a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> easier to use nested items, <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> explained in the next section.
+
+<span class="h">==============================================================================</span>
+<span id="44.5" class="t">44.5</span>  Nested items
+
+Take <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> look <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> this comment:
+
+<span class="h">        %Get input  TODO: Skip white space </span>
+
+You want to highlight TODO in big yellow letters, even though <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+comment that <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> highlighted blue.  To let Vim know about this, you define the
+following <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> groups: 
+<span class="e"></span>
+<span class="e">        :syntax keyword xTodo TODO contained</span>
+<span class="e">        :syntax match xComment /%.*/ contains=xTodo</span>
+<span class="e"></span>
+In the first line, the "contained" argument tells Vim that this keyword can
+exist only inside another <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> item.  The next line has "contains=xTodo"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+This indicates that the xTodo <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> element <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> inside it.  The result <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> that
+the comment line <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> whole <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> matched with "xComment" and made blue.  The
+<a href="https://vimhelp.org/motion.txt.html#word" class="d">word</a> TODO inside <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> matched by xTodo and highlighted yellow (highlighting
+for xTodo was setup for this).
+
+
+<span class="c">RECURSIVE NESTING</span>
+
+The <a href="https://vimhelp.org/change.txt.html#x" class="d">x</a> language defines code blocks in curly braces.  And <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> code block may
+contain other code blocks.  This can be defined this way: 
+<span class="e"></span>
+<span class="e">        :syntax region xBlock start=/{/ end=/}/ contains=xBlock</span>
+<span class="e"></span>
+Suppose you have this text:
+
+<span class="h">        while i &lt; b { </span>
+<span class="h">                if a { </span>
+<span class="h">                        b = c; </span>
+<span class="h">                } </span>
+<span class="h">        } </span>
+
+First <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> xBlock starts <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the <a href="https://vimhelp.org/motion.txt.html#%7B" class="d">{</a> in the first line.  In the second line another
+<a href="https://vimhelp.org/motion.txt.html#%7B" class="d">{</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> found.  Since we are inside <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> xBlock item, and <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> contains itself, <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+nested xBlock item will start here.  Thus the "<a href="https://vimhelp.org/motion.txt.html#b" class="d">b</a> <a href="https://vimhelp.org/change.txt.html#%3D" class="d">=</a> <a href="https://vimhelp.org/change.txt.html#c" class="d">c</a>" line <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> inside the
+second level xBlock region.  Then <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/motion.txt.html#%7D" class="d">}</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> found in the next line, which matches
+with the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> <a href="https://vimhelp.org/pattern.txt.html#pattern" class="d">pattern</a> of the region.  This ends the nested xBlock.  Because the
+<a href="https://vimhelp.org/motion.txt.html#%7D" class="d">}</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> included in the nested region, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> hidden from the first xBlock region.
+Then <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the last <a href="https://vimhelp.org/motion.txt.html#%7D" class="d">}</a> the first xBlock region ends.
+
+
+<span class="c">KEEPING THE END</span>
+
+Consider the following two <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> items: 
+<span class="e"></span>
+<span class="e">        :syntax region xComment start=/%/ end=/$/ contained</span>
+<span class="e">        :syntax region xPreProc start=/#/ end=/$/ contains=xComment</span>
+<span class="e"></span>
+You define <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> comment <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> anything from <a href="https://vimhelp.org/motion.txt.html#%25" class="d">%</a> to the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of the line.  <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a>
+preprocessor directive <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> anything from <a href="https://vimhelp.org/pattern.txt.html#%23" class="d">#</a> to the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of the line.  Because you
+can have <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> comment on <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> preprocessor line, the preprocessor definition
+includes <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> "contains=xComment" argument.  Now look what happens with this
+text:
+
+<span class="h">        #define X = Y  % Comment text </span>
+<span class="h">        int foo = 1; </span>
+
+What you see <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> that the second line <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> also highlighted <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> xPreProc.  The
+preprocessor directive should <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of the line.  That <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> why
+you have used "end=/$/"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  So what <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> going wrong?
+   The problem <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the contained comment.  The comment starts with <a href="https://vimhelp.org/motion.txt.html#%25" class="d">%</a> and ends
+<a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of the line.  After the comment ends, the preprocessor <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a>
+continues.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> after the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of the line has been seen, so the next
+line <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> included <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> well.
+   To avoid this problem and to avoid <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> contained <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> item eating <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> needed
+<a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of line, use the "keepend" argument.  This takes care of
+the double end-of-line matching: 
+<span class="e"></span>
+<span class="e">        :syntax region xComment start=/%/ end=/$/ contained</span>
+<span class="e">        :syntax region xPreProc start=/#/ end=/$/ contains=xComment keepend</span>
+<span class="e"></span>
+<span class="e"></span>
+<span class="c">CONTAINING MANY ITEMS</span>
+
+You can use the contains argument to specify that everything can be contained.
+For example: 
+<span class="e"></span>
+<span class="e">        :syntax region xList start=/\[/ end=/\]/ contains=ALL</span>
+<span class="e"></span>
+All <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> items will be contained in this one.  It also contains itself, but
+not <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the same position (that would cause an endless loop).
+   You can specify that some groups are not contained.  Thus contain all
+groups but the ones that are listed:
+
+<span class="e">        :syntax region xList start=/\[/ end=/\]/ contains=ALLBUT,xString</span>
+<span class="e"></span>
+With the "TOP" item you can include all items that don't have <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> "contained"
+argument.  "CONTAINED" <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used to only include items with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> "contained"
+argument.  See <a href="https://vimhelp.org/syntax.txt.html#%3Asyn-contains" class="l">:syn-contains</a> for the details.
+
+<span class="h">==============================================================================</span>
+<span id="44.6" class="t">44.6</span>  Following groups
+
+The <a href="https://vimhelp.org/change.txt.html#x" class="d">x</a> language has statements in this form:
+
+<span class="h">        if (condition) then </span>
+
+You want to highlight the three items differently.  But "(condition)" and
+"then" might also appear in other places, where they get different
+highlighting.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> how you can <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> this: 
+<span class="e"></span>
+<span class="e">        :syntax match xIf /if/ nextgroup=xIfCondition skipwhite</span>
+<span class="e">        :syntax match xIfCondition /([^)]*)/ contained nextgroup=xThen skipwhite</span>
+<span class="e">        :syntax match xThen /then/ contained</span>
+<span class="e"></span>
+The "nextgroup" argument specifies which item can come next.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not
+required.  If none of the items that are specified are found, nothing happens.
+For example, in this text:
+
+<span class="h">        if not (condition) then </span>
+
+The "if" <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> matched by xIf.  "not" doesn't match the specified nextgroup
+xIfCondition, thus only the "if" <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> highlighted.
+
+The "skipwhite" argument tells Vim that white <a href="https://vimhelp.org/intro.txt.html#space" class="d">space</a> (spaces and tabs) may
+appear in between the items.  Similar arguments are "skipnl"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> which allows <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+line break in between the items, and "skipempty"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> which allows empty lines.
+Notice that "skipnl" doesn't skip an empty line, something <a href="https://vimhelp.org/vim_faq.txt.html#must" class="d">must</a> match after
+the line break.
+
+<span class="h">==============================================================================</span>
+<span id="44.7" class="t">44.7</span>  Other arguments
+
+<span class="c">MATCHGROUP</span>
+
+When you define <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> region, the entire region <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> highlighted according to the
+group name specified.  To highlight the text enclosed in parentheses () with
+the group xInside, for example, use the following command: 
+<span class="e"></span>
+<span class="e">        :syntax region xInside start=/(/ end=/)/</span>
+<span class="e"></span>
+Suppose, that you want to highlight the parentheses differently.  You can <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a>
+this with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> lot of convoluted region statements, or you can use the
+"matchgroup" argument.  This tells Vim to highlight the start and <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+region with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> different highlight group (in this case, the xParen group): 
+<span class="e"></span>
+<span class="e">        :syntax region xInside matchgroup=xParen start=/(/ end=/)/</span>
+<span class="e"></span>
+The "matchgroup" argument applies to the start or <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> match that comes after
+it.  In the previous example both start and <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> are highlighted with xParen.
+To highlight the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> with xParenEnd: 
+<span class="e"></span>
+<span class="e">        :syntax region xInside matchgroup=xParen start=/(/</span>
+<span class="e">                \ matchgroup=xParenEnd end=/)/</span>
+<span class="e"></span>
+<a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> side effect of using "matchgroup" <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> that contained items will not match in
+the start or <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of the region.  The example for "transparent" uses this.
+
+
+<span class="c">TRANSPARENT</span>
+
+In <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/change.txt.html#C" class="d">C</a> language file you would like to highlight the () text after <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> "while"
+differently from the () text after <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> "for"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  In both of these there can be
+nested () items, which should be highlighted in the same way.  You <a href="https://vimhelp.org/vim_faq.txt.html#must" class="d">must</a> make
+sure the () highlighting stops <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the matching ).  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> one way to <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> this:
+
+<span class="e">        :syntax region cWhile matchgroup=cWhile start=/while\s*(/ end=/)/</span>
+<span class="e">                \ contains=cCondNest</span>
+<span class="e">        :syntax region cFor matchgroup=cFor start=/for\s*(/ end=/)/</span>
+<span class="e">                \ contains=cCondNest</span>
+<span class="e">        :syntax region cCondNest start=/(/ end=/)/ contained transparent</span>
+<span class="e"></span>
+Now you can give cWhile and cFor different highlighting.  The cCondNest item
+can appear in either of them, but take over the highlighting of the item <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a>
+contained in.  The "transparent" argument causes this.
+   Notice that the "matchgroup" argument has the same group <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> the item
+itself.  Why define <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> then?  Well, the side effect of using <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> matchgroup <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a>
+that contained items are not found in the match with the start item then.
+This avoids that the cCondNest group matches the <a href="https://vimhelp.org/motion.txt.html#%28" class="d">(</a> just after the "while" or
+"for"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  If this would happen, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> would span the whole text until the matching
+<a href="https://vimhelp.org/motion.txt.html#%29" class="d">)</a> and the region would continue after it.  Now cCondNest only matches after
+the match with the start pattern, thus after the first (.
+
+
+<span class="c">OFFSETS</span>
+
+Suppose you want to define <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> region for the text between <a href="https://vimhelp.org/motion.txt.html#%28" class="d">(</a> and <a href="https://vimhelp.org/motion.txt.html#%29" class="d">)</a> after an
+"if"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  But you don't want to include the "if" or the <a href="https://vimhelp.org/motion.txt.html#%28" class="d">(</a> and ).  You can <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> this
+by specifying offsets for the patterns.  Example: 
+<span class="e"></span>
+<span class="e">        :syntax region xCond start=/if\s*(/ms=e+1 end=/)/me=s-1</span>
+<span class="e"></span>
+The offset for the start <a href="https://vimhelp.org/pattern.txt.html#pattern" class="d">pattern</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> "ms=e+1"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  "ms" stands for Match Start.
+This defines an offset for the start of the match.  Normally the match starts
+where the <a href="https://vimhelp.org/pattern.txt.html#pattern" class="d">pattern</a> matches.  "e+1" means that the match now starts <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a>
+of the <a href="https://vimhelp.org/pattern.txt.html#pattern" class="d">pattern</a> match, and then one character further.
+   The offset for the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> <a href="https://vimhelp.org/pattern.txt.html#pattern" class="d">pattern</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> "me=s-1"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  "me" stands for Match End.
+"s-1" means the start of the <a href="https://vimhelp.org/pattern.txt.html#pattern" class="d">pattern</a> match and then one character back.  The
+result <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> that in this text:
+
+<span class="h">        if (foo == bar) </span>
+
+Only the text "foo <a href="https://vimhelp.org/change.txt.html#%3D%3D" class="d">==</a> <a href="https://vimhelp.org/motion.txt.html#bar" class="d">bar</a>" will be highlighted <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> xCond.
+
+More about offsets here: <a href="https://vimhelp.org/syntax.txt.html#%3Asyn-pattern-offset" class="l">:syn-pattern-offset</a><a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+
+
+<span class="c">ONELINE</span>
+
+The "oneline" argument indicates that the region does not cross <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> line
+boundary.  For example: 
+<span class="e"></span>
+<span class="e">        :syntax region xIfThen start=/if/ end=/then/ oneline</span>
+<span class="e"></span>
+This defines <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> region that starts <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> "if" and ends <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> "then"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  But if there <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a>
+no "then" after the "if"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> the region doesn't match.
+
+        <span class="n">Note:</span>
+        When using "oneline" the region doesn't start if the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> <a href="https://vimhelp.org/pattern.txt.html#pattern" class="d">pattern</a>
+        doesn't match in the same line.  Without "oneline" Vim does _not_
+        check if there <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> match for the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> pattern.  The region starts even
+        when the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> <a href="https://vimhelp.org/pattern.txt.html#pattern" class="d">pattern</a> doesn't match in the rest of the file.
+
+
+<span class="c">CONTINUATION LINES AND AVOIDING THEM</span>
+
+Things now become <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> little more complex.  Let's define <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> preprocessor line.
+This starts with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/pattern.txt.html#%23" class="d">#</a> in the first column and continues until the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of the
+line.  <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> line that ends with \ makes the next line <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> continuation line.  The
+way you handle this <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> to allow the <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> item to contain <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> continuation
+pattern: 
+<span class="e"></span>
+<span class="e">        :syntax region xPreProc start=/^#/ end=/$/ contains=xLineContinue</span>
+<span class="e">        :syntax match xLineContinue "\\$" contained</span>
+<span class="e"></span>
+In this case, although xPreProc normally matches <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> single line, the group
+contained in <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> (namely xLineContinue) lets <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#go" class="d">go</a> on for more than one line.
+For example, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> would match both of these lines:
+
+<span class="h">        #define SPAM  spam spam spam \ </span>
+<span class="h">                        bacon and spam </span>
+
+In this case, this <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> what you want.  If <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not what you want, you can call
+for the region to be on <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> single line by adding "excludenl" to the contained
+pattern.  For example, you want to highlight "<a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a>" in xPreProc, but only <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a>
+the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of the line.  To avoid making the xPreProc continue on the next line,
+like xLineContinue does, use "excludenl" like this: 
+<span class="e"></span>
+<span class="e">        :syntax region xPreProc start=/^#/ end=/$/</span>
+<span class="e">                \ contains=xLineContinue,xPreProcEnd</span>
+<span class="e">        :syntax match xPreProcEnd excludenl /end$/ contained</span>
+<span class="e">        :syntax match xLineContinue "\\$" contained</span>
+<span class="e"></span>
+"excludenl" <a href="https://vimhelp.org/vim_faq.txt.html#must" class="d">must</a> be placed before the pattern.  Since "xLineContinue" doesn't
+have "excludenl"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> match with <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> will extend xPreProc to the next line <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a>
+before.
+
+<span class="h">==============================================================================</span>
+<span id="44.8" class="t">44.8</span>  Clusters
+
+One of the things you will notice <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> you start to write <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> that
+you wind up generating <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> lot of <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> groups.  Vim enables you to define <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+collection of <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> groups called <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> cluster.
+   Suppose you have <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> language that contains for loops, if statements, while
+loops, and functions.  Each of them contains the same <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> elements: numbers
+and identifiers.  You define them like this: 
+<span class="e"></span>
+<span class="e">        :syntax match xFor /^for.*/ contains=xNumber,xIdent</span>
+<span class="e">        :syntax match xIf /^if.*/ contains=xNumber,xIdent</span>
+<span class="e">        :syntax match xWhile /^while.*/ contains=xNumber,xIdent</span>
+<span class="e"></span>
+You have to repeat the same "contains=" every time.  If you want to add
+another contained item, you have to add <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> three times.  <a href="https://vimhelp.org/autocmd.txt.html#Syntax" class="d">Syntax</a> clusters
+simplify these <a href="https://vimhelp.org/intro.txt.html#definitions" class="d">definitions</a> by enabling you to have one cluster stand for
+several <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> groups.
+   To define <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> cluster for the two items that the three groups contain, use
+the following command: 
+<span class="e"></span>
+<span class="e">        :syntax cluster xState contains=xNumber,xIdent</span>
+<span class="e"></span>
+Clusters are used inside other <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> items just like any <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> group.
+Their names start with @.  Thus, you can define the three groups like this: 
+<span class="e"></span>
+<span class="e">        :syntax match xFor /^for.*/ contains=@xState</span>
+<span class="e">        :syntax match xIf /^if.*/ contains=@xState</span>
+<span class="e">        :syntax match xWhile /^while.*/ contains=@xState</span>
+<span class="e"></span>
+You can add new group names to this cluster with the "add" argument: 
+<span class="e"></span>
+<span class="e">        :syntax cluster xState add=xString</span>
+<span class="e"></span>
+You can remove <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> groups from this <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> well: 
+<span class="e"></span>
+<span class="e">        :syntax cluster xState remove=xNumber</span>
+<span class="e"></span>
+<span class="h">==============================================================================</span>
+<span id="44.9" class="t">44.9</span>  Including another <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file
+
+The C++ language <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> superset of the <a href="https://vimhelp.org/change.txt.html#C" class="d">C</a> language.  Because you <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> not
+want to write two <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> files, you can have the C++ <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file read in the
+one for <a href="https://vimhelp.org/change.txt.html#C" class="d">C</a> by using the following command: 
+<span class="e"></span>
+<span class="e">        :runtime! syntax/c.vim</span>
+<span class="e"></span>
+The ":runtime!" command searches <a href="https://vimhelp.org/options.txt.html#%27runtimepath%27" class="o">'runtimepath'</a> for all "syntax/c.vim" files.
+This makes the <a href="https://vimhelp.org/change.txt.html#C" class="d">C</a> parts of the C++ <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> be defined like for <a href="https://vimhelp.org/change.txt.html#C" class="d">C</a> files.  If you
+have replaced the <a href="https://vimhelp.org/syntax.txt.html#c.vim" class="d">c.vim</a> <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file, or added items with an extra file, these
+will be loaded <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> well.
+   After loading the <a href="https://vimhelp.org/change.txt.html#C" class="d">C</a> <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> items the specific C++ items can be defined.
+For example, add keywords that are not used in C: 
+<span class="e"></span>
+<span class="e">        :syntax keyword cppStatement    new delete this friend using</span>
+<span class="e"></span>
+This works just like in any other <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file.
+
+Now consider the <a href="https://vimhelp.org/if_perl.txt.html#Perl" class="d">Perl</a> language.  <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> <a href="https://vimhelp.org/if_perl.txt.html#Perl" class="d">Perl</a> <a href="https://vimhelp.org/usr_41.txt.html#script" class="d">script</a> consists of two distinct parts:
+<a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> documentation <a href="https://vimhelp.org/motion.txt.html#section" class="d">section</a> in POD format, and <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> program written in <a href="https://vimhelp.org/if_perl.txt.html#Perl" class="d">Perl</a> itself.
+The POD <a href="https://vimhelp.org/motion.txt.html#section" class="d">section</a> starts with "=head" and ends with "=cut"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+   You want to define the POD <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> in one file, and use <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> from the <a href="https://vimhelp.org/if_perl.txt.html#Perl" class="d">Perl</a>
+<a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file.  The "<a href="https://vimhelp.org/syntax.txt.html#%3Asyntax" class="d">:syntax</a> include" command reads in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file and stores
+the elements <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> defined in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> cluster.  For Perl, the statements are <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a>
+follows: 
+<span class="e"></span>
+<span class="e">        :syntax include @Pod &lt;sfile&gt;:p:h/pod.vim</span>
+<span class="e">        :syntax region perlPOD start=/^=head/ end=/^=cut/ contains=@Pod</span>
+<span class="e"></span>
+When "=head" <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> found in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/if_perl.txt.html#Perl" class="d">Perl</a> file, the perlPOD region starts.  In this
+region the @Pod cluster <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> contained.  All the items defined <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> top-level
+items in the pod.vim <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> files will match here.  When "=cut" <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> found, the
+region ends and we <a href="https://vimhelp.org/motion.txt.html#go" class="d">go</a> back to the items defined in the <a href="https://vimhelp.org/if_perl.txt.html#Perl" class="d">Perl</a> file.
+   The "<a href="https://vimhelp.org/syntax.txt.html#%3Asyntax" class="d">:syntax</a> include" command <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> clever enough to ignore <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> "<a href="https://vimhelp.org/syntax.txt.html#%3Asyntax" class="d">:syntax</a> clear"
+command in the included file.  And an argument such <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> "contains=ALL" will
+only contain items defined in the included file, not in the file that includes
+it.
+   The "<a href="https://vimhelp.org/cmdline.txt.html#%3Csfile%3E" class="s">&lt;sfile&gt;</a>:p:h/" part uses the name of the current file (&lt;sfile&gt;),
+expands <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> to <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> full path (:p) and then takes the head (:h).  This results in
+the directory name of the file.  This causes the pod.vim file in the same
+directory to be included.
+
+<span class="h">==============================================================================</span>
+<span id="44.10" class="t">44.10</span> Synchronizing
+
+Compilers have <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> easy.  They start <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the beginning of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file and parse <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a>
+straight through.  Vim does not have <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> so easy.  It <a href="https://vimhelp.org/vim_faq.txt.html#must" class="d">must</a> start in the middle,
+where the editing <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> being done.  So how does <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> tell where <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> is?
+   The secret <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the "<a href="https://vimhelp.org/syntax.txt.html#%3Asyntax" class="d">:syntax</a> sync" command.  This tells Vim how to figure out
+where <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> is.  For example, the following command tells Vim to scan backward
+for the beginning or <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> C-style comment and begin <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> <a href="https://vimhelp.org/syntax.txt.html#coloring" class="d">coloring</a> from
+there: 
+<span class="e"></span>
+<span class="e">        :syntax sync ccomment</span>
+<span class="e"></span>
+You can tune this processing with some arguments.  The "minlines" argument
+tells Vim the minimum number of lines to look backward, and "maxlines" tells
+the editor the maximum number of lines to scan.
+   For example, the following command tells Vim to look <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> least 10 lines
+before the top of the screen: 
+<span class="e"></span>
+<span class="e">        :syntax sync ccomment minlines=10 maxlines=500</span>
+<span class="e"></span>
+If <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> cannot figure out where <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> in that space, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> starts looking farther
+and farther back until <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> figures out what to do.  But <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> looks no farther
+back than 500 lines.  (A large "maxlines" slows down processing.  <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> small one
+might cause synchronization to fail.)
+   To make synchronizing <a href="https://vimhelp.org/motion.txt.html#go" class="d">go</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> bit faster, tell Vim which <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> items can be
+skipped.  Every match and region that only needs to be used when actually
+displaying text can be given the "display" argument.
+   By default, the comment to be found will be colored <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> part of the Comment
+<a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> group.  If you want to color things another way, you can specify <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+different <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> group: 
+<span class="e"></span>
+<span class="e">        :syntax sync ccomment xAltComment</span>
+<span class="e"></span>
+If your programming language does not have C-style comments in it, you can try
+another <a href="https://vimhelp.org/eval.txt.html#method" class="d">method</a> of synchronization.  The simplest way <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> to tell Vim to <a href="https://vimhelp.org/intro.txt.html#space" class="d">space</a>
+back <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> number of lines and try to figure out things from there.  The following
+command tells Vim to <a href="https://vimhelp.org/motion.txt.html#go" class="d">go</a> back 150 lines and start parsing from there: 
+<span class="e"></span>
+<span class="e">        :syntax sync minlines=150</span>
+<span class="e"></span>
+<a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> large "minlines" value can make Vim slower, especially when <a href="https://vimhelp.org/scroll.txt.html#scrolling" class="d">scrolling</a>
+backwards in the file.
+   Finally, you can specify <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> group to look for by using this command:
+
+<span class="e">        :syntax sync match {sync-group-name}</span>
+<span class="e">                \ grouphere {group-name} {pattern}</span>
+<span class="e"></span>
+This tells Vim that when <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> sees <span class="s">{pattern}</span> the <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> group named <a href="https://vimhelp.org/syntax.txt.html#%7Bgroup-name%7D" class="s">{group-name}</a>
+begins just after the <a href="https://vimhelp.org/pattern.txt.html#pattern" class="d">pattern</a> given.  The <span class="s">{sync-group-name}</span> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used to give <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+name to this synchronization specification.  For example, the sh scripting
+language begins an if statement with "if" and ends <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> with "fi"<a href="https://vimhelp.org/cmdline.txt.html#%3A" class="d">:</a>
+
+<span class="h">        if [ --f file.txt ] ; then </span>
+<span class="h">                echo "File exists" </span>
+<span class="h">        fi </span>
+
+To define <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> "grouphere" directive for this syntax, you use the following
+command: 
+<span class="e"></span>
+<span class="e">        :syntax sync match shIfSync grouphere shIf "\&lt;if\&gt;"</span>
+<span class="e"></span>
+The "groupthere" argument tells Vim that the <a href="https://vimhelp.org/pattern.txt.html#pattern" class="d">pattern</a> ends <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> group.  For
+example, the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of the if/fi group <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> follows: 
+<span class="e"></span>
+<span class="e">        :syntax sync match shIfSync groupthere NONE "\&lt;fi\&gt;"</span>
+<span class="e"></span>
+In this example, the NONE tells Vim that you are not in any special <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a>
+region.  In particular, you are not inside an if block.
+
+You also can define matches and regions that are with no "grouphere" or
+"groupthere" arguments.  These groups are for <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> groups skipped during
+synchronization.  For example, the following skips over anything inside {},
+even if <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> would normally match another synchronization method: 
+<span class="e"></span>
+<span class="e">        :syntax sync match xSpecial /{.*}/</span>
+<span class="e"></span>
+More about synchronizing in the <a href="https://vimhelp.org/intro.txt.html#reference" class="d">reference</a> manual: <a href="https://vimhelp.org/syntax.txt.html#%3Asyn-sync" class="l">:syn-sync</a><a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+
+<span class="h">==============================================================================</span>
+<span id="44.11" class="t">44.11</span> Installing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file
+
+When your new <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> ready to be used, drop <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> "<a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a>" directory
+in <a href="https://vimhelp.org/options.txt.html#%27runtimepath%27" class="o">'runtimepath'</a>.  For <a href="https://vimhelp.org/os_unix.txt.html#Unix" class="d">Unix</a> that would be "~/.vim/syntax"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+  The name of the <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file <a href="https://vimhelp.org/vim_faq.txt.html#must" class="d">must</a> be equal to the file type, with ".vim"
+added.  Thus for the <a href="https://vimhelp.org/change.txt.html#x" class="d">x</a> language, the full path of the file would be:
+
+<span class="h">        ~/.vim/syntax/x.vim </span>
+
+You <a href="https://vimhelp.org/vim_faq.txt.html#must" class="d">must</a> also make the file type be recognized.  See <a href="https://vimhelp.org/usr_43.txt.html#43.2" class="l">43.2</a><a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+
+If your file works well, you might want to make <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> available to other Vim
+users.  First read the next <a href="https://vimhelp.org/motion.txt.html#section" class="d">section</a> to make sure your file works well for
+others.  Then e-mail <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> to the Vim maintainer: &lt;maintainer@vim.org&gt;.  Also
+explain how the <a href="https://vimhelp.org/filetype.txt.html#filetype" class="d">filetype</a> can be detected.  With <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> bit of luck your file will
+be included in the next Vim version!
+
+
+<span class="c">ADDING TO AN EXISTING SYNTAX FILE</span>
+
+We were assuming you were adding <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> completely new <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file.  When an existing
+<a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file works, but <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> missing some items, you can add items in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> separate
+file.  That avoids <a href="https://vimhelp.org/change.txt.html#changing" class="d">changing</a> the distributed <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file, which will be lost
+when installing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> new version of Vim.
+   Write <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> commands in your file, possibly using group names from the
+existing syntax.  For example, to add new variable types to the <a href="https://vimhelp.org/change.txt.html#C" class="d">C</a> <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file:
+
+<span class="e">        :syntax keyword cType off_t uint</span>
+<span class="e"></span>
+Write the file with the same name <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> the original <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file.  In this <a href="https://vimhelp.org/change.txt.html#case" class="d">case</a>
+"<a href="https://vimhelp.org/syntax.txt.html#c.vim" class="d">c.vim</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  Place <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> directory near the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of <a href="https://vimhelp.org/options.txt.html#%27runtimepath%27" class="o">'runtimepath'</a>.  This makes
+<a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> loaded after the original <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file.  For <a href="https://vimhelp.org/os_unix.txt.html#Unix" class="d">Unix</a> this would be:
+
+<span class="h">        ~/.vim/after/syntax/c.vim </span>
+
+<span class="h">==============================================================================</span>
+<span id="44.12" class="t">44.12</span> Portable <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file layout
+
+Wouldn't <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> be nice if all Vim users exchange <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> files?  To make this
+possible, the <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file <a href="https://vimhelp.org/vim_faq.txt.html#must" class="d">must</a> follow <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> few guidelines.
+
+Start with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> header that explains what the <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> for, who maintains
+<a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> and when <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> was last updated.  Don't include too much information about
+changes history, not many people will read it.  Example: 
+<span class="e"></span>
+<span class="e">        " Vim syntax file</span>
+<span class="e">        " Language:     C</span>
+<span class="e">        " Maintainer:   Bram Moolenaar &lt;Bram@vim.org&gt;</span>
+<span class="e">        " Last Change:  2001 Jun 18</span>
+<span class="e">        " Remark:       Included by the C++ syntax.</span>
+<span class="e"></span>
+Use the same layout <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> the other <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> files.  Using an existing <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file
+<a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> an example will save you <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> lot of time.
+
+Choose <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> good, descriptive name for your <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file.  Use <a href="https://vimhelp.org/change.txt.html#lowercase" class="d">lowercase</a> letters
+and digits.  Don't make <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> too long, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used in many places: The name of
+the <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file "name.vim"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> <a href="https://vimhelp.org/options.txt.html#%27filetype%27" class="o">'filetype'</a>, b:current_syntax and the start of each
+<a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> group (nameType, nameStatement, nameString, etc).
+
+Start with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> check for "b:current_syntax"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  If <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> defined, some other
+<a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file, earlier in <a href="https://vimhelp.org/options.txt.html#%27runtimepath%27" class="o">'runtimepath'</a> was already loaded: 
+<span class="e"></span>
+<span class="e">        if exists("b:current_syntax")</span>
+<span class="e">          finish</span>
+<span class="e">        endif</span>
+<span class="e"></span>
+Set "b:current_syntax" to the name of the <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the end.  Don't forget
+that included files <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> this too, you might have to reset "b:current_syntax" if
+you include two files.
+
+Do not include anything that <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> user preference.  Don't set <a href="https://vimhelp.org/options.txt.html#%27tabstop%27" class="o">'tabstop'</a>,
+<a href="https://vimhelp.org/options.txt.html#%27expandtab%27" class="o">'expandtab'</a>, etc.  These belong in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/filetype.txt.html#filetype" class="d">filetype</a> plugin.
+
+Do not include mappings or abbreviations.  Only include setting <a href="https://vimhelp.org/options.txt.html#%27iskeyword%27" class="o">'iskeyword'</a> if
+<a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> really necessary for recognizing keywords.
+
+To allow users select their own preferred colors, make <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> different group name
+for every kind of highlighted item.  Then link each of them to one of the
+standard highlight groups.  That will make <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> work with every color scheme.
+If you select specific colors <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> will look bad with some color schemes.  And
+don't forget that some people use <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> different background color, or have only
+eight colors available.
+
+For the linking use "hi def link"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> so that the user can select different
+highlighting before your <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> file <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> loaded.  Example: 
+<span class="e"></span>
+<span class="e">          hi def link nameString        String</span>
+<span class="e">          hi def link nameNumber        Number</span>
+<span class="e">          hi def link nameCommand       Statement</span>
+<span class="e">          ... etc ...</span>
+<span class="e"></span>
+Add the "display" argument to items that are not used when syncing, to speed
+up <a href="https://vimhelp.org/scroll.txt.html#scrolling" class="d">scrolling</a> backwards and <a href="https://vimhelp.org/various.txt.html#CTRL-L" class="k">CTRL-L</a>.
+
+<span class="h">==============================================================================</span>
+
+Next chapter: <a href="https://vimhelp.org/usr_45.txt.html#usr_45.txt" class="l">usr_45.txt</a>  <a href="https://vimhelp.org/visual.txt.html#Select" class="d">Select</a> your language
+
+Copyright: see <a href="https://vimhelp.org/usr_01.txt.html#manual-copyright" class="l">manual-copyright</a>  vim:tw=78:ts=8:noet:ft=help:norl:
+
+
+</pre>
+</div>
+<div id="vh-sidebar" style="visibility: visible; position: sticky; left: 101.325px;"><ul><li><a href="#">↑Top↑</a></li><li><a href="#44.1">Basic syntax commands</a></li><li><a href="#44.2">Keywords</a></li><li><a href="#44.3">Matches</a></li><li><a href="#44.4">Regions</a></li><li><a href="#44.5">Nested items</a></li><li><a href="#44.6">Following groups</a></li><li><a href="#44.7">Other arguments</a></li><li><a href="#44.8">Clusters</a></li><li><a href="#44.9">Including another syntax file</a></li><li><a href="#44.10">Synchronizing</a></li><li><a href="#44.11">Installing a syntax file</a></li><li><a href="#44.12">Portable syntax file layout</a></li></ul></div>
+</main>
+<p>
+Quick links:
+<a href="https://vimhelp.org/">help overview</a> ·
+<a href="https://vimhelp.org/quickref.txt.html">quick reference</a> ·
+<a href="https://vimhelp.org/usr_toc.txt.html">user manual toc</a> ·
+<a href="https://vimhelp.org/#reference_toc">reference manual toc</a>
+· <a href="https://vimhelp.org/vim_faq.txt.html">faq</a></p>
+<footer>This site is maintained by Carlo Teubner (<i>(my first name) at cteubner dot net</i>).</footer>
+
+
+<div id="sourcegraph-app-background" data-platform="firefox-extension" data-version="22.11.24.1820" style="display: none;"></div></body></html>

@@ -10,16 +10,13 @@
 - [ ] Port vim to Neovim
 - [ ] Port sublimetext to vscode
 - [ ] Port Plasma to Hyprland
-- [ ] Port Manjaro to Arch with ZFS(and learn RAID)
-- [ ] Port conf github repo to Zpc
+- [ ] Port Manjaro to Arch with ZFS(and learn RAID)，or give NixOS a shoot
 - [ ] Might be porting jetbrain to VScode
-- [ ] Stow and fzf
+- [ ] Stow
 - [ ] Passwall
 - [ ] ETH
-- [ ] lazygit
-- [ ] glow
-- [ ] rime
-- [ ] zen browser
-- [ ] Nix file manager
+- [ ] Nix
 - [ ] relearn rsync
 - [ ] dotfiles repo
+- [ ] w3m
+- [ ] ffmpeg

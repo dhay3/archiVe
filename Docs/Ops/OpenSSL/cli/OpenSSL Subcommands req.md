@@ -261,7 +261,10 @@ openssl req -newkey rsa:2048 -keyout key.pem -out req.pem
 openssl req -x509 -newkey rsa:2048 -keyout fd.pem -out fd.crt
 
 #生成 self-signed root certificate(默认有效期 10 天)，不需要 passphrase
-openssl req -x509 -newkey rsa:2048 -keyout fd.pem -out fd.crt
+openssl req -x509 -newkey rsa:2048 -keyout fd.pem -out fd.crt -nodes
+
+#使用 fd.pem 私钥生成 self-signed root certificate 有效期为 99999 days，不需要 passphrase
+openssl req -x509 -key fd.pem -out fd.crt -nodes -days 99999
 
 #以非交互式生成 key.pem 私钥, fd.crt 私钥
 openssl req -newkey rsa:2048 -keyout key.pem -out fd.crt -nodes -subj "/C=GB/L=London/O=Feisty Duck Ltd/CN=www.feistyduck.com"
