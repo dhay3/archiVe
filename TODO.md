@@ -13,10 +13,17 @@
 - [ ] Port Manjaro to Arch with ZFS(and learn RAID)，or give NixOS a shoot
 - [ ] Might be porting jetbrain to VScode
 - [ ] Stow
-- [ ] Passwall
+- [ ] Passwall(QX/Singbox)
 - [ ] ETH
 - [ ] Nix
 - [ ] relearn rsync
 - [ ] dotfiles repo
-- [ ] w3m
 - [ ] ffmpeg
+- [ ] RFID NFC Hack
+- [ ] Linux do ja netfilter re
+- [ ] dbeaver
+
+
+T-mobile 
+giffgaff
+esmi

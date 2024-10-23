@@ -1,4 +1,4 @@
-git add assets/# git reset
+# git reset
 
 ref
 [https://git-scm.com/docs/git-reset](https://git-scm.com/docs/git-reset)

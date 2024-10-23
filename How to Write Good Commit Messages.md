@@ -154,7 +154,7 @@ gitmoji -c
 
 同 [Conventional Commits#Optional Scope](#Optional%20Scope) 相同
 
-### 0x03c message
+### 0x03c Message
 
 同 [Description](#Description)
 

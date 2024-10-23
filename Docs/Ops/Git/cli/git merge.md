@@ -24,7 +24,7 @@ git merge
 * commit b308e152cdea31c578d3bae159ad59994b093c13
 | Author: Your Name <you@example.com>
 | Date:   Fri Mar 31 18:16:16 2023 +0800
-| 
+| git add assets/
 |     e
 |   
 | * commit f63c52a5d2d542b8e2c245bebbb19e82bd6d9e02 (HEAD -> topic)

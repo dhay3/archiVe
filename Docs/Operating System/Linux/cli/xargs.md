@@ -1,4 +1,4 @@
-# Linux xagrs
+# Linux xargs
 
 参考：
 

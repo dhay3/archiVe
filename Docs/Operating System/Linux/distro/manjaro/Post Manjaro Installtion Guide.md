@@ -213,6 +213,7 @@ latte-dock
 | telegram-desktop         | 聊天                                           |
 | element-desktop          | matrix                                         |
 | discord                  | 聊天                                           |
+| blender                  | 3d                                             |
 | gparted                  | gparted GUI (==卸载 partitionmanager==)        |
 | gns3                     | 网络设备模拟器                                 |
 | packettracer             | CISCO 模拟器                                   |
@@ -230,6 +231,7 @@ latte-dock
 | pycharm                  | python 编辑器                                  |
 | goland                   | go 编辑器                                      |
 | datagrip                 | 数据库 编辑器                                  |
+| dbeader-ee               | 数据库 编辑                                    | 
 | webstorm                 | 前端 编辑器                                    |
 | clion                    | C 编辑器                                       |
 | visual-studio-code-bin   | 万能编辑器                                     |
@@ -241,7 +243,7 @@ latte-dock
 | burpsuite                | 7 层报文抓包                                   |
 | fluent-reader            | Rss 阅读(在 IOS 上可以配合 inoreader 一起使用) |
 | kdiskmark                | hard drive benchmark tool                      |
-| memetest86+              | memory test                                    | 
+| memetest86+              | memory test                                    |
 | github-desktop           | github 桌面管理                                |
 | nessus                   | 漏洞扫描                                       |
 | johnny                   | 爆破 GUI                                       |
@@ -266,7 +268,7 @@ latte-dock
 | Name                                                     | Description                                            |
 | -------------------------------------------------------- | ------------------------------------------------------ |
 | sysbench                                                 | benchmark                                              |
-| lm-sensor                                                | 硬件温度检测                                           | 
+| lm-sensor                                                | 硬件温度检测                                           |
 | smartmontools                                            | 磁盘健康检查，配合 badlock 一起使用                    |
 | qemu                                                     | kvm                                                    |
 | zsh                                                      | Shell                                                  |
@@ -276,6 +278,7 @@ latte-dock
 | tmux                                                     | multiplexer                                            |
 | zfs                                                      | filesystem                                             |
 | transhell                                                | TUI 翻译                                               |
+| delta                                                    | diff3 替代                                             | 
 | bind                                                     | 包含 dig                                               |
 | yazi                                                     | TUI 文件浏览                                           |
 | asciinema                                                | 终端录屏                                               |
@@ -288,6 +291,7 @@ latte-dock
 | git/git-lfs                                              | 版本控制                                               |
 | gh                                                       | github 管理                                            |
 | tio                                                      | 串行设备连接                                           |
+| bettercap                                                | 抓包                                                   |
 | viddy                                                    | watch alternate                                        |
 | flatpak                                                  | 3 方下载                                               |
 | nmap                                                     | 网络探测                                               |
