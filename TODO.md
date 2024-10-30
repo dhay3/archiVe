@@ -22,6 +22,9 @@
 - [ ] RFID NFC Hack
 - [ ] Linux do ja netfilter re
 - [ ] dbeaver
+- [ ] Audit
+- [ ] Rsyslog
+- [ ] Systemd
 
 
 T-mobile 
