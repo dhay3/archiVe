@@ -146,7 +146,44 @@ MAILTO=root
  
 ### 0x03c Environments
  
-**cron 并不会使用系统的全局变量(所以直接使用 PATH 下的命令，可能会不生效，尽可能使用绝对路径)**，如果想要设置环境变量，需要使用 `name=value` 的格式显式声明
+**cron 并不会使用系统的全局变量(所以直接使用 PATH 下的命令，可能会不生效，尽可能使用绝对路径)**， 这一点可以使用如下规则来校验
+
+```
+[root@vbox ~]# echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+
+[root@vbox ~]# crontab -l
+* * * * * echo ${PATH}
+
+[root@vbox mail]# tail -f root
+
+From root@vbox.localdomain  Thu Oct 31 14:23:01 2024
+Return-Path: <root@vbox.localdomain>
+X-Original-To: root
+Delivered-To: root@vbox.localdomain
+Received: by vbox.localdomain (Postfix, from userid 0)
+        id 36197600CFA6; Thu, 31 Oct 2024 14:23:01 +0800 (CST)
+From: "(Cron Daemon)" <root@vbox.localdomain>
+To: root@vbox.localdomain
+Subject: Cron <root@vbox> echo ${PATH}
+Content-Type: text/plain; charset=UTF-8
+Auto-Submitted: auto-generated
+Precedence: bulk
+X-Cron-Env: <XDG_SESSION_ID=25>
+X-Cron-Env: <XDG_RUNTIME_DIR=/run/user/0>
+X-Cron-Env: <LANG=en_US.UTF-8>
+X-Cron-Env: <SHELL=/bin/sh>
+X-Cron-Env: <HOME=/root>
+X-Cron-Env: <PATH=/usr/bin:/bin>
+X-Cron-Env: <LOGNAME=root>
+X-Cron-Env: <USER=root>
+Message-Id: <20241031062301.36197600CFA6@vbox.localdomain>
+Date: Thu, 31 Oct 2024 14:23:01 +0800 (CST)
+
+/usr/bin:/bin
+```
+
+这里可以明显看到 cron 使用的 `${PATH}` 和 系统使用的并不一致。所以想要设置环境变量，需要使用 `name=value` 的格式显式声明
 
 例如
  
@@ -295,18 +332,97 @@ MAILTO='brevin.mattheo@duckdocks.org'
 
 ![](https://github.com/dhay3/picx-images-hosting/raw/master/2024-10-30_17-51-27.41y2a3ba8a.webp)
 
-## 0x06 Cron PAM/ACL
+## 0x06 Crontab PAM/ACL
  
-上面这些内容并不是 cron(Modern Versions) 独有的，red hat 在 cron 中额外引入了 PAM 和 SELinux 的逻辑，让 cron 也支持权限控制
+上面这些内容并不是 cron(Modern Versions) 独有的，red hat 在 cronie 中额外引入了 PAM 和 SELinux 的逻辑，让 cron 对特定的用户开放
 
-cron 通过 cron.allow, cron.deny 来管理权限
+### 0x06a cron.allow/cron.deny
 
+> [!NOTE]
+> 说实话这功能挺鸡肋的，只针对 `crontab`，不适用于 `anacron`
 
+`/etc/cron.allow` 使用白名单机制，在该文件中的用户名，可以使用 `crontab`，反之不可以。例如
+
+```
+[root@vbox home]# cat /etc/cron.allow
+root
+```
+
+那么当使用非 root 用户创建 crontab files 就会出现如下提示
+
+```
+[root@vbox home]# su trojan
+[trojan@vbox home]$ crontab -l
+You (trojan) are not allowed to use this program (crontab)
+See crontab(1) for more information
+```
+
+> [!NOTE] 
+> 如果是 root 通过 `crontab -u ` 的方式指定用户，不受影响
+
+```
+[root@vbox home]# crontab -u trojan -l
+no crontab for trojan
+```
+
+同理 `/etc/cron.deny` 使用黑名单机制，在该文件中的用户名，不可以使用 `crontab`，反之可以
+
+### 0x06b /etc/security/access.conf
+
+除了 `/etc/cron.deny` 和 `/etc/cron.allow` 外，还可以使用 `/etc/security/access.conf` 来控制那些用户可以使用 `crontab`
 
 ## 0x07 How to Debug Cron Scheduled Tasks
 
+在你写了一个未来执行的 cron scheduled task，怎么知道是否生效呢？(通常只有 command part 可能会出现问题，因为 cron 使用的环境变量和系统的不一定一致)
 
+例如
 
+```
+0 2 * * 6 curl -sS ipinfo.io
+```
+
+我们可以先将 cron part 设置为 `* * * * *`
+
+```
+* * * * * curl -sS ipinfo.io
+```
+
+然后监听 `/var/spool/mail/${USER}` 的写入(cron 并不会将对应的信息记录到 systemd journal 中)，如果正常可以在 Subject 栏看到对应的 command part
+
+```
+[root@vbox ~]# tail -f /var/spool/mail/root
+...
+From root@vbox.localdomain  Thu Oct 31 14:14:02 2024
+Return-Path: <root@vbox.localdomain>
+X-Original-To: root
+Delivered-To: root@vbox.localdomain
+Received: by vbox.localdomain (Postfix, from userid 0)
+        id 19E0A600CFA6; Thu, 31 Oct 2024 14:14:02 +0800 (CST)
+From: "(Cron Daemon)" <root@vbox.localdomain>
+To: root@vbox.localdomain
+Subject: Cron <root@vbox> curl -sS ipinfo.io
+...
+
+```
+
+当然你也可以使用 `systemctl stop crond` 来关闭 `crond`，然后以 debug 模式启动 `crond`
+
+```
+[root@vbox home]# crond -x test
+debug flags enabled: test
+[2393] cron started
+log_it: (CRON 2393) INFO (RANDOM_DELAY will be scaled with factor 45% if used.)
+log_it: ((null) 2393) Unauthorized SELinux context=unconfined_u:unconfined_r:unconfined_t:s0 file_context=system_u:object_r:system_cron_spool_t:s0 (/etc/crontab)
+log_it: (root 2393) FAILED (loading cron table)
+log_it: ((null) 2393) Unauthorized SELinux context=unconfined_u:unconfined_r:unconfined_t:s0 file_context=system_u:object_r:system_cron_spool_t:s0 (/etc/cron.d/0hourly)
+log_it: (root 2393) FAILED (loading cron table)
+log_it: (CRON 2393) INFO (running with inotify support)
+log_it: (CRON 2393) INFO (@reboot jobs will be run at computer's startup.)
+log_it: (root 2396) CMD (curl -sS ipinfo.io)
+log_it: (root 2421) CMD (curl -sS ipinfo.io)
+```
+
+这里也可以清楚地看到创建的 scheduled task 运行了，就证明 command part 没有问题。重新启动 `crond` 并将 cron part 修改成你要想的即可
 
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*

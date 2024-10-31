@@ -4,13 +4,11 @@
 
 以 flow 的方式展示 system summary information (包含 process 和 thread 的使用率)，默认以interactive mode 运行
 
-top 有 3 部分组成：Summary Area，Fields/Columns Header，Task Area
-
-
+top 由 3 部分组成：Summary Area，Fields/Columns Header，Task Area
 
 ### Linux memory
 
-Linux 中有3中memory，一种是optional的，
+Linux 中有 3 种 memory，一种是 optional，
 
 - physical memory，a limited resource where code and data must reside when executed or referenced
 
