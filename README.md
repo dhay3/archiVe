@@ -7,7 +7,7 @@
 # TOC
 
 <!--toc start-->
-<!--ccef3fcb-b8c3-48de-bfad-618080f04f12-->
+<!--1c862a10-0415-4e0f-9b33-2d8696d8ebf6-->
 > [!note]
 > Created by Github Workflows
 
@@ -280,7 +280,7 @@
   - [Rsshub](Docs/Sundries/Rsshub)
   - [Typora](Docs/Sundries/Typora)
 
-<!--toc end-->                                          
+<!--toc end-->                                           
 
 # License
 
