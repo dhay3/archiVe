@@ -231,7 +231,7 @@ latte-dock
 | pycharm                  | python 编辑器                                  |
 | goland                   | go 编辑器                                      |
 | datagrip                 | 数据库 编辑器                                  |
-| dbeader-ee               | 数据库 编辑                                    | 
+| dbeader-ee               | 数据库 编辑                                    |
 | webstorm                 | 前端 编辑器                                    |
 | clion                    | C 编辑器                                       |
 | visual-studio-code-bin   | 万能编辑器                                     |
@@ -261,6 +261,7 @@ latte-dock
 | vmware remote console    | vcenter 控制台                                 |
 | eyedropper               | color picker                                   |
 | upscayl                  | 图片修复/steghide                              |
+| easyeffect               | 变声器                                         | 
 
 
 ###  Function
@@ -273,12 +274,13 @@ latte-dock
 | qemu                                                     | kvm                                                    |
 | zsh                                                      | Shell                                                  |
 | tor                                                      | tor core                                               |
+| manjaro-pipewire                                         | 替代 pulseaudio                                        |
 | tldr                                                     | 懒人命令查询                                           |
 | bc                                                       | 终端计算器                                             |
 | tmux                                                     | multiplexer                                            |
 | zfs                                                      | filesystem                                             |
 | transhell                                                | TUI 翻译                                               |
-| delta                                                    | diff3 替代                                             | 
+| delta                                                    | diff3 替代                                             |
 | bind                                                     | 包含 dig                                               |
 | yazi                                                     | TUI 文件浏览                                           |
 | asciinema                                                | 终端录屏                                               |
