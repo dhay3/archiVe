@@ -119,7 +119,10 @@ cron part 通常由 5 个字段组成，从左往右分别是
 #### command part
  
 command part 指定了 schedule 的命令，以 newline 或者是 `%` 结尾(划分 cron entries)，默认会以 `/bin/sh` 运行
- 
+
+> [!important]
+> 所以如果 command part 使了用类似 `mysqldump` 配合 `like %` 的，需要使用 `\` 转义(如果没有转义 mail subject 不是完整的 command part)
+
 如果 command part 出现 `%`，且没有使用 `\` 转义，那么 `%` 会被认为是 newline ，并且 `%` 后面的内容都会会认为是 stdin 中的
  
 #### `/etc/cron.d` and `/etc/crontab`
