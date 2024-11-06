@@ -53,7 +53,7 @@ tags:
 
 使用 User Manual 搜索你想要的答案
 
-大多数软件都会有 User Manual(也可能叫 Get Help/Documentation/Support/etc.)，会告诉用户该如何使用软件以及 troubleshooting。这个使用 User Manual 搜索的过程可以简称为 RTFM(Reading the Fucking Manual)
+和家电一样，大多数软件都会有 User Manual(也可能叫 Get Help/Documentation/Support/etc.)，会告诉用户该如何使用软件以及 troubleshooting。这个使用 User Manual 搜索的过程可以简称为 RTFM(Reading the Fucking Manual)
 
 例如 你想要使用 Thunderbird 接管 Gmail，就可以在 [Thunderbird Support](https://support.mozilla.org/en-US/products/thunderbird) 页面搜索关键字 gmail
 
@@ -61,15 +61,21 @@ tags:
 
 使用 LLM 得到你想要的答案
 
-LLM 是一个很好的辅助工具(回答并不一定可靠，所以作为一个辅助工具)，你可以设置场景，让 AI 分步骤回答你的问题。这个使用 LLM 搜索的过程可以简称为 ATFL(Asking the Fucking LLM)
+> [!important]
+> Prompts 使用的语言也决定了 LLM reponse 的质量
+
+LLM 是一个很好的辅助工具(回答并不一定可靠，所以作为一个辅助工具)。你可以设置场景，让 AI 分步骤回答你的问题。这个使用 LLM 搜索的过程可以简称为 ATFL(Asking the Fucking LLM)
 
 推荐几个 LLM
 
 - [ChatGPT](https://chatgpt.com/)
 - [Claude](https://claude.ai/)
-- [Perplexity](https://www.perplexity.ai/)
+- [Gemini](https://gemini.google.com/)
+- [Perplexity](https://www.perplexity.ai/) 强烈推荐
 
-当然如果你想要确保隐私可以使用 [Ollama](https://ollama.com/) 本地部署，另外推荐一个 AI 整合网站 [Toolify](https://www.toolify.ai/)
+另外推荐一个在线 AI 整合网站 [Toolify](https://www.toolify.ai/)
+
+当然如果你想要确保隐私可以使用 [Ollama](https://ollama.com/) 本地部署，或者自己使用 [huggingface](https://huggingface.co/) 中的资源自己训练
 
 例如 你想知道 GPLv1/2/3 之间的区别，你可以使用如下 prompt，对 LLM 设置角色
 
@@ -93,7 +99,7 @@ Differences between GPLv1, GPLv2 and GPLv3
 
 通过 Experimentation 得到想要的答案
 
-做实验是最原始也是最有效的方法，但是要控制变量，如果有正常的对照组，可以设置参照因子(这个就是编程中最朴素的 if ... elif ... else ... 逻辑)。这个做 Experimentation 的过程可以简称为 DTFE(Doing the Fucking Experimentation)
+做实验是最原始也是最有效的方法，但是要控制变量。如果有正常的对照组，可以设置参照因子(这个就是编程中最朴素的 if ... elif ... else ... 逻辑)。这个做 Experimentation 的过程可以简称为 DTFE(Doing the Fucking Experimentation)
 
 例如 你现在不能通过浏览器访问你家的软路由了(不考虑 DNS)，你要先确认是 L7 应用有问题，或者是 L4 传输有问题，或者是 L3 网络有问题 还是 L2/L1 设备有问题。这里 Layer 就是变量
 
@@ -106,21 +112,27 @@ Differences between GPLv1, GPLv2 and GPLv3
 
 通过阅读 Source Code 得到想要的答案
 
-大多数开源的软件都会公开代码，所以一些奇怪的 Bug 或者是非预期的现象可以通过读源码解决。通过阅读 Source code 的过程可以简称为 RTFS(Reading the Fucking Source Code)
+大多数符合 OSD 标准[^2]的软件都会公开代码，所以一些奇怪的 Bug 或者是非预期的现象可以通过读源码解决。通过阅读 Source code 的过程可以简称为 RTFS(Reading the Fucking Source Code)
 
 例如 Virtualbox Guest Machine 不能通过 Vagrant 启动，但是可以通过 Virtualbox GUI 启动
 
 [\[SOLVED\] Can't boot virtual machines via vagrant but works well with virtualbox GUI(vagrant 2.4.0/virtualbox 7.0.12) · Issue #13288 · hashicorp/vagrant · GitHub](https://github.com/hashicorp/vagrant/issues/13288)
 
+但是阅读 Source Code 并不是一件简单的事。如果在阅读 Source Code 后你仍然搞不明白，请务必表示
+
+```
+It's hard for me to read the source code
+```
+
 ### 0x02f Try to Find an Answer by Joining Groups(JTFG)
 
 加入 Groups 得到想要的答案
 
-软件的站点不一定会及时更新，但是会有一些社区组群(Discord/Telegram/etc.)，管理者会在这些组群中实时发布一些 announcements 或者是 Pinned Messages 会提供非常有的信息
+软件的站点不一定会及时更新，但是通常会有一些 official 社区组群(Discord/Telegram/etc.)，管理者会在这些组群中实时发布一些 announcements 或者是 Pinned Messages 会提供非常有的信息
 
-例如 在 Clash Verge Rev 更新后，Global Extend Config 中配置如下额外全局路由规则，发现不生效(之前生效)
+例如 在 Clash Verge Rev 更新 1.6.3 后，Global Extend Config 中配置如下额外全局路由规则，发现不生效(之前生效)
 
-```
+```yaml
 prepend-rules:
 	- DOMAIN-SUFFIX,4lice.com,DIRECT
 	- AND,((IP-CIDR,23.94.117.188/32),(DST-PORT,65522)),DIRECT
@@ -141,11 +153,24 @@ prepend-rules:
 
 ### 0x03b Internet Archive
 
-因为一些人为的因素，可能会导致一些相关的内容被删除(所以 WEB3 才应该是社交网络的最终形式，但是这是一个 political issue)。这时我们就可以使用 [Wayback Machine](https://web.archive.org/) 等 archived/cached 站点查找存档/缓存，这里推荐使用 [GitHub - dessant/web-archives: Browser extension for viewing archived and cached versions of web pages, available for Chrome, Edge and Safari](https://github.com/dessant/web-archives) 这个插件(需要知道完整的 URI，且对应的 URI 已经有被用户或者是系统 archived/cached)
+因为一些人为的因素，可能会导致一些相关的内容被删除(所以 Web3 才应该是社交网络的最终形式，但是这是一个 political issue)。这时我们就可以使用 [Wayback Machine](https://web.archive.org/) 等 archived/cached 站点查找存档/缓存，这里推荐使用 [GitHub - dessant/web-archives: Browser extension for viewing archived and cached versions of web pages, available for Chrome, Edge and Safari](https://github.com/dessant/web-archives) 这个插件(需要知道完整的 URI，且对应的 URI 已经有被用户或者是系统 archived/cached)
 
 例如 你想要看 [Ryujinx](https://github.com/Ryujinx/Ryujinx) 的历史信息，但是因为 Nintendo 对 maintainers 施压，导致项目直接从 Github 上移除了，这时就可以使用上面这个插件来搜索
 
+### 0x03c Language to Search
+
+互联网不是巴别塔[^3]（也不会是），不同地区的用户使用不同的语言，产生的物料质量也不同。所以选择什么语言检索，也决定了结果的质量
+
+例如 
+
+你想要看中国大陆信创数据库的文档，使用 简中 才是最适合的，虽然是 wrappers of postgresql
+
+然而，如果你想要看 Python 的文档，使用 English 才是最合适的，虽然提供了中文文档
+
 ## 0x04 When You Ask
+
+> [!NOTE]
+> 当然这也适用于 figure the question out on you own 
 
 在提问题时要做到如下几点
 
@@ -156,17 +181,17 @@ prepend-rules:
 
 在合适的 Forum(Section) 或者 Group 提出你的问题
 
-大多数 Forum 或者 Forum 中的某一个 Section，都会有一个 topic。如果在这个 Forum 或者是 Section 下提出一个 off topic question，这不能说是 rude behavior 但是 impolite，因为没人希望自己维护的站点，被一些不相关的内容淹没。当然这也不限于 Forum(Section)，也适用于 Groups
+大多数 Forum 或者 Forum 中的某一个 Section，都会有一个 topic。如果在这个 Forum 或者是 Section 下提出一个 off topic question，这不能说是 rude behavior 但是不礼貌，因为没人希望自己维护的站点，被一些不相关的内容淹没。当然这也不限于 Forum(Section)，也适用于 Groups
 
 例如 Stack Overflow 就是 [Stack Exchange](https://stackexchange.com/sites#) 中的一个 Forum，每一个 Forum 都有自己的 topic
 
-- Stack Overflow
+- [Stack Overflow](https://stackoverflow.com/)
 	Q&A for professional and enthusiast programmers
-- Server Fault
+- [Server Fault](https://serverfault.com)
 	Q&A for system and network administrators
-- Super User
+- [Super User](https://superuser.com/)
 	Q&A for computer enthusiasts and power users
-- Ask Ubuntu
+- [Ask Ubuntu](https://askubuntu.com/)
 	Q&A for Ubuntu users and developers
 
 如果你在 Ask Ubuntu 问 Gentoo 相关的问题，是不是很奇怪？
@@ -191,7 +216,7 @@ prepend-rules:
 - Anit-semi-literate
 	不要用一些网络用语替代，例如 u 替代 you，2 替代 to
 
-当然你也可能并不是 Forum 或者 Group 使用的 primary language 的 native speaker，这时可以加上如下声明，例如
+当然你也可能不是 Forum 或者 Group 使用的 primary language 的 native speaker，这时可以选择加上如下声明之一
 
 - $LANGUAGE is not my native language; please excuse typing errors.
 - If you speak $LANGUAGE, please email/PM me; I may need assistance translating my question.
@@ -200,15 +225,38 @@ prepend-rules:
 
 ### Be Precise and Informative
 
-除了这些 [“表象”的 clearly](#Write%20in%20Clear)，还有一些针对问题本身的
+除了这些 [“表象”的 clearly](#Write%20in%20Clear)，还有一些针对问题本身的，要尽可能地提供详细的信息(不同问题需要提供的信息也不同)
 
-例如 你在修改
+例如 你的主机会不定时地重启，那么排查的方向可能有 2 个 —— Softwares and Hardwares。在你无法自己解决的情况下要提供如下信息
+
+1. Softwares
+	- the OS and its version you used
+	- the drivers and its versions you used
+	- the journal logs of last crashed
+	- the cron logs of last crashed
+1. Hardwares
+	- the hardwares you used(eg. CPU/GPU/Memory Bank/Battery)
+	- the BIOS version and its settings you used
+	- the usage of CPU/GPU/Memory
+	- the hardwares's temperature of last crashed
+
+上面这些信息可以通过 `inxi`/`sensors`/`journalctl` 获取。当然除了上面这些信息外，还有一些客观因素
+
+- What were you doing when crashed(What applications opened .etc)
+- Uptime of host
+- .etc
+
+如果是在网络排障中，那么就需要提供如下信息(5W1H[^4])
+
+- Who - source and destination IP address or target
+- What - symptons
+- When - timeline,deadline,duration
+- Where - location or position
+- 
+- How
 
 
-
-- 如果 issue 是概率出现的，必须要指明
-
-
+### Describe your problem's symptoms in chronological order
 
 ### 0x03a Display the Fact that You have Done These Things
 
@@ -221,6 +269,10 @@ prepend-rules:
 - English is not my native language; please excuse typing errors.
 
 
+## 0x05 Words After All
+
+be poliot如果有正常的对照组，可以设置参照因子(这个就是编程中最朴素的 if ... elif ... else ... 逻辑)。这个做 Experimentation 的过程可以简称为 DTFE(Doing the Fucking 
+
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
 
@@ -232,3 +284,6 @@ prepend-rules:
 ***FootNotes***
 
 [^1]:[robots.txt - Wikipedia](https://en.wikipedia.org/wiki/Robots.txt)
+[^2]:[The Open Source Definition – Open Source Initiative](https://opensource.org/osd)
+[^3]:[Tower of Babel - Wikipedia](https://en.wikipedia.org/wiki/Tower_of_Babel)
+[^4]:[Project of How → The Kipling method](https://projectofhow.com/methods/the-kipling-method/)
