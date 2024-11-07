@@ -313,32 +313,57 @@ prepend-rules:
 
 ## 0x05 After the Problem has been Solved
 
+TCP/IP 中在发出 SYN 请求报文，你会收到 SYN-ACK 做为回应报文，同时发送 ACK 表示收到回应
 
+提问也一样，下面这些规则就是第三次握手的 ACK
 
-### Have 'FIXED' 'SOLVED' Tag in the Subject Line
+- Have 'FIXED' 'SOLVED' Tag in the Subject Line
+- Follow up with a brief note on the solution
 
-在标题请添加 `[FIXED]` 或者是 `[SOLVED]` 标签，例如
+### 0x05a Have 'FIXED' 'SOLVED' Tag in the Subject Line
+
+在标题添加 `[FIXED]` 或者是 `[SOLVED]` 标签，例如
 
 [\[SOLVED\] Running guest machines show as powered off in Virtualbox - virtualbox.org](https://forums.virtualbox.org/viewtopic.php?t=111131)
 
 > [!important]
 > 要根据社区的规则，例如 Stack Exchange 就要求用户不要在 Subject 中添加 FIXED 或者是 SOLVED 等字样
 
-### Follow up with a brief note on the solution
+### 0x05b Follow up with a brief note on the solution
 
-在 main thread 中添加一段 solution breif，例如
+在 main thread 中添加一段 solution breif 告诉其他人你的解决方式，例如
 
 [zsh - How to start tmux as the default when terminals opened exclude the terminal in Dolphin - Super User](https://superuser.com/questions/1832872/how-to-start-tmux-as-the-default-when-terminals-opened-exclude-the-terminal-in-d/1832883#1832883)
 
-## 0x05 Words After All
+## 0x06 Words After All
 
+上面都是规则类的准则，下面这些是行为类的准则
 
-### On Not Reacting Like A Loser
-be poliot
+### 0x06a Courtesy never hurts
 
-### If You Can't Get An Answer
+在不了解对方的情况下，人们总是愿意选择和看上去谈吐谦虚礼貌的人交谈。这也适用于网络社交，你可以使用文字展现你的 Courtesy
 
-当然你也有可能会得不到任何有用的答复
+例如 你可以在问题结尾添加类似
+
+- "Any hints would be highly appreciated."
+- "Thanks in advance."
+
+又譬如 在阐述自己的推测时添加类似
+
+- "Please tell me if I've missed somthing"
+
+### 0x06b If You Can't Get An Answer
+
+当然你也有可能会得不到任何有用的答复，这时候请不要：
+
+- 觉得没有人能帮助你
+	可能你的问题只是一个动动手就可以得到答案的
+- 在同一个社区重复 repost
+	repost 通常是无意义的，如果自己不能解决那么请耐心
+
+## 0x07 Epilog
+
+没有想好写什么
 
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
