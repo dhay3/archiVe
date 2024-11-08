@@ -1,7 +1,5 @@
-*.yml linguist-detectable
-*.yaml linguist-detectable
 *.md linguist-detectable
-
+Scripts/** linguist-detectable
 
 .obsidian/** linguist-documentation
 Attachment/** linguist-documentation
