@@ -1,1 +1,0 @@
-https://github.com/dhay3/confs/blob/main/clash/config.yaml

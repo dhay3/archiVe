@@ -52,7 +52,7 @@ tags:
 
 利用 SEO 搜索你想要的答案
 
-不仅限于各种 SEO(掌握 SEO advanced search 以及 operator search 的使用是必要的，例如 [Google Searches](../Docs/Sundries/Chrome/Google%20Searches.md)，也包括一些设置了 robots.txt[^1](按照 RFC 9309 的规定，SEO 需要按照 robots.txt 中的规则爬取信息，但是不是强制要求) 的 forum 或者 site(例如 Google scholar/libgen/etc.)。这个利用 SEO 搜索的过程可以简称为 STFW(Searching the Fucking Web)
+不仅限于各种 SEO(掌握 SEO advanced search 以及 operator search 的使用是必要的，例如 [Google Searches](../Notes/Sundries/Chrome/Google%20Searches.md)，也包括一些设置了 robots.txt[^1](按照 RFC 9309 的规定，SEO 需要按照 robots.txt 中的规则爬取信息，但是不是强制要求) 的 forum 或者 site(例如 Google scholar/libgen/etc.)。这个利用 SEO 搜索的过程可以简称为 STFW(Searching the Fucking Web)
 
 例如 你想要搜索和 KDE system monitor sensors bug 相关的内容，你可以使用 Google/DuckDuckgo/Brave/etc. SEO 直接搜索关键字 `KDE system monitor sensors bug` 也可以使用 operator search 搜索 `intitle:"system monitor sensors" intext:bug` 对结果过滤
 
@@ -235,7 +235,7 @@ prepend-rules:
 问题要以清楚的形式表达出来，尽量使用社区的 primary language，以 English 为例
 
 - Structure
-	一个清楚的格式，具体可以参考 [Issue](Templates/Issue.md)
+	一个清楚的格式，具体可以参考 [TEM_OF_ISSUE](../Templates/TEM_OF_ISSUE.md)
 - Spelling
 	单词拼写不能混淆或者误拼，例如混淆了 its 和 it's，brief 误拼成了 breif
 - Punctuate

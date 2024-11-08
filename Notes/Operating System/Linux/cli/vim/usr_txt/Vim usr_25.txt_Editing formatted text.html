@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en"><script type="text/javascript">try {
+(function injectPageScriptAPI(scriptName, shouldOverrideWebSocket, shouldOverrideWebRTC, isInjected) { 
+
+    'use strict';
+
+    /**
+     * If script have been injected into a frame via contentWindow then we can simply take the copy of messageChannel left for us by parent document
+     * Otherwise creates new message channel that sends a message to the content-script to check if request should be allowed or not.
+     */
+    var messageChannel = isInjected ? window[scriptName] : (function () {
+
+        // Save original postMessage and addEventListener functions to prevent webpage from tampering both.
+        var postMessage = window.postMessage;
+        var addEventListener = window.addEventListener;
+
+        // Current request ID (incremented every time we send a new message)
+        var currentRequestId = 0;
+        var requestsMap = {};
+
+        /**
+         * Handles messages sent from the content script back to the page script.
+         *
+         * @param event Event with necessary data
+         */
+        var onMessageReceived = function (event) {
+
+            if (!event.data || !event.data.direction || event.data.direction !== "to-page-script@abu") {
+                return;
+            }
+
+            var requestData = requestsMap[event.data.requestId];
+            if (requestData) {
+                var wrapper = requestData.wrapper;
+                requestData.onResponseReceived(wrapper, event.data.block);
+                delete requestsMap[event.data.requestId];
+            }
+        };
+
+        /**
+         * @param url                The URL to which wrapped object is willing to connect
+         * @param requestType        Request type ( WEBSOCKET or WEBRTC)
+         * @param wrapper            WebSocket wrapper instance
+         * @param onResponseReceived Called when response is received
+         */
+        var sendMessage = function (url, requestType, wrapper, onResponseReceived) {
+
+            if (currentRequestId === 0) {
+                // Subscribe to response when this method is called for the first time
+                addEventListener.call(window, "message", onMessageReceived, false);
+            }
+
+            var requestId = ++currentRequestId;
+            requestsMap[requestId] = {
+                wrapper: wrapper,
+                onResponseReceived: onResponseReceived
+            };
+
+            var message = {
+                requestId: requestId,
+                direction: 'from-page-script@abu',
+                elementUrl: url,
+                documentUrl: document.URL,
+                requestType: requestType
+            };
+
+            // Send a message to the background page to check if the request should be blocked
+            postMessage.call(window, message, "*");
+        };
+
+        return {
+            sendMessage: sendMessage
+        };
+
+    })();
+
+    /*
+     * In some case Chrome won't run content scripts inside frames.
+     * So we have to intercept access to contentWindow/contentDocument and manually inject wrapper script into this context
+     *
+     * Based on: https://github.com/adblockplus/adblockpluschrome/commit/1aabfb3346dc0821c52dd9e97f7d61b8c99cd707
+     */
+    var injectedToString = Function.prototype.toString.bind(injectPageScriptAPI);
+
+    var injectedFramesAdd;
+    var injectedFramesHas;
+    if (window.WeakSet instanceof Function) {
+        var injectedFrames = new WeakSet();
+        injectedFramesAdd = WeakSet.prototype.add.bind(injectedFrames);
+        injectedFramesHas = WeakSet.prototype.has.bind(injectedFrames);
+    } else {
+        var frames = [];
+        injectedFramesAdd = function (el) {
+            if (frames.indexOf(el) < 0) {
+                frames.push(el);
+            }
+        };
+        injectedFramesHas = function (el) {
+            return frames.indexOf(el) >= 0;
+        };
+    }
+
+    /**
+     * Injects wrapper's script into passed window
+     * @param contentWindow Frame's content window
+     */
+    function injectPageScriptAPIInWindow(contentWindow) {
+        try {
+            if (contentWindow && !injectedFramesHas(contentWindow)) {
+                injectedFramesAdd(contentWindow);
+                contentWindow[scriptName] = messageChannel; // Left message channel for the injected script
+                var args = "'" + scriptName + "', " + shouldOverrideWebSocket + ", " + shouldOverrideWebRTC + ", true";
+                contentWindow.eval("(" + injectedToString() + ")(" + args + ");");
+                delete contentWindow[scriptName];
+            }
+        } catch (e) {
+        }
+    }
+
+    /**
+     * Overrides access to contentWindow/contentDocument for the passed HTML element's interface (iframe, frame, object)
+     * If the content of one of these objects is requested we will inject our wrapper script.
+     * @param iface HTML element's interface
+     */
+    function overrideContentAccess(iface) {
+
+        var contentWindowDescriptor = Object.getOwnPropertyDescriptor(iface.prototype, "contentWindow");
+        var contentDocumentDescriptor = Object.getOwnPropertyDescriptor(iface.prototype, "contentDocument");
+
+        // Apparently in HTMLObjectElement.prototype.contentWindow does not exist
+        // in older versions of Chrome such as 42.
+        if (!contentWindowDescriptor) {
+            return;
+        }
+
+        var getContentWindow = Function.prototype.call.bind(contentWindowDescriptor.get);
+        var getContentDocument = Function.prototype.call.bind(contentDocumentDescriptor.get);
+
+        contentWindowDescriptor.get = function () {
+            var contentWindow = getContentWindow(this);
+            injectPageScriptAPIInWindow(contentWindow);
+            return contentWindow;
+        };
+        contentDocumentDescriptor.get = function () {
+            injectPageScriptAPIInWindow(getContentWindow(this));
+            return getContentDocument(this);
+        };
+
+        Object.defineProperty(iface.prototype, "contentWindow", contentWindowDescriptor);
+        Object.defineProperty(iface.prototype, "contentDocument", contentDocumentDescriptor);
+    }
+
+    var interfaces = [HTMLFrameElement, HTMLIFrameElement, HTMLObjectElement];
+    for (var i = 0; i < interfaces.length; i++) {
+        overrideContentAccess(interfaces[i]);
+    }
+
+    /**
+     * Defines properties in destination object
+     * @param src Source object
+     * @param dest Destination object
+     * @param properties Properties to copy
+     */
+    var copyProperties = function (src, dest, properties) {
+        for (var i = 0; i < properties.length; i++) {
+            var prop = properties[i];
+            var descriptor = Object.getOwnPropertyDescriptor(src, prop);
+            // Passed property may be undefined
+            if (descriptor) {
+                Object.defineProperty(dest, prop, descriptor);
+            }
+        }
+    };
+
+    /**
+     * Check request by sending message to content script
+     * @param url URL to block
+     * @param type Request type
+     * @param callback Result callback
+     */
+    var checkRequest = function (url, type, callback) {
+        messageChannel.sendMessage(url, type, this, function (wrapper, blockConnection) {
+            callback(blockConnection);
+        });
+    };
+
+    /**
+     * The function overrides window.WebSocket with our wrapper, that will check url with filters through messaging with content-script.
+     *
+     * IMPORTANT NOTE:
+     * This function is first loaded as a content script. The only purpose of it is to call
+     * the "toString" method and use resulting string as a text content for injected script.
+     */
+    var overrideWebSocket = function () { 
+
+        if (!(window.WebSocket instanceof Function)) {
+            return;
+        }
+
+        /**
+         * WebSocket wrapper implementation.
+         * https://github.com/AdguardTeam/AdguardBrowserExtension/issues/349
+         *
+         * Based on:
+         * https://github.com/adblockplus/adblockpluschrome/commit/457a336ee55a433217c3ffe5d363e5c6980f26f4
+         */
+
+        /**
+         * As far as possible we must track everything we use that could be sabotaged by the website later in order to circumvent us.
+         */
+        var RealWebSocket = WebSocket;
+        var closeWebSocket = Function.prototype.call.bind(RealWebSocket.prototype.close);
+
+        function WrappedWebSocket(url, protocols) {
+            // Throw correct exceptions if the constructor is used improperly.
+            if (!(this instanceof WrappedWebSocket)) {
+                return RealWebSocket();
+            }
+            if (arguments.length < 1) {
+                return new RealWebSocket();
+            }
+
+            var websocket = new RealWebSocket(url, protocols);
+
+            // This is the key point: checking if this WS should be blocked or not
+            // Don't forget that the type of 'websocket.url' is String, but 'url 'parameter might have another type.
+            checkRequest(websocket.url, 'WEBSOCKET', function (blocked) {
+                if (blocked) {
+                    closeWebSocket(websocket);
+                }
+            });
+
+            return websocket;
+        }
+
+        // https://github.com/AdguardTeam/AdguardBrowserExtension/issues/488
+        WrappedWebSocket.prototype = RealWebSocket.prototype;
+        window.WebSocket = WrappedWebSocket.bind();
+
+        copyProperties(RealWebSocket, WebSocket, ["CONNECTING", "OPEN", "CLOSING", "CLOSED", "name", "prototype"]);
+
+        RealWebSocket.prototype.constructor = WebSocket;
+
+    };
+
+    /**
+     * The function overrides window.RTCPeerConnection with our wrapper, that will check ice servers URLs with filters through messaging with content-script.
+     *
+     * IMPORTANT NOTE:
+     * This function is first loaded as a content script. The only purpose of it is to call
+     * the "toString" method and use resulting string as a text content for injected script.
+     */
+    var overrideWebRTC = function () { 
+
+
+        if (!(window.RTCPeerConnection instanceof Function) &&
+            !(window.webkitRTCPeerConnection instanceof Function)) {
+            return;
+        }
+
+        /**
+         * RTCPeerConnection wrapper implementation.
+         * https://github.com/AdguardTeam/AdguardBrowserExtension/issues/588
+         *
+         * Based on:
+         * https://github.com/adblockplus/adblockpluschrome/commit/af0585137be19011eace1cf68bf61eed2e6db974
+         *
+         * Chromium webRequest API doesn't allow the blocking of WebRTC connections
+         * https://bugs.chromium.org/p/chromium/issues/detail?id=707683
+         */
+
+        var RealRTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection;
+        var closeRTCPeerConnection = Function.prototype.call.bind(RealRTCPeerConnection.prototype.close);
+
+        var RealArray = Array;
+        var RealString = String;
+        var createObject = Object.create;
+        var defineProperty = Object.defineProperty;
+
+        /**
+         * Convert passed url to string
+         * @param url URL
+         * @returns {string}
+         */
+        function urlToString(url) {
+            if (typeof url !== "undefined") {
+                return RealString(url);
+            }
+        }
+
+        /**
+         * Creates new immutable array from original with some transform function
+         * @param original
+         * @param transform
+         * @returns {*}
+         */
+        function safeCopyArray(original, transform) {
+
+            if (original === null || typeof original !== "object") {
+                return original;
+            }
+
+            var immutable = RealArray(original.length);
+            for (var i = 0; i < immutable.length; i++) {
+                defineProperty(immutable, i, {
+                    configurable: false, enumerable: false, writable: false,
+                    value: transform(original[i])
+                });
+            }
+            defineProperty(immutable, "length", {
+                configurable: false, enumerable: false, writable: false,
+                value: immutable.length
+            });
+            return immutable;
+        }
+
+        /**
+         * Protect configuration from mutations
+         * @param configuration RTCPeerConnection configuration object
+         * @returns {*}
+         */
+        function protectConfiguration(configuration) {
+
+            if (configuration === null || typeof configuration !== "object") {
+                return configuration;
+            }
+
+            var iceServers = safeCopyArray(
+                configuration.iceServers,
+                function (iceServer) {
+
+                    var url = iceServer.url;
+                    var urls = iceServer.urls;
+
+                    // RTCPeerConnection doesn't iterate through pseudo Arrays of urls.
+                    if (typeof urls !== "undefined" && !(urls instanceof RealArray)) {
+                        urls = [urls];
+                    }
+
+                    return createObject(iceServer, {
+                        url: {
+                            configurable: false, enumerable: false, writable: false,
+                            value: urlToString(url)
+                        },
+                        urls: {
+                            configurable: false, enumerable: false, writable: false,
+                            value: safeCopyArray(urls, urlToString)
+                        }
+                    });
+                }
+            );
+
+            return createObject(configuration, {
+                iceServers: {
+                    configurable: false, enumerable: false, writable: false,
+                    value: iceServers
+                }
+            });
+        }
+
+        /**
+         * Check WebRTC connection's URL and close if it's blocked by rule
+         * @param connection Connection
+         * @param url URL to check
+         */
+        function checkWebRTCRequest(connection, url) {
+            checkRequest(url, 'WEBRTC', function (blocked) {
+                if (blocked) {
+                    try {
+                        closeRTCPeerConnection(connection);
+                    } catch (e) {
+                        // Ignore exceptions
+                    }
+                }
+            });
+        }
+
+        /**
+         * Check each URL of ice server in configuration for blocking.
+         *
+         * @param connection RTCPeerConnection
+         * @param configuration Configuration for RTCPeerConnection
+         * https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration
+         */
+        function checkConfiguration(connection, configuration) {
+
+            if (!configuration || !configuration.iceServers) {
+                return;
+            }
+
+            var iceServers = configuration.iceServers;
+            for (var i = 0; i < iceServers.length; i++) {
+
+                var iceServer = iceServers[i];
+                if (!iceServer) {
+                    continue;
+                }
+
+                if (iceServer.url) {
+                    checkWebRTCRequest(connection, iceServer.url);
+                }
+
+                if (iceServer.urls) {
+                    for (var j = 0; j < iceServer.urls.length; j++) {
+                        checkWebRTCRequest(connection, iceServer.urls[j]);
+                    }
+                }
+            }
+        }
+
+        /**
+         * Overrides setConfiguration method
+         * https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/setConfiguration
+         */
+        if (RealRTCPeerConnection.prototype.setConfiguration) {
+
+            var realSetConfiguration = Function.prototype.call.bind(RealRTCPeerConnection.prototype.setConfiguration);
+
+            RealRTCPeerConnection.prototype.setConfiguration = function (configuration) {
+                configuration = protectConfiguration(configuration);
+                // Call the real method first, so that validates the configuration
+                realSetConfiguration(this, configuration);
+                checkConfiguration(this, configuration);
+            };
+        }
+
+        function WrappedRTCPeerConnection(configuration, arg) {
+
+            if (!(this instanceof WrappedRTCPeerConnection)) {
+                return RealRTCPeerConnection();
+            }
+
+            configuration = protectConfiguration(configuration);
+
+            /**
+             * The old webkitRTCPeerConnection constructor takes an optional second argument and we must pass it.
+             */
+            var connection = new RealRTCPeerConnection(configuration, arg);
+            checkConfiguration(connection, configuration);
+            return connection;
+        }
+
+        WrappedRTCPeerConnection.prototype = RealRTCPeerConnection.prototype;
+
+        var boundWrappedRTCPeerConnection = WrappedRTCPeerConnection.bind();
+        copyProperties(RealRTCPeerConnection, boundWrappedRTCPeerConnection, ["caller", "generateCertificate", "name", "prototype"]);
+        RealRTCPeerConnection.prototype.constructor = boundWrappedRTCPeerConnection;
+
+        if ("RTCPeerConnection" in window) {
+            window.RTCPeerConnection = boundWrappedRTCPeerConnection;
+        }
+        if ("webkitRTCPeerConnection" in window) {
+            window.webkitRTCPeerConnection = boundWrappedRTCPeerConnection;
+        }
+    };
+
+    if (shouldOverrideWebSocket) {
+        overrideWebSocket();
+    }
+
+    if (shouldOverrideWebRTC) {
+        overrideWebRTC();
+    }
+})('wrapper-script-6474582137237344', false, true);
+} catch (ex) { console.error('Error executing AG js: ' + ex); }
+(function () {
+            var current = document.currentScript;
+            var parent = current && current.parentNode;
+            if (parent) {
+                parent.removeChild(current);
+            }
+        })();</script><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Vim help pages, always up-to-date">
+<title>Vim: usr_25.txt</title>
+<link rel="shortcut icon" href="https://vimhelp.org/favicon.ico">
+<!-- favicon is based on http://amnoid.de/tmp/vim_solidbright_512.png and is used with permission by its author -->
+<link rel="stylesheet" href="Vim%20usr_25.txt_Editing%20formatted%20text_files/vimhelp.css" type="text/css">
+
+<link rel="stylesheet" class="select2-css" href="Vim%20usr_25.txt_Editing%20formatted%20text_files/select2.min.css" integrity="sha256-zaSoHBhwFdle0scfGEFUCwggPN7F+ip9XRglo8IWb4w=" crossorigin="anonymous">
+<script defer="defer" src="Vim%20usr_25.txt_Editing%20formatted%20text_files/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script defer="defer" src="Vim%20usr_25.txt_Editing%20formatted%20text_files/select2.min.js" integrity="sha256-9yRP/2EFlblE92vzCA10469Ctd0jT48HnmmMw5rJZrA=" crossorigin="anonymous"></script>
+<script defer="defer" src="Vim%20usr_25.txt_Editing%20formatted%20text_files/vimhelp.js"></script>
+</head><body>
+<div class="bar">
+  <div class="ql">
+Quick links:
+<a href="https://vimhelp.org/">help overview</a> ·
+<a href="https://vimhelp.org/quickref.txt.html">quick reference</a> ·
+<a href="https://vimhelp.org/usr_toc.txt.html">user manual toc</a> ·
+<a href="https://vimhelp.org/#reference_toc">reference manual toc</a>
+· <a href="https://vimhelp.org/vim_faq.txt.html">faq</a></div>
+  <div class="srch">
+    <select id="vh-select-tag" data-select2-id="select2-data-vh-select-tag" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true" style="display: inline-block;"></select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-1-lmil" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-vh-select-tag-container" aria-controls="select2-vh-select-tag-container"><span class="select2-selection__rendered" id="select2-vh-select-tag-container" role="textbox" aria-readonly="true" title="Go to keyword"><span class="select2-selection__placeholder">Go to keyword</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+  </div>
+  <form class="srch" action="https://duckduckgo.com" method="get" target="_blank" rel="noopener noreferrer">
+    <input type="hidden" name="sites" value="vimhelp.org">
+    <input type="search" name="q" id="vh-srch-input" placeholder="Site search">
+  </form>
+</div>
+
+<main>
+<div id="vh-content">
+<pre><span id="usr_25.txt" class="t">usr_25.txt</span>    For <span class="i">Vim version 9.0.</span>  Last change: 2016 Mar 28
+
+                     VIM USER MANUAL <a href="https://vimhelp.org/motion.txt.html#-" class="d">-</a> by <a href="https://vimhelp.org/intro.txt.html#Bram" class="d">Bram</a> <a href="https://vimhelp.org/intro.txt.html#Moolenaar" class="d">Moolenaar</a>
+
+                             Editing formatted text
+
+
+Text hardly ever comes in one <a href="https://vimhelp.org/motion.txt.html#sentence" class="d">sentence</a> per line.  This chapter <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> about
+breaking sentences to make them fit on <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> page and other formatting.
+Vim also has useful features for editing single-line paragraphs and tables.
+
+<a href="#25.1" class="l">25.1</a>  Breaking lines
+<a href="#25.2" class="l">25.2</a>  Aligning text
+<a href="#25.3" class="l">25.3</a>  Indents and tabs
+<a href="#25.4" class="l">25.4</a>  Dealing with long lines
+<a href="#25.5" class="l">25.5</a>  Editing tables
+
+     Next chapter: <a href="https://vimhelp.org/usr_26.txt.html#usr_26.txt" class="l">usr_26.txt</a>  Repeating
+ Previous chapter: <a href="https://vimhelp.org/usr_24.txt.html#usr_24.txt" class="l">usr_24.txt</a>  Inserting quickly
+Table of contents: <a href="https://vimhelp.org/usr_toc.txt.html#usr_toc.txt" class="l">usr_toc.txt</a>
+
+<span class="h">==============================================================================</span>
+<span id="25.1" class="t">25.1</span>  Breaking lines
+
+Vim has <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> number of <a href="https://vimhelp.org/eval.txt.html#functions" class="d">functions</a> that make dealing with text easier.  By default,
+the editor does not perform automatic line breaks.  In other words, you have
+to press <a href="https://vimhelp.org/intro.txt.html#%3CEnter%3E" class="s">&lt;Enter&gt;</a> yourself.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> useful when you are <a href="https://vimhelp.org/editing.txt.html#writing" class="d">writing</a> programs where
+you want to decide where the line ends.  It <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not so good when you are
+creating documentation and want the text to be <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> most 70 character wide.
+   If you set the <a href="https://vimhelp.org/options.txt.html#%27textwidth%27" class="o">'textwidth'</a> option, Vim automatically inserts line breaks.
+Suppose, for example, that you want <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> very narrow column of only 30
+characters.  You need to execute the following command: 
+<span class="e"></span>
+<span class="e">        :set textwidth=30</span>
+<span class="e"></span>
+Now you start typing (ruler added):
+
+                 1         2         3
+        12345678901234567890123456789012345
+<span class="h">        I taught programming for a whi </span>
+
+If you type "<a href="https://vimhelp.org/motion.txt.html#l" class="d">l</a>" next, this makes the line longer than the 30-character limit.
+When Vim sees this, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> inserts <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> line break and you get the following:
+
+                 1         2         3
+        12345678901234567890123456789012345
+<span class="h">        I taught programming for a </span>
+<span class="h">        whil </span>
+
+Continuing on, you can type in the rest of the paragraph:
+
+                 1         2         3
+        12345678901234567890123456789012345
+<span class="h">        I taught programming for a </span>
+<span class="h">        while. One time, I was stopped </span>
+<span class="h">        by the Fort Worth police, </span>
+<span class="h">        because my homework was too </span>
+<span class="h">        hard. True story. </span>
+
+You <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> not have to type newlines; Vim puts them in automatically.
+
+        <span class="n">Note:</span>
+        The <a href="https://vimhelp.org/options.txt.html#%27wrap%27" class="o">'wrap'</a> option makes Vim display lines with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> line break, but this
+        doesn't <a href="https://vimhelp.org/insert.txt.html#insert" class="d">insert</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> line break in the file.
+
+
+<span class="c">REFORMATTING</span>
+
+The Vim editor <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/motion.txt.html#word" class="d">word</a> processor.  In <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/motion.txt.html#word" class="d">word</a> processor, if you delete
+something <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the beginning of the paragraph, the line breaks are reworked.  In
+Vim they are not; so if you delete the <a href="https://vimhelp.org/motion.txt.html#word" class="d">word</a> "programming" from the first line,
+all you get <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> short line:
+
+                 1         2         3
+        12345678901234567890123456789012345
+<span class="h">        I taught for a </span>
+<span class="h">        while. One time, I was stopped </span>
+<span class="h">        by the Fort Worth police, </span>
+<span class="h">        because my homework was too </span>
+<span class="h">        hard. True story. </span>
+
+This does not look good.  To get the <a href="https://vimhelp.org/motion.txt.html#paragraph" class="d">paragraph</a> into shape you use the "<a href="https://vimhelp.org/change.txt.html#gq" class="d">gq</a>"
+operator.
+   Let's first use this with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> selection.  Starting from the first
+line, type: 
+<span class="e"></span>
+<span class="e">        v4jgq</span>
+<span class="e"></span>
+"<a href="https://vimhelp.org/visual.txt.html#v" class="d">v</a>" to start <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode, "4j" to move to the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of the <a href="https://vimhelp.org/motion.txt.html#paragraph" class="d">paragraph</a> and then
+the "<a href="https://vimhelp.org/change.txt.html#gq" class="d">gq</a>" operator.  The result is:
+
+                 1         2         3
+        12345678901234567890123456789012345
+<span class="h">        I taught for a while. One </span>
+<span class="h">        time, I was stopped by the </span>
+<span class="h">        Fort Worth police, because my </span>
+<span class="h">        homework was too hard. True </span>
+<span class="h">        story. </span>
+
+<span class="n">Note:</span> there <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> way to <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> automatic <a href="https://vimhelp.org/change.txt.html#formatting" class="d">formatting</a> for specific types of text
+layouts, see <a href="https://vimhelp.org/change.txt.html#auto-format" class="l">auto-format</a><a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+
+Since "<a href="https://vimhelp.org/change.txt.html#gq" class="d">gq</a>" <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> an operator, you can use one of the three ways to select the
+text <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> works on: With <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode, with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/intro.txt.html#movement" class="d">movement</a> and with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> text object.
+   The example above could also be done with "gq4j"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  That's <a href="https://vimhelp.org/various.txt.html#less" class="d">less</a> typing, but
+you have to know the line count.  <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> more useful motion command <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> "<a href="https://vimhelp.org/motion.txt.html#%7D" class="d">}</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  This
+moves to the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> paragraph.  Thus "gq}" formats from the cursor to the
+<a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of the current paragraph.
+   <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> very useful text object to use with "<a href="https://vimhelp.org/change.txt.html#gq" class="d">gq</a>" <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the paragraph.  Try this: 
+<span class="e"></span>
+<span class="e">        gqap</span>
+<span class="e"></span>
+"<a href="https://vimhelp.org/motion.txt.html#ap" class="d">ap</a>" stands for "a-paragraph"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  This formats the text of one <a href="https://vimhelp.org/motion.txt.html#paragraph" class="d">paragraph</a>
+(separated by empty lines).  Also the part before the cursor.
+   If you have your paragraphs separated by empty lines, you can format the
+whole file by typing this: 
+<span class="e"></span>
+<span class="e">        gggqG</span>
+<span class="e"></span>
+"<a href="https://vimhelp.org/motion.txt.html#gg" class="d">gg</a>" to move to the first line, "gqG" to format until the last line.
+   Warning: If your paragraphs are not properly separated, they will be joined
+together.  <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> common mistake <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> to have <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> line with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/intro.txt.html#space" class="d">space</a> or tab.  That's <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+blank line, but not an empty line.
+
+Vim <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> able to format more than just plain text.  See <a href="https://vimhelp.org/change.txt.html#fo-table" class="l">fo-table</a> for how to
+change this.  See the <a href="https://vimhelp.org/options.txt.html#%27joinspaces%27" class="o">'joinspaces'</a> option to change the number of spaces used
+after <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> full stop.
+   It <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> possible to use an external program for formatting.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> useful
+if your text can't be properly formatted with Vim's builtin command.  See the
+<a href="https://vimhelp.org/options.txt.html#%27formatprg%27" class="o">'formatprg'</a> option.
+
+<span class="h">==============================================================================</span>
+<span id="25.2" class="t">25.2</span>  Aligning text
+
+To center <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> range of lines, use the following command: 
+<span class="e"></span>
+<span class="e">        :{range}center [width]</span>
+<span class="e"></span>
+<span class="s">{range}</span> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the usual command-line range.  <span class="s">[width]</span> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> an optional line width to
+use for centering.  If <span class="s">[width]</span> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not specified, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> defaults to the value of
+<a href="https://vimhelp.org/options.txt.html#%27textwidth%27" class="o">'textwidth'</a>.  (If <a href="https://vimhelp.org/options.txt.html#%27textwidth%27" class="o">'textwidth'</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> 0, the default <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> 80.)
+   For example: 
+<span class="e"></span>
+<span class="e">        :1,5center 40</span>
+<span class="e"></span>
+results in the following:
+
+<span class="h">       I taught for a while. One </span>
+<span class="h">       time, I was stopped by the </span>
+<span class="h">     Fort Worth police, because my </span>
+<span class="h">      homework was too hard. True </span>
+<span class="h">                 story. </span>
+
+
+<span class="c">RIGHT ALIGNMENT</span>
+
+Similarly, the "<a href="https://vimhelp.org/change.txt.html#%3Aright" class="d">:right</a>" command right-justifies the text: 
+<span class="e"></span>
+<span class="e">        :1,5right 37</span>
+<span class="e"></span>
+gives this result:
+
+<span class="h">            I taught for a while. One </span>
+<span class="h">           time, I was stopped by the </span>
+<span class="h">        Fort Worth police, because my </span>
+<span class="h">          homework was too hard. True </span>
+<span class="h">                               story. </span>
+
+<span class="c">LEFT ALIGNMENT</span>
+
+Finally there <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> this command: 
+<span class="e"></span>
+<span class="e">        :{range}left [margin]</span>
+<span class="e"></span>
+Unlike "<a href="https://vimhelp.org/change.txt.html#%3Acenter" class="d">:center</a>" and "<a href="https://vimhelp.org/change.txt.html#%3Aright" class="d">:right</a>"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> however, the argument to "<a href="https://vimhelp.org/change.txt.html#%3Aleft" class="d">:left</a>" <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not the
+length of the line.  Instead <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the left margin.  If <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> omitted, the
+text will be <a href="https://vimhelp.org/change.txt.html#put" class="d">put</a> against the left side of the screen (using <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> zero margin
+would <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> the same).  If <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> 5, the text will be indented 5 spaces.  For
+example, use these commands: 
+<span class="e"></span>
+<span class="e">        :1left 5</span>
+<span class="e">        :2,5left</span>
+<span class="e"></span>
+This results in the following:
+
+<span class="h">             I taught for a while. One </span>
+<span class="h">        time, I was stopped by the </span>
+<span class="h">        Fort Worth police, because my </span>
+<span class="h">        homework was too hard. True </span>
+<span class="h">        story. </span>
+
+
+<span class="c">JUSTIFYING TEXT</span>
+
+Vim has no built-in way of justifying text.  However, there <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> neat <a href="https://vimhelp.org/map.txt.html#macro" class="d">macro</a>
+package that does the job.  To use this package, execute the following
+command: 
+<span class="e"></span>
+<span class="e">        :packadd justify</span>
+<span class="e"></span>
+Or <a href="https://vimhelp.org/change.txt.html#put" class="d">put</a> this line in your <a href="https://vimhelp.org/starting.txt.html#vimrc" class="l">vimrc</a><a href="https://vimhelp.org/cmdline.txt.html#%3A" class="d">:</a> 
+<span class="e"></span>
+<span class="e">        packadd! justify</span>
+<span class="e"></span>
+This Vim <a href="https://vimhelp.org/usr_41.txt.html#script" class="d">script</a> file defines <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> new visual command "_j"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  To justify <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> block of
+text, highlight the text in <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode and then execute "_j"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+   Look in the file for more explanations.  To <a href="https://vimhelp.org/motion.txt.html#go" class="d">go</a> there, <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> "<a href="https://vimhelp.org/editing.txt.html#gf" class="d">gf</a>" on this name:
+$VIMRUNTIME/pack/dist/opt/justify/plugin/justify.vim.
+
+An alternative <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> to <a href="https://vimhelp.org/change.txt.html#filter" class="d">filter</a> the text through an external program.  Example: 
+<span class="e"></span>
+<span class="e">        :%!fmt</span>
+<span class="e"></span>
+<span class="h">==============================================================================</span>
+<span id="25.3" class="t">25.3</span>  Indents and tabs
+
+Indents can be used to make text stand out from the rest.  The example texts
+in this manual, for example, are indented by eight spaces or <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> tab.  You would
+normally enter this by typing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/intro.txt.html#tab" class="d">tab</a> <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the start of each line.  Take this
+text:
+<span class="h">        the first line </span>
+<span class="h">        the second line </span>
+
+This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> entered by typing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> tab, some text, <a href="https://vimhelp.org/intro.txt.html#%3CEnter%3E" class="s">&lt;Enter&gt;</a>, <a href="https://vimhelp.org/intro.txt.html#tab" class="d">tab</a> and more text.
+   The <a href="https://vimhelp.org/options.txt.html#%27autoindent%27" class="o">'autoindent'</a> option inserts indents automatically: 
+<span class="e"></span>
+<span class="e">        :set autoindent</span>
+<span class="e"></span>
+When <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> new line <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> started <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> gets the same indent <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> the previous line.  In
+the above example, the <a href="https://vimhelp.org/intro.txt.html#tab" class="d">tab</a> after the <a href="https://vimhelp.org/intro.txt.html#%3CEnter%3E" class="s">&lt;Enter&gt;</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not needed anymore.
+
+
+<span class="c">INCREASING INDENT</span>
+
+To increase the amount of indent in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> line, use the "<a href="https://vimhelp.org/change.txt.html#%3E" class="d">&gt;</a>" operator.  Often this
+<a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> "<a href="https://vimhelp.org/change.txt.html#%3E%3E" class="d">&gt;&gt;</a>"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> which adds indent to the current line.
+   The amount of indent added <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> specified with the <a href="https://vimhelp.org/options.txt.html#%27shiftwidth%27" class="o">'shiftwidth'</a> option.  The
+default value <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> 8.  To make "<a href="https://vimhelp.org/change.txt.html#%3E%3E" class="d">&gt;&gt;</a>" <a href="https://vimhelp.org/insert.txt.html#insert" class="d">insert</a> four spaces worth of indent, for
+example, type this: 
+<span class="e"></span>
+<span class="e">        :set shiftwidth=4</span>
+<span class="e"></span>
+When used on the second line of the example text, this <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> what you get:
+
+<span class="h">        the first line </span>
+<span class="h">            the second line </span>
+
+"4&gt;&gt;" will increase the indent of four lines.
+
+
+<span class="c">TABSTOP</span>
+
+If you want to make indents <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> multiple of 4, you set <a href="https://vimhelp.org/options.txt.html#%27shiftwidth%27" class="o">'shiftwidth'</a> to 4.  But
+when pressing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/motion.txt.html#%3CTab%3E" class="s">&lt;Tab&gt;</a> you still get 8 spaces worth of indent.  To change this,
+set the <a href="https://vimhelp.org/options.txt.html#%27softtabstop%27" class="o">'softtabstop'</a> option: 
+<span class="e"></span>
+<span class="e">        :set softtabstop=4</span>
+<span class="e"></span>
+This will make the <a href="https://vimhelp.org/motion.txt.html#%3CTab%3E" class="s">&lt;Tab&gt;</a> key <a href="https://vimhelp.org/insert.txt.html#insert" class="d">insert</a> 4 spaces worth of indent.  If there are
+already four spaces, <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/motion.txt.html#%3CTab%3E" class="s">&lt;Tab&gt;</a> character <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> used (saving seven characters in the
+file).  (If you always want spaces and no <a href="https://vimhelp.org/intro.txt.html#tab" class="d">tab</a> characters, set the <a href="https://vimhelp.org/options.txt.html#%27expandtab%27" class="o">'expandtab'</a>
+option.)
+
+        <span class="n">Note:</span>
+        You could set the <a href="https://vimhelp.org/options.txt.html#%27tabstop%27" class="o">'tabstop'</a> option to 4.  However, if you edit the
+        file another time, with <a href="https://vimhelp.org/options.txt.html#%27tabstop%27" class="o">'tabstop'</a> set to the default value of 8, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a>
+        will look wrong.  In other programs and when <a href="https://vimhelp.org/print.txt.html#printing" class="d">printing</a> the indent will
+        also be wrong.  Therefore <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> recommended to keep <a href="https://vimhelp.org/options.txt.html#%27tabstop%27" class="o">'tabstop'</a> <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> eight
+        all the time.  That's the standard value everywhere.
+
+
+<span class="c">CHANGING TABS</span>
+
+You edit <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file which was written with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> tabstop of 3.  In Vim <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> looks ugly,
+because <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> uses the normal tabstop value of 8.  You can fix this by setting
+<a href="https://vimhelp.org/options.txt.html#%27tabstop%27" class="o">'tabstop'</a> to 3.  But you have to <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> this every time you edit this file.
+   Vim can change the use of tabstops in your file.  First, set <a href="https://vimhelp.org/options.txt.html#%27tabstop%27" class="o">'tabstop'</a> to
+make the indents look good, then use the "<a href="https://vimhelp.org/change.txt.html#%3Aretab" class="d">:retab</a>" command: 
+<span class="e"></span>
+<span class="e">        :set tabstop=3</span>
+<span class="e">        :retab 8</span>
+<span class="e"></span>
+The "<a href="https://vimhelp.org/change.txt.html#%3Aretab" class="d">:retab</a>" command will change <a href="https://vimhelp.org/options.txt.html#%27tabstop%27" class="o">'tabstop'</a> to 8, while <a href="https://vimhelp.org/change.txt.html#changing" class="d">changing</a> the text such
+that <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> looks the same.  It changes spans of white <a href="https://vimhelp.org/intro.txt.html#space" class="d">space</a> into tabs and spaces
+for this.  You can now write the file.  Next time you edit <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> the indents will
+be right without setting an option.
+   Warning: When using "<a href="https://vimhelp.org/change.txt.html#%3Aretab" class="d">:retab</a>" on <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> program, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> may change white <a href="https://vimhelp.org/intro.txt.html#space" class="d">space</a> inside
+<a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/eval.txt.html#string" class="d">string</a> constant.  Therefore it's <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> good habit to use "\t" instead of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+real tab.
+
+<span class="h">==============================================================================</span>
+<span id="25.4" class="t">25.4</span>  Dealing with long lines
+
+Sometimes you will be editing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file that <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> wider than the number of columns
+in the window.  When that occurs, Vim wraps the lines so that everything fits
+on the screen.
+   If you switch the <a href="https://vimhelp.org/options.txt.html#%27wrap%27" class="o">'wrap'</a> option off, each line in the file shows up <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> one
+line on the screen.  Then the ends of the long lines disappear off the screen
+to the right.
+   When you move the cursor to <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> character that can't be seen, Vim will scroll
+the text to show it.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> like moving <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> viewport over the text in the
+horizontal direction.
+   By default, Vim does not display <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> horizontal scrollbar in the GUI.  If you
+want to enable one, use the following command: 
+<span class="e"></span>
+<span class="e">        :set guioptions+=b</span>
+<span class="e"></span>
+One horizontal scrollbar will appear <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the bottom of the Vim window.
+
+If you don't have <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> scrollbar or don't want to use it, use these commands to
+scroll the text.  The cursor will stay in the same place, but it's moved back
+into the visible text if necessary.
+
+        <a href="https://vimhelp.org/scroll.txt.html#zh" class="d">zh</a>              scroll right
+        4zh             scroll four characters right
+        <a href="https://vimhelp.org/scroll.txt.html#zH" class="d">zH</a>              scroll half <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> width right
+        <a href="https://vimhelp.org/scroll.txt.html#ze" class="d">ze</a>              scroll right to <a href="https://vimhelp.org/change.txt.html#put" class="d">put</a> the cursor <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a>
+        <a href="https://vimhelp.org/scroll.txt.html#zl" class="d">zl</a>              scroll left
+        4zl             scroll four characters left
+        <a href="https://vimhelp.org/scroll.txt.html#zL" class="d">zL</a>              scroll half <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> width left
+        <a href="https://vimhelp.org/scroll.txt.html#zs" class="d">zs</a>              scroll left to <a href="https://vimhelp.org/change.txt.html#put" class="d">put</a> the cursor <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the start
+
+Let's attempt to show this with one line of text.  The cursor <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> on the "<a href="https://vimhelp.org/motion.txt.html#w" class="d">w</a>" of
+"which"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  The "current <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a>" above the line indicates the text that <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a>
+currently visible.  The "<a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a>"<a href="https://vimhelp.org/change.txt.html#s" class="d">s</a> below the text indicate the text that <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a>
+visible after the command left of it.
+
+                              |&lt;-- current <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> --&gt;|
+<span class="h">                some long text, part of which is visible in the window </span>
+        <a href="https://vimhelp.org/scroll.txt.html#ze" class="d">ze</a>        |&lt;--     <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a>     --&gt;|
+        <a href="https://vimhelp.org/scroll.txt.html#zH" class="d">zH</a>         |&lt;--     <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a>     --&gt;|
+        4zh               |&lt;--     <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a>     --&gt;|
+        <a href="https://vimhelp.org/scroll.txt.html#zh" class="d">zh</a>                   |&lt;--     <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a>     --&gt;|
+        <a href="https://vimhelp.org/scroll.txt.html#zl" class="d">zl</a>                     |&lt;--     <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a>     --&gt;|
+        4zl                       |&lt;--     <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a>     --&gt;|
+        <a href="https://vimhelp.org/scroll.txt.html#zL" class="d">zL</a>                              |&lt;--     <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a>     --&gt;|
+        <a href="https://vimhelp.org/scroll.txt.html#zs" class="d">zs</a>                             |&lt;--     <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a>     --&gt;|
+
+
+<span class="c">MOVING WITH WRAP OFF</span>
+
+When <a href="https://vimhelp.org/options.txt.html#%27wrap%27" class="o">'wrap'</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> off and the text has scrolled horizontally, you can use the
+following commands to move the cursor to <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> character you can see.  Thus text
+left and right of the <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> ignored.  These never cause the text to
+scroll:
+
+        <a href="https://vimhelp.org/motion.txt.html#g0" class="d">g0</a>              to first visible character in this line
+        <a href="https://vimhelp.org/motion.txt.html#g%5E" class="d">g^</a>              to first non-blank visible character in this line
+        <a href="https://vimhelp.org/motion.txt.html#gm" class="d">gm</a>              to middle of screen line
+        <a href="https://vimhelp.org/motion.txt.html#gM" class="d">gM</a>              to middle of the text in this line
+        <a href="https://vimhelp.org/motion.txt.html#g%24" class="d">g$</a>              to last visible character in this line
+
+                |&lt;--      <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a>     --&gt;|
+<span class="h">        some long    text, part of which is visible in one line </span>
+                 <a href="https://vimhelp.org/motion.txt.html#g0" class="d">g0</a>  <a href="https://vimhelp.org/motion.txt.html#g%5E" class="d">g^</a>    <a href="https://vimhelp.org/motion.txt.html#gm" class="d">gm</a>      <a href="https://vimhelp.org/motion.txt.html#gM" class="d">gM</a> <a href="https://vimhelp.org/motion.txt.html#g%24" class="d">g$</a>
+
+
+<span class="c">BREAKING AT WORDS</span>                               <span id="edit-no-break" class="t">edit-no-break</span>
+
+When preparing text for use by another program, you might have to make
+paragraphs without <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> line break.  <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> disadvantage of using <a href="https://vimhelp.org/options.txt.html#%27nowrap%27" class="o">'nowrap'</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> that you
+can't see the whole <a href="https://vimhelp.org/motion.txt.html#sentence" class="d">sentence</a> you are working on.  When <a href="https://vimhelp.org/options.txt.html#%27wrap%27" class="o">'wrap'</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> on, words are
+broken halfway, which makes them hard to read.
+   <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> good solution for editing this kind of <a href="https://vimhelp.org/motion.txt.html#paragraph" class="d">paragraph</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> setting the
+<a href="https://vimhelp.org/options.txt.html#%27linebreak%27" class="o">'linebreak'</a> option.  Vim then breaks lines <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> an appropriate place when
+displaying the line.  The text in the file remains unchanged.
+   Without <a href="https://vimhelp.org/options.txt.html#%27linebreak%27" class="o">'linebreak'</a> text might look like this:
+
+        +---------------------------------+
+        |<a href="https://vimhelp.org/print.txt.html#letter" class="d">letter</a> generation program for <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/motion.txt.html#b" class="d">b</a>|
+        |ank.  They wanted to send out <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/change.txt.html#s" class="d">s</a>|
+        |pecial, personalized <a href="https://vimhelp.org/print.txt.html#letter" class="d">letter</a> to th|
+        |eir richest 1000 customers.  Unfo|
+        |rtunately for the programmer, he |
+        +---------------------------------+
+After: 
+<span class="e"></span>
+<span class="e">        :set linebreak</span>
+<span class="e"></span>
+<a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> looks like this:
+
+        +---------------------------------+
+        |<a href="https://vimhelp.org/print.txt.html#letter" class="d">letter</a> generation program for <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>  |
+        |bank.  They wanted to send out <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> |
+        |special, personalized <a href="https://vimhelp.org/print.txt.html#letter" class="d">letter</a> to  |
+        |their richest 1000 customers.    |
+        |Unfortunately for the programmer,|
+        +---------------------------------+
+
+Related options:
+<a href="https://vimhelp.org/options.txt.html#%27breakat%27" class="o">'breakat'</a> specifies the characters where <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> break can be inserted.
+<a href="https://vimhelp.org/options.txt.html#%27showbreak%27" class="o">'showbreak'</a> specifies <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/eval.txt.html#string" class="d">string</a> to show <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the start of broken line.
+Set <a href="https://vimhelp.org/options.txt.html#%27textwidth%27" class="o">'textwidth'</a> to zero to avoid <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/motion.txt.html#paragraph" class="d">paragraph</a> to be split.
+
+
+<span class="c">MOVING BY VISIBLE LINES</span>
+
+The "<a href="https://vimhelp.org/motion.txt.html#j" class="d">j</a>" and "<a href="https://vimhelp.org/motion.txt.html#k" class="d">k</a>" commands move to the next and previous lines.  When used on
+<a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> long line, this means moving <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> lot of screen lines <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> once.
+   To move only one screen line, use the "<a href="https://vimhelp.org/motion.txt.html#gj" class="d">gj</a>" and "<a href="https://vimhelp.org/motion.txt.html#gk" class="d">gk</a>" commands.  When <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> line
+doesn't wrap they <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> the same <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> "<a href="https://vimhelp.org/motion.txt.html#j" class="d">j</a>" and "<a href="https://vimhelp.org/motion.txt.html#k" class="d">k</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  When the line does wrap, they
+move to <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> character displayed one line below or above.
+   You might like to use these mappings, which bind these <a href="https://vimhelp.org/intro.txt.html#movement" class="d">movement</a> commands to
+the cursor keys: 
+<span class="e"></span>
+<span class="e">        :map &lt;Up&gt; gk</span>
+<span class="e">        :map &lt;Down&gt; gj</span>
+<span class="e"></span>
+<span class="e"></span>
+<span class="c">TURNING A PARAGRAPH INTO ONE LINE</span>                       <span id="edit-paragraph-join" class="t">edit-paragraph-join</span>
+
+If you want to import text into <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> program like MS-Word, each <a href="https://vimhelp.org/motion.txt.html#paragraph" class="d">paragraph</a> should
+be <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> single line.  If your paragraphs are currently separated with empty
+lines, this <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> how you turn each <a href="https://vimhelp.org/motion.txt.html#paragraph" class="d">paragraph</a> into <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> single line: 
+<span class="e"></span>
+<span class="e">        :g/./,/^$/join</span>
+<span class="e"></span>
+That looks complicated.  Let's break <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> up in pieces:
+
+        :g/./           <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> "<a href="https://vimhelp.org/repeat.txt.html#%3Aglobal" class="d">:global</a>" command that finds all lines that contain
+                        <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> least one character.
+             ,/^$/      <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> range, <a href="https://vimhelp.org/starting.txt.html#starting" class="d">starting</a> from the current line (the non-empty
+                        line) until an empty line.
+                  join  The "<a href="https://vimhelp.org/change.txt.html#%3Ajoin" class="d">:join</a>" command joins the range of lines together
+                        into one line.
+
+Starting with this text, containing eight lines broken <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> column 30:
+
+        +----------------------------------+
+        |<a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> <a href="https://vimhelp.org/print.txt.html#letter" class="d">letter</a> generation program       |
+        |for <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> bank.  They wanted to       |
+        |send out <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> special,               |
+        |personalized letter.              |
+        |                                  |
+        |To their richest 1000             |
+        |customers.  Unfortunately for     |
+        |the programmer,                   |
+        +----------------------------------+
+
+You <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> up with two lines:
+
+        +----------------------------------+
+        |<a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> <a href="https://vimhelp.org/print.txt.html#letter" class="d">letter</a> generation program for <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> |
+        |bank.  They wanted to send out <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/change.txt.html#s" class="d">s</a>|
+        |pecial, personalized letter.      |
+        |To their richest 1000 customers.  |
+        |Unfortunately for the programmer, |
+        +----------------------------------+
+
+<span class="n">Note</span> that this doesn't work when the separating line <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> blank but not empty;
+when <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> contains spaces and/or tabs.  This command does work with blank lines:
+
+<span class="e">        :g/\S/,/^\s*$/join</span>
+<span class="e"></span>
+This still requires <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> blank or empty line <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of the file for the last
+<a href="https://vimhelp.org/motion.txt.html#paragraph" class="d">paragraph</a> to be joined.
+
+<span class="h">==============================================================================</span>
+<span id="25.5" class="t">25.5</span>  Editing tables
+
+Suppose you are editing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> table with four columns:
+
+<span class="h">        nice table        test 1        test 2      test 3 </span>
+<span class="h">        input A           0.534 </span>
+<span class="h">        input B           0.913 </span>
+
+You need to enter numbers in the third column.  You could move to the second
+line, use "<a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a>"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> enter <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> lot of spaces and type the text.
+   For this kind of editing there <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> special option: 
+<span class="e"></span>
+<span class="e">        set virtualedit=all</span>
+<span class="e"></span>
+Now you can move the cursor to positions where there isn't any text.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a>
+called "virtual <a href="https://vimhelp.org/intro.txt.html#space" class="d">space</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  Editing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> table <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> lot easier this way.
+   Move the cursor by searching for the header of the last column: 
+<span class="e"></span>
+<span class="e">        /test 3</span>
+<span class="e"></span>
+Now press "<a href="https://vimhelp.org/motion.txt.html#j" class="d">j</a>" and you are right where you can enter the value for "input <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+Typing "0.693" results in:
+
+<span class="h">        nice table        test 1     test 2      test 3 </span>
+<span class="h">        input A           0.534                  0.693 </span>
+<span class="h">        input B           0.913 </span>
+
+Vim has automatically filled the gap in front of the new text for you.  Now,
+to enter the next field in this column use "Bj"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  "<a href="https://vimhelp.org/motion.txt.html#B" class="d">B</a>" moves back to the start
+of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> white <a href="https://vimhelp.org/intro.txt.html#space" class="d">space</a> separated word.  Then "<a href="https://vimhelp.org/motion.txt.html#j" class="d">j</a>" moves to the place where the next
+field can be entered.
+
+        <span class="n">Note:</span>
+        You can move the cursor anywhere in the display, also beyond the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a>
+        of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> line.  But Vim will not <a href="https://vimhelp.org/insert.txt.html#insert" class="d">insert</a> spaces there, until you <a href="https://vimhelp.org/insert.txt.html#insert" class="d">insert</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+        character in that position.
+
+
+<span class="c">COPYING A COLUMN</span>
+
+You want to add <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> column, which should be <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> copy of the third column and
+placed before the "test 1" column.  Do this in seven steps:
+1.  Move the cursor to the left upper corner of this column, e.g., with
+    "/test 3"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+2.  Press <a href="https://vimhelp.org/visual.txt.html#CTRL-V" class="k">CTRL-V</a> to start blockwise <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode.
+3.  Move the cursor down two lines with "2j"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  You are now in "virtual <a href="https://vimhelp.org/intro.txt.html#space" class="d">space</a>"<a href="https://vimhelp.org/cmdline.txt.html#%3A" class="d">:</a>
+    the "input <a href="https://vimhelp.org/motion.txt.html#B" class="d">B</a>" line of the "test 3" column.
+4.  Move the cursor right, to include the whole column in the selection, plus
+    the <a href="https://vimhelp.org/intro.txt.html#space" class="d">space</a> that you want between the columns.  "9l" should <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> it.
+5.  Yank the selected rectangle with "<a href="https://vimhelp.org/change.txt.html#y" class="d">y</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+6.  Move the cursor to "test 1"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> where the new column <a href="https://vimhelp.org/vim_faq.txt.html#must" class="d">must</a> be placed.
+7.  Press "<a href="https://vimhelp.org/change.txt.html#P" class="d">P</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+
+The result should be:
+
+<span class="h">        nice table        test 3    test 1     test 2      test 3 </span>
+<span class="h">        input A           0.693     0.534                  0.693 </span>
+<span class="h">        input B                     0.913 </span>
+
+Notice that the whole "test 1" column was shifted right, also the line where
+the "test 3" column didn't have text.
+
+Go back to non-virtual cursor movements with: 
+<span class="e"></span>
+<span class="e">        :set virtualedit=</span>
+<span class="e"></span>
+<span class="e"></span>
+<span class="c">VIRTUAL REPLACE MODE</span>
+
+The disadvantage of using <a href="https://vimhelp.org/options.txt.html#%27virtualedit%27" class="o">'virtualedit'</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> that <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> "feels" different.  You
+can't recognize tabs or spaces beyond the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of line when moving the cursor
+around.  Another <a href="https://vimhelp.org/eval.txt.html#method" class="d">method</a> can be used: Virtual <a href="https://vimhelp.org/insert.txt.html#Replace" class="d">Replace</a> mode.
+   Suppose you have <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> line in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> table that contains both tabs and other
+characters.  Use "rx" on the first tab:
+
+<span class="h">        inp     0.693   0.534   0.693 </span>
+
+               |
+           rx  |
+               <a href="https://vimhelp.org/visual.txt.html#V" class="d">V</a>
+
+<span class="h">        inpx0.693   0.534       0.693 </span>
+
+The layout <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> messed up.  To avoid that, use the "<a href="https://vimhelp.org/change.txt.html#gr" class="d">gr</a>" command:
+
+<span class="h">        inp     0.693   0.534   0.693 </span>
+
+               |
+          grx  |
+               <a href="https://vimhelp.org/visual.txt.html#V" class="d">V</a>
+
+<span class="h">        inpx    0.693   0.534   0.693 </span>
+
+What happens <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> that the "<a href="https://vimhelp.org/change.txt.html#gr" class="d">gr</a>" command makes sure the new character takes the
+right amount of screen space.  Extra spaces or tabs are inserted to fill the
+gap.  Thus what actually happens <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> that <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/intro.txt.html#tab" class="d">tab</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> replaced by "<a href="https://vimhelp.org/change.txt.html#x" class="d">x</a>" and then
+blanks added to make the text after <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> keep its place.  In this <a href="https://vimhelp.org/change.txt.html#case" class="d">case</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+<a href="https://vimhelp.org/intro.txt.html#tab" class="d">tab</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> inserted.
+   When you need to replace more than one character, you use the "<a href="https://vimhelp.org/change.txt.html#R" class="d">R</a>" command
+to <a href="https://vimhelp.org/motion.txt.html#go" class="d">go</a> to <a href="https://vimhelp.org/insert.txt.html#Replace" class="d">Replace</a> mode (see <a href="https://vimhelp.org/usr_04.txt.html#04.9" class="l">04.9</a>).  This messes up the layout and replaces
+the wrong characters:
+
+<span class="h">        inp     0       0.534   0.693 </span>
+
+                |
+         R0.786 |
+                <a href="https://vimhelp.org/visual.txt.html#V" class="d">V</a>
+
+<span class="h">        inp     0.78634 0.693 </span>
+
+The "<a href="https://vimhelp.org/change.txt.html#gR" class="d">gR</a>" command uses Virtual <a href="https://vimhelp.org/insert.txt.html#Replace" class="d">Replace</a> mode.  This preserves the layout:
+
+<span class="h">        inp     0       0.534   0.693 </span>
+
+                |
+        gR0.786 |
+                <a href="https://vimhelp.org/visual.txt.html#V" class="d">V</a>
+
+<span class="h">        inp     0.786   0.534   0.693 </span>
+
+<span class="h">==============================================================================</span>
+
+Next chapter: <a href="https://vimhelp.org/usr_26.txt.html#usr_26.txt" class="l">usr_26.txt</a>  Repeating
+
+Copyright: see <a href="https://vimhelp.org/usr_01.txt.html#manual-copyright" class="l">manual-copyright</a>  vim:tw=78:ts=8:noet:ft=help:norl:
+
+
+</pre>
+</div>
+<div id="vh-sidebar" style="visibility: visible; position: sticky; left: 113.675px;"><ul><li><a href="#">↑Top↑</a></li><li><a href="#25.1">Breaking lines</a></li><li><a href="#25.2">Aligning text</a></li><li><a href="#25.3">Indents and tabs</a></li><li><a href="#25.4">Dealing with long lines</a></li><li><a href="#25.5">Editing tables</a></li></ul></div>
+</main>
+<p>
+Quick links:
+<a href="https://vimhelp.org/">help overview</a> ·
+<a href="https://vimhelp.org/quickref.txt.html">quick reference</a> ·
+<a href="https://vimhelp.org/usr_toc.txt.html">user manual toc</a> ·
+<a href="https://vimhelp.org/#reference_toc">reference manual toc</a>
+· <a href="https://vimhelp.org/vim_faq.txt.html">faq</a></p>
+<footer>This site is maintained by Carlo Teubner (<i>(my first name) at cteubner dot net</i>).</footer>
+
+
+<div id="sourcegraph-app-background" data-platform="firefox-extension" data-version="22.11.24.1820" style="display: none;"></div></body></html>

@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en"><script type="text/javascript">try {
+(function injectPageScriptAPI(scriptName, shouldOverrideWebSocket, shouldOverrideWebRTC, isInjected) { 
+
+    'use strict';
+
+    /**
+     * If script have been injected into a frame via contentWindow then we can simply take the copy of messageChannel left for us by parent document
+     * Otherwise creates new message channel that sends a message to the content-script to check if request should be allowed or not.
+     */
+    var messageChannel = isInjected ? window[scriptName] : (function () {
+
+        // Save original postMessage and addEventListener functions to prevent webpage from tampering both.
+        var postMessage = window.postMessage;
+        var addEventListener = window.addEventListener;
+
+        // Current request ID (incremented every time we send a new message)
+        var currentRequestId = 0;
+        var requestsMap = {};
+
+        /**
+         * Handles messages sent from the content script back to the page script.
+         *
+         * @param event Event with necessary data
+         */
+        var onMessageReceived = function (event) {
+
+            if (!event.data || !event.data.direction || event.data.direction !== "to-page-script@abu") {
+                return;
+            }
+
+            var requestData = requestsMap[event.data.requestId];
+            if (requestData) {
+                var wrapper = requestData.wrapper;
+                requestData.onResponseReceived(wrapper, event.data.block);
+                delete requestsMap[event.data.requestId];
+            }
+        };
+
+        /**
+         * @param url                The URL to which wrapped object is willing to connect
+         * @param requestType        Request type ( WEBSOCKET or WEBRTC)
+         * @param wrapper            WebSocket wrapper instance
+         * @param onResponseReceived Called when response is received
+         */
+        var sendMessage = function (url, requestType, wrapper, onResponseReceived) {
+
+            if (currentRequestId === 0) {
+                // Subscribe to response when this method is called for the first time
+                addEventListener.call(window, "message", onMessageReceived, false);
+            }
+
+            var requestId = ++currentRequestId;
+            requestsMap[requestId] = {
+                wrapper: wrapper,
+                onResponseReceived: onResponseReceived
+            };
+
+            var message = {
+                requestId: requestId,
+                direction: 'from-page-script@abu',
+                elementUrl: url,
+                documentUrl: document.URL,
+                requestType: requestType
+            };
+
+            // Send a message to the background page to check if the request should be blocked
+            postMessage.call(window, message, "*");
+        };
+
+        return {
+            sendMessage: sendMessage
+        };
+
+    })();
+
+    /*
+     * In some case Chrome won't run content scripts inside frames.
+     * So we have to intercept access to contentWindow/contentDocument and manually inject wrapper script into this context
+     *
+     * Based on: https://github.com/adblockplus/adblockpluschrome/commit/1aabfb3346dc0821c52dd9e97f7d61b8c99cd707
+     */
+    var injectedToString = Function.prototype.toString.bind(injectPageScriptAPI);
+
+    var injectedFramesAdd;
+    var injectedFramesHas;
+    if (window.WeakSet instanceof Function) {
+        var injectedFrames = new WeakSet();
+        injectedFramesAdd = WeakSet.prototype.add.bind(injectedFrames);
+        injectedFramesHas = WeakSet.prototype.has.bind(injectedFrames);
+    } else {
+        var frames = [];
+        injectedFramesAdd = function (el) {
+            if (frames.indexOf(el) < 0) {
+                frames.push(el);
+            }
+        };
+        injectedFramesHas = function (el) {
+            return frames.indexOf(el) >= 0;
+        };
+    }
+
+    /**
+     * Injects wrapper's script into passed window
+     * @param contentWindow Frame's content window
+     */
+    function injectPageScriptAPIInWindow(contentWindow) {
+        try {
+            if (contentWindow && !injectedFramesHas(contentWindow)) {
+                injectedFramesAdd(contentWindow);
+                contentWindow[scriptName] = messageChannel; // Left message channel for the injected script
+                var args = "'" + scriptName + "', " + shouldOverrideWebSocket + ", " + shouldOverrideWebRTC + ", true";
+                contentWindow.eval("(" + injectedToString() + ")(" + args + ");");
+                delete contentWindow[scriptName];
+            }
+        } catch (e) {
+        }
+    }
+
+    /**
+     * Overrides access to contentWindow/contentDocument for the passed HTML element's interface (iframe, frame, object)
+     * If the content of one of these objects is requested we will inject our wrapper script.
+     * @param iface HTML element's interface
+     */
+    function overrideContentAccess(iface) {
+
+        var contentWindowDescriptor = Object.getOwnPropertyDescriptor(iface.prototype, "contentWindow");
+        var contentDocumentDescriptor = Object.getOwnPropertyDescriptor(iface.prototype, "contentDocument");
+
+        // Apparently in HTMLObjectElement.prototype.contentWindow does not exist
+        // in older versions of Chrome such as 42.
+        if (!contentWindowDescriptor) {
+            return;
+        }
+
+        var getContentWindow = Function.prototype.call.bind(contentWindowDescriptor.get);
+        var getContentDocument = Function.prototype.call.bind(contentDocumentDescriptor.get);
+
+        contentWindowDescriptor.get = function () {
+            var contentWindow = getContentWindow(this);
+            injectPageScriptAPIInWindow(contentWindow);
+            return contentWindow;
+        };
+        contentDocumentDescriptor.get = function () {
+            injectPageScriptAPIInWindow(getContentWindow(this));
+            return getContentDocument(this);
+        };
+
+        Object.defineProperty(iface.prototype, "contentWindow", contentWindowDescriptor);
+        Object.defineProperty(iface.prototype, "contentDocument", contentDocumentDescriptor);
+    }
+
+    var interfaces = [HTMLFrameElement, HTMLIFrameElement, HTMLObjectElement];
+    for (var i = 0; i < interfaces.length; i++) {
+        overrideContentAccess(interfaces[i]);
+    }
+
+    /**
+     * Defines properties in destination object
+     * @param src Source object
+     * @param dest Destination object
+     * @param properties Properties to copy
+     */
+    var copyProperties = function (src, dest, properties) {
+        for (var i = 0; i < properties.length; i++) {
+            var prop = properties[i];
+            var descriptor = Object.getOwnPropertyDescriptor(src, prop);
+            // Passed property may be undefined
+            if (descriptor) {
+                Object.defineProperty(dest, prop, descriptor);
+            }
+        }
+    };
+
+    /**
+     * Check request by sending message to content script
+     * @param url URL to block
+     * @param type Request type
+     * @param callback Result callback
+     */
+    var checkRequest = function (url, type, callback) {
+        messageChannel.sendMessage(url, type, this, function (wrapper, blockConnection) {
+            callback(blockConnection);
+        });
+    };
+
+    /**
+     * The function overrides window.WebSocket with our wrapper, that will check url with filters through messaging with content-script.
+     *
+     * IMPORTANT NOTE:
+     * This function is first loaded as a content script. The only purpose of it is to call
+     * the "toString" method and use resulting string as a text content for injected script.
+     */
+    var overrideWebSocket = function () { 
+
+        if (!(window.WebSocket instanceof Function)) {
+            return;
+        }
+
+        /**
+         * WebSocket wrapper implementation.
+         * https://github.com/AdguardTeam/AdguardBrowserExtension/issues/349
+         *
+         * Based on:
+         * https://github.com/adblockplus/adblockpluschrome/commit/457a336ee55a433217c3ffe5d363e5c6980f26f4
+         */
+
+        /**
+         * As far as possible we must track everything we use that could be sabotaged by the website later in order to circumvent us.
+         */
+        var RealWebSocket = WebSocket;
+        var closeWebSocket = Function.prototype.call.bind(RealWebSocket.prototype.close);
+
+        function WrappedWebSocket(url, protocols) {
+            // Throw correct exceptions if the constructor is used improperly.
+            if (!(this instanceof WrappedWebSocket)) {
+                return RealWebSocket();
+            }
+            if (arguments.length < 1) {
+                return new RealWebSocket();
+            }
+
+            var websocket = new RealWebSocket(url, protocols);
+
+            // This is the key point: checking if this WS should be blocked or not
+            // Don't forget that the type of 'websocket.url' is String, but 'url 'parameter might have another type.
+            checkRequest(websocket.url, 'WEBSOCKET', function (blocked) {
+                if (blocked) {
+                    closeWebSocket(websocket);
+                }
+            });
+
+            return websocket;
+        }
+
+        // https://github.com/AdguardTeam/AdguardBrowserExtension/issues/488
+        WrappedWebSocket.prototype = RealWebSocket.prototype;
+        window.WebSocket = WrappedWebSocket.bind();
+
+        copyProperties(RealWebSocket, WebSocket, ["CONNECTING", "OPEN", "CLOSING", "CLOSED", "name", "prototype"]);
+
+        RealWebSocket.prototype.constructor = WebSocket;
+
+    };
+
+    /**
+     * The function overrides window.RTCPeerConnection with our wrapper, that will check ice servers URLs with filters through messaging with content-script.
+     *
+     * IMPORTANT NOTE:
+     * This function is first loaded as a content script. The only purpose of it is to call
+     * the "toString" method and use resulting string as a text content for injected script.
+     */
+    var overrideWebRTC = function () { 
+
+
+        if (!(window.RTCPeerConnection instanceof Function) &&
+            !(window.webkitRTCPeerConnection instanceof Function)) {
+            return;
+        }
+
+        /**
+         * RTCPeerConnection wrapper implementation.
+         * https://github.com/AdguardTeam/AdguardBrowserExtension/issues/588
+         *
+         * Based on:
+         * https://github.com/adblockplus/adblockpluschrome/commit/af0585137be19011eace1cf68bf61eed2e6db974
+         *
+         * Chromium webRequest API doesn't allow the blocking of WebRTC connections
+         * https://bugs.chromium.org/p/chromium/issues/detail?id=707683
+         */
+
+        var RealRTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection;
+        var closeRTCPeerConnection = Function.prototype.call.bind(RealRTCPeerConnection.prototype.close);
+
+        var RealArray = Array;
+        var RealString = String;
+        var createObject = Object.create;
+        var defineProperty = Object.defineProperty;
+
+        /**
+         * Convert passed url to string
+         * @param url URL
+         * @returns {string}
+         */
+        function urlToString(url) {
+            if (typeof url !== "undefined") {
+                return RealString(url);
+            }
+        }
+
+        /**
+         * Creates new immutable array from original with some transform function
+         * @param original
+         * @param transform
+         * @returns {*}
+         */
+        function safeCopyArray(original, transform) {
+
+            if (original === null || typeof original !== "object") {
+                return original;
+            }
+
+            var immutable = RealArray(original.length);
+            for (var i = 0; i < immutable.length; i++) {
+                defineProperty(immutable, i, {
+                    configurable: false, enumerable: false, writable: false,
+                    value: transform(original[i])
+                });
+            }
+            defineProperty(immutable, "length", {
+                configurable: false, enumerable: false, writable: false,
+                value: immutable.length
+            });
+            return immutable;
+        }
+
+        /**
+         * Protect configuration from mutations
+         * @param configuration RTCPeerConnection configuration object
+         * @returns {*}
+         */
+        function protectConfiguration(configuration) {
+
+            if (configuration === null || typeof configuration !== "object") {
+                return configuration;
+            }
+
+            var iceServers = safeCopyArray(
+                configuration.iceServers,
+                function (iceServer) {
+
+                    var url = iceServer.url;
+                    var urls = iceServer.urls;
+
+                    // RTCPeerConnection doesn't iterate through pseudo Arrays of urls.
+                    if (typeof urls !== "undefined" && !(urls instanceof RealArray)) {
+                        urls = [urls];
+                    }
+
+                    return createObject(iceServer, {
+                        url: {
+                            configurable: false, enumerable: false, writable: false,
+                            value: urlToString(url)
+                        },
+                        urls: {
+                            configurable: false, enumerable: false, writable: false,
+                            value: safeCopyArray(urls, urlToString)
+                        }
+                    });
+                }
+            );
+
+            return createObject(configuration, {
+                iceServers: {
+                    configurable: false, enumerable: false, writable: false,
+                    value: iceServers
+                }
+            });
+        }
+
+        /**
+         * Check WebRTC connection's URL and close if it's blocked by rule
+         * @param connection Connection
+         * @param url URL to check
+         */
+        function checkWebRTCRequest(connection, url) {
+            checkRequest(url, 'WEBRTC', function (blocked) {
+                if (blocked) {
+                    try {
+                        closeRTCPeerConnection(connection);
+                    } catch (e) {
+                        // Ignore exceptions
+                    }
+                }
+            });
+        }
+
+        /**
+         * Check each URL of ice server in configuration for blocking.
+         *
+         * @param connection RTCPeerConnection
+         * @param configuration Configuration for RTCPeerConnection
+         * https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration
+         */
+        function checkConfiguration(connection, configuration) {
+
+            if (!configuration || !configuration.iceServers) {
+                return;
+            }
+
+            var iceServers = configuration.iceServers;
+            for (var i = 0; i < iceServers.length; i++) {
+
+                var iceServer = iceServers[i];
+                if (!iceServer) {
+                    continue;
+                }
+
+                if (iceServer.url) {
+                    checkWebRTCRequest(connection, iceServer.url);
+                }
+
+                if (iceServer.urls) {
+                    for (var j = 0; j < iceServer.urls.length; j++) {
+                        checkWebRTCRequest(connection, iceServer.urls[j]);
+                    }
+                }
+            }
+        }
+
+        /**
+         * Overrides setConfiguration method
+         * https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/setConfiguration
+         */
+        if (RealRTCPeerConnection.prototype.setConfiguration) {
+
+            var realSetConfiguration = Function.prototype.call.bind(RealRTCPeerConnection.prototype.setConfiguration);
+
+            RealRTCPeerConnection.prototype.setConfiguration = function (configuration) {
+                configuration = protectConfiguration(configuration);
+                // Call the real method first, so that validates the configuration
+                realSetConfiguration(this, configuration);
+                checkConfiguration(this, configuration);
+            };
+        }
+
+        function WrappedRTCPeerConnection(configuration, arg) {
+
+            if (!(this instanceof WrappedRTCPeerConnection)) {
+                return RealRTCPeerConnection();
+            }
+
+            configuration = protectConfiguration(configuration);
+
+            /**
+             * The old webkitRTCPeerConnection constructor takes an optional second argument and we must pass it.
+             */
+            var connection = new RealRTCPeerConnection(configuration, arg);
+            checkConfiguration(connection, configuration);
+            return connection;
+        }
+
+        WrappedRTCPeerConnection.prototype = RealRTCPeerConnection.prototype;
+
+        var boundWrappedRTCPeerConnection = WrappedRTCPeerConnection.bind();
+        copyProperties(RealRTCPeerConnection, boundWrappedRTCPeerConnection, ["caller", "generateCertificate", "name", "prototype"]);
+        RealRTCPeerConnection.prototype.constructor = boundWrappedRTCPeerConnection;
+
+        if ("RTCPeerConnection" in window) {
+            window.RTCPeerConnection = boundWrappedRTCPeerConnection;
+        }
+        if ("webkitRTCPeerConnection" in window) {
+            window.webkitRTCPeerConnection = boundWrappedRTCPeerConnection;
+        }
+    };
+
+    if (shouldOverrideWebSocket) {
+        overrideWebSocket();
+    }
+
+    if (shouldOverrideWebRTC) {
+        overrideWebRTC();
+    }
+})('wrapper-script-8300754997070169', false, true);
+} catch (ex) { console.error('Error executing AG js: ' + ex); }
+(function () {
+            var current = document.currentScript;
+            var parent = current && current.parentNode;
+            if (parent) {
+                parent.removeChild(current);
+            }
+        })();</script><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Vim help pages, always up-to-date">
+<title>Vim: usr_07.txt</title>
+<link rel="shortcut icon" href="https://vimhelp.org/favicon.ico">
+<!-- favicon is based on http://amnoid.de/tmp/vim_solidbright_512.png and is used with permission by its author -->
+<link rel="stylesheet" href="Vim%20usr_07.txt_Editing%20more%20than%20one%20file_files/vimhelp.css" type="text/css">
+
+<link rel="stylesheet" class="select2-css" href="Vim%20usr_07.txt_Editing%20more%20than%20one%20file_files/select2.min.css" integrity="sha256-zaSoHBhwFdle0scfGEFUCwggPN7F+ip9XRglo8IWb4w=" crossorigin="anonymous">
+<script defer="defer" src="Vim%20usr_07.txt_Editing%20more%20than%20one%20file_files/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script defer="defer" src="Vim%20usr_07.txt_Editing%20more%20than%20one%20file_files/select2.min.js" integrity="sha256-9yRP/2EFlblE92vzCA10469Ctd0jT48HnmmMw5rJZrA=" crossorigin="anonymous"></script>
+<script defer="defer" src="Vim%20usr_07.txt_Editing%20more%20than%20one%20file_files/vimhelp.js"></script>
+</head><body>
+<div class="bar">
+  <div class="ql">
+Quick links:
+<a href="https://vimhelp.org/">help overview</a> ·
+<a href="https://vimhelp.org/quickref.txt.html">quick reference</a> ·
+<a href="https://vimhelp.org/usr_toc.txt.html">user manual toc</a> ·
+<a href="https://vimhelp.org/#reference_toc">reference manual toc</a>
+· <a href="https://vimhelp.org/vim_faq.txt.html">faq</a></div>
+  <div class="srch">
+    <select id="vh-select-tag" data-select2-id="select2-data-vh-select-tag" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true" style="display: inline-block;"></select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-1-4j07" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-vh-select-tag-container" aria-controls="select2-vh-select-tag-container"><span class="select2-selection__rendered" id="select2-vh-select-tag-container" role="textbox" aria-readonly="true" title="Go to keyword"><span class="select2-selection__placeholder">Go to keyword</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+  </div>
+  <form class="srch" action="https://duckduckgo.com" method="get" target="_blank" rel="noopener noreferrer">
+    <input type="hidden" name="sites" value="vimhelp.org">
+    <input type="search" name="q" id="vh-srch-input" placeholder="Site search">
+  </form>
+</div>
+
+<main>
+<div id="vh-content">
+<pre><span id="usr_07.txt" class="t">usr_07.txt</span>    For <span class="i">Vim version 9.0.</span>  Last change: 2020 Mar 23
+
+                     VIM USER MANUAL <a href="https://vimhelp.org/motion.txt.html#-" class="d">-</a> by <a href="https://vimhelp.org/intro.txt.html#Bram" class="d">Bram</a> <a href="https://vimhelp.org/intro.txt.html#Moolenaar" class="d">Moolenaar</a>
+
+                          Editing more than one file
+
+
+No matter how many files you have, you can edit them without leaving Vim.
+Define <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> of files to work on and jump from one to the other.  Copy text
+from one file and <a href="https://vimhelp.org/change.txt.html#put" class="d">put</a> <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> in another one.
+
+<a href="#07.1" class="l">07.1</a>  Edit another file
+<a href="#07.2" class="l">07.2</a>  <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> of files
+<a href="#07.3" class="l">07.3</a>  Jumping from file to file
+<a href="#07.4" class="l">07.4</a>  Backup files
+<a href="#07.5" class="l">07.5</a>  Copy text between files
+<a href="#07.6" class="l">07.6</a>  Viewing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file
+<a href="#07.7" class="l">07.7</a>  Changing the file name
+
+     Next chapter: <a href="https://vimhelp.org/usr_08.txt.html#usr_08.txt" class="l">usr_08.txt</a>  Splitting <a href="https://vimhelp.org/windows.txt.html#windows" class="d">windows</a>
+ Previous chapter: <a href="https://vimhelp.org/usr_06.txt.html#usr_06.txt" class="l">usr_06.txt</a>  Using <a href="https://vimhelp.org/syntax.txt.html#syntax" class="d">syntax</a> highlighting
+Table of contents: <a href="https://vimhelp.org/usr_toc.txt.html#usr_toc.txt" class="l">usr_toc.txt</a>
+
+<span class="h">==============================================================================</span>
+<span id="07.1" class="t">07.1</span>  Edit another file
+
+So far you had to start Vim for every file you wanted to edit.  There <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+simpler way.  To start editing another file, use this command: 
+<span class="e"></span>
+<span class="e">        :edit foo.txt</span>
+<span class="e"></span>
+You can use any file name instead of "foo.txt"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  Vim will close the current
+file and open the new one.  If the current file has unsaved changes, however,
+Vim displays an error message and does not open the new file:
+
+<span class="h">        E37: No write since last change (use ! to override) </span>
+
+        <span class="n">Note:</span>
+        Vim puts an error ID <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the start of each error message.  If you <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a>
+        not understand the message or what caused it, look in the <a href="https://vimhelp.org/helphelp.txt.html#help" class="d">help</a> system
+        for this ID.  In this case: 
+<span class="e"></span>
+<span class="e">                :help E37</span>
+<span class="e"></span>
+At this point, you have <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> number of alternatives.  You can write the file
+using this command: 
+<span class="e"></span>
+<span class="e">        :write</span>
+<span class="e"></span>
+Or you can force Vim to <a href="https://vimhelp.org/editing.txt.html#discard" class="d">discard</a> your changes and edit the new file, using the
+force (!) character: 
+<span class="e"></span>
+<span class="e">        :edit! foo.txt</span>
+<span class="e"></span>
+If you want to edit another file, but not write the changes in the current
+file yet, you can make <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> hidden: 
+<span class="e"></span>
+<span class="e">        :hide edit foo.txt</span>
+<span class="e"></span>
+The text with changes <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> still there, but you can't see it.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> further
+explained in <a href="https://vimhelp.org/motion.txt.html#section" class="d">section</a> <a href="https://vimhelp.org/usr_22.txt.html#22.4" class="l">22.4</a><a href="https://vimhelp.org/cmdline.txt.html#%3A" class="d">:</a> The buffer list.
+
+<span class="h">==============================================================================</span>
+<span id="07.2" class="t">07.2</span>  <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> of files
+
+You can start Vim to edit <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> sequence of files.  For example: 
+<span class="e"></span>
+<span class="e">        vim one.c two.c three.c</span>
+<span class="e"></span>
+This command starts Vim and tells <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> that you will be editing three files.
+Vim displays just the first file.  After you have done your thing in this
+file, to edit the next file you use this command: 
+<span class="e"></span>
+<span class="e">        :next</span>
+<span class="e"></span>
+If you have unsaved changes in the current file, you will get an error
+message and the "<a href="https://vimhelp.org/editing.txt.html#%3Anext" class="d">:next</a>" will not work.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the same problem <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> with
+"<a href="https://vimhelp.org/editing.txt.html#%3Aedit" class="d">:edit</a>" mentioned in the previous section.  To <a href="https://vimhelp.org/editing.txt.html#abandon" class="d">abandon</a> the changes: 
+<span class="e"></span>
+<span class="e">        :next!</span>
+<span class="e"></span>
+But mostly you want to save the changes and move on to the next file.  There
+<a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> special command for this: 
+<span class="e"></span>
+<span class="e">        :wnext</span>
+<span class="e"></span>
+This does the same <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> using two separate commands: 
+<span class="e"></span>
+<span class="e">        :write</span>
+<span class="e">        :next</span>
+<span class="e"></span>
+<span class="e"></span>
+<span class="c">WHERE AM I?</span>
+
+To see which file in the argument <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> you are editing, look in the <a href="https://vimhelp.org/windows.txt.html#window" class="d">window</a>
+title.  It should show something like "(2 of 3)"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  This means you are editing
+the second file out of three files.
+   If you want to see the <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> of files, use this command: 
+<span class="e"></span>
+<span class="e">        :args</span>
+<span class="e"></span>
+This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> short for "arguments"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  The output might look like this:
+
+<span class="h">        one.c [two.c] three.c </span>
+
+These are the files you started Vim with.  The one you are currently editing,
+"two.c"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> in square brackets.
+
+
+<span class="c">MOVING TO OTHER ARGUMENTS</span>
+
+To <a href="https://vimhelp.org/motion.txt.html#go" class="d">go</a> back one file: 
+<span class="e"></span>
+<span class="e">        :previous</span>
+<span class="e"></span>
+This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> just like the "<a href="https://vimhelp.org/editing.txt.html#%3Anext" class="d">:next</a>" command, except that <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> moves in the other
+direction.  Again, there <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> shortcut command for when you want to write the
+file first: 
+<span class="e"></span>
+<span class="e">        :wprevious</span>
+<span class="e"></span>
+To move to the very last file in the list: 
+<span class="e"></span>
+<span class="e">        :last</span>
+<span class="e"></span>
+And to move back to the first one again: 
+<span class="e"></span>
+<span class="e">        :first</span>
+<span class="e"></span>
+There <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> no ":wlast" or ":wfirst" command though!
+
+You can use <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/intro.txt.html#count" class="d">count</a> for "<a href="https://vimhelp.org/editing.txt.html#%3Anext" class="d">:next</a>" and "<a href="https://vimhelp.org/editing.txt.html#%3Aprevious" class="d">:previous</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  To skip two files forward: 
+<span class="e"></span>
+<span class="e">        :2next</span>
+<span class="e"></span>
+<span class="e"></span>
+<span class="c">AUTOMATIC WRITING</span>
+
+When moving around the files and making changes, you have to remember to use
+"<a href="https://vimhelp.org/editing.txt.html#%3Awrite" class="d">:write</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  Otherwise you will get an error message.  If you are sure you
+always want to write modified files, you can tell Vim to automatically write
+them: 
+<span class="e"></span>
+<span class="e">        :set autowrite</span>
+<span class="e"></span>
+When you are editing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file which you may not want to write, switch <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> off
+again: 
+<span class="e"></span>
+<span class="e">        :set noautowrite</span>
+<span class="e"></span>
+<span class="e"></span>
+<span class="c">EDITING ANOTHER LIST OF FILES</span>
+
+You can redefine the <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> of files without the need to exit Vim and start <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a>
+again.  Use this command to edit three other files: 
+<span class="e"></span>
+<span class="e">        :args five.c six.c seven.h</span>
+<span class="e"></span>
+Or use <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> wildcard, like it's used in the shell: 
+<span class="e"></span>
+<span class="e">        :args *.txt</span>
+<span class="e"></span>
+Vim will take you to the first file in the list.  Again, if the current file
+has changes, you can either write the file first, or use ":args!" (with <a href="https://vimhelp.org/change.txt.html#%21" class="d">!</a>
+added) to <a href="https://vimhelp.org/editing.txt.html#abandon" class="d">abandon</a> the changes.
+
+
+<span class="c">DID YOU EDIT THE LAST FILE?</span>
+                                                        <span id="arglist-quit" class="t">arglist-quit</span>
+When you use <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> of files, Vim assumes you want to edit them all.  To
+protect you from <a href="https://vimhelp.org/starting.txt.html#exiting" class="d">exiting</a> too early, you will get this error when you didn't
+edit the last file in the <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> yet:
+
+<span class="h">        E173: 46 more files to edit </span>
+
+If you really want to exit, just <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> again.  Then <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> will work (but not when
+you did other commands in between).
+
+<span class="h">==============================================================================</span>
+<span id="07.3" class="t">07.3</span>  Jumping from file to file
+
+To quickly jump between two files, press <a href="https://vimhelp.org/editing.txt.html#CTRL-%5E" class="k">CTRL-^</a> (on English-US keyboards the <a href="https://vimhelp.org/motion.txt.html#%5E" class="d">^</a>
+<a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> above the 6 key).  Example: 
+<span class="e"></span>
+<span class="e">        :args one.c two.c three.c</span>
+<span class="e"></span>
+You are now in one.c. 
+<span class="e"></span>
+<span class="e">        :next</span>
+<span class="e"></span>
+Now you are in two.c.  Now use <a href="https://vimhelp.org/editing.txt.html#CTRL-%5E" class="k">CTRL-^</a> to <a href="https://vimhelp.org/motion.txt.html#go" class="d">go</a> back to one.c.  Another <a href="https://vimhelp.org/editing.txt.html#CTRL-%5E" class="k">CTRL-^</a> and
+you are back in two.c.  Another <a href="https://vimhelp.org/editing.txt.html#CTRL-%5E" class="k">CTRL-^</a> and you are in one.c again.  If you now
+do: 
+<span class="e"></span>
+<span class="e">        :next</span>
+<span class="e"></span>
+You are in three.c.  Notice that the <a href="https://vimhelp.org/editing.txt.html#CTRL-%5E" class="k">CTRL-^</a> command does not change the idea
+of where you are in the <a href="https://vimhelp.org/eval.txt.html#list" class="d">list</a> of files.  Only commands like "<a href="https://vimhelp.org/editing.txt.html#%3Anext" class="d">:next</a>" and
+"<a href="https://vimhelp.org/editing.txt.html#%3Aprevious" class="d">:previous</a>" <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> that.
+
+The file you were previously editing <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> called the "alternate" file.  When you
+just started Vim <a href="https://vimhelp.org/editing.txt.html#CTRL-%5E" class="k">CTRL-^</a> will not work, since there isn't <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> previous file.
+
+
+<span class="c">PREDEFINED MARKS</span>
+
+After jumping to another file, you can use two predefined marks which are very
+useful: 
+<span class="e"></span>
+<span class="e">        `"</span>
+<span class="e"></span>
+This takes you to the position where the cursor was when you left the file.
+Another <a href="https://vimhelp.org/motion.txt.html#mark" class="d">mark</a> that <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> remembered <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the position where you made the last
+change: 
+<span class="e"></span>
+<span class="e">        `.</span>
+<span class="e"></span>
+Suppose you are editing the file "one.txt"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  Somewhere halfway through the
+file you use "<a href="https://vimhelp.org/change.txt.html#x" class="d">x</a>" to delete <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> character.  Then you <a href="https://vimhelp.org/motion.txt.html#go" class="d">go</a> to the last line with "<a href="https://vimhelp.org/motion.txt.html#G" class="d">G</a>"
+and write the file with "<a href="https://vimhelp.org/editing.txt.html#%3Aw" class="d">:w</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  You edit several other files, and then use
+"<a href="https://vimhelp.org/editing.txt.html#%3Aedit" class="d">:edit</a> one.txt" to come back to "one.txt"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  If you now use <a href="https://vimhelp.org/motion.txt.html#%60" class="d">`</a>" Vim jumps to the
+last line of the file.  Using <a href="https://vimhelp.org/motion.txt.html#%60." class="d">`.</a> takes you to the position where you deleted
+the character.  Even when you move around in the file <a href="https://vimhelp.org/motion.txt.html#%60" class="d">`</a>" and <a href="https://vimhelp.org/motion.txt.html#%60." class="d">`.</a> will take you
+to the remembered position.  At least until you make another change or leave
+the file.
+
+
+<span class="c">FILE MARKS</span>
+
+In <a href="https://vimhelp.org/motion.txt.html#section" class="d">section</a> <a href="https://vimhelp.org/usr_03.txt.html#03.10" class="l">03.10</a> was explained how you can place <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/motion.txt.html#mark" class="d">mark</a> in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file with "mx"
+and jump to that position with "`x"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  That works within one file.  If you edit
+another file and place marks there, these are specific for that file.  Thus
+each file has its own set of marks, they are local to the file.
+   So far we were using marks with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/change.txt.html#lowercase" class="d">lowercase</a> letter.  There are also marks
+with an <a href="https://vimhelp.org/change.txt.html#uppercase" class="d">uppercase</a> letter.  These are global, they can be used from any file.
+For example suppose that we are editing the file "foo.txt"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  Go to halfway
+down the file <a href="https://vimhelp.org/motion.txt.html#%28" class="d">(</a>"50%"<a href="https://vimhelp.org/motion.txt.html#%29" class="d">)</a> and place the <a href="https://vimhelp.org/motion.txt.html#F" class="d">F</a> <a href="https://vimhelp.org/motion.txt.html#mark" class="d">mark</a> there (F for foo): 
+<span class="e"></span>
+<span class="e">        50%mF</span>
+<span class="e"></span>
+Now edit the file "bar.txt" and place the <a href="https://vimhelp.org/motion.txt.html#B" class="d">B</a> <a href="https://vimhelp.org/motion.txt.html#mark" class="d">mark</a> (B for bar) <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> its last line:
+
+<span class="e">        GmB</span>
+<span class="e"></span>
+Now you can use the "'F" command to jump back to halfway foo.txt.  Or edit yet
+another file, type "'B" and you are <a href="https://vimhelp.org/motion.txt.html#at" class="d">at</a> the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of bar.txt again.
+
+The file marks are remembered until they are placed somewhere else.  Thus you
+can place the mark, <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> hours of editing and still be able to jump back to that
+mark.
+   It's often useful to think of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> simple connection between the <a href="https://vimhelp.org/motion.txt.html#mark" class="d">mark</a> <a href="https://vimhelp.org/print.txt.html#letter" class="d">letter</a>
+and where <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> placed.  For example, use the <a href="https://vimhelp.org/motion.txt.html#H" class="d">H</a> <a href="https://vimhelp.org/motion.txt.html#mark" class="d">mark</a> in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> header file, <a href="https://vimhelp.org/motion.txt.html#M" class="d">M</a> in
+<a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> Makefile and <a href="https://vimhelp.org/change.txt.html#C" class="d">C</a> in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/change.txt.html#C" class="d">C</a> code file.
+
+To see where <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> specific <a href="https://vimhelp.org/motion.txt.html#mark" class="d">mark</a> is, give an argument to the "<a href="https://vimhelp.org/motion.txt.html#%3Amarks" class="d">:marks</a>" command: 
+<span class="e"></span>
+<span class="e">        :marks M</span>
+<span class="e"></span>
+You can also give several arguments: 
+<span class="e"></span>
+<span class="e">        :marks MCP</span>
+<span class="e"></span>
+Don't forget that you can use <a href="https://vimhelp.org/motion.txt.html#CTRL-O" class="k">CTRL-O</a> and <a href="https://vimhelp.org/motion.txt.html#CTRL-I" class="k">CTRL-I</a> to jump to older and newer
+positions without placing marks there.
+
+<span class="h">==============================================================================</span>
+<span id="07.4" class="t">07.4</span>  Backup files
+
+Usually Vim does not produce <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/editing.txt.html#backup" class="d">backup</a> file.  If you want to have one, all you
+need to <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> execute the following command: 
+<span class="e"></span>
+<span class="e">        :set backup</span>
+<span class="e"></span>
+The name of the <a href="https://vimhelp.org/editing.txt.html#backup" class="d">backup</a> file <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the original file with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>  <a href="https://vimhelp.org/change.txt.html#~" class="d">~</a>  added to the end.
+If your file <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> named data.txt, for example, the <a href="https://vimhelp.org/editing.txt.html#backup" class="d">backup</a> file name <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a>
+data.txt~.
+   If you <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> not like the fact that the <a href="https://vimhelp.org/editing.txt.html#backup" class="d">backup</a> files <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> with ~, you can
+change the extension: 
+<span class="e"></span>
+<span class="e">        :set backupext=.bak</span>
+<span class="e"></span>
+This will use data.txt.bak instead of data.txt~.
+   Another option that matters here <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/options.txt.html#%27backupdir%27" class="o">'backupdir'</a>.  It specifies where the
+<a href="https://vimhelp.org/editing.txt.html#backup" class="d">backup</a> file <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> written.  The default, to write the <a href="https://vimhelp.org/editing.txt.html#backup" class="d">backup</a> in the same
+directory <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> the original file, will mostly be the right thing.
+
+        <span class="n">Note:</span>
+        When the <a href="https://vimhelp.org/options.txt.html#%27backup%27" class="o">'backup'</a> option isn't set but the <a href="https://vimhelp.org/options.txt.html#%27writebackup%27" class="o">'writebackup'</a> is, Vim will
+        still create <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/editing.txt.html#backup" class="d">backup</a> file.  However, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> deleted <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> soon <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> <a href="https://vimhelp.org/editing.txt.html#writing" class="d">writing</a>
+        the file was completed successfully.  This <a href="https://vimhelp.org/eval.txt.html#functions" class="d">functions</a> <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> safety
+        against losing your original file when <a href="https://vimhelp.org/editing.txt.html#writing" class="d">writing</a> fails in some way (disk
+        full <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the most common cause; being hit by lightning might be
+        another, although <a href="https://vimhelp.org/various.txt.html#less" class="d">less</a> common).
+
+
+<span class="c">KEEPING THE ORIGINAL FILE</span>
+
+If you are editing source files, you might want to keep the file before you
+make any changes.  But the <a href="https://vimhelp.org/editing.txt.html#backup" class="d">backup</a> file will be overwritten each time you write
+the file.  Thus <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> only contains the previous version, not the first one.
+   To make Vim keep the original file, set the <a href="https://vimhelp.org/options.txt.html#%27patchmode%27" class="o">'patchmode'</a> option.  This
+specifies the extension used for the first <a href="https://vimhelp.org/editing.txt.html#backup" class="d">backup</a> of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> changed file.  Usually
+you would <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> this: 
+<span class="e"></span>
+<span class="e">        :set patchmode=.orig</span>
+<span class="e"></span>
+When you now edit the file data.txt for the first time, make changes and write
+the file, Vim will keep <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> copy of the unchanged file under the name
+"data.txt.orig"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+   If you make further changes to the file, Vim will notice that
+"data.txt.orig" already exists and leave <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> alone.  Further <a href="https://vimhelp.org/editing.txt.html#backup" class="d">backup</a> files will
+then be called "data.txt~" (or whatever you specified with <a href="https://vimhelp.org/options.txt.html#%27backupext%27" class="o">'backupext'</a>).
+   If you leave <a href="https://vimhelp.org/options.txt.html#%27patchmode%27" class="o">'patchmode'</a> empty (that <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the default), the original file
+will not be kept.
+
+<span class="h">==============================================================================</span>
+<span id="07.5" class="t">07.5</span>  Copy text between files
+
+This explains how to copy text from one file to another.  Let's start with <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+simple example.  Edit the file that contains the text you want to copy.  Move
+the cursor to the start of the text and press "<a href="https://vimhelp.org/visual.txt.html#v" class="d">v</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  This starts <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode.
+Now move the cursor to the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of the text and press "<a href="https://vimhelp.org/change.txt.html#y" class="d">y</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  This yanks (copies)
+the selected text.
+   To copy the above paragraph, you would do: 
+<span class="e"></span>
+<span class="e">        :edit thisfile</span>
+<span class="e">        /This</span>
+<span class="e">        vjjjj$y</span>
+<span class="e"></span>
+Now edit the file you want to <a href="https://vimhelp.org/change.txt.html#put" class="d">put</a> the text in.  Move the cursor to the
+character where you want the text to appear after.  Use "<a href="https://vimhelp.org/change.txt.html#p" class="d">p</a>" to <a href="https://vimhelp.org/change.txt.html#put" class="d">put</a> the text
+there. 
+<span class="e">        :edit otherfile</span>
+<span class="e">        /There</span>
+<span class="e">        p</span>
+<span class="e"></span>
+Of course you can use many other commands to <a href="https://vimhelp.org/change.txt.html#yank" class="d">yank</a> the text.  For example, to
+select whole lines start <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode with "<a href="https://vimhelp.org/visual.txt.html#V" class="d">V</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  Or use <a href="https://vimhelp.org/visual.txt.html#CTRL-V" class="k">CTRL-V</a> to select <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+rectangular block.  Or use "<a href="https://vimhelp.org/change.txt.html#Y" class="d">Y</a>" to <a href="https://vimhelp.org/change.txt.html#yank" class="d">yank</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> single line, "yaw" to yank-a-word,
+etc.
+   The "<a href="https://vimhelp.org/change.txt.html#p" class="d">p</a>" command puts the text after the cursor.  Use "<a href="https://vimhelp.org/change.txt.html#P" class="d">P</a>" to <a href="https://vimhelp.org/change.txt.html#put" class="d">put</a> the text
+before the cursor.  Notice that Vim remembers if you yanked <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> whole line or <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a>
+block, and puts <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> back that way.
+
+
+<span class="c">USING REGISTERS</span>
+
+When you want to copy several pieces of text from one file to another, having
+to switch between the files and <a href="https://vimhelp.org/editing.txt.html#writing" class="d">writing</a> the target file takes <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> lot of time.
+To avoid this, copy each piece of text to its own register.
+   <a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> <a href="https://vimhelp.org/sponsor.txt.html#register" class="d">register</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> place where Vim stores text.  Here we will use the
+<a href="https://vimhelp.org/change.txt.html#registers" class="d">registers</a> named <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> to <a href="https://vimhelp.org/index.txt.html#z" class="d">z</a> (later you will find out there are others).  Let's copy
+<a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/motion.txt.html#sentence" class="d">sentence</a> to the <a href="https://vimhelp.org/motion.txt.html#f" class="d">f</a> <a href="https://vimhelp.org/sponsor.txt.html#register" class="d">register</a> (f for First): 
+<span class="e"></span>
+<span class="e">        "fyas</span>
+<span class="e"></span>
+The "yas" command yanks <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> <a href="https://vimhelp.org/motion.txt.html#sentence" class="d">sentence</a> like before.  It's the "<a href="https://vimhelp.org/motion.txt.html#f" class="d">f</a> that tells Vim
+the text should be placed in the <a href="https://vimhelp.org/motion.txt.html#f" class="d">f</a> register.  This <a href="https://vimhelp.org/vim_faq.txt.html#must" class="d">must</a> come just before the
+<a href="https://vimhelp.org/change.txt.html#yank" class="d">yank</a> command.
+   Now <a href="https://vimhelp.org/change.txt.html#yank" class="d">yank</a> three whole lines to the <a href="https://vimhelp.org/motion.txt.html#l" class="d">l</a> <a href="https://vimhelp.org/sponsor.txt.html#register" class="d">register</a> (l for line): 
+<span class="e"></span>
+<span class="e">        "l3Y</span>
+<span class="e"></span>
+The <a href="https://vimhelp.org/intro.txt.html#count" class="d">count</a> could be before the "<a href="https://vimhelp.org/motion.txt.html#l" class="d">l</a> just <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> well.  To <a href="https://vimhelp.org/change.txt.html#yank" class="d">yank</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> block of text to the
+<a href="https://vimhelp.org/motion.txt.html#b" class="d">b</a> (for block) register: 
+<span class="e"></span>
+<span class="e">        CTRL-Vjjww"by</span>
+<span class="e"></span>
+Notice that the <a href="https://vimhelp.org/sponsor.txt.html#register" class="d">register</a> specification "<a href="https://vimhelp.org/motion.txt.html#b" class="d">b</a> <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> just before the "<a href="https://vimhelp.org/change.txt.html#y" class="d">y</a>" command.
+This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> required.  If you would have <a href="https://vimhelp.org/change.txt.html#put" class="d">put</a> <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> before the "<a href="https://vimhelp.org/motion.txt.html#w" class="d">w</a>" command, <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> would
+not have worked.
+   Now you have three pieces of text in the f, <a href="https://vimhelp.org/motion.txt.html#l" class="d">l</a> and <a href="https://vimhelp.org/motion.txt.html#b" class="d">b</a> registers.  Edit
+another file, move around and place the text where you want it: 
+<span class="e"></span>
+<span class="e">        "fp</span>
+<span class="e"></span>
+Again, the <a href="https://vimhelp.org/sponsor.txt.html#register" class="d">register</a> specification "<a href="https://vimhelp.org/motion.txt.html#f" class="d">f</a> comes before the "<a href="https://vimhelp.org/change.txt.html#p" class="d">p</a>" command.
+   You can <a href="https://vimhelp.org/change.txt.html#put" class="d">put</a> the <a href="https://vimhelp.org/change.txt.html#registers" class="d">registers</a> in any order.  And the text stays in the <a href="https://vimhelp.org/sponsor.txt.html#register" class="d">register</a>
+until you <a href="https://vimhelp.org/change.txt.html#yank" class="d">yank</a> something else into it.  Thus you can <a href="https://vimhelp.org/change.txt.html#put" class="d">put</a> <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> many times <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a>
+you like.
+
+When you delete text, you can also specify <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> register.  Use this to move
+several pieces of text around.  For example, to delete-a-word and write <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> in
+the <a href="https://vimhelp.org/motion.txt.html#w" class="d">w</a> register: 
+<span class="e"></span>
+<span class="e">        "wdaw</span>
+<span class="e"></span>
+Again, the <a href="https://vimhelp.org/sponsor.txt.html#register" class="d">register</a> specification comes before the delete command "<a href="https://vimhelp.org/change.txt.html#d" class="d">d</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>
+
+
+<span class="c">APPENDING TO A FILE</span>
+
+When collecting lines of text into one file, you can use this command: 
+<span class="e"></span>
+<span class="e">        :write &gt;&gt; logfile</span>
+<span class="e"></span>
+This will write the text of the current file to the <a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of "logfile"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  Thus <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a>
+<a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> appended.  This avoids that you have to copy the lines, edit the log file
+and <a href="https://vimhelp.org/change.txt.html#put" class="d">put</a> them there.  Thus you save two steps.  But you can only append to the
+<a href="https://vimhelp.org/intro.txt.html#end" class="d">end</a> of <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file.
+   To append only <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> few lines, select them in <a href="https://vimhelp.org/visual.txt.html#Visual" class="d">Visual</a> mode before typing
+"<a href="https://vimhelp.org/editing.txt.html#%3Awrite" class="d">:write</a>"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  In chapter 10 you will learn other ways to select <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> range of lines.
+
+<span class="h">==============================================================================</span>
+<span id="07.6" class="t">07.6</span>  Viewing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file
+
+Sometimes you only want to see what <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file contains, without the intention to
+ever write <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> back.  There <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> the risk that you type "<a href="https://vimhelp.org/editing.txt.html#%3Aw" class="d">:w</a>" without thinking and
+overwrite the original file anyway.  To avoid this, edit the file read-only.
+   To start Vim in readonly mode, use this command: 
+<span class="e"></span>
+<span class="e">        vim -R file</span>
+<span class="e"></span>
+On <a href="https://vimhelp.org/os_unix.txt.html#Unix" class="d">Unix</a> this command should <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> the same thing: 
+<span class="e"></span>
+<span class="e">        view file</span>
+<span class="e"></span>
+You are now editing "file" in read-only mode.  When you try using "<a href="https://vimhelp.org/editing.txt.html#%3Aw" class="d">:w</a>" you
+will get an error message and the file won't be written.
+   When you try to make <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> change to the file Vim will give you <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> warning:
+
+<span class="h">        W10: Warning: Changing a readonly file </span>
+
+The change will be done though.  This allows for <a href="https://vimhelp.org/change.txt.html#formatting" class="d">formatting</a> the file, for
+example, to be able to read <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> easily.
+   If you make changes to <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file and forgot that <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> was read-only, you can
+still write it.  Add the <a href="https://vimhelp.org/change.txt.html#%21" class="d">!</a> to the write command to force writing.
+
+If you really want to forbid making changes in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file, <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> this: 
+<span class="e"></span>
+<span class="e">        vim -M file</span>
+<span class="e"></span>
+Now every attempt to change the text will fail.  The <a href="https://vimhelp.org/helphelp.txt.html#help" class="d">help</a> files are like this,
+for example.  If you try to make <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> change you get this error message:
+
+<span class="h">        E21: Cannot make changes, 'modifiable' is off </span>
+
+You could use the <a href="https://vimhelp.org/starting.txt.html#-M" class="d">-M</a> argument to setup Vim to work in <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> viewer mode.  This <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a>
+only voluntary though, since these commands will remove the protection: 
+<span class="e"></span>
+<span class="e">        :set modifiable</span>
+<span class="e">        :set write</span>
+<span class="e"></span>
+<span class="h">==============================================================================</span>
+<span id="07.7" class="t">07.7</span>  Changing the file name
+
+<a href="https://vimhelp.org/insert.txt.html#A" class="d">A</a> clever way to start editing <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> new file <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> by using an existing file that
+contains most of what you need.  For example, you start <a href="https://vimhelp.org/editing.txt.html#writing" class="d">writing</a> <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> new program
+to move <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file.  You know that you already have <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> program that copies <a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> file,
+thus you start with: 
+<span class="e"></span>
+<span class="e">        :edit copy.c</span>
+<span class="e"></span>
+You can delete the stuff you don't need.  Now you need to save the file under
+<a href="https://vimhelp.org/insert.txt.html#a" class="d">a</a> new name.  The "<a href="https://vimhelp.org/editing.txt.html#%3Asaveas" class="d">:saveas</a>" command can be used for this: 
+<span class="e"></span>
+<span class="e">        :saveas move.c</span>
+<span class="e"></span>
+Vim will write the file under the given name, and edit that file.  Thus the
+next time you <a href="https://vimhelp.org/diff.txt.html#do" class="d">do</a> "<a href="https://vimhelp.org/editing.txt.html#%3Awrite" class="d">:write</a>"<a href="https://vimhelp.org/motion.txt.html#%2C" class="d">,</a> <a href="https://vimhelp.org/motion.txt.html#it" class="d">it</a> will write "move.c"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  "copy.c" remains
+unmodified.
+   When you want to change the name of the file you are editing, but don't
+want to write the file, you can use this command: 
+<span class="e"></span>
+<span class="e">        :file move.c</span>
+<span class="e"></span>
+Vim will <a href="https://vimhelp.org/motion.txt.html#mark" class="d">mark</a> the file <a href="https://vimhelp.org/motion.txt.html#as" class="d">as</a> "not edited"<a href="https://vimhelp.org/repeat.txt.html#." class="d">.</a>  This means that Vim knows this <a href="https://vimhelp.org/motion.txt.html#is" class="d">is</a> not
+the file you started editing.  When you try to write the file, you might get
+this message:
+
+<span class="h">        E13: File exists (use ! to override) </span>
+
+This protects you from accidentally overwriting another file.
+
+<span class="h">==============================================================================</span>
+
+Next chapter: <a href="https://vimhelp.org/usr_08.txt.html#usr_08.txt" class="l">usr_08.txt</a>  Splitting <a href="https://vimhelp.org/windows.txt.html#windows" class="d">windows</a>
+
+Copyright: see <a href="https://vimhelp.org/usr_01.txt.html#manual-copyright" class="l">manual-copyright</a>  vim:tw=78:ts=8:noet:ft=help:norl:
+
+
+</pre>
+</div>
+<div id="vh-sidebar" style="visibility: visible; position: sticky; left: 112.15px;"><ul><li><a href="#">↑Top↑</a></li><li><a href="#07.1">Edit another file</a></li><li><a href="#07.2">A list of files</a></li><li><a href="#07.3">Jumping from file to file</a></li><li><a href="#07.4">Backup files</a></li><li><a href="#07.5">Copy text between files</a></li><li><a href="#07.6">Viewing a file</a></li><li><a href="#07.7">Changing the file name</a></li></ul></div>
+</main>
+<p>
+Quick links:
+<a href="https://vimhelp.org/">help overview</a> ·
+<a href="https://vimhelp.org/quickref.txt.html">quick reference</a> ·
+<a href="https://vimhelp.org/usr_toc.txt.html">user manual toc</a> ·
+<a href="https://vimhelp.org/#reference_toc">reference manual toc</a>
+· <a href="https://vimhelp.org/vim_faq.txt.html">faq</a></p>
+<footer>This site is maintained by Carlo Teubner (<i>(my first name) at cteubner dot net</i>).</footer>
+
+
+<div id="sourcegraph-app-background" data-platform="firefox-extension" data-version="22.11.24.1820" style="display: none;"></div></body></html>

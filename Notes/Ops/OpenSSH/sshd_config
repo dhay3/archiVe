@@ -1,0 +1,58 @@
+#sshd general configuration
+UsePAM yes
+X11Forwarding yes
+Subsystem sftp  /usr/lib/openssh/sftp-server
+AcceptEnv LANG LC_*
+
+#connection configuration, only IPV4 can connect in
+Port 65522
+AddressFamily inet
+ListenAddress 0.0.0.0
+#disconnect if no pluse after 30m
+ClientAliveCountMax 30
+ClientAliveInterval 1m
+TCPKeepAlive yes
+Compression yes
+LoginGraceTime 30
+MaxAuthTries 3
+MaxSessions 6
+PermitTTY yes
+PermitTunnel yes
+PrintLastLog yes
+UseDNS no
+
+
+#authentication configuration
+FingerprintHash sha256
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+PasswordAuthentication yes
+PubkeyAuthentication yes
+PermitEmptyPasswords no
+PermitRootLogin yes
+StrictModes yes
+ChallengeResponseAuthentication yes
+
+
+#traffic configuration
+AllowTcpForwarding yes
+
+
+#logging
+LogLevel INFO
+PrintMotd no
+
+#should provide publickey and password if user is root
+Match User root
+AllowTcpForwarding no
+AuthenticationMethods publickey,password
+
+Match User tz
+AllowTcpForwarding no
+#AuthenticationMethods publickey,password
+AuthenticationMethods password
+
+Match User ubuntu
+AllowTcpForwarding no
+AuthenticationMethods password
