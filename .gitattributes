@@ -1,10 +1,11 @@
 *.md linguist-detectable
-Scripts/** linguist-detectable
+
 
 .obsidian/** linguist-documentation
 Attachment/** linguist-documentation
 Excalidraw/** linguist-documentation
 Images/** linguist-documentation
+Scripts/** -linguist-documentation
 
 
 *.pdf filter=lfs diff=lfs merge=lfs -text
