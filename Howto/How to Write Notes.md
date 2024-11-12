@@ -91,7 +91,7 @@ Heading 2 要以 `0x[0-9][0-9] {Sub Topic}` 的格式命名，例如 `0x03 When 
 
 Heading 3 要以 `0x[0-9][0-9][a-z] {Sub Topic}` 的格式命名，例如 `0x03b Body`
 
-Heading 4/5 直接使用 Sub Topic 命名
+Heading 4/5 直接使用 Sub Topic 命名，且要尽量避免使用 Heading 5
 
 例如
 
