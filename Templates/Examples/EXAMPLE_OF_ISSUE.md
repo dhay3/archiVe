@@ -2,7 +2,7 @@ Greeting flameshot maintainers and users,
 
 Sorry for the bother, but I have an issue that I cannot figure out myself.
 
-## Describe the Promblem
+## Describe the Issue
 
 Flameshot leaves the screen to be taken as floating in a black background(zoom out), while the selection region stays at the normal size when taking screenshots.
 

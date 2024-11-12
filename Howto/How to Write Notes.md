@@ -39,6 +39,9 @@ Markdown[^1] 是一个轻量级的 markup language 可以快捷生成格式化�
 
 ## 0x03 When You Write
 
+> [!note]
+> [How to Ask Questions](How%20to%20Ask%20Questions.md) 中的 Write in Clear 同样适用于本文
+
 这部分主要从结构和格式出发，在 [APA Style](https://apastyle.apa.org/) 的基础上，结合一些自己的实践，按照 HTML 中 header/body/footer 的结构划分
 
 ### 0x03a Header

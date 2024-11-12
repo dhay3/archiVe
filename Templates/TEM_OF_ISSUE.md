@@ -7,7 +7,7 @@ Greeting `[WHO]`,
 
 Sorry for the bother, but I have an issue that I cannot figure out myself.
 
-## Describe the Promblem
+## Describe the Issue
 
 > [!note]
 > An overview of the problem itself, not your guesses or what have you done
