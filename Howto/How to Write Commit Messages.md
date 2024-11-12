@@ -161,11 +161,11 @@ gitmoji -c
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
 
-***References***
+***See Also***
 
 - [How to Write Better Git Commit Messages – A Step-By-Step Guide](https://www.freecodecamp.org/news/how-to-write-better-git-commit-messages/)
 
-***FootNotes***
+***References***
 
 [^1]:[Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0-beta.4/)
 [^2]:[GitHub - carloscuesta/gitmoji: An emoji guide for your commit messages. 😜](https://github.com/carloscuesta/gitmoji?tab=readme-ov-file)

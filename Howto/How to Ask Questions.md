@@ -1,6 +1,6 @@
 ---
-author: "0x00"
 createTime: 2024-08-14 09:09
+license: cc by 4.0
 tags:
   - "#hash1"
   - "#hash2"
@@ -15,7 +15,7 @@ tags:
 
 同样的一个问题，表达的方式不同，得到的回复也不同(当然你也可能得不到回复 XD)。如何问好一个问题，才可以得到你满意的回答，这非常重要
 
-一个事物的生命周期普遍包括 
+一个事物的生命周期普遍包括
 
 1. Begin
 2. Process
@@ -307,7 +307,7 @@ prepend-rules:
 
 例如 [Scaling do not work correctly when taking screenshot in Plasma6/Wayland · Issue #3614 · flameshot-org/flameshot · GitHub](https://github.com/flameshot-org/flameshot/issues/3614) 中 Things I have tried 所展示的(这不是一个很好的例子，没有体现 STFW/RTFM/ATFL/RTFS/JTFG)
 
-### 0x04e Proofread Before Posting
+### 0x04g Proofread Before Posting
 
 在 Post 前对内容做校对也非常重要。如果你的问题 edited over and over again 就说明你没有考虑清楚自己的问题
 
@@ -368,14 +368,14 @@ TCP/IP 中在发出 SYN 请求报文，你会收到 SYN-ACK 做为回应报文�
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
 
-***References***
+***See Also***
 
 - [How To Ask Questions The Smart Way](http://www.catb.org/~esr/faqs/smart-questions.html)
 - [The 5W1H Method: Elements & Example | SafetyCulture](https://safetyculture.com/topics/5w1h/)
 - [How do I ask a good question? - Help Center - Stack Overflow](https://stackoverflow.com/help/how-to-ask)
 - [How do I write a good answer? - Help Center - Stack Overflow](https://stackoverflow.com/help/how-to-answer)
 
-***FootNotes***
+***References***
 
 [^1]:[robots.txt - Wikipedia](https://en.wikipedia.org/wiki/Robots.txt)
 [^2]:[The Open Source Definition – Open Source Initiative](https://opensource.org/osd)

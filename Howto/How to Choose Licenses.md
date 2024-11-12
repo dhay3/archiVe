@@ -452,10 +452,18 @@ condition5-2 -->|No| u2(Unlicense License)
 
 最后还有一种情况就是你没有为项目或者软件选择任何 License。这种情况下，项目或者是软件默认受 copyright 的保护，也就也意味着没有人可以 copy、distribute、modify 你的项目或者是软件
 
+## 0x09 Compatible Between Licenses
+
+
+
+## 0x10 Add a License to Github
+
+1. 不要使用 Markdonw 结尾作为 license 的文件名，例如 `LICENSE.md` 应该直接使用 `LICENSE`
+
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
 
-***References***
+***See Also***
 
 - [A dev’s guide to open source software licensing · GitHub](https://github.com/readme/guides/open-source-licensing)
 - [深入理解开源许可证（Apache,MIT,GPL,BSD,CC） – HikariLan's Blog](https://my.minecraft.kim/tech/744/open-source-licenses-in-depth/)
@@ -464,7 +472,7 @@ condition5-2 -->|No| u2(Unlicense License)
 - [About – Open Source Initiative](https://opensource.org/about)
 - [No License | Choose a License](https://choosealicense.com/no-permission/)
 
-***FootNotes***
+***References***
 
 [^1]:[Property - Wikipedia](https://en.wikipedia.org/wiki/Property)
 [^2]:[Intellectual property - Wikipedia](https://en.wikipedia.org/wiki/Intellectual_property)

@@ -16,6 +16,8 @@ tags:
 也可以使用 5w1h 的逻辑回答
 [Project of How → The Kipling method](https://projectofhow.com/methods/the-kipling-method/)
 
+以 AOP 的思想拆分一个 topic
+
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
 
