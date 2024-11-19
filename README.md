@@ -7,7 +7,7 @@
 # TOC
 
 <!--toc start-->
-<!--3913bea3-ca96-4cc9-ba31-7b8aeccd92e5-->
+<!--236b214e-8f94-4cf4-8e78-16b8eeb690c5-->
 > [!note]
 > Created by Github Workflows
 
@@ -180,6 +180,7 @@
       - [复合组件](Notes/Ops/Docker/Docker%20CLI/%E5%A4%8D%E5%90%88%E7%BB%84%E4%BB%B6)
     - [Docker compose](Notes/Ops/Docker/Docker%20compose)
     - [new](Notes/Ops/Docker/new)
+  - [FFmpeg](Notes/Ops/FFmpeg)
   - [FreeRDP](Notes/Ops/FreeRDP)
   - [Git](Notes/Ops/Git)
     - [cli](Notes/Ops/Git/cli)
@@ -204,7 +205,6 @@
   - [OpenGPG](Notes/Ops/OpenGPG)
   - [OpenSSH](Notes/Ops/OpenSSH)
     - [new](Notes/Ops/OpenSSH/new)
-      - [cli](Notes/Ops/OpenSSH/new/cli)
   - [OpenSSL](Notes/Ops/OpenSSL)
     - [cli](Notes/Ops/OpenSSL/cli)
   - [OpenVPN](Notes/Ops/OpenVPN)
@@ -278,7 +278,7 @@
   - [Rsshub](Notes/Sundries/Rsshub)
   - [Typora](Notes/Sundries/Typora)
 
-<!--toc end-->                                                        
+<!--toc end-->                                                         
 
 # License
 
