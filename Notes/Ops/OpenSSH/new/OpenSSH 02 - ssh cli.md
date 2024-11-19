@@ -12,6 +12,8 @@ tags:
 
 OpenSSH 以 C/S 模式运行，而 `ssh` 是 OpenSSH Client 用户态的工具，用于 log into a remote machine and execute commands on a remote machine
 
+## 0x02 Syntax
+
 ```
 ssh   [-46AaCfGgKkMNnqsTtVvXxYy]   [-B   bind_interface]   [-b   bind_address]   [-c  cipher_spec]
 [-D  [bind_address:]port]  [-E  log_file]  [-e  escape_char]  [-F  configfile]   [-I   pkcs11]
@@ -43,12 +45,12 @@ ssh desination [command [argument ...]]
 ssh 192.168.2.1 opkg install luci-app-openclash
 ```
 
-## 0x02 Optional Args
+## 0x03 Optional Args
 
 > [!note]
 > 具体请看 manual page[^1]
 
-### Log into Relate
+### 0x03a Log into Relate
 
 - `-l <login_name>`
 
@@ -70,7 +72,7 @@ ssh 192.168.2.1 opkg install luci-app-openclash
 
 	使用指定的 IP 和 `destination` 做网络连接
 
-### Config Related
+### 0x03b Config Related
 
 - `-C`
 
@@ -89,7 +91,7 @@ ssh 192.168.2.1 opkg install luci-app-openclash
 	
 	所有可用 options 具体看 `ssh_config(5)`
 
-### Port Forward Related
+### 0x03c Port Forward Related
 
 - `-D`
 - `-g`
@@ -101,11 +103,11 @@ ssh 192.168.2.1 opkg install luci-app-openclash
 - `-W`
 - `-A`
 
-### Debug Related
+### 0x03d Debug Related
 
 - `-G`
 
-	会输出连接 `destination` 使用的配置详细
+	输出 `ssh` 使用的详细配置
 
 - `-E <log_file>`
 
@@ -123,7 +125,7 @@ ssh 192.168.2.1 opkg install luci-app-openclash
 
 	输出 debug 信息，多个 `-v` 可以增加详细度，最多 3
 
-### Misc Related
+### 0x03e Misc Related
 
 - `-X`
 
@@ -137,9 +139,20 @@ ssh 192.168.2.1 opkg install luci-app-openclash
 
 	`command` 会以异步的方式在 remote machine 中运行，而不会阻塞 client current shell
 
-## 0x03 Authentication
+## 0x04 Authentication
+
+OpenSSH 默认会按照如下的顺序鉴权
+
+- GSSAPI-based authentication
+- host-based authentication
+- public key authentication
+- keyboard-interactive authentication
+- password authentication
+
+也可以通过修改 `PreferredAuthentications`
 
 
+Host-Based Authentication
 
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
