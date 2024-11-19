@@ -24,7 +24,7 @@ https://www.cryptologie.net/article/340/tls-pre-master-secrets-and-master-secret
 
 Diffie-Hellman key exchange is a mathematical method of securely  exchanging cryptographic keys over a public channel 
 
-Diffie-Hellman key exchange 通常也被称为 DHE，其算法主要用于安全交换密钥。最广泛的实现是 SSL/TSL
+Diffie-Hellman key exchange 通常也被称为 DHE(也有称 DHEX)，其算法主要用于安全交换密钥。最广泛的实现是 SSL/TSL
 
 ## Cryptographic explanation
 

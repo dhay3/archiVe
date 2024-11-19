@@ -12,7 +12,7 @@ tags:
 > [!important] 
 > Shadowrocket 目前没有官网 [x.com](https://x.com/ShadowrocketApp)
 
-Shadowrocket 是 IPhone 上的一个代理工具，因为没有官网也就没有对应的配置文件说明。好在 Shadowrocket 默认会提供一个 default.cnf 配置文件，也有类似 [Johnshall/Shadowrocket-ADBlock-Rules-Forever](https://github.com/Johnshall/Shadowrocket-ADBlock-Rules-Forever/blob/release/lazy.conf) 中提供了模板
+Shadowrocket 是 IOS 上的一个代理工具(也支持 Mac，但是更推荐使用 Clash)，因为没有官网也就没有对应的配置文件说明。好在 Shadowrocket 默认会提供一个 default.cnf 配置文件，也有类似 [Johnshall/Shadowrocket-ADBlock-Rules-Forever](https://github.com/Johnshall/Shadowrocket-ADBlock-Rules-Forever/blob/release/lazy.conf) 中提供了模板
 
 基础配置可以参考
 
@@ -35,6 +35,8 @@ Shadowrocket 是 IPhone 上的一个代理工具，因为没有官网也就没�
 	bilibili 解锁大会员清晰度
 3. https://whatshub.top/module/YouTubeAd.sgmodule
 	youtube 去广告，画中画
+4. https://whatshub.top/module/spotifyVIP.module
+	spotify 解锁 premium
 
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*

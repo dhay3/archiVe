@@ -204,6 +204,40 @@ Bold 只用于强调
 GNU is an operating system that is free software—that is, it respects users' **freedom**.
 ```
 
+#### List
+
+list content 和 list title 需要以空行分隔，例如 
+
+```
+- list a title
+
+	list content
+
+- list b title
+
+	list content
+
+```
+
+否则 Github flavor Markdown 会错误渲染，下面就是一个错误的实例
+
+```
+- list a title
+	list content
+- list b title
+	list content
+```
+
+#### Code Block
+
+code block 中的内容如果是代码或者脚本，需要标明，例如
+
+```python
+def __run__():
+	import asyncio
+	runtask()
+```
+
 ### 0x03c Footer
 
 #### See also

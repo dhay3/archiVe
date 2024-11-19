@@ -206,6 +206,7 @@ latte-dock
 | qbittorrent              | bt 下载                                        |
 | obsidian                 | 知识库                                         |
 | typora                   | markdown 编辑器                                |
+| drawio-desktop           | mermaid 替补                                   |
 | ventoy                   | usb 多启动盘                                   |
 | balena-etcher            | iso 烧录                                       |
 | bless                    | binary 编辑器                                  |
@@ -261,7 +262,7 @@ latte-dock
 | vmware remote console    | vcenter 控制台                                 |
 | eyedropper               | color picker                                   |
 | upscayl                  | 图片修复/steghide                              |
-| easyeffect               | 变声器                                         | 
+| easyeffect               | 变声器                                         |
 
 
 ###  Function
