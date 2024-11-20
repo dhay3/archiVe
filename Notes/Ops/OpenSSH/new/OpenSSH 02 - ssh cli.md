@@ -107,7 +107,7 @@ ssh 192.168.2.1 opkg install luci-app-openclash
 
 - `-G`
 
-	输出 `ssh` 使用的详细配置
+	输出连接 `destination` 时 `ssh` 使用的详细配置
 
 - `-E <log_file>`
 

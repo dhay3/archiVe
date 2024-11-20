@@ -120,6 +120,29 @@ Heading 4/5 直接使用 Sub Topic 命名，且要尽量避免使用 Heading 5
 Cemu 是一个开源的 Wii Emulator
 ```
 
+paragraphs 之间需要额外的 `\n`
+
+例如
+
+```
+你可以在 Cemu 上玩 botw
+
+也可以在 Ryujinx 上玩 botw
+```
+
+##### Punctuation
+
+在连续的中文中使用全角符号，而在连续的英文内容中使用半角符号
+
+> [!TIP]
+> 可以使用 rime 的 key_binder/bindings 实现快速切换
+
+例如
+
+```
+流行的 terminal emulator 有 alacritty, kitty, wezterm, ghost，其中 kitty, ghost 支持在命令行通过 kitty protocol 直接浏览图片 
+```
+
 #### Qutations/Callout/Italic/Bold
 
 - 如果内容是引用自 secondary sources 的，且需要强调的，请使用 [Block Quotations](#Block%20Quotations)
@@ -180,7 +203,7 @@ Callout 用于**强调**某一段内容不是来自 secondary source 但是**需
 > Advises about risks or negative outcomes of certain actions.
 ```
 
-而 Obsidian 支持多种 callouts[^4]，为了两者的兼容尽量使用 Github 支持的格式
+而 Obsidian 支持多种 callouts[^4]，为了两者的兼容尽量只使用 Github 支持的格式
 
 ##### Italic
 
