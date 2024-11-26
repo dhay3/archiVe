@@ -129,7 +129,7 @@ Differences between GPLv1, GPLv2 and GPLv3
 
 例如 你现在不能通过浏览器访问你家的软路由了(不考虑 DNS)，你要先确认是 L7 应用有问题，或者是 L4 传输有问题，或者是 L3 网络有问题 还是 L2/L1 设备有问题。这里 Layer 就是变量
 
-- 如果 设备电口正常亮灯，可以概率排除 L2/L1 设备问题(如果链路中使用了 ASW 不能排除)，反之 就排查物理设备或者配件(例如 软路由网口/网线/交换机/光猫/etc.)
+- 如果 设备电口正常亮灯，可以概率排除 L2/L1 设备问题(如果软路由到光猫之间还有其他设备不能排除)，反之 就排查物理设备或者配件(例如 软路由网口/网线/交换机/光猫/etc.)
 - 如果 可以从 LAN 内主机 ping 通软路由，可以概率排除 L3 网络问题，反之 就排查软路由系统 IP 地址以及路由
 - 如果 可以从 LAN 内主机 netcat 软路由 80 端口，可以概率排除 L4 传输问题，反之 就排查软路由系统是否有应用监听 socket 或者设置了软防火墙
 - 那么 最后只可能是 L7 应用问题，尝试重启 luci 或者直接重启软路由
@@ -156,7 +156,7 @@ It's hard for me to read the source code without any related professional knowle
 
 加入 Groups 得到想要的答案
 
-软件的站点不一定会及时更新，但是通常会有一些 official 社区组群(Discord/Telegram/etc.)，管理者会在这些组群中实时发布一些 announcements 或者是 Pinned Messages 会提供非常有的信息
+软件的站点不一定会及时更新，但是通常会有一些 official 社区组群(Discord/Telegram/etc.)，管理者会在这些组群中实时发布一些 Announcements 或者是 Pinned Messages 会提供非常有的信息
 
 这个通过加入 Groups 的过程可以简称为 JTFG(Joining the Fucking Group)
 
@@ -195,7 +195,7 @@ prepend-rules:
 
 ### 0x03b Internet Archive
 
-因为一些人为的因素，可能会导致一些相关的内容被删除(所以 Web3 才应该是社交网络的最终形式，但这是一个 political issue)。这时我们就可以使用 [Wayback Machine](https://web.archive.org/) 等 archived/cached 站点查找存档/缓存，这里推荐使用 [GitHub - dessant/web-archives: Browser extension for viewing archived and cached versions of web pages, available for Chrome, Edge and Safari](https://github.com/dessant/web-archives) 这个插件(需要知道完整的 URI，且对应的 URI 已经有被用户或者是系统 archived/cached)
+因为一些人为的因素，可能会导致一些相关的内容被删除(所以 Web3 才应该是社交网络的最终形式，但这是一个 political issue)。这时我们就可以使用 [Wayback Machine](https://web.archive.org/) 等 archived/cached 站点查找存档/缓存，这里推荐使用 [web-archives](https://github.com/dessant/web-archives) 这个插件(需要知道完整的 URI，且对应的 URI 已经有被用户或者是系统 archived/cached)
 
 例如 你想要看 [Ryujinx](https://github.com/Ryujinx/Ryujinx) 的历史信息，但是因为 Nintendo 对 maintainers 施压，导致项目直接从 Github 上移除了，这时就可以使用上面这个插件来搜索
 
