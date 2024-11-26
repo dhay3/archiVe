@@ -31,6 +31,7 @@ tags:
 
 > [!note] 
 > 各部分的结果可能存在交集，所以逻辑上没有先后顺序，但是从结果的权威性角度出发
+> 
 > $DTFE > RTFS > JTFG > RTFM > STFW > ATFL$
 
 在提问前需要做到如下几点(至少要证明自己对问题做过解决的尝试，不要让别人觉得你只是一个 taker)
@@ -50,19 +51,31 @@ tags:
 
 ### 0x02a Try to Find an Answer by Searching the Web(STFW)
 
-利用 SEO 搜索你想要的答案
+使用 Web 搜索你想要的答案
 
-不仅限于各种 SEO(掌握 SEO advanced search 以及 operator search 的使用是必要的，例如 [Google Searches](../Notes/Sundries/Chrome/Google%20Searches.md)，也包括一些设置了 robots.txt[^1](按照 RFC 9309 的规定，SEO 需要按照 robots.txt 中的规则爬取信息，但是不是强制要求) 的 forum 或者 site(例如 Google scholar/libgen/etc.)。这个利用 SEO 搜索的过程可以简称为 STFW(Searching the Fucking Web)
+Web 就是一个海量的数据库，你可以在 Web 中找到大多数你想要的内容
 
-例如 你想要搜索和 KDE system monitor sensors bug 相关的内容，你可以使用 Google/DuckDuckgo/Brave/etc. SEO 直接搜索关键字 `KDE system monitor sensors bug` 也可以使用 operator search 搜索 `intitle:"system monitor sensors" intext:bug` 对结果过滤
+所以请利用 SEO 交叉搜索（结合 SEO advanced search 以及 operator search 过滤内容，可以参考 [Google Searches](../Notes/Sundries/Chrome/Google%20Searches.md)），推荐如下几个 SEO
 
-如果没有得到想要的内容，可以到 [KDiscuss](https://discuss.kde.org/) forum 搜索，也可以到 [KDE Bugtracking System](https://bugs.kde.org/) 搜索(相对更精确，前提是你知道有对应的站点)
+- DuckDuckgo
+- brave
+- Startpage
+- Google
+- Sogou(仅限中文)
+
+同时也要搜索一些设置了 robots.txt[^1](按照 RFC 9309 的规定，SEO 需要按照 robots.txt 中的规则爬取信息，但是不是强制要求) 的 forum 或者 site(例如 Google scholar/libgen/etc.)
+
+这个利用 Web 搜索的过程可以简称为 STFW(Searching the Fucking Web)
+
+例如 你想要搜索和 KDE system monitor sensors bug 相关的内容，你可以使用 Google/DuckDuckgo/Brave/etc. SEO 直接搜索关键字 `KDE system monitor sensors bug` 也可以使用 operator search 搜索 `intitle:"system monitor sensors" intext:bug` 对结果过滤。如果没有得到想要的内容，可以到 [KDiscuss](https://discuss.kde.org/) forum 搜索，也可以到 [KDE Bugtracking System](https://bugs.kde.org/) 搜索(相对更精确，前提是你知道有对应的站点)
 
 ### 0x02b Try to Find an Answer by Reading the Manual(RTFM)
 
 使用 User Manual 搜索你想要的答案
 
-和家电一样，大多数软件都会有 User Manual(也可能叫 Get Help/Documentation/Support/etc.)，会告诉用户该如何使用软件以及 troubleshooting。这个使用 User Manual 搜索的过程可以简称为 RTFM(Reading the Fucking Manual)
+和家电一样，大多数软件都会有 User Manual(也可能叫 Get Help/Documentation/Support/etc.)，会告诉用户该如何使用软件以及 troubleshooting
+
+这个使用 User Manual 搜索的过程可以简称为 RTFM(Reading the Fucking Manual)
 
 例如 你想要使用 Thunderbird 接管 Gmail，就可以在 [Thunderbird Support](https://support.mozilla.org/en-US/products/thunderbird) 页面搜索关键字 gmail
 
@@ -71,9 +84,11 @@ tags:
 使用 LLM 得到你想要的答案
 
 > [!note]
-> Prompts 使用的语言也决定了 LLM reponse 的质量
+> Prompts 决定了 LLM reponse 的质量
 
-LLM 是一个很好的辅助工具(回答并不一定可靠，所以作为一个辅助工具)。你可以设置场景，让 AI 分步骤回答你的问题。这个使用 LLM 搜索的过程可以简称为 ATFL(Asking the Fucking LLM)
+LLM 是一个很好的辅助工具(回答并不一定可靠，所以作为一个辅助工具)。你可以设置场景，让 AI 分步骤回答你的问题
+
+这个使用 LLM 搜索的过程可以简称为 ATFL(Asking the Fucking LLM)
 
 推荐几个 LLM
 
@@ -108,20 +123,24 @@ Differences between GPLv1, GPLv2 and GPLv3
 
 通过 Experimentation 得到想要的答案
 
-做实验是最原始也是最有效的方法，但是要控制变量。如果有正常的对照组，可以设置参照因子(这个就是编程中最朴素的 `if ... elif ... else ...` 逻辑)。这个做 Experimentation 的过程可以简称为 DTFE(Doing the Fucking Experimentation)
+做实验是最原始也是最有效的方法，但是要控制变量。如果有正常的对照组，可以设置参照因子(这个就是编程中最朴素的 `if ... elif ... else ...` 逻辑)
+
+这个做 Experimentation 的过程可以简称为 DTFE(Doing the Fucking Experimentation)
 
 例如 你现在不能通过浏览器访问你家的软路由了(不考虑 DNS)，你要先确认是 L7 应用有问题，或者是 L4 传输有问题，或者是 L3 网络有问题 还是 L2/L1 设备有问题。这里 Layer 就是变量
 
-- 如果 设备电口正常亮灯，可以概率排除 L2/L1 设备问题，反之 就排查物理设备或者配件(例如 软路由网口/网线/交换机/光猫/etc.)
+- 如果 设备电口正常亮灯，可以概率排除 L2/L1 设备问题(如果链路中使用了 ASW 不能排除)，反之 就排查物理设备或者配件(例如 软路由网口/网线/交换机/光猫/etc.)
 - 如果 可以从 LAN 内主机 ping 通软路由，可以概率排除 L3 网络问题，反之 就排查软路由系统 IP 地址以及路由
-- 如果 可以从 LAN 内主机 netcat 软路由 80 端口，可以概率排除 L4 传输问题，反之 就排查软路由系统是否有应用监听 socket
-- 那么 最后只可能是 L7 应用问题，重启 luci 即可
+- 如果 可以从 LAN 内主机 netcat 软路由 80 端口，可以概率排除 L4 传输问题，反之 就排查软路由系统是否有应用监听 socket 或者设置了软防火墙
+- 那么 最后只可能是 L7 应用问题，尝试重启 luci 或者直接重启软路由
 
 ### 0x02e Try to Find an Answer by Reading the Source Code(RTFS)
 
 通过阅读 Source Code 得到想要的答案
 
-大多数符合 OSD 标准[^2]的软件都会公开代码，所以一些奇怪的 Bug 或者是非预期的现象可以通过读源码解决。通过阅读 Source code 的过程可以简称为 RTFS(Reading the Fucking Source Code)
+大多数符合 OSD 标准[^2]的软件都会公开代码，所以一些奇怪的 Bug 或者是非预期的现象可以通过读源码解决
+
+这个通过阅读 Source code 的过程可以简称为 RTFS(Reading the Fucking Source Code)
 
 例如 Virtualbox Guest Machine 不能通过 Vagrant 启动，但是可以通过 Virtualbox GUI 启动
 
@@ -130,7 +149,7 @@ Differences between GPLv1, GPLv2 and GPLv3
 但是阅读 Source Code 并不是一件简单的事。如果在阅读 Source Code 后你仍然搞不明白，请务必表示
 
 ```
-It's hard for me to read the source code
+It's hard for me to read the source code without any related professional knowledge
 ```
 
 ### 0x02f Try to Find an Answer by Joining Groups(JTFG)
@@ -138,6 +157,8 @@ It's hard for me to read the source code
 加入 Groups 得到想要的答案
 
 软件的站点不一定会及时更新，但是通常会有一些 official 社区组群(Discord/Telegram/etc.)，管理者会在这些组群中实时发布一些 announcements 或者是 Pinned Messages 会提供非常有的信息
+
+这个通过加入 Groups 的过程可以简称为 JTFG(Joining the Fucking Group)
 
 例如 在 Clash Verge Rev 更新 1.6.3 后，Global Extend Config 中配置如下额外全局路由规则，发现不生效(之前生效)
 
@@ -158,7 +179,19 @@ prepend-rules:
 > [!NOTE]
 > 读者可以自行使用 [0x02 Before You Ask](#0x02%20Before%20You%20Ask) 中的规则去检索相关的使用方法
 
-大多数 Browsers 都会提供一个 Search Engine Shortcuts，可以让你通过快捷键就调用对应的 SEO
+大多数 Browsers 都会提供一个 Search Engine Shortcuts，可以让你通过 shortcuts 就调用对应的 SEO 或者 site/forum，这可以大大提高你搜索的效率
+
+推荐添加如下几个 shortcuts(firefox flavor)
+
+- @duckduckgo,@dg
+- @google,@gg
+- @brave,@bv
+- @baidu,@bd
+- @sogou,@sg
+- @wikipedia,@wk
+- @stackoverflow,@so
+- @superuser,@su
+- @reddit,@rd
 
 ### 0x03b Internet Archive
 
@@ -172,9 +205,7 @@ prepend-rules:
 
 例如 
 
-你想要看中国大陆信创数据库（wrappers of postgresql）的文档，使用 简中 才是最适合的
-
-然而，如果你想要看 Qt6 的文档，使用 English 才是最合适的
+你想要看中国大陆信创数据库（wrappers of postgresql）的文档，使用 简中 才是最适合的；然而，如果你想要看 Qt6 的文档，使用 英文 才是最合适的
 
 ## 0x04 When You Ask
 
@@ -194,11 +225,9 @@ prepend-rules:
 
 ### 0x04a Choose a Community
 
-在合适的 Community(社区可以是 Forum/Section of Forum/Groups) 提出你的问题
+在合适的 Community(社区可以是 Forum/Section of Forum/Groups) 提出你的问题。大多数 Community，都会有一个 topic
 
-大多数 Community，都会有一个 topic。如果在这个 Community 提出一个 off topic question，这不能说是 rude behavior 但是不礼貌，因为没人希望自己维护的社区，被一些不相关的内容淹没
-
-例如 Stack Overflow 就是 [Stack Exchange](https://stackexchange.com/sites#) 中的一个 Forum，每一个 Forum 都有自己的 topic
+例如 [Stack Exchange](https://stackexchange.com/sites#) 每一个 Community Sites 都有自己的 topic
 
 - [Stack Overflow](https://stackoverflow.com/)
 	Q&A for professional and enthusiast programmers
@@ -209,13 +238,16 @@ prepend-rules:
 - [Ask Ubuntu](https://askubuntu.com/)
 	Q&A for Ubuntu users and developers
 
-如果你在 Ask Ubuntu 问 Gentoo 相关的问题，是不是很奇怪？
+> [!NOTE]
+> 除了 Stack Exchange，Reddit 也是一个非常好的 UGC Site
+
+如果在这个 Community 提出一个 off topic question，这不能说是 rude behavior 但是不礼貌。因为没人希望自己维护的社区，被一些不相关的内容淹没。如果你在 Ask Ubuntu 问 Gentoo 相关的问题，是不是很奇怪？
 
 ### 0x04b Read Community Rules
 
 每一个 Community 都会有自己的规则（也可能叫作 FAQ），在你提问前请先阅读 Community Rules。这是为了社区不被没有营养的内容”泛洪“，同时也是保护你自己的账号不被封禁
 
-例如 Do 的
+例如 DO 的
 
 [FAQ - LINUX DO](https://linux.do/faq)
 
@@ -235,7 +267,7 @@ prepend-rules:
 问题要以清楚的形式表达出来，尽量使用社区的 primary language，以 English 为例
 
 - Structure
-	一个清楚的格式，具体可以参考 [TEM_OF_ISSUE](../Templates/TEM_OF_ISSUE.md)
+	一个清楚的格式，具体可以参考 [TEM_OF_ISSUE](../../Templates/TEM_OF_ISSUE.md)
 - Spelling
 	单词拼写不能混淆或者误拼，例如混淆了 its 和 it's，brief 误拼成了 breif
 - Punctuate
