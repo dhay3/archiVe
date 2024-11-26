@@ -254,6 +254,7 @@ latte-dock
 | gestures                 | libinput-gestures 图形化配置                   |
 | DVWA                     | Web 漏洞测试                                   |
 | Obs                      | 录屏                                           |
+| showmethekey             | keystrokes wayland 显示                        | 
 | kdenlive                 | 视频编辑                                       |
 | kdiff3                   | diff GUI                                       |
 | geeqie                   | 图片浏览                                       |

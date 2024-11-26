@@ -1,4 +1,4 @@
----
+ac---
 createTime: 2024-11-14 18:05
 license: cc by 4.0
 tags:
@@ -76,7 +76,7 @@ sudo pacman -Syyu
 ### 0x03a Username
 
 > [!note]
-> 添加运维用户是必须的，但是用户名非强制性，但推荐
+> 添加运维用户是必须的，但是用户名的随机性非强制要求，但推荐
 
 添加一个新运维用户（避免直接使用 root），用户名要具有随机性，不能使用类似 `amdin`，`backup`，`xray` 等具有指向性的用户名
 
@@ -107,7 +107,7 @@ pwgen -y -s 14 1
 
 ### 0x03d Policy
 
-
+密码更新的周期，以及字符数
 
 
 ## 0x04 SSH
@@ -170,6 +170,8 @@ Port 6
 ### Deny Root
 
 ### PKI
+
+## Sudo/Polkitff
 
 
 ## 0x05 Firewall

@@ -1,6 +1,4 @@
-- e
-       
-   - optionally, environment markers# BNF & EBNF & ABNF
+# BNF & EBNF & ABNF
 
 ## What is BNF?
 

@@ -26,11 +26,47 @@ Host slokiv.com
 其中 `keyword` 大小写不敏感，而 `arguments` 大小写敏感，每个 `keyword arguments` 单独一行
 
 > [!importatn]
-> 如果相同配置文件中或者是不同配置文件中有相同的 keywords，在没有特别说明的情况下(例如 `IdentityFile`，`Include` 就支持多个)，会使用第一个 keywords 的 arguments(没有 override 的逻辑)
+> 如果相同配置文件中或者是不同配置文件中有相同的 `keywords`，在没有特别说明的情况下(例如 `IdentityFile`，`Include` 就支持多个)，会使用第一个 `keywords` 的 `arguments`(没有 override 的逻辑)
 
-### 0x01a Token
+### 0x01a Patterns
 
-`ssh_config` 中的一些 keywords 还支持使用 tokens，会在运行时扩展，类似于 placeholder
+`ssh_config` 中的一些 keywords 会使用 patterns 做入参(例如 `Host`，`Match`)
+
+patterns 由零个或者多个字符组成，还可以使用如下 wildcards
+
+- `*`
+
+	a wildcard that matches zero or more characters
+
+	例如 `Host *.co.uk`
+
+	匹配所有以 `co.uk` 结尾的 Host
+
+- `？`  
+
+	a wildcard that matches exactly one character
+
+	例如 `Host 192.168.2.？`
+
+	匹配 `192.168.2.[0-255]` 所有 Host
+
+- `!`
+
+	a wildcard that exclude matches
+
+	例如 `Host !*.cn.gov`
+
+	匹配所有不以 `cn.gov` 为结尾的 Host
+
+patterns 也可以是一个 list
+
+```
+Host 10.0.1.? 10.0.3.*
+```
+
+### 0x01b Tokens
+
+`ssh_config` 中的一些 `keywords` 还支持使用 tokens，会在运行时扩展，类似于 placeholder
 
 keywords 如下
 
@@ -87,24 +123,107 @@ keywords 如下
     The local username.
 ```
 
-### 0x01b Environment Variables
+### 0x01c Environment Variables
 
+以下 `keywords` 支持通过 `${}` 的形式获取系统变量
 
+`CertificateFile`, `ControlPath`, `IdentityAgent`, `IdentityFile`, `Include`, `KnownHostsCommand`, `UserKnownHostsFile` 
+
+例如
+
+```
+ControlPath ${HOME}/.ssh/%C
+```
 
 ## 0x02 Keywords Arguments
-
-
 
 > [!note]
 > 具体看 manual page[^1]
 
-#### `Host <Pattern>`
+其中一些 symbols EBNF 如下
 
-下面的指令(到 next `Host` 或者是 `Match` 为止)，只对匹配 [0x03 Patterns](#0x03%20Patterns) 的 Host 生效
+- `destination = [user@]hostname, ssh://[user@]hostname[:port]`
+- `ssh_config = /etc/ssh/ssh_config, ~/.ssh/config`
 
-#### `Match <Pattern>`
+### 0x02a General Relate
 
-下面的指令(到 next `Host` 或者是 `Match` 为止)，只对匹配 [0x03 Patterns](#0x03%20Patterns) 的 Host 生效，比 `Host` 的匹配精度更高，支持如下几个维度
+#### `Include <path>`
+
+引入其他配置文件
+
+1. 如果是 relative path，会从 `~/.ssh` 和 `/etc/ssh` 中引入对应的配置
+2. 如果是 absolute path，直接引入 absolute path 的配置
+
+#### `Tag <name>`
+
+定义可以复用的指令块，例如
+
+```
+Tag router
+	User admin
+	Port 5122
+	HostKeyAlgorithms +ssh-rsa
+
+Host 10.0.1.*
+	Tag router
+```
+
+#### `GlobalKnownHostsFile <path>`
+
+指定 global host key database 的路径，默认为 `/etc/ssh/ssh_known_hosts /etc/ssh/ssh_known_hosts2`
+
+#### `UserKnownHostsFile`
+
+指定 user host key database 的路径，默认为 `~/.ssh/known_hosts ~/.ssh/known_hosts2`
+
+#### `HashKnownHosts <yes|no>`
+
+当 host key 被写入到 `~/.ssh/known_hosts` 时，是否将 host names 和 host addresses 哈希，默认为 no
+
+#### `HostKeyAlias <alias>` 
+
+Hostname 会以 `alias` 记录到 host key database files 中
+
+例如 有 `ssh_config` 如下配置
+
+```
+Host 10.0.3.101
+	HostKeyAlias meta
+```
+
+如果使用 `ssh root@10.0.3.101` 登入服务器，那么 `~/.ssh/known_hosts` 会以 meta 作为 10.0.3.101 的 Hostname
+
+```
+meta ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBElzkI3CiVNdMu2pf8eXwsVD0+blka7RsutyAK04VFZcOHO7xhXR3Z2RsGprp+KynVn2Ff+jO5kZO8sLCLjwwyY=
+```
+
+#### `VisualHostKey <yes|no>`
+
+登入 OpenSSH Server 时是否显示 ASCII remote host key，默认为 no(只有 unknown host 会显示 string rmeote host key)
+
+### 0x02b Connection Related
+
+#### `Host <patterns>`
+
+下面的指令(到 next `Host` 或者是 `Match` 为止)，只对匹配 patterns 的 Host 生效
+
+例如 有如下 `ssh_config` 配置
+
+```
+Host github.com
+  HostName ssh.github.com
+  User git
+  Port 443
+
+Host 10.0.*.1
+     HostKeyAlgorithms +ssh-rsa
+```
+
+如果使用 `ssh github.com` 就会自动使用 `User git`,`Port 443`；而如果使用 `ssh root@10.0.2.1` 就会在 SSH authentication 阶段额外添加 ssh-rsa HostKeyAlgorithms
+
+#### `Match <patterns>`
+
+下面的指令(到 next `Host` 或者是 `Match` 为止)，只对匹配 patterns 的 Host 生效，比 `Host` 的匹配细粒度更高，支持如下几个维度
 
 - canonical
 - final
@@ -117,64 +236,100 @@ keywords 如下
 - localuser
 - all
 
-#### `BatchMode`
+例如 有如下 `ssh_config` 配置
 
+```
+Match exec sh /usr/local/bin/check_server
+  User nginx
+```
+
+不管 hostname 是什么，只要 command 是 `/usr/local/bin/check_server` 就会使用 `User nginx`
 
 #### `BindAddress <ip_address>`
 
-指定连接 destination 使用的 source address
+连接 destination 使用指定的 source address
 
 #### `BindInterface <nic_name>`
 
-指定连接 destination 使用的 source NIC
+连接 destination 使用指定的 source NIC
 
-#### `Ciphers <ciphers...>`
+#### `User <username>`
 
-指定加密的 ciphers，如果有多个 ciphers 需要使用 comma 分隔，从左到右优先级逐级递减
+登入 OpenSSH Server 的用户名
 
-- 如果在 ciphers 前使用 `+` 表示在默认的 ciphers 后添加指定的 ciphers
-- 如果在 ciphers 前使用 `-` 表示从默认的 ciphers 中移除指定的 ciphers
-- 如果在 ciphers 前使用 `^` 表示在默认的 Ciphers 前添加指定的 ciphers
-
-默认会使用如下 ciphers
-
-`chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com`
-
-支持使用如下 ciphers，也可以使用 `ssh -Q Ciphers` 查看
-
-- 3des-cbc
-- aes128-cbc
-- aes192-cbc
-- aes256-cbc
-- aes128-ctr
-- aes192     
-- aes256-ctr
-- aes128-gcm\@openssh.com
-- aes256-gcm\@openssh.com
-- chacha20-poly1305\@openssh.com
-
-> [!note]
-> 通常只有在一些 firmware 比较老的 routers 上可能需要使用该参数（因为不支持 openssh 的 new Ciphers） 
-
-就可以在 `ssh_config` 中使用类似如下配置
+例如
 
 ```
-Host 10.0.2.254
-	Ciphers +aes128-cbc
+Host github.com
+  HostName ssh.github.com
+  User git
+  Port 443
 ```
 
+#### `Hostname <Hostname>`
 
-#### `Compression <yes|no>`
+用于实际登入 Hostname
 
-是否压缩传输的数据，默认为 no
+例如 有如下 `ssh_config`
 
-#### `ConnectionAttempts <integer>`
+```
+Host vini
+	Hostname 10.0.1.89
+```
 
-连接 OpenSSH Server TCP timeout 时，在 1 sec 内最大的尝试次数，默认为 1
+那么就可以使用 `ssh root@vini` 登入 10.0.1.89
 
-#### `ConnectTimeout`
+#### `Port <number>`
 
-连接 OpenSSH Server TCP timeout 的时间，默认使用系统处理 TCP 的逻辑(`tcp_syn_linear_timeouts`)
+指定连接 destination OpenSSH Server 的端口
+
+例如
+
+```
+Host github.com
+  HostName ssh.github.com
+  User git
+  Port 443
+```
+
+#### `IdentitiesOnly <yes|no>` 
+
+OpenSSH Client 是否只使用 PKI authentication 默认为 no
+
+#### `IdentityFile <path>`
+
+OpenSSH Client 使用的 PKI private key
+
+可以指定多个 `IdentityFile`，从上往下优先级递减
+
+默认为
+
+```
+identityfile ~/.ssh/id_rsa
+identityfile ~/.ssh/id_ecdsa
+identityfile ~/.ssh/id_ecdsa_sk
+identityfile ~/.ssh/id_ed25519
+identityfile ~/.ssh/id_ed25519_sk
+identityfile ~/.ssh/id_xmss
+```
+
+#### `PermitLocalCommand <yes|no>`
+
+是否允许使用 `LocalCommand`，默认 no
+
+#### `LocalCommand <command>`
+
+当和 OpenSSH Server 成功建立信道后，在 OpenSSH Client 侧执行 `command`，`PermitLocalCommand` 的值需要为 `yes`
+
+例如
+
+```
+ssh -o PermitLocalCommand=yes -o LocalCommand='whoami' root@10.0.3.49
+```
+
+#### `RemoteCommand <command>`
+
+当和 OpenSSH Server 成功建立信道后，在 OpenSSH Server 侧以同步执行命令，等价于 `ssh desination command`(默认不会提供 login shell)
 
 #### `ControlMaster <yes|no|ask|auto|autoask>`
 
@@ -212,7 +367,7 @@ Host 10.0.2.254
 
 `ControlMaster` 使用的 socket 路径，通常和 `%h`，`%p`，`%r` 或者 `%C` tokens 一起使用
 
-如果想要让 ControlMaster 只在 Client 当前登入的 login session 中有效，可以使用 `/run/usr/${user_id}` 或者 `/tmp`（出于安全性考虑，也应该使用这种方式）
+如果想要让 `ControlMaster` 只在 OpenSSH Client 当前登入的 login session 中有效，可以使用 `/run/usr/${user_id}` 或者 `/tmp`（出于安全性考虑，也应该使用这种方式）
 
 - `ControlPersist <yes|no|time>`
 
@@ -230,20 +385,138 @@ Host 10.0.2.254
 
 		在 time 后自动销毁 socket
 
-#### `DynamicForward`
+#### `PasswordAuthentication <yes|no>`
 
+是否使用 password authentication，默认 yes
 
-#### `GatewayPorts`
+如果为 no 就不能使用密码登入
 
+```
+ssh  -o PasswordAuthentication=no  root@10.0.3.49
+root@10.0.3.49: Permission denied (publickey,gssapi-keyex,gssapi-with-mic,password).
+```
 
+#### `NumberOfPasswordPrompts <number>`
 
-#### `GlobalKnownHostsFile <path>`
+password authentication 失败的重试次数，默认 3
 
-指定 global host key database 的路径，默认为 `/etc/ssh/ssh_known_hosts /etc/ssh/ssh_known_hosts2`
+#### `PubKeyAuthentication <yes|no|unbound|host-bound>`
 
-#### `HashKnownHosts <yes|no>`
+是否开启 PKI authentication，默认为 yes
 
-当 host key 被写入到 `~/.ssh/known_hosts` 时，是否将 host names 和 host addresses 哈希，默认为 no
+unbound 和 host-bound 表示是否允许在 PKI authentication 中使用 host-bound authentication protocol extension
+
+#### `PreferredAuthentications <authentications>`
+
+> [!NOTE]
+> 无需在 OpenSSH Client 设置该参数，通过控制 `sshd_config` 中对应的配置即可
+
+支持 OpenSSH client 尝试 authentication 的先后顺序
+
+默认为
+
+`gssapi-with-mic,hostbased,publickey,keyboard-interactive,password`
+
+即如果 OpenSSH Server 支持 PKI authentication(publickey) 那么就会先使用 PKI authentication 而不是 password authentication
+
+#### `ConnectionAttempts <integer>`
+
+连接 OpenSSH Server TCP timeout 时，在 1 sec 内最大的尝试次数，默认为 1
+
+#### `ConnectTimeout <integer>`
+
+在 integer seconds 后如果还没有连接到 OpenSSH Server，就会判断为 TCP timeout，默认使用系统处理 TCP 的逻辑(`tcp_syn_linear_timeouts`)
+
+#### `ServerAliveCountMax <number>`
+
+类似于 `tcp_keepalive_probes`，OpenSSH Client 会发送 keep alive message 来判断 OpenSSH Server 还是否存活。该参数用于指定断开连接需要发送的 keep alive message 数(如果回包，重置为 0)
+
+默认为 3
+
+#### `ServerAliveInterval <number>`
+
+类似于 `tcp_keepalive_intvl`，如果 OpenSSH Server 没有对 keep alive message 回包，OpenSSH Client 会在 number seconds 后发送 keep alive message
+
+默认为 0 表示永远也不会发送 keep alive packet
+
+> [!note]
+> OpenSSH 默认会使用 `TCPKeepAlive` 即系统的 tcp keep alive 逻辑
+
+#### `TCPKeepAlive <yes|no>`
+
+系统是否允许发送 tcp keep alive message，来判断对端是否存活
+
+默认为 yes
+
+#### `Compression <yes|no>`
+
+是否压缩传输的数据，默认为 no
+
+#### `RequestTTY <no|yes|force|auto>`
+
+连接后是否分配 pseudo-TTY，等价于 `-t | -T`
+
+- no
+
+	不分配 TTY
+
+- yes
+
+	分配 TTY
+
+- force
+
+	强制分配 TTY
+
+- auto
+
+	自动判断是否需要分配 TTY
+
+#### `SendEnv <Patterns>`
+
+> [!note]
+> 环境变量 `TERM` 会默认发送至 OpenSSH Server，如果 Server 没有对应的 terminfo 就会导致 pseudo-TTY 乱码
+> 
+> 例如 kitty 默认会使用 `TERM=kitty-xterm`。在你 SSH 登入 Server 后，会设置 Server 环境变量 `TERM=kitty-xterm`。而大多数 Server 并不会安装 kitty，`terminfo` 也就没有 `kitty-xterm`，所以 pseduo-TTY 会出现乱码
+
+本地发送那些 environment variables 至 OpenSSH Server，需要有 OpenSSH Server `AcceptEnv` 的支持
+
+值为 Patterns，默认不设置任何 Variables
+
+#### `Ciphers <ciphers...>`
+
+指定加密的 ciphers，如果有多个 ciphers 需要使用 comma 分隔，从左到右优先级逐级递减
+
+- 如果在 ciphers 前使用 `+` 表示在默认的 ciphers 后添加指定的 ciphers
+- 如果在 ciphers 前使用 `-` 表示从默认的 ciphers 中移除指定的 ciphers
+- 如果在 ciphers 前使用 `^` 表示在默认的 Ciphers 前添加指定的 ciphers
+
+默认会使用如下 ciphers
+
+`chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com`
+
+支持使用如下 ciphers，也可以使用 `ssh -Q Ciphers` 查看
+
+- 3des-cbc
+- aes128-cbc
+- aes192-cbc
+- aes256-cbc
+- aes128-ctr
+- aes192     
+- aes256-ctr
+- aes128-gcm\@openssh.com
+- aes256-gcm\@openssh.com
+- chacha20-poly1305\@openssh.com
+
+> [!note]
+> 通常只有在一些 firmware 比较老的 routers 上可能需要使用该参数（因为不支持 openssh 的 new Ciphers） 
+
+就可以在 `ssh_config` 中使用类似如下配置
+
+```
+Host 10.0.2.254
+	Ciphers +aes128-cbc
+```
 
 #### `HostKeyAlgorithms <host-key-signature-algo ...>`
 
@@ -269,65 +542,6 @@ Host 10.0.2.254
 	HostKeyAlgorithms +ssh-rsa
 ```
 
-#### `HostKeyAlias <alias>` 
-
-Hostname 会以 `alias` 记录到 host key databases files 中
-
-例如 有 `ssh_config` 如下配置
-
-```
-Host 10.0.3.101
-	HostKeyAlias meta
-```
-
-如果使用 `ssh root@10.0.3.101` 登入服务器，那么 `~/.ssh/known_hosts` 会以 meta 作为 10.0.3.101 的 Hostname
-
-```
-meta ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBElzkI3CiVNdMu2pf8eXwsVD0+blka7RsutyAK04VFZcOHO7xhXR3Z2RsGprp+KynVn2Ff+jO5kZO8sLCLjwwyY=
-```
-
-
-#### `Hostname <Hostname>`
-
-用于实际登入 Hostname
-
-例如 有如下 `ssh_config`
-
-```
-Host vini
-	Hostname 10.0.1.89
-```
-
-那么就可以使用 `ssh root@vini` 登入 10.0.1.89
-
-#### `IdentitiesOnly <yes|no>` 
-
-OpenSSH Client 是否只使用 PKI authentication 默认为 no
-
-#### `IdentityFile <path>`
-
-OpenSSH Client 使用的 PKI private key
-
-可以指定多个 `IdentityFile`，从上往下优先级递减
-
-默认为
-
-```
-identityfile ~/.ssh/id_rsa
-identityfile ~/.ssh/id_ecdsa
-identityfile ~/.ssh/id_ecdsa_sk
-identityfile ~/.ssh/id_ed25519
-identityfile ~/.ssh/id_ed25519_sk
-identityfile ~/.ssh/id_xmss
-```
-
-#### `Include <path>`
-
-引入其他配置文件
-
-1. 如果是 relative path，会从 `~/.ssh` 和 `/etc/ssh` 中引入对应的配置
-2. 如果是 absolute path，直接引入 absolute path 的配置
-
 #### `KexAlgorithms <key-exchange-algorithms...>`
 
 指定允许的 key-exchange-algorithms，如果有多个 key-exchange-algorithms 需要使用 comma 分隔，从左到右优先级逐级递减
@@ -352,83 +566,79 @@ Host 10.0.2.254
 	KexAlgorithms +diffie-hellman-group-exchange-sha1
 ```
 
+#### `CheckHostIP <yes|no>`
 
-#### `LocalCommand <command>`
+如果为 yes，OpenSSH Client 会在第一次登入时，将对端的 hostname,resolved IP, figerprint 记录到 `~/.ssh/known_hosts` 中(默认只会记录 hostname)。在下次登入相同 hostname 时校验 resolved IP，如果不匹配，就不会和 OpenSSH Server 建立连接，防止 MITMA。默认为 no
 
-当和 OpenSSH Server 成功建立信道后，在 OpenSSH Client 侧以同步执行命令，`PermitLocalCommand` 的值需要为 `yes`
-
-例如
+例如 `~/.ssh/known_hosts` 如下
 
 ```
-ssh -o PermitLocalCommand=yes -o LocalCommand='whoami' root@10.0.3.49
+openwrt.local ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPZyMT01AnVsdtV+TCw3ZEclLe43e8MVFcc08cQMjFib
+openwrt.local ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBDoZcuTW7jEu+8gvXzAi/rB/RwMFYiq361Amay5UjmIPKX6HoH+ntWYtsSknty4RaA0jLpUZ4uAFpo3MV6jf18k=
+10.0.1.10 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPZyMT01AnVsdtV+TCw3ZEclLe43e8MVFcc08cQMjFib
+10.0.1.10 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBDoZcuTW7jEu+8gvXzAi/rB/RwMFYiq361Amay5UjmIPKX6HoH+ntWYtsSknty4RaA0jLpUZ4uAFpo3MV6jf18k=
 ```
+
+如果 `CheckHostIP=yes`，那么就会出现如下错误
+
+```
+ssh -o CheckHostIP=yes  root@openwrt.local
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@       WARNING: POSSIBLE DNS SPOOFING DETECTED!          @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+The ED25519 host key for openwrt.local has changed,
+and the key for the corresponding IP address 10.0.1.101
+is unknown. This could either mean that
+DNS SPOOFING is happening or the IP address for the host
+and its host key have changed at the same time.
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the ED25519 key sent by the remote host is
+SHA256:WebMA3wHEL1HRbcgawJfCUGCAOmUEhzRJY6ruISxH8I.
+Please contact your system administrator.
+Add correct host key in /root/.ssh/known_hosts to get rid of this message.
+Offending ECDSA key in /root/.ssh/known_hosts:7
+Host key for openwrt.local has changed and you have requested strict checking.
+Host key verification failed.
+```
+
+### 0x02c Port Forwardings Related
+
+#### `DynamicForward <[local_address:]local_port>`
+
+发送到 OpenSSH Client `[local_address:]local_port` 的流量会通过 destination secure channel 代理出去(只支持 socks4 和 socks5)。即 `[local_address:]local_port` 为 socks client，而 destination 为 socks server。其他形式同理
+   
+`local_address` 可以是空值或者是 `*` 表示本地的所有的 IP，但是如果 OpenSSH Client 没有设置 `GatewayPorts yes` 默认只会绑定回环地址(为了安全)
+   
+例如 在本地执行了 `ssh -D 1080 root@10.0.3.48`，那么访问本地的 `localhost:1080` 端口就会通过 `10.0.3.48` 代理出去
 
 #### `LocalForward`
 
-#### `LogLevel <level>`
+发送到 OpenSSH Client `[local_address:]local_port` 的流量会通过 destination secure shell 代理到 `remote_address:remote_port`。其他形式同理
 
-类似于 `ssh -v[v[v]]`，输出 `ssh` 连接 destination 时的详细信息，信息按照如下顺序逐级增加
+`local_address` 可以是空值或者是 `*` 表示本地的所有的 IP，但是如果 OpenSSH Client 没有设置 `GatewayPorts yes`  或者 指定 `-g` 默认只会绑定回环地址(为了安全)
 
-- QUIET
-- FATAL
-- ERROR
-- INFO
-- VERBOSE
-- DEBUG
-- DEBUG1
-- DEBUG2
-- DEBUG3
+例如 在本地执行了 `ssh -L 1080:10.0.3.35:3306 root@10.0.3.36`，那么访问本地的 `localhost:1080` 端口就会通过 `10.0.3.36` 代理到 `10.0.3.35:3306`
 
-例如
+#### `RemoteForward`
 
-```
-ssh -o LogLevel=DEBUG3 root@10.0.3.48
-```
+发送到 `[remote_address1:]remote_port1` 的流量会通过 destination secure shell 代理到 `remote_address2:remote_port2`(remote_address1 要和 destination address 一致)
 
-#### `NumberOfPasswordPrompts <number>`
+`remote_address1` 可以是空值或者是 `*` 表示本地的所有的 IP，但是如果 OpenSSH Server 没有设置 `GatewayPorts yes`  或者 指定 `-g` 默认只会绑定回环地址(为了安全)
 
-password authentication 失败的重试次数，默认 3
+例如 在 `10.0.3.40` 执行了 `ssh -R 1080：10.0.3.40:80 root@10.0.3.41`，那么 `10.0.3.41` 访问本地的 1080 就会通过 `10.0.3.49` secure shell 代理到 `10.0.3.40:80`
 
-#### `PasswordAuthentication <yes|no>`
+#### `GatewayPorts <yes|no>`
 
-是否使用 password authentication，默认 yes
-
-如果为 no 就不能使用密码登入
-
-```
-ssh  -o PasswordAuthentication=no  root@10.0.3.49
-root@10.0.3.49: Permission denied (publickey,gssapi-keyex,gssapi-with-mic,password).
-```
-
-#### `PermitLocalCommand <yes|no>`
-
-是否允许使用 `LocalCommand`，默认 no
-
-#### `PermitRemoteOpen`
-
-
-#### `Port <number>`
-
-指定连接 destination OpenSSH Server 的端口
-
-例如
-
-```
-Host github.com
-  HostName ssh.github.com
-  User git
-  Port 443
-```
-
-#### `PreferredAuthentications <authentications>`
-
-支持 OpenSSH client 尝试 authentication 的先后顺序
-
-默认为
-
-`gssapi-with-mic,hostbased,publickey,keyboard-interactive,password`
-
-即如果 OpenSSH Server 支持 PKI authentication(publickey) 那么就会先使用 PKI authentication 而不是 password authentication
+ssh 默认不允许 remote hosts 直接对执行 `-D`,`-L`,`-R` 的主机发起连接（只绑定回环地址），默认为 no
+   	
+使用该参数 remote hosts 可以连接本地的 port forwarding，类似于 clash 中的 `allow-lan`
+   
+例如 在本地执行了 `ssh -g -D 10.0.3.47:1080 root@10.0.3.48 -N`，那么其他的主机就可以通过访问 `10.0.3.48:1080` 代理到 `10.0.3.48`，然后通过 `10.0.3.48` 代理取出
 
 #### `ProxyCommand <command>`
 
@@ -456,7 +666,7 @@ Connection to ssh.github.com closed.
 
 通常会和 `%h` `%p` tokens 一起使用
 
-#### ProxyJump
+#### `ProxyJump <SSH>`
 
 按照链式顺序通过 SSH 代理连接 destination
 
@@ -474,22 +684,11 @@ $ ssh -o ProxyJump=root@10.0.3.101,root@10.0.3.102 root@10.0.3.49
 root@10.0.3.101's password:
 root@10.0.3.102's password:
 root@10.0.3.49's password:
-
 ```
 
 `ProxyJump` 和 `ProxyCommand` 互斥，那个先出现就先使用那个
 
-#### PubKeyAuthentication
-
-#### RemoteCommand
-
-#### RemoteForward
-
-#### SendEnv
-
-#### User
-
-### X11 Related
+### 0x02d X11 Related
 
 > [!note]
 > X11 是不安全的，如果启用了 `ForwardX11Trusted yes` ，你用 firefox 打开一个会监听 keystrokes 的挂马网站，那么攻击者就可以知道你在 X11 Server 上输入的内容
@@ -520,41 +719,38 @@ ssh -X -o ForkAfterAuthentication=yes root@10.0.3.49 firefox >& /dev/null
 
 X11 clients 是否可以完全控制 X11 display(server)，默认为 no，即 untrusted X11 forwarding
 
+### 0x02e Debug Related
 
-## 0x03 Patterns
+#### `LogLevel <level>`
 
-patterns 由零个或者多个字符组成，可以使用 wildcards
+类似于 `ssh -v[v[v]]`，输出 `ssh` 连接 destination 时的详细信息，信息按照如下顺序逐级增加
 
-- `*`
+- QUIET
+- FATAL
+- ERROR
+- INFO
+- VERBOSE
+- DEBUG
+- DEBUG1
+- DEBUG2
+- DEBUG3
 
-	a wildcard that matches zero or more characters
-
-	例如 `Host *.co.uk`
-
-	匹配所有以 `co.uk` 结尾的 Host
-
-- `？`  
-
-	a wildcard that matches exactly one character
-
-	例如 `Host 192.168.2.？`
-
-	匹配 `192.168.2.[0-255]` 所有 Host
-
-- `!`
-
-	a wildcard that exclude matches
-
-	例如 `Host !*.cn.gov`
-
-	匹配所有不以 `cn.gov` 为结尾的 Host
-
-patterns 也可以是一个 list
+例如
 
 ```
-Host 10.0.1.? 10.0.3.*
+ssh -o LogLevel=DEBUG3 root@10.0.3.48
 ```
 
+### 0x02e Misc Related
+
+#### `BatchMode <yes|no>`
+
+如果为 yes，不会显示 interactive prompt（例如 password prompt，fingerprint prompt），默认为 no
+
+通常为了在脚本中调用 `ssh` 才使用
+
+> [!note]
+> 需要配置例如 PKI authentication 等不需要提供密码的认证
 
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*

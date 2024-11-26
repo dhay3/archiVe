@@ -52,9 +52,15 @@ Sorry for the bother, but I have an issue that I cannot figure out myself.
 
 ### Info1
 
+> [!note] 
+> The related detail context
+
 ### Info2
 
+> [!note]
+> The related detail logs
 
-English is not my native lanuage; please excuse typing errors. And thanks in advance.
+Also English is not my native lanuage; please excuse typing errors. And thanks in advance.
 
-Best regards
+Best regards to all,
+dhay3
