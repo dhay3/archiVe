@@ -282,7 +282,7 @@
 
 # Howto
 
-<!--howto toc end-->                                                             
+<!--howto toc start-->                                                             
 
 <!--howto toc end-->                                                             
 
