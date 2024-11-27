@@ -10,7 +10,7 @@
 # Notes
 
 <!--notes toc start-->
-<!--fb50db07-9b9b-4285-a671-4f4501f5c349-->
+<!--1fa5a7e1-b588-4cd5-8319-57322f72be38-->
 ## [AI](Notes/AI)
   - [Huggingface](Notes/AI/Huggingface)
   - [LLAM](Notes/AI/LLAM)
@@ -278,7 +278,7 @@
   - [Rsshub](Notes/Sundries/Rsshub)
   - [Typora](Notes/Sundries/Typora)
 
-<!--notes toc end-->                                                              
+<!--notes toc end-->                                                               
 
 # Howto
 
