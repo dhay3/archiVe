@@ -4,13 +4,13 @@
 | [![gitmoji-%20%F0%9F%98%9C%20%F0%9F%98%8D-FFDD67.svg](https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg?style=flat-square)](https://gitmoji.dev)
 | [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 
-# TOC
-
-<!--toc start-->
-<!--c2321eac-ab79-4978-8b95-89bd58e6564a-->
 > [!note]
-> Created by Github Workflows
+> TOC Created by Github Workflows automatically
 
+# Notes
+
+<!--notes toc start-->
+<!--3c006411-5edf-4085-aa0c-0c368f54c56e-->
 ## [AI](Notes/AI)
   - [Huggingface](Notes/AI/Huggingface)
   - [LLAM](Notes/AI/LLAM)
@@ -29,6 +29,7 @@
 ## [Cloud](Notes/Cloud)
   - [AWS](Notes/Cloud/AWS)
   - [Aliyun](Notes/Cloud/Aliyun)
+  - [Contabo](Notes/Cloud/Contabo)
   - [DigitalOcean](Notes/Cloud/DigitalOcean)
   - [Let's Encrypt](Notes/Cloud/Let%27s%20Encrypt)
   - [RackNerd](Notes/Cloud/RackNerd)
@@ -39,6 +40,7 @@
   - [Courses](Notes/ComputerArch/Courses)
 ## [Database](Notes/Database)
   - [MySQL](Notes/Database/MySQL)
+    - [new](Notes/Database/MySQL/new)
     - [old](Notes/Database/MySQL/old)
   - [MySQL_new](Notes/Database/MySQL_new)
   - [NoSQL](Notes/Database/NoSQL)
@@ -80,9 +82,11 @@
   - [IDE](Notes/Development/IDE)
     - [JetBrain](Notes/Development/IDE/JetBrain)
       - [idea](Notes/Development/IDE/JetBrain/idea)
+    - [vscode](Notes/Development/IDE/vscode)
 ## [Encryption](Notes/Encryption)
 ## [English](Notes/English)
   - [Grammar](Notes/English/Grammar)
+  - [Pronunciation](Notes/English/Pronunciation)
 ## [Hardware](Notes/Hardware)
 ## [Network](Notes/Network)
   - [CCNA](Notes/Network/CCNA)
@@ -100,6 +104,7 @@
       - [proto](Notes/Network/OSI/L7/proto)
     - [RFC](Notes/Network/OSI/RFC)
   - [Wireshark](Notes/Network/Wireshark)
+    - [new](Notes/Network/Wireshark/new)
   - [new](Notes/Network/new)
     - [CCNA](Notes/Network/new/CCNA)
     - [CCNP](Notes/Network/new/CCNP)
@@ -127,14 +132,18 @@
     - [custom](Notes/Operating%20System/Linux/custom)
     - [disk&fs](Notes/Operating%20System/Linux/disk%26fs)
       - [LVM](Notes/Operating%20System/Linux/disk%26fs/LVM)
+      - [new](Notes/Operating%20System/Linux/disk%26fs/new)
     - [display](Notes/Operating%20System/Linux/display)
+      - [wayland](Notes/Operating%20System/Linux/display/wayland)
       - [xorg](Notes/Operating%20System/Linux/display/xorg)
     - [distro](Notes/Operating%20System/Linux/distro)
       - [arch](Notes/Operating%20System/Linux/distro/arch)
+      - [centos](Notes/Operating%20System/Linux/distro/centos)
       - [manjaro](Notes/Operating%20System/Linux/distro/manjaro)
       - [ubuntu](Notes/Operating%20System/Linux/distro/ubuntu)
       - [void](Notes/Operating%20System/Linux/distro/void)
     - [firewall](Notes/Operating%20System/Linux/firewall)
+      - [firewalld](Notes/Operating%20System/Linux/firewall/firewalld)
       - [iptables](Notes/Operating%20System/Linux/firewall/iptables)
         - [iptables-personal](Notes/Operating%20System/Linux/firewall/iptables/iptables-personal)
           - [confusions](Notes/Operating%20System/Linux/firewall/iptables/iptables-personal/confusions)
@@ -142,6 +151,7 @@
             - [matches](Notes/Operating%20System/Linux/firewall/iptables/iptables-personal/extensions/matches)
             - [targets](Notes/Operating%20System/Linux/firewall/iptables/iptables-personal/extensions/targets)
         - [iptables-zsy](Notes/Operating%20System/Linux/firewall/iptables/iptables-zsy)
+    - [font](Notes/Operating%20System/Linux/font)
     - [general](Notes/Operating%20System/Linux/general)
     - [gui](Notes/Operating%20System/Linux/gui)
     - [kernel](Notes/Operating%20System/Linux/kernel)
@@ -174,6 +184,7 @@
     - [choco](Notes/Operating%20System/Windows/choco)
 ## [Ops](Notes/Ops)
   - [Apache2](Notes/Ops/Apache2)
+  - [Clonezilla](Notes/Ops/Clonezilla)
   - [Conda](Notes/Ops/Conda)
   - [Docker](Notes/Ops/Docker)
     - [Docker CLI](Notes/Ops/Docker/Docker%20CLI)
@@ -181,11 +192,16 @@
     - [Docker compose](Notes/Ops/Docker/Docker%20compose)
     - [new](Notes/Ops/Docker/new)
   - [FFmpeg](Notes/Ops/FFmpeg)
+  - [FreeDos](Notes/Ops/FreeDos)
   - [FreeRDP](Notes/Ops/FreeRDP)
   - [Git](Notes/Ops/Git)
     - [cli](Notes/Ops/Git/cli)
+    - [new](Notes/Ops/Git/new)
+    - [terms](Notes/Ops/Git/terms)
   - [Github](Notes/Ops/Github)
     - [gh-cli](Notes/Ops/Github/gh-cli)
+    - [git-book](Notes/Ops/Github/git-book)
+    - [git-page](Notes/Ops/Github/git-page)
     - [github-actions](Notes/Ops/Github/github-actions)
     - [github-general](Notes/Ops/Github/github-general)
   - [Jenkins](Notes/Ops/Jenkins)
@@ -202,6 +218,7 @@
       - [Directives](Notes/Ops/Nginx/new/Directives)
       - [Modules](Notes/Ops/Nginx/new/Modules)
   - [Nix](Notes/Ops/Nix)
+  - [OBS](Notes/Ops/OBS)
   - [OpenGPG](Notes/Ops/OpenGPG)
   - [OpenSSH](Notes/Ops/OpenSSH)
     - [new](Notes/Ops/OpenSSH/new)
@@ -223,10 +240,12 @@
   - [Virtualization](Notes/Ops/Virtualization)
     - [KVM](Notes/Ops/Virtualization/KVM)
       - [QEMU](Notes/Ops/Virtualization/KVM/QEMU)
+      - [new](Notes/Ops/Virtualization/KVM/new)
     - [Virtualbox](Notes/Ops/Virtualization/Virtualbox)
     - [Vmware](Notes/Ops/Virtualization/Vmware)
   - [W3m](Notes/Ops/W3m)
   - [Zabbix](Notes/Ops/Zabbix)
+  - [Zookeeper](Notes/Ops/Zookeeper)
   - [keepalived](Notes/Ops/keepalived)
 ## [Passwall](Notes/Passwall)
   - [Board](Notes/Passwall/Board)
@@ -235,14 +254,20 @@
   - [Platform](Notes/Passwall/Platform)
     - [Client Only](Notes/Passwall/Platform/Client%20Only)
       - [Clash](Notes/Passwall/Platform/Client%20Only/Clash)
+        - [Clash Verge Rev](Notes/Passwall/Platform/Client%20Only/Clash/Clash%20Verge%20Rev)
         - [Clash-core](Notes/Passwall/Platform/Client%20Only/Clash/Clash-core)
           - [Mihomo-core](Notes/Passwall/Platform/Client%20Only/Clash/Clash-core/Mihomo-core)
       - [Quantumult X](Notes/Passwall/Platform/Client%20Only/Quantumult%20X)
       - [Qv2ray](Notes/Passwall/Platform/Client%20Only/Qv2ray)
       - [Shadowrocket](Notes/Passwall/Platform/Client%20Only/Shadowrocket)
       - [Sing-box](Notes/Passwall/Platform/Client%20Only/Sing-box)
+      - [v2rayN](Notes/Passwall/Platform/Client%20Only/v2rayN)
     - [Client and Server](Notes/Passwall/Platform/Client%20and%20Server)
+      - [Brook](Notes/Passwall/Platform/Client%20and%20Server/Brook)
+      - [Hysteria](Notes/Passwall/Platform/Client%20and%20Server/Hysteria)
       - [Shadowsocks](Notes/Passwall/Platform/Client%20and%20Server/Shadowsocks)
+      - [ShadowsocksR](Notes/Passwall/Platform/Client%20and%20Server/ShadowsocksR)
+      - [Trojan](Notes/Passwall/Platform/Client%20and%20Server/Trojan)
       - [V2ray-core](Notes/Passwall/Platform/Client%20and%20Server/V2ray-core)
         - [new](Notes/Passwall/Platform/Client%20and%20Server/V2ray-core/new)
       - [Xray-core](Notes/Passwall/Platform/Client%20and%20Server/Xray-core)
@@ -251,6 +276,7 @@
     - [Hysteria](Notes/Passwall/Protocol/Hysteria)
     - [Reality](Notes/Passwall/Protocol/Reality)
     - [Shadowsocks](Notes/Passwall/Protocol/Shadowsocks)
+    - [Socks5](Notes/Passwall/Protocol/Socks5)
     - [Trojan](Notes/Passwall/Protocol/Trojan)
     - [VLESS](Notes/Passwall/Protocol/VLESS)
     - [VMESS](Notes/Passwall/Protocol/VMESS)
@@ -271,14 +297,23 @@
     - [nmap](Notes/Pentest/Kali/nmap)
     - [sqlmap](Notes/Pentest/Kali/sqlmap)
     - [wifi](Notes/Pentest/Kali/wifi)
+## [Shopping](Notes/Shopping)
 ## [Sundries](Notes/Sundries)
   - [Blog](Notes/Sundries/Blog)
   - [Chrome](Notes/Sundries/Chrome)
+  - [Finance](Notes/Sundries/Finance)
+    - [Bonus](Notes/Sundries/Finance/Bonus)
   - [Obsidian](Notes/Sundries/Obsidian)
   - [Rsshub](Notes/Sundries/Rsshub)
   - [Typora](Notes/Sundries/Typora)
 
-<!--toc end-->                                                            
+<!--notes toc end-->                                                             
+
+# Howto
+
+<!--howto toc end-->                                                             
+
+<!--howto toc end-->                                                             
 
 # License
 
