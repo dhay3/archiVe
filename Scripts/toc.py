@@ -63,6 +63,9 @@ def to_toc_content(base_paths: List[str], toc_start_comment: str, toc_end_commen
 <!--{entropy}-->
 {"".join(toc)}
 {toc_end_comment} """
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
+    logging.info(toc_content)
     with open(README_PATH, "r") as f:
         readme_content = f.read()
     with open(README_PATH, "w") as f:
@@ -71,10 +74,10 @@ def to_toc_content(base_paths: List[str], toc_start_comment: str, toc_end_commen
 
 
 def toc2readme() -> None:
-    print(to_toc_content(["Notes/"],
-                         "<!--notes toc start-->",
-                         "<!--notes toc end-->",
-                         transverse_dir2toc))
+    to_toc_content(["Notes/"],
+                   "<!--notes toc start-->",
+                   "<!--notes toc end-->",
+                   transverse_dir2toc)
 
     to_toc_content(["Howto/"],
                    "<!--howto toc start-->",
