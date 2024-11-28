@@ -18,7 +18,7 @@ OpenSSH 是一套基于 SSH(Secure Shell) 协议的 C/S 加密网络工具，大
 
 > The Secure Shell (SSH) Protocol is a protocol for secure remote login and other secure network services over an insecure network.[^2]
 
-在没有出现 Secure Shell(SSH) Protocol 的时代，大多数管理员都使用 telnet 或者 rlogin/rexec/rsh 这些非安全的传输协议(和 HTTP 一样传输的内容为明文)用于登入 OS 或者执行 OS 命令。而 OS 通常会要求用户进行 authentication，例如输入 account/password。所以中间的网络设备或者流量嗅探都可以看到 L3/L4 的源目信息，以及明文的 account/password，这显然是不安全的
+在没有出现 Secure Shell(SSH) protocol 的时代，大多数管理员都使用 telnet 或者 rlogin/rexec/rsh 这些非安全的传输协议(和 HTTP 一样传输的内容为明文)用于登入 OS 或者执行 OS 命令。而 OS 通常会要求用户进行 authentication，例如输入 account/password。所以中间的网络设备或者流量嗅探都可以看到 L3/L4 的源目信息，以及明文的 account/password，这显然是不安全的
 
 SSH 就是为了解决这个问题而诞生的，他能够加密主机之间的通信(对 L7 报文加密)，保证不被窃听或者篡改。以及以及引入了 PKI authentication 的逻辑
 
@@ -71,6 +71,8 @@ SSH 有 2 个 main version
 	multiplexes many different concurrent channels over the authenticated connection and allows tunneling of login sessions and TCP-forwarding. It provides a flow control service for these channels. Additionally, various channel-specific options can be negotiated.
 
 	connection layer 处理用户的 L7 数据
+
+![2023-01-31_17-29](https://github.com/dhay3/image-repo/raw/master/20230131/2023-01-31_17-29.2zk7mni15f7k.webp)
 
 ### 0x02c SSH Packet Analyze
 

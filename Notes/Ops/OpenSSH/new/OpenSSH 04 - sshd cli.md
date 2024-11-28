@@ -10,7 +10,7 @@ tags:
 
 ## 0x01 Preface
 
-OpenSSH 以 C/S 模式运行，而 `sshd`(OpenSSH Daemon) 是 OpenSSH Server 用户态的工具。默认会监听从 22 端口过来的数据包，如果是可信的 OpenSSH Client 过来的请求，就会使用其安全可靠的信道传输数据
+OpenSSH 以 C/S 模式运行，而 `sshd`(OpenSSH Daemon) 是 OpenSSH server 用户态的工具。默认会监听从 22 端口过来的数据包，如果是可信的 OpenSSH Client 过来的请求，就会使用其安全可靠的信道传输数据
 
 在 sysV 中 `sshd` 通常会从按照 `/etc/rc` 下的配置自启动，而现今大多数的 OS 都会使用 systemd 来自启动 `sshd`
 
@@ -20,7 +20,7 @@ OpenSSH 以 C/S 模式运行，而 `sshd`(OpenSSH Daemon) 是 OpenSSH Server 用
 sshd 	[-46DdeGiqTtV] [-C connection_spec] [-c host_certificate_file] [-E log_file] [-f config_file] [-g login_grace_time] [-h host_key_file] [-o option] [-p port] [-u len]
 ```
 
-一般很少会通过手动执行 `sshd` 的方式来启动 OpenSSH Server，默认以 daemon 方式运行
+一般很少会通过手动执行 `sshd` 的方式来启动 OpenSSH server，默认以 daemon 方式运行
 
 ## 0x03 Optional Args
 

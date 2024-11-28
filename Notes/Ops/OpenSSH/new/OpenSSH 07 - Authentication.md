@@ -6,11 +6,19 @@ tags:
   - "#hash2"
 ---
 
-# OpenSSH 0 - Authentication
+# OpenSSH 07 - Authentication
 
 ## 0x01 Preface
 
-OpenSSH 默认会按照如下的顺序鉴权
+OpenSSH 一个完整的 Authentication 分为 2 部分
+
+- 
+
+
+
+## Client
+
+OpenSSH client 默认会按照如下的顺序去尝试鉴权
 
 - GSSAPI-based authentication
 - host-based authentication
@@ -18,11 +26,21 @@ OpenSSH 默认会按照如下的顺序鉴权
 - keyboard-interactive authentication
 - password authentication
 
-也可以通过修改 `PreferredAuthentications`
+也可以通过修改 `ssh_config` 中的 `PreferredAuthentications` 来修改鉴权方式或者是顺序
 
-## Host-Based Authentication
+## Server
 
-## Public Key Authentication
+OpenSSH server 通过 
+
+- `AuthenticationMethod`
+
+## Authentication Methods
+
+### Host-Based Authentication
+
+### Public Key Authentication
+
+
 
 
 

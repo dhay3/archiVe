@@ -10,7 +10,7 @@ tags:
 
 ## 0x01 Preface
 
-OpenSSH 以 C/S 模式运行，而 `ssh` 是 OpenSSH Client 用户态的工具，用于 log into a remote machine and execute commands on a remote machine
+OpenSSH 以 C/S 模式运行，而 `ssh` 是 OpenSSH client 用户态的工具，用于 log into a remote machine and execute commands on a remote machine
 
 ## 0x02 Syntax
 
@@ -144,7 +144,7 @@ ssh 192.168.2.1 opkg install luci-app-openclash
 
 	发送到 `[remote_address1:]remote_port1` 的流量会通过 destination secure shell 代理到 `remote_address2:remote_port2`(remote_address1 要和 destination address 一致)
 
-	`remote_address1` 可以是空值或者是 `*` 表示本地的所有的 IP，但是如果 OpenSSH Server 没有设置 `GatewayPorts yes` 或者 指定 `-g` 默认只会绑定回环地址(为了安全)
+	`remote_address1` 可以是空值或者是 `*` 表示本地的所有的 IP，但是如果 OpenSSH server 没有设置 `GatewayPorts yes` 或者 指定 `-g` 默认只会绑定回环地址(为了安全)
 
 	例如 在 `10.0.3.40` 执行了 `ssh -R 1080：10.0.3.40:80 root@10.0.3.41`，那么 `10.0.3.41` 访问本地的 1080 就会通过 `10.0.3.49` secure shell 代理到 `10.0.3.40:80`
 
@@ -174,13 +174,13 @@ ssh 192.168.2.1 opkg install luci-app-openclash
 
 	`ForwardX11 yes` 命令行的形式
 
-	允许 OpenSSH Server(X11 Client) 发送 X11 报文至 OpenSSH Client(X11 Server)
+	允许通过 OpenSSH 的信道传输 X11 数据(X11 本身是文明的)以及是否自动设置 `DISPLAY` 环境变量
 
 - `-Y`
 
 	`ForwardX11Trusted yes` 命令行的形式
 
-	允许 OpenSSH Server(X11 Client) 发送 X11 报文至 OpenSSH Client(X11 Server)，且具备完全控制 X11 Server
+	X11 clients(OpenSSH server) 可以完全控制 X11 server display(OpenSSH Client)，涵盖 `-X` 
 
 ### 0x03d Debug Related
 

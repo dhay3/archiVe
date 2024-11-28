@@ -86,7 +86,7 @@ tags:
 #### Heading
 
 > [!NOTE]
-> 这里的 `0x` 并不表示 hex decimal，只是一个方便区分 Heading 的标识符
+> 这里的 `0x` 并不表示 hex decimal，所以也不会从 `0x00` 开始，只是一个方便区分 Heading 的标识符
 
 每一个 Heading 对应一个 Sub Topic，从 Heading 2 - Heading 5 中选择，且使用 Title Case Capitalization[^2]
 
