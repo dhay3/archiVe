@@ -38,7 +38,7 @@ def transverse_dir2toc(path: str, level: int = 0, flag: bool = True) -> str:
 def transverse_file2toc(path: str) -> str:
     toc = ""
     for root, dirs, files in os.walk(path):
-        for file in files:
+        for file in sorted(files):
             cmd = ["git", "check-ignore", os.path.join(root, file)]
             procs = subprocess.Popen(cmd, stdout=subprocess.DEVNULL)
             try:
