@@ -6,7 +6,7 @@ tags:
   - "#hash2"
 ---
 
-# OpenSSH 03 - ssh_config
+# ssh_config
 
 ## 0x01 Preface
 
@@ -197,6 +197,28 @@ Host 10.0.3.101
 meta ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBElzkI3CiVNdMu2pf8eXwsVD0+blka7RsutyAK04VFZcOHO7xhXR3Z2RsGprp+KynVn2Ff+jO5kZO8sLCLjwwyY=
 ```
 
+#### `StrictHostKeyChecking <yes|no>`
+
+是否强制检查 remote host-key，可以是如下几个值
+
+- yes
+
+	client 不会自动将 host-key 写入到 host-key database 中，且拒绝连接 host-key 发生改变的 server
+
+- accept-new
+
+	client 在第一次连接 server 时自动将 host-key 写入到 host-key database，且拒绝连接 host-key 发生改变的 server
+
+- no
+
+	client 在第一次连接 server 时自动会将 host-key 写入到 host-key database，允许连接 host-key 发生改变的 server
+
+- ask
+
+	client 在第一次连接 server 时询问用户是否将 host-key 写入到 host-key database，且拒绝连接 host-key 发生改变的 server
+
+	缺省值
+
 #### `VisualHostKey <yes|no>`
 
 登入 OpenSSH server 时是否显示 ASCII remote host key，默认为 no(只有 unknown host 会显示 string rmeote host key)
@@ -208,7 +230,7 @@ meta ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEl
 通常为了在脚本中调用 `ssh` 才使用
 
 > [!note]
-> 需要配置例如 PKI authentication 等不需要提供密码的认证
+> 需要配置例如 publickey authentication 等不需要 prompt 的认证
 
 ### 0x02b Connection Related
 
@@ -582,23 +604,27 @@ Host key verification failed.
 
 ### 0x02c Authentication Related
 
+#### `HostbasedAuthentication <yes|no>`
+
+是否允许 hostbased authentication，默认为 no
+
 #### `KbdInteractiveAuthentication <yes|no>`
    
 是否允许 keyboard interactive authentication，默认为 yes
 
 #### `PubKeyAuthentication <yes|no|unbound|host-bound>`
 
-是否开启 PKI authentication，默认为 yes
+是否开启 publickey authentication，默认为 yes
 
-unbound 和 host-bound 表示是否允许在 PKI authentication 中使用 host-bound authentication protocol extension
+unbound 和 host-bound 表示是否允许在 publickey authentication 中使用 host-bound authentication protocol extension
 
 #### `IdentitiesOnly <yes|no>` 
 
-OpenSSH Client 是否只使用 PKI authentication 默认为 no
+OpenSSH Client 是否只使用 public authentication 默认为 no
 
 #### `IdentityFile <path>`
 
-OpenSSH Client 使用的 PKI private key
+OpenSSH Client 使用的 private key
 
 可以指定多个 `IdentityFile`，从上往下优先级递减
 
@@ -639,7 +665,7 @@ password authentication 失败的重试次数，默认 3
 
 `gssapi-with-mic,hostbased,publickey,keyboard-interactive,password`
 
-即如果 OpenSSH server 支持 PKI authentication(publickey) 那么就会先使用 PKI authentication 而不是 password authentication
+即如果 OpenSSH server 支持 publickey authentication 那么就会先使用 publickey authentication 而不是 password authentication
 
 ### 0x02d Port Forwardings Related
 

@@ -169,9 +169,9 @@ Port 6
 
 ### Deny Root
 
-### PKI
+### Publickey Authentication
 
-## Sudo/Polkitff
+## Sudo/Polkit
 
 
 ## 0x05 Firewall

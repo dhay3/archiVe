@@ -8,6 +8,9 @@ tags:
 
 # OpenSSH 01 - Overview
 
+> [!important]
+> 本系列文章基于 BSD OpenSSH
+
 ## 0x01 Preface
 
 > OpenSSH(OpenBSD Secure Shell) is the premier connectivity tool for remote login with the SSH protocol. It encrypts all traffic to eliminate eavesdropping, connection hijacking, and other attacks. In addition, OpenSSH provides a large suite of secure tunneling capabilities, several authentication methods, and sophisticated configuration options.[^1]
@@ -20,7 +23,7 @@ OpenSSH 是一套基于 SSH(Secure Shell) 协议的 C/S 加密网络工具，大
 
 在没有出现 Secure Shell(SSH) protocol 的时代，大多数管理员都使用 telnet 或者 rlogin/rexec/rsh 这些非安全的传输协议(和 HTTP 一样传输的内容为明文)用于登入 OS 或者执行 OS 命令。而 OS 通常会要求用户进行 authentication，例如输入 account/password。所以中间的网络设备或者流量嗅探都可以看到 L3/L4 的源目信息，以及明文的 account/password，这显然是不安全的
 
-SSH 就是为了解决这个问题而诞生的，他能够加密主机之间的通信(对 L7 报文加密)，保证不被窃听或者篡改。以及以及引入了 PKI authentication 的逻辑
+SSH 就是为了解决这个问题而诞生的，他能够加密主机之间的通信(对 L7 报文加密)，保证不被窃听或者篡改。以及以及引入了 publickey authentication 的逻辑
 
 ### 0x02a Usages
 
@@ -38,7 +41,7 @@ SSH 就是为了解决这个问题而诞生的，他能够加密主机之间的�
 - For development on a mobile or embedded device that supports SSH.
 - For securing file transfer protocols.
 
-### 0x02a Version
+### 0x02a SSH Version
 
 SSH 有 2 个 main version
 
@@ -187,6 +190,16 @@ OpenSSH 根据不同的功能可以将 tools 划分为 3 类
 	
 	sshd, sftp-server, and ssh-agent. 
 
+## 0x04 Portabl OpenSSH[^4]
+
+原生的 OpenSSH 是基于 BSD 的，所以有些配置项只针对 BSD，其他 OS 并不需要；所以在 OpenSSH 的基础上，移除了 BSD 特有的配置，适配了其他 OS。这些版本的 OpenSSH 统称为 portable OpenSSH
+
+例如
+
+BSD OpenSSH `sshd_config` 没有 `UsePAM`，因为 BSD 有自己的 authentication 机制，并不依赖 PAM；而基于 PAM authentication 的 OS(例如 Centos/Ubuntu) `sshd_config` 有 `UsePAM`，因为 OpenSSH 需要通过 PAM 来完成 authentication
+
+所以当出现类似 `Permission denied (...)` 的情况，记得看一下 server 和 client OpenSSH man page 是否支持 BSD OpenSSH 的配置项，或者是否有其他配置项
+
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
 
@@ -205,3 +218,4 @@ OpenSSH 根据不同的功能可以将 tools 划分为 3 类
 [^1]:[OpenSSH](https://www.openssh.com/)
 [^2]:[RFC 4251 - The Secure Shell (SSH) Protocol Architecture](https://datatracker.ietf.org/doc/html/rfc4251)
 [^3]:[release-7.6](https://www.openssh.com/txt/release-7.6)
+[^4]:[OpenSSH: Portable Release](https://www.openssh.com/portable.html)

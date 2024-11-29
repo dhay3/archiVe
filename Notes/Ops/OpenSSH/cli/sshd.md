@@ -6,7 +6,7 @@ tags:
   - "#hash2"
 ---
 
-# OpenSSH 04 - sshd cli
+# sshd
 
 ## 0x01 Preface
 

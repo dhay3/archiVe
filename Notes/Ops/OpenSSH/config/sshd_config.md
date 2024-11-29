@@ -6,7 +6,10 @@ tags:
   - "#hash2"
 ---
 
-# OpenSSH 05 - sshd_config
+# sshd_config
+
+> [!importantn]
+> Contents
 
 ## 0x01 Preface
 
@@ -146,7 +149,7 @@ keywords 如下
 
 #### `Hostkey <path...>`
 
-指定 OpenSSH server 使用的 PKI private key
+指定 OpenSSH server 使用的 private key
 
 可以指定多个 `Hostkey`，从上往下优先级递减
 
@@ -406,13 +409,21 @@ OpenSSH server 是否向 OpenSSH Client 发送 TCP keep alive messages，默认�
 
 ### Authentication Related
 
+#### `HostbasedAuthentication`
+
+是否允许 host-based authentication，默认为 no
+
 #### `GSSAPIAuthentication <yes|no>`
 
-是否允许 GSSAPIAUthentication 默认为 no
+是否允许 gssapi authentication，默认为 no
+
+#### `KerberosAuthentication <yes|no>`
+
+是否允许 kerberos authentication，默认为 yes
 
 #### `KbdInteractiveAuthentication <yes|no>`
 
-是否允许 keyboard interactive authentication，默认为 yes
+是否允许 keyboard interactive authentication(早的时候被称为 `ChallengeResponseAuthentication`)，默认为 yes
 
 #### `PubkeyAuthentication <yes|no>`
 
