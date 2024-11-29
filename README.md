@@ -10,7 +10,7 @@
 # Notes
 
 <!--notes toc start-->
-<!--3df99eed-4237-49a4-85b6-044756bb4e83-->
+<!--13c73f2d-02ff-4de2-834a-1777489ee0ec-->
 ## [AI](Notes/AI)
   - [Huggingface](Notes/AI/Huggingface)
   - [LLAM](Notes/AI/LLAM)
@@ -204,6 +204,8 @@
   - [Nix](Notes/Ops/Nix)
   - [OpenGPG](Notes/Ops/OpenGPG)
   - [OpenSSH](Notes/Ops/OpenSSH)
+    - [cli](Notes/Ops/OpenSSH/cli)
+    - [config](Notes/Ops/OpenSSH/config)
     - [new](Notes/Ops/OpenSSH/new)
   - [OpenSSL](Notes/Ops/OpenSSL)
     - [cli](Notes/Ops/OpenSSL/cli)
@@ -278,12 +280,12 @@
   - [Rsshub](Notes/Sundries/Rsshub)
   - [Typora](Notes/Sundries/Typora)
 
-<!--notes toc end-->                                                                 
+<!--notes toc end-->                                                                  
 
 # Howto
 
 <!--howto toc start-->
-<!--88b806d3-7000-445b-a4e5-2121018500e2-->
+<!--8b81f281-3173-4f2f-b6a5-1246f6b3799a-->
 - [How to Listen](Howto/How%20to%20Listen.md)
 - [How to Write Code](Howto/How%20to%20Write%20Code.md)
 - [How to Invest](Howto/How%20to%20Invest.md)
@@ -297,7 +299,7 @@
 - [How to Read](Howto/How%20to%20Read.md)
 - [How to Retrive Your Privacy](Howto/How%20to%20Retrive%20Your%20Privacy.md)
 
-<!--howto toc end-->                                                               
+<!--howto toc end-->                                                                
 
 # License
 
