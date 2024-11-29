@@ -10,7 +10,7 @@
 # Notes
 
 <!--notes toc start-->
-<!--a615a623-328a-4407-994a-88ab1f57ee5a-->
+<!--3df99eed-4237-49a4-85b6-044756bb4e83-->
 ## [AI](Notes/AI)
   - [Huggingface](Notes/AI/Huggingface)
   - [LLAM](Notes/AI/LLAM)
@@ -278,12 +278,12 @@
   - [Rsshub](Notes/Sundries/Rsshub)
   - [Typora](Notes/Sundries/Typora)
 
-<!--notes toc end-->                                                                
+<!--notes toc end-->                                                                 
 
 # Howto
 
 <!--howto toc start-->
-<!--2fb386c9-5da1-497f-b1e3-f490670bfc66-->
+<!--88b806d3-7000-445b-a4e5-2121018500e2-->
 - [How to Listen](Howto/How%20to%20Listen.md)
 - [How to Write Code](Howto/How%20to%20Write%20Code.md)
 - [How to Invest](Howto/How%20to%20Invest.md)
@@ -297,7 +297,7 @@
 - [How to Read](Howto/How%20to%20Read.md)
 - [How to Retrive Your Privacy](Howto/How%20to%20Retrive%20Your%20Privacy.md)
 
-<!--howto toc end-->                                                              
+<!--howto toc end-->                                                               
 
 # License
 
