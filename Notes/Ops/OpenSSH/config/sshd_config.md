@@ -161,6 +161,14 @@ hostkey /etc/ssh/ssh_host_ecdsa_key
 hostkey /etc/ssh/ssh_host_ed25519_key
 ```
 
+#### `HostCertificate <path>`
+
+指定 OpenSSH server 使用由 CA 签发的 host certificate 的路径，`Hostkey` 必须包含 certificate 中对应 public key 的 private key
+
+#### `TrustedUserCAKeys <path>`
+
+user certificate authentication 使用的 CA 公钥路径
+
 #### `StrictModes <yes|no>`
 
 OpenSSH server 是否检查文件的 ownership，默认 yes
@@ -409,9 +417,26 @@ OpenSSH server 是否向 OpenSSH Client 发送 TCP keep alive messages，默认�
 
 ### Authentication Related
 
-#### `HostbasedAuthentication`
+#### `HostbasedAuthentication <yes|no>`
 
-是否允许 host-based authentication，默认为 no
+是否允许 hostbased authentication，默认为 no
+
+#### `IgnoreUserKnownHosts <yes|no>`
+
+hostbased authentication 是否忽略 `~/.ssh/known_hosts` 只读取全局 `/etc/ssh/known_hosts`，默认为 no
+
+#### `IgnoreRhosts <yes|no>`
+
+hostbased authentication 是否忽略 `~/.rhost` 或者是 `~/.shosts`
+
+可以是
+
+- yes
+- shosts-only
+
+	只读取 `~/.shosts`
+
+- no
 
 #### `GSSAPIAuthentication <yes|no>`
 
@@ -469,7 +494,7 @@ path 文件中的 host keys 对应的用户会被拒绝 public key authenticatio
 
 其中 publickey 可以被连续使用，例如 `publickey,publickey` 表示使用 2 个不同的 publickey 验证
 
-还有一个特殊值 any 表示，任意一个 authentication method 验证通过即可，也是缺省值 
+还有一个特殊值 any 表示，任意一个 authentication method 验证通过即可(`XXXAuthentication yes`)，也是缺省值 
 
 #### `PermitRootLogin <yes|no|prohibit-password|forced-commands-only>`
 

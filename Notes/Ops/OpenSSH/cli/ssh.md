@@ -88,6 +88,8 @@ ssh 192.168.2.1 opkg install luci-app-openclash
 
 	指定 PKI 使用的 private key，如果没有指定默认会使用 `~/.ssh/id_rsa`, `~/.ssh/id_ecdsa`, `~/.ssh/id_ecdsa_sk`, `~/.ssh/id_ed25519` 以及 `~/.ssh/id_ed25519_sk`
 
+	如果 `ssh_config` 没有指定 `CertificateFile` 的话， client 还会尝试从 `identifity_file` 目录读取 `-cert.pub` 结尾的 user certificate
+
 - `-C`
 
 	`Compression yes` 命令行的形式

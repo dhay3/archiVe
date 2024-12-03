@@ -42,15 +42,17 @@ host-key database 由很多条目组成，每条条目由几部分组成，通�
 
 	- `@cert-authority`
 
-		表示 OpenSSH server 的 keypair 由 CA 签发
+		表示当前条目的 host key 由 CA 签发
 
 	- `@revoked`
 
-		标示 OpenSSh server 的 keypair 已失效
+		表示当前条目的 host key 已失效
 
-- hostnames
+- hostnames\[:port\]
 
 	server hsotname
+
+	可以使用 `*` wildcard
 
 - keytype
 
@@ -75,12 +77,12 @@ github.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAA
 
 keypair 就是 server 的密钥对，通常由 OpenSSH 自动生成，路径如下
 
-- /etc/ssh/ssh_host_ed25519_key
-- /etc/ssh/ssh_host_ed25519_key.pub
-- /etc/ssh/ssh_host_ecdsa_key
-- /etc/ssh/ssh_host_ecdsa_key.pub
-- /etc/ssh/ssh_host_rsa_key
-- /etc/ssh/ssh_host_rsa_key.pub
+- `/etc/ssh/ssh_host_ed25519_key`
+- `/etc/ssh/ssh_host_ed25519_key.pub`
+- `/etc/ssh/ssh_host_ecdsa_key`
+- `/etc/ssh/ssh_host_ecdsa_key.pub`
+- `/etc/ssh/ssh_host_rsa_key`
+- `/etc/ssh/ssh_host_rsa_key.pub`
 
 也可以通过 `sshd_config` 的 `HostKey` 指定
 

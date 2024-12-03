@@ -219,6 +219,10 @@ meta ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEl
 
 	缺省值
 
+#### `CertificateFile <path>`
+
+指定 user certificate，必须要和 `IdentityFile` 一起使用
+
 #### `VisualHostKey <yes|no>`
 
 登入 OpenSSH server 时是否显示 ASCII remote host key，默认为 no(只有 unknown host 会显示 string rmeote host key)
