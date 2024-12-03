@@ -10,7 +10,7 @@
 # Notes
 
 <!--notes toc start-->
-<!--13c73f2d-02ff-4de2-834a-1777489ee0ec-->
+<!--fd64f738-ac1d-4649-889f-ee803b3fbd71-->
 ## [AI](Notes/AI)
   - [Huggingface](Notes/AI/Huggingface)
   - [LLAM](Notes/AI/LLAM)
@@ -280,26 +280,26 @@
   - [Rsshub](Notes/Sundries/Rsshub)
   - [Typora](Notes/Sundries/Typora)
 
-<!--notes toc end-->                                                                  
+<!--notes toc end-->                                                                   
 
 # Howto
 
 <!--howto toc start-->
-<!--8b81f281-3173-4f2f-b6a5-1246f6b3799a-->
-- [How to Listen](Howto/How%20to%20Listen.md)
-- [How to Write Code](Howto/How%20to%20Write%20Code.md)
-- [How to Invest](Howto/How%20to%20Invest.md)
-- [How to Choose Licenses](Howto/How%20to%20Choose%20Licenses.md)
-- [How to Learning Fast](Howto/How%20to%20Learning%20Fast.md)
-- [How to Write Notes](Howto/How%20to%20Write%20Notes.md)
-- [How to Secure Your VPS](Howto/How%20to%20Secure%20Your%20VPS.md)
+<!--14c74725-1412-4cc4-964d-9dcaa739377c-->
 - [How to Answer](Howto/How%20to%20Answer.md)
-- [How to Write Commit Messages](Howto/How%20to%20Write%20Commit%20Messages.md)
 - [How to Ask Questions](Howto/How%20to%20Ask%20Questions.md)
+- [How to Choose Licenses](Howto/How%20to%20Choose%20Licenses.md)
+- [How to Invest](Howto/How%20to%20Invest.md)
+- [How to Learning Fast](Howto/How%20to%20Learning%20Fast.md)
+- [How to Listen](Howto/How%20to%20Listen.md)
 - [How to Read](Howto/How%20to%20Read.md)
 - [How to Retrive Your Privacy](Howto/How%20to%20Retrive%20Your%20Privacy.md)
+- [How to Secure Your VPS](Howto/How%20to%20Secure%20Your%20VPS.md)
+- [How to Write Code](Howto/How%20to%20Write%20Code.md)
+- [How to Write Commit Messages](Howto/How%20to%20Write%20Commit%20Messages.md)
+- [How to Write Notes](Howto/How%20to%20Write%20Notes.md)
 
-<!--howto toc end-->                                                                
+<!--howto toc end-->                                                                 
 
 # License
 
