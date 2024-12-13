@@ -1,0 +1,1 @@
+- [From where I left - by antirez](https://news.ycombinator.com/item?id=42378488)

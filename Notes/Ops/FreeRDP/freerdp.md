@@ -98,9 +98,13 @@ xfreerdp /u:JohnDoe /d:CONTOSO /p:Password123! /v:rdp.contoso.com
 
   菜单的动画效果，默认不开启
 
-- `/cert:tofu`
+- `/cert:ignore`
 
   连接时自动接受证书
+
+- `/cert:tofu`
+
+	trust on first use 连接时只有第一次需要手动接收证书
 
 - `/tls-seclevel:0`
 
@@ -151,7 +155,7 @@ freerdp 同时也支持类似 Virtualbox 中的 <kbd>Right-Ctrl</kbd> 临时切�
 ## 0x06 Examples
 
 ```
-/usr/bin/xfreerdp /u:admin /p: /v:10.100.4.127 /bpp:64 /fonts /cert:tofu /scale:140 /scale-desktop:125 /dynamic-resolution
+/usr/bin/xfreerdp /u:admin /p: /v:10.100.4.127 /bpp:64 /fonts /cert:ignore /scale:140 /scale-desktop:125 /dynamic-resolution
 ```
 
 **references**

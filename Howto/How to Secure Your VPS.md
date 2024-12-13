@@ -169,7 +169,9 @@ Port 6
 
 ### Deny Root
 
-### Publickey Authentication
+### Authentication Method
+
+user certi publickey and keyboardinteractive
 
 ## Sudo/Polkit
 

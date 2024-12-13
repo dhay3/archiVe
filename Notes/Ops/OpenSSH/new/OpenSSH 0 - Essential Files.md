@@ -1,4 +1,4 @@
-# SSH files
+# OpenSSH files
 
 ref
 
