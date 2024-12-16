@@ -62,7 +62,7 @@ uptime [options]
 
 而 load average 的含义在 single-core processor 和 multi-core processor 的场景下差异很大
 
-### 0x04a single-core
+### 0x04a Single-core Load Average
 
 在 single-core 的场景下
 
@@ -72,7 +72,7 @@ uptime [options]
 
 同理可以得出 idel 的比率
 
-### 0x04b multi-core
+### 0x04b Multi-core Load Average
 
 在 multi-core 的场景下(假设 4 core)
 
@@ -82,6 +82,13 @@ uptime [options]
 
 同理可以得出 idel 的比率
 
+### 0x04c Summarize
+
+从 single-core 和 multi-core 的对比中可以得出如下结论
+
+$$
+load\ average \ge CPU\ core\ numbers => CPU\ is\ under\ pressure\ in\ interval
+$$
 
 ---
 *Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*

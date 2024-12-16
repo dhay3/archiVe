@@ -1,31 +1,403 @@
-# Linux top
+---
+createTime: 2024-12-13 17:41
+license: cc by 4.0
+tags:
+  - "#hash1"
+  - "#hash2"
+---
 
-## Digest
 
-以 flow 的方式展示 system summary information (包含 process 和 thread 的使用率)，默认以interactive mode 运行
+# top
 
-top 由 3 部分组成：Summary Area，Fields/Columns Header，Task Area
+## 0x01 Preface
 
-### Linux memory
+`top` 是一个查看系统资源(主要是 CPU/MEM)使用率以及 processes 或者是 threads 占用系统资源的工具，默认会以 interactive mode 运行，由 4 部分组成
 
-Linux 中有 3 种 memory，一种是 optional，
+- Summary Area
+- Fields/Columns Header
+- Task Area
+- Input/Message Line
 
-- physical memory，a limited resource where code and data must reside when executed or referenced
+例如
 
-- optional swap file，where modified (dirty) memory can be saved and later retrieved if too many demands are made on
+```
+# Summary Area
+top - 17:55:06 up 10 days,  3:28,  1 user,  load average: 0.00, 0.01, 0.05
+Tasks: 221 total,   1 running, 220 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni, 99.9 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 32779900 total, 31618788 free,   733032 used,   428080 buff/cache
+KiB Swap:  2097148 total,  2097148 free,        0 used. 31646984 avail Mem
 
-- virtual memory，a nearly unlimited resource serving the following goals：
+# Input/Message Line
+Locate string
 
-  ```
-  1. abstraction, free from physical memory addresses/limits
-  2. isolation, every process in a separate address space
-  3. sharing, a single mapping can serve multiple needs
-  4. flexibility, assign a virtual address to a file
-  ```
+# Fields/Columns Header
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+  
+# Task Area
+ 1803 mysql     20   0 2250968 399904  16284 S   0.7  1.2  83:03.81 mysqld
+ 1195 root      20   0  210648   8932   5508 S   0.3  0.0  11:16.35 vmtoolsd
+25502 root      20   0  162064   2348   1584 R   0.3  0.0   0:00.06 top
+    1 root      20   0  191404   4452   2600 S   0.0  0.0   0:06.46 systemd
+    2 root      20   0       0      0      0 S   0.0  0.0   0:00.09 kthreadd
+```
 
-每种内存都严格在如下 4 像限使用
+### 0x01a Summary Area
 
-> Both physical memory and virtual memory can include any of the four, while the swap file only includes #1 through #3.  The memory in quadrant #4, when modified, acts as its own dedicated swap file.
+展示一些资源的总使用率或者是总量，可以通过 [Summary Area Command](#Summary%20Area%20Command) 修改显示的方式
+
+例如
+
+```
+top - 17:55:06 up 10 days,  3:28,  1 user,  load average: 0.00, 0.01, 0.05
+Tasks: 221 total,   1 running, 220 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni, 99.9 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 32779900 total, 31618788 free,   733032 used,   428080 buff/cache
+KiB Swap:  2097148 total,  2097148 free,        0 used. 31646984 avail Mem
+```
+
+- `top - 17:55:06 up 10 days,  3:28,  1 user,  load average: 0.00, 0.01, 0.05`
+
+	输出 uptime 以及 load average 等价于 `uptime`
+
+- `Tasks: 221 total,   1 running, 220 sleeping,   0 stopped,   0 zombie`
+
+	输出正在运行的进程数，不同状态的进程数(即 `task = processes | threads`)。可以通过 `H` 将进程数转为线程数
+
+	有 4 种状态
+
+	- running
+	
+		当前占用 CPU 资源的进程数
+
+		task area `S` 字段会以 `R` 标示 running 进程
+	
+	- sleeping
+
+		当前没有使用 CPU 资源或者等待 I/O 的进程数
+
+		task area `S` 字段会以 `S` 标示 sleeping 进程
+
+	- stopped
+
+		暂时停止的进程，通常是 `ctrl + z` 或者是 `kill -STOP` 触发的进程
+
+		task area `S` 字段会以 `T` 标示 stopped 进程
+
+	- zombie
+
+		通常是子进程已经退出了，但是父进程并没有通过 `wait()` 来读取子进程的状态导致的
+
+		task area `S` 字段会以 `Z` 标示 zombie 进程
+
+- `%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni, 99.9 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st`
+
+	所有 tasks 从 last delay 开始占用 CPU 不同类型资源时间的平均值。根据 Thread mode on/off Irix mode on/off
+
+	计算公式为 
+
+	
+
+	主要分为如下几种 CPU 资源
+
+	- us(user space)
+
+		time running un-niced user processes
+
+		未使用 `nice` 调整优先级的 tasks 占用 CPU 的时间，通常就是 tasks 默认的状态
+
+	- sy(system space)
+
+		time running kernel processes
+
+		系统 tasks 占用 CPU 的时间 
+
+	- ni(nice)
+
+		time running niced user processes
+
+		通过 `nice` 调整优先级的 tasks 占用 CPU 的时间
+
+	- id(idle)
+
+		time spent in the kernel idle handler
+
+		CPU 没有处理任何 tasks 的时间
+
+	- wa(I/O wait)
+
+		time waiting for I/O completion
+
+		CPU 处于 I/O wati 的时间
+
+	- hi(hardware interrupts)
+
+		time spent servicing hardware interrupts
+
+		CPU 处理硬件中断的时间。比如 keyboards, mice 发送的信号
+
+	- si(software interrupts)
+
+		time spent servicing software interrupts
+
+		CPU 处理软件中断的时间。比如 drivers 发送的信号
+
+	- st(steal time)
+
+		time stolen from this vm by the hypervisor
+
+		CPU 用于 virtualization 的时间
+
+- `KiB Mem : 32779900 total, 31618788 free,   733032 used,   428080 buff/cache`
+
+	%% TODO %%
+
+- `KiB Swap:  2097148 total,  2097148 free,        0 used. 31646984 avail Mem`
+
+	%% TODO %%
+
+### 0x01b Input/Message Line
+
+```
+Locate string
+```
+
+### 0x01c Fields/Columns Header
+
+task area 显示的字段，可以通过 `f` interacrive command 来设置显示的字段
+
+例如
+
+```
+PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+```
+
+常见的字段有
+
+#### %CPU
+
+> [!important]
+> 千万不要将 `%CPU` 和 `%CPU(s)` 搞混，两者计算方式不同
+
+*The task's share of the elapsed CPU  time  since the  last  screen  update,  expressed  as  a percentage of total CPU time.*
+
+单 task 从 last delay 开始占用 CPU 时间的均值，没有做任何配置的情况下 task 指 process(可能由多个 threads 组成)
+
+计算公式为 $elasped\ CPU\ time \div total\ CPU\ time$
+
+elasped CPU time 会根据 thread mode on/off 来取值
+
+total CPU time 会根据 Irix mode on/off 来取值
+
+> [!note]
+> 通过 interactive command `H` 设置 thread mode
+> 
+> 通过 interactive command `I` 设置 Irix mode
+
+定义如下 EBNF
+
+```
+task = process with one thread | process with multiple threads | thread
+
+elasped CPU time = sum(one task's us,sy,ni,wa,hi,si,st) since the last delay
+
+total CPU time = time of delay [multily the number of cores]
+```
+
+如果 thread mode on
+
+```
+elasped CPU time = sum(one thread's us,sy,ni,wa,hi,si,st) since the last delay
+```
+
+如果 thread mode off(缺省值)
+
+```
+elasped CPU time = sum(one task's thread's us,sy,ni,wa,hi,si,st[,...]) since the last delay
+```
+
+如果 Irix mode on(缺省值)
+
+```
+total CPU time = time of delay
+```
+
+如果 Irix mode off
+
+```
+total CPU time = time of delay multily the number of cores
+```
+
+假设有一个 4 core server，delay time 为 3s，一个进程有 2 个线程，从 last delay 开始计算分别占用了 0.5s/1s
+
+- 如果 thread mode on，Irix mode on，那么可以得出这 2 个 task $CPU\% = 0.5 \div 3$，$CPU\% = 1 \div 3$
+- 如果 thread mode on，Irix mode off，那么可以得出这 2 个 task $CPU\% = 0.5 \div (3 \times 4)$，$CPU\% = 1 \div (3 \times 4)$
+- 如果 thread mode off，Irix mode on，那么可以得出 $CPU\% = (0.5 + 1)\div 3$
+- 如果 thread mode off，Irix mode off，那么可以得出 $CPU\% = (0.5 + 1) \div (3 \times 4)$
+
+**需要注意的是在 thread mode off，Irix mode on，multi-core 的场景下(即缺省) CPU% 是有可能大于 100%**
+
+假设一个 4 core server，delay time 为 3s，一个进程有 3 个线程，thread mode off，从 last delay 开始计算 3 个线程分别占用了不同 cores 1s 1.5s 1s，那么可以得出 $CPU\% = (1 + 1.5 + 1)\div 3 \gt 1$
+
+可以得出如下结论
+
+- thread mode off，Irix mode on
+
+	CPU%
+
+
+#### %CUC
+
+#### %CUU
+
+#### %MEM
+
+#### AGID
+
+
+
+- PID
+
+	
+
+### 0x01d Task Area
+
+```
+ 1803 mysql     20   0 2250968 399904  16284 S   0.7  1.2  83:03.81 mysqld
+ 1195 root      20   0  210648   8932   5508 S   0.3  0.0  11:16.35 vmtoolsd
+```
+
+## Interactive Mode
+
+在没有使用任何参数的情况下 `top` 会进入 interactive mode，用户可以通过 keystrokes 来修改/增加/删除显示的一些选项
+
+keystrokes 按照组成的部分分类
+
+### Global Command
+
+- `Enter | Space`
+
+	refresh-display
+
+	刷新 Summary Area/Task Area
+
+- `? | h`
+
+	help
+
+	显示帮助信息
+
+- `=`
+
+	exit-display-limits
+
+	主要用于清空 `L` 过滤的条件
+
+- `0`
+
+	zero-suppress
+
+	0 值是否显示，UID/GID/NI/PR/P 不受影响
+
+- `A`
+
+	alternate-display-mode
+
+- `B`
+
+	bold-disable/enable
+
+	summary area 和 task area 部分字体是否加粗
+
+- `d | s`
+
+	change-delay-time-interval
+
+	修改 refresh delay，默认 3s，可以通过 `? | h` 来查看当前的 delay 值
+
+- `H`
+
+	threads-mode
+
+	以 thread 展示 tasks，而不是默认的 processes
+
+- `I`
+
+	Irix-mods
+
+	规定了 CPU% 的计算方式
+
+	
+
+- `k`
+
+	kill-a-task
+
+	kill 掉指定 PID 的进程
+
+- `q`
+
+	quit
+
+	退出 `top` interactive mode
+
+- 
+
+
+
+### Summary Area Command
+
+- `E`
+
+	enforce-summary-memory-scale
+
+	调整 summary area memory 显示的单位，KiB - EiB
+
+- `1 | 4`
+
+  显示
+  显示每核cpu使用率，使用4多行显示
+
+- `l`
+
+  toggle uptime, load average
+
+- `t`
+
+  切换summary area cpu 显示的模式
+
+```
+	
+```
+
+- `m`
+
+  切换summary area memory 显示的模式
+
+- `E`
+
+  调整summary area memmory 显示的单位
+
+### Task Aread Command
+
+- `e`
+
+	enforce-task-memory-scale
+
+	调整 task area memory 显示的单位，KiB - PiB
+
+- `g`
+
+	choose-another-window/field-group
+
+	选择面板，不做任何配置不同面板 task area 字段不同，1 - 4
+
+## Non-interactive Mode
+
+### Optional Args
+
+
+## Linux Memory Type
 
 ```
                                      Private | Shared
@@ -40,537 +412,19 @@ Linux 中有 3 种 memory，一种是 optional，
                                  3           |          4
 ```
 
-- RES  - anything occupying physical memory which, beginning with Linux-4.5, is the sum of the following three fields:
-  RSan - quadrant 1 pages, which include any former quadrant 3 pages if modified
-  RSfd - quadrant 3 and quadrant 4 pages
-  RSsh - quadrant 2 pages
+## The CPU% shows greater than 100%
 
-  使用的实际物理内存
+---
+*Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
 
-- SHR  - subset of RES (excludes 1, includes all 2 & 4, some 3)
+***See also***
 
-  共享内存
+- `man top.1`
 
-- VIRT - everything in-use and/or reserved (all quadrants)
 
-  虚拟内存
+***References***
 
-- SWAP - potentially any quadrant except 4
-
-### Summary Area
-
-```
-top - 18:13:37 up 1 day, 12:35,  1 user,  load average: 0.00, 0.01, 0.05
-Tasks:  81 total,   1 running,  79 sleeping,   1 stopped,   0 zombie
-%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
-KiB Mem :   498684 total,    73004 free,    90840 used,   334840 buff/cache
-KiB Swap:  2097148 total,  2097148 free,        0 used.   390192 avail Mem 
-```
-
-#### uptime and load averages
-
-`top - 18:15:11 up 1 day, 12:36,  1 user,  load average: 0.00, 0.01, 0.05`
-
-load average的时间间隔分别是从1,5,15 mins 计算
-
-#### task and cpu states
-
-`Tasks:  81 total,   1 running,  79 sleeping,   1 stopped,   0 zombie`
-
-任务状态计数，包含4中：running；sleeping；stopped；zombie
-
-`%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st`
-
-cpu状态，已百分比显示
-
-```
-us, user    : time running un-niced user processes
-sy, system  : time running kernel processes
-ni, nice    : time running niced user processes
-id, idle    : time spent in the kernel idle handler
-wa, IO-wait : time waiting for I/O completion
-hi : time spent servicing hardware interrupts
-si : time spent servicing software interrupts
-st : time stolen from this vm by the hypervisor
-```
-
-如果是多选的cpu显示模式（interactive mode 使用 t 切换）
-
-```
-                      a    b     c    d
-           %Cpu(s):  75.0/25.0  100[ ...
-```
-
-a) is the usesr (us + ni) percentage
-
-b) is the system(sy + hi + si) percentage
-
-c) is the total
-
-d) 图表
-
-#### memory usage
-
-```
-GiB Mem :    1.790 total,    0.107 free,    0.381 used,    1.302 buff/cache
-GiB Swap:    0.001 total,    0.000 free,    0.001 used.    1.240 avail Mem
-```
-
-第一行显示physical memory，第二行显示virtual memory
-
-vitrual momory avail is an estimation of physical memory（包括可回收的内存页），而 free 不包含。
-
-单位默认以kibibytes显示，在interactive mode 中可以使用 `E` 来调整单位
-
-如果以多选的memory模式显示，interactive mode使用`m`来替换
-
-```
-                      a    b          c
-           GiB Mem : 18.7/15.738   [ ...
-           GiB Swap:  0.0/7.999    [ ...
-```
-
-a) is the percentage used
-
-b) is the total available，not percentage
-
-c) 图表
-
-### Fields/Columns Header
-
-部分不常用的参数不记录在内，其他具体查看man page
-
-==和内存相关(VIRT，RES，SHR，CODE..)的默认以`kiB`显示（无单位），使用`e`来改变，从KiB 到 PiB==
-
-interactive mode 使用`f`(fileds management)来设置显示的fields
-
-进入field management后使用
-
-`d`或空格添加删除显示的feild
-
-`a`切换预支方案
-
-`s`指定排序的主键
-
-#### RES
-
-resident memory size
-
-a subset of virtual address space(VIRT)，representing the non-swapped physical memory a task is currently using. It is also the sum of the RSan, RSfd and RSsh fields.
-
-VIRT 占用的虚拟内存，RES占用的物理内存，SHR占用的共享内存
-
-#### SHR
-
-A subset of resident memory(RES) that may be used by other processes
-
-It will include shared anonymous  pages  and  shared  file-backed  pages.  It  also  includes private pages mapped to files representing program images and shared libraries
-
-#### SWAP
-
-The formerly resident portion of a task's address space  written to the swap file when physical memory becomes over committed.
-
-#### VIRT
-
-The total amount  of  virtual  memory  used  by  the  task.  It  includes  all  code,  data  and shared libraries plus pages that  have been swapped out and pages that have been  mapped  but  not  used.
-
-#### %CPU
-
-The task's share of the elapsed CPU time since the last screen update
-
-==如果一个进程是多线程的，如果top没有以thread mode 运行可能会显示超过100%==，interactive mode 使用`H`可以切换
-
-#### %MEM
-
-进程占用的physical memory比率(RES/total physical memory)
-
-#### CODE
-
-可执行代码占用的物理内存
-
-#### COMMAND
-
-显示启动进程的命令，interactive mode可以使用`c`来切换，如果命令太长就会被truncate
-
-```
-1 root      20   0  128136   6288   3760 S  0.0  1.3   0:01.87 /usr/lib/systemd/systemd --switched-root --system --deseriali+
-```
-
-#### DATA
-
-进程占用的private memory，也被称为DRS，不会映射到physical memory（RES），但是会计算到vitrual memory（VIRT）
-
-#### ENVIRON
-
-显示进程使用的环境变量，会被truncate
-
-#### GID/GROUP
-
-进程对应的GID/group name
-
-#### NI
-
-nice value，==A negative nice value means higher priority，whereas a positive nice value means lower priority==  Zero in this field simply means priority will not be adjusted in determining a task's dispatch-ability.
-
-优先级越高，被cpu处理越早
-
-#### OOMa/OOMs
-
-当内存耗尽时，进程kill掉的优先级，1000 always kill，0 never kill
-
-#### P
-
-a number representing the last used cpu
-
-#### PID
-
-进程号
-
-This value may also be used as: a process group ID (see PGRP); a session ID for the session leader (see SID); a thread group ID for the thread group leader (see TGID); and a TTY process group ID for the process group leader (see TPGID).
-
-#### PPID
-
-父进程号，使用forest mode 比较好
-
-#### PR
-
-cpu 调度进程的优先级，如果值为rt 表示 rael time scheduling priority 即当前调用被cpu调用的
-
-#### S
-
-进程状态
-
-1. D = uninterruptibel slepp
-2. I = idle
-3. R = running(ready to run)
-4. S = sleeping
-5. T = stopped by job control signal
-6. t = stopped by dubugger during trace
-7. Z = zombie
-
-#### TIME/TIME+
-
-从进程启动后占用CPU的时间，TIME+毫秒级单位(别和 `ps` 的 STIME 混淆)
-
-#### TTY
-
-进程关联的TTY
-
-#### UID
-
-启动进程的uid
-
-#### USER
-
-启动进程的用户
-
-#### USED
-
-This field represents the non-swapped physical memory a task  is  using  (RES)  plus  the swapped out portion of its address space  (SWAP).
-
-#### nDRT
-
-https://www.thegeekdiary.com/what-are-dirty-pages-in-linux/
-
-进程使用的dirty pages
-
-if old page has been modified already then it must be preserved somewhere so application/database can re-used later on – this is called dirty page.
-
-dirty page 一般存储在swap中
-
-#### nMaj/nMin/VMj/VMn
-
-https://www.quora.com/What-is-the-difference-between-minor-and-major-page-fault-in-Linux
-
-marjor page faults delta
-
-minor page faults delta
-
-#### nTH
-
-进程关联的线程数
-
-## mode optionals
-
-- `-H`
-
-  以threads-mode 运行top，如果没有改参数，一个进程显示所有线程占用的系统资源
-
-- `-b`
-
-  以 batch-mode 运行 top，可以将top的输出输入到文件，通常和`-n`一起使用表示更新多少次后终止
-
-  ```
-  root in /tmp λ top -b -n 1 > top.dump
-  root in /tmp λ head -10 top.dump
-  top - 14:00:44 up 2 days, 20:04,  2 users,  load average: 0.03, 0.05, 0.02
-  Tasks: 115 total,   1 running,  77 sleeping,   0 stopped,   0 zombie
-  %Cpu(s):  0.5 us,  0.4 sy,  0.0 ni, 99.0 id,  0.1 wa,  0.0 hi,  0.0 si,  0.0 st
-  KiB Mem :  1877052 total,   147324 free,   871488 used,   858240 buff/cache
-  KiB Swap:        0 total,        0 free,        0 used.   850268 avail Mem
-  
-    PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND
-      1 root      20   0  160232   6980   4280 S  0.0  0.4   0:04.22 systemd
-      2 root      20   0       0      0      0 S  0.0  0.0   0:00.13 kthreadd
-      4 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 kworker/0:0H
-  ```
-
-## none interactive optionals
-
-- `-O`
-
-  输出top可以使用的field-names
-
-### input optionals
-
-- `-d`
-
-  指定top一次更新的时间间隔
-
-  ```
-  #10s更新一次
-  root in /tmp λ top -d 10
-  ```
-
-- `-p <pid>`
-
-  只查看pid关联的进程，可以使用comma分隔查看多个pid，pid 0 表示 top 进程
-
-- `-u <uid | username>`
-
-  查看指定用的启用的进程
-
-### output optionals
-
-- `-o <field-names>`
-
-  按照指定列排序，在列名前添加`+`表示从高到低，`-`表示从低到高，具体可以使用的列名使用`-O`参数查看
-
-  ```
-  #按照内存使用率从高到低排序
-  root in /tmp λ top -o +%MEM
-  ```
-
-- `-c`
-
-  输出的command以全路径参数显示
-
-  ```
-   PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND                                                         
-      1 root      20   0  128136   6288   3760 S  0.0  1.3   0:01.63 /usr/lib/systemd/systemd --switched-root --system --deserialize+
-  ```
-
-## interactive optionals
-
-### common
-
-- `? | help`
-
-  帮助信息
-
-- `enter | space`
-
-  主动刷新top显示 
-
-- `=`
-
-  清空当前的过滤条件
-
-- `0`
-
-  0值是否显示
-
-- `B`
-
-  字体加粗功能
-
-- `d`
-
-  修改delay 时间
-
-- `H`
-
-  以thread mod显示
-
-- `k`
-
-  杀死指定进程
-
-- `r`
-
-  renice a task
-
-- `W`
-
-  ==持久化当前在top中的修改的设置，默认存储在`~/.toprc`中，下次使用top是自动调用该配置文件==
-
-- `Z`
-
-  ==修改top展示信息的颜色==，使用`w`来当前选中的更改面板，默认USR，使用RGB 256
-
-  https://www.ditig.com/256-colors-cheat-sheet
-
-- `X`
-
-  设置列宽，`-1`表示自动scale
-
-- `Y`
-
-  在`.toprc`中输入如下内容，==可以查看指定进程打开的文件，日志，NUMA==，同样还是从syslog中读取日志
-
-  ```
-   /bin/echo -e "pipe\tOpen Files\tlsof -P -p %d 2>&1" >> ~/.toprc
-   /bin/echo -e "file\tNUMA Info\t/proc/%d/numa_maps" >> ~/.toprc
-   /bin/echo -e "pipe\tLog\ttail -n200 /var/log/syslog | sort -Mr" >> ~/.toprc
-  ```
-
-### sorting
-
-- `M`
-
-  按照进程使用的内存大小排序
-
-- `N`
-
-  按照进程的PID排序
-
-- `P`
-
-  按照进程的CPU使用率排序
-
-- `T`
-
-  按照进程启用的时间排序
-
-### summary area
-
-- `1 | 4`
-
-  显示每核cpu使用率，使用4多行显示
-
-- `l`
-
-  toggle uptime, load average
-
-- `t`
-
-  切换summary area cpu 显示的模式
-
-- `m`
-
-  切换summary area memory 显示的模式
-
-- `E`
-
-  调整summary area memmory 显示的单位
-
-###  searching 
-
-- `L`
-
-  从所有field中选取含有指定字符的进程，使用`&`匹配下一个
-
-### Fields/Columns Header
-
-- `f`
-
-  调整显示的fields
-
-- `c`
-
-  显示command column
-
-### Task Area
-
-- `J | j`
-
-  显示内容左右对齐  
-
-- `x | y` 
-
-  主键列高亮，running tasks 高亮 
-
-- `S`
-
-  累计占用cpu的时间
-
-- `U | u`
-
-  查看指定用户起的进程
-
-- `z`
-
-  更改主题颜色到黑白
-
-- `A`
-
-  进入多选模式，使用`g`选择使用的面板,再次键入`A`使用选择的面板
-
-- `i`
-
-  idle-process toggle，只显示active tasks
-
-- `V`
-
-  以forest mode 显示，和pstree类似显示子进程
-
-  ```
-    910 root      20   0   89704   2204   1168 S  0.0  0.4   0:00.34  `- master                                                    
-    912 postfix   20   0   89876   4084   3076 S  0.0  0.8   0:00.05      `- qmgr                                                  
-  22167 postfix   20   0   89808   4056   3060 S  0.0  0.8   0:00.00      `- pickup 
-  ```
-
-- `n`
-
-  只显示指定数目的进程
-
-## config
-
-> 注意该配置文件不能被直接使用，需要通过设置然后使用 `W` 保存生成
-
-![2022-02-24_23-46](https://github.com/dhay3/image-repo/raw/master/20220224/2022-02-24_23-46.2jvf71r4shk0.png)
-
-```
-cpl in ~/.config/procps λ cat toprc 
-top's Config File (Linux processes with windows)
-Id:j, Mode_altscr=1, Mode_irixps=1, Delay_time=1.0, Curwin=0
-Def     fieldscur=����'34�E79:@)=;*+,-./01268<>?ABCFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz
-        winflags=195892, sortindx=0, maxtasks=0, graph_cpus=0, graph_mems=0, double_up=0, combine_cpus=0
-        summclr=3, msgsclr=3, headclr=3, taskclr=3
-Job     fieldscur=����:(���;=@<�E)*+,-./012568>?ABCFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz
-        winflags=195892, sortindx=18, maxtasks=0, graph_cpus=0, graph_mems=0, double_up=0, combine_cpus=0
-        summclr=208, msgsclr=208, headclr=208, taskclr=208
-Mem     fieldscur=���<�����MBN�D347E&'()*+,-./0125689FGHIJKLOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz
-        winflags=195892, sortindx=21, maxtasks=0, graph_cpus=0, graph_mems=0, double_up=0, combine_cpus=0
-        summclr=93, msgsclr=93, headclr=93, taskclr=93
-Usr     fieldscur=�&D5'(*798:=M�)+,-./123406;<>?@ABCFGHIJKLNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz
-        winflags=64950, sortindx=20, maxtasks=0, graph_cpus=0, graph_mems=0, double_up=0, combine_cpus=0
-        summclr=2, msgsclr=2, headclr=2, taskclr=2
-Fixed_widest=0, Summ_mscale=2, Task_mscale=0, Zero_suppress=0
-
-pipe    Open Files      lsof -P -p %d 2>&1
-file    NUMA Info       /proc/%d/numa_maps
-pipe    Log     tail -n200 /var/log/syslog | sort -Mr
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- `man top.1`
 
 
 
