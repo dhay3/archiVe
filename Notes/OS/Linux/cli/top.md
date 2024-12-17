@@ -6,7 +6,6 @@ tags:
   - "#hash2"
 ---
 
-
 # top
 
 ## 0x01 Preface
@@ -42,7 +41,96 @@ Locate string
     2 root      20   0       0      0      0 S   0.0  0.0   0:00.09 kthreadd
 ```
 
-### 0x01a Summary Area
+## 0x02 Linux Memory Type
+
+在详细介绍 `top` 前，还需要了解 Linux memory type，主要有 3 种
+
+- Physical memory
+- Virtual memory
+- Swap memory(file)
+
+同时进程是不能直接调用内存的，需要通过系统提供的 API 寻址(mapping)来调用内存。API 能够寻址的内存类型严格按照如下 4 象限
+
+> Both physical memory and virtual memory can include any of the four, while the swap file only includes #1 through #3.  The memory in quadrant #4, when modified, acts as its own dedicated swap file.
+
+```
+                                     Private | Shared
+                                 1           |          2
+            Anonymous  . stack               |
+                       . malloc()            |
+                       . brk()/sbrk()        | . POSIX shm*
+                       . mmap(PRIVATE, ANON) | . mmap(SHARED, ANON)
+                      -----------------------+----------------------
+                       . mmap(PRIVATE, fd)   | . mmap(SHARED, fd)
+          File-backed  . pgms/shared libs    |
+                                 3           |          4
+```
+
+### 0x02a Physical Memory
+
+*Physical memory, a limited resource where code and data must reside when executed or referenced.*
+
+物理内存，也被称为 RAM，其容量由内存颗粒决定。可以通过 `dmidecode -t memory` 来查其看容量
+
+```
+$ sudo dmidecode -t memory
+...
+Memory Device
+...
+        Size: 32 GB
+Memory Device
+...
+        Size: 32 GB
+```
+
+也是速度最快的
+
+### 0x02c Swap Memory(File)
+
+*Swap file(memory), where modified(dirty) memory can be saved and later retrieved if too many demands are made on.*
+
+以文件形式存在的内存，在 Windows 上称为 page memory(file)
+
+内存会以文件的形式存储，如果后续需要这部分的内存，系统会将文件载入到物理内存中。其容量由 swap partition 决定。可以通过 `lsblk` 来查看
+
+```
+$ lsblk
+NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+nvme0n1     259:0    0   1.8T  0 disk
+├─nvme0n1p1 259:2    0   300M  0 part /boot/efi
+├─nvme0n1p2 259:3    0   1.8T  0 part /
+└─nvme0n1p3 259:4    0    10G  0 part [SWAP]
+```
+
+速度较 physical memory 慢
+
+### 0x02b Virtual Memory
+
+*Virtual memory, a nearly unlimited resource serving the following*
+
+虚拟内存，可以看作 physical memory 和 swap memory 的结合
+
+![](https://www.baeldung.com/wp-content/uploads/sites/4/2021/06/virtual-mem.png)
+
+其容量由 CPU 架构决定。例如 32bit CPU 可以支持 $2^{32}bit = 4GB$ 的虚拟内存，而 64bit CPU 可以支持 $2^{64}bit = 2^{31}GB$ 的虚拟内存
+
+可以通过 `dmidecode -t processor` 来查看 CPU 架构
+
+```
+$ sudo dmidecode -t processor
+...
+       Characteristics:
+                64-bit capable
+                Multi-Core
+                Hardware Thread
+                Execute Protection
+                Enhanced Virtualization
+                Power/Performance Control
+```
+
+## 0x03 Display Area
+
+### 0x03a Summary Area
 
 展示一些资源的总使用率或者是总量，可以通过 [Summary Area Command](#Summary%20Area%20Command) 修改显示的方式
 
@@ -96,7 +184,7 @@ KiB Swap:  2097148 total,  2097148 free,        0 used. 31646984 avail Mem
 
 	计算公式为 
 
-	
+	%% TODO %%
 
 	主要分为如下几种 CPU 资源
 
@@ -156,13 +244,13 @@ KiB Swap:  2097148 total,  2097148 free,        0 used. 31646984 avail Mem
 
 	%% TODO %%
 
-### 0x01b Input/Message Line
+### 0x03b Input/Message Line
 
 ```
 Locate string
 ```
 
-### 0x01c Fields/Columns Header
+### 0x03c Fields/Columns Header
 
 task area 显示的字段，可以通过 `f` interacrive command 来设置显示的字段
 
@@ -174,7 +262,7 @@ PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
 
 常见的字段有
 
-#### %CPU
+#### %CPU -- CPU Usage
 
 > [!important]
 > 千万不要将 `%CPU` 和 `%CPU(s)` 搞混，两者计算方式不同
@@ -241,33 +329,72 @@ total CPU time = time of delay multily the number of cores
 
 可以得出如下结论
 
+- thread mode on，Irix mode on
+
+	CPU% = 进程每个线程每秒占用 CPU 的时间比率
+
+- thread mode on，Irix mode off
+
+	CPU% = 进程每个线程每秒占用每 Core 的时间比率
+
 - thread mode off，Irix mode on
 
-	CPU%
+	CPU% = 进程每秒占用 CPU 的时间比率
+
+- thread mode off，Irix mode off
+
+	CPU% = 进程每秒占用每 Core 的时间比率
+
+#### %MEM -- Memory Usage
+
+*A task's currently resident share of available physical memory.*
+
+#### CGROUPS -- Control Groups
 
 
-#### %CUC
 
-#### %CUU
-
-#### %MEM
-
-#### AGID
+#### CODE -- Code Size(KiB)
 
 
+#### COMMAND -- Command Name or Command Line
 
-- PID
+#### DATA -- Data + Stack Size(KiB)
 
-	
+#### ENVIRON -- Environment Variables
 
-### 0x01d Task Area
+#### Flags -- Task Flags
+
+#### GID -- Group Id
+
+#### GROUP -- Group Name
+
+#### NI -- Nice Value
+
+#### PGRP -- Process Group Id
+
+#### PID -- Process Id
+
+#### PPID -- Process Id
+
+#### PR -- Priority
+
+#### RES -- Resident Memory Size(KiB)
+
+
+
+#### RSS -- Residient Memory, smaps(KiB)
+
+
+
+### 0x03d Task Area
 
 ```
  1803 mysql     20   0 2250968 399904  16284 S   0.7  1.2  83:03.81 mysqld
  1195 root      20   0  210648   8932   5508 S   0.3  0.0  11:16.35 vmtoolsd
 ```
 
-## Interactive Mode
+
+## 0x04 Interactive Mode
 
 在没有使用任何参数的情况下 `top` 会进入 interactive mode，用户可以通过 keystrokes 来修改/增加/删除显示的一些选项
 
@@ -397,21 +524,6 @@ keystrokes 按照组成的部分分类
 ### Optional Args
 
 
-## Linux Memory Type
-
-```
-                                     Private | Shared
-                                 1           |          2
-            Anonymous  . stack               |
-                       . malloc()            |
-                       . brk()/sbrk()        | . POSIX shm*
-                       . mmap(PRIVATE, ANON) | . mmap(SHARED, ANON)
-                      -----------------------+----------------------
-                       . mmap(PRIVATE, fd)   | . mmap(SHARED, fd)
-          File-backed  . pgms/shared libs    |
-                                 3           |          4
-```
-
 ## The CPU% shows greater than 100%
 
 ---
@@ -424,7 +536,7 @@ keystrokes 按照组成的部分分类
 
 ***References***
 
-- `man top.1`
+- [operating system - What's the difference between "virtual memory" and "swap space"? - Stack Overflow](https://stackoverflow.com/questions/4970421/whats-the-difference-between-virtual-memory-and-swap-space)
 
 
 
