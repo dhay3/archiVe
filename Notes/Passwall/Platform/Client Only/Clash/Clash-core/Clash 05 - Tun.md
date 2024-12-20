@@ -40,11 +40,11 @@ TUN/TAP 最大的区别就在于
 
 在使用 Physical NIC 上网时，应用或者系统通过 Socket API 调用系统的网络协议栈，直接将报文发送到 PNIC 并通过 Wire 传输到 endpoints
 
-![width:500](../../../../../../../Excalidraw/Drawing%202024-07-22%2010.32.42.excalidraw.md)
+![width:500](../../../../../../Excalidraw/Physical%20NIC%20flow.excalidraw.md)
 
 而在使用 TUN 的过程中，报文会通过 TUN VNIC 发送到监听 TUN VNIC 的应用，由应用决定该怎么发送报文
 
-![height:800](../../../../../../../Excalidraw/Drawing%202024-07-22%2012.57.58.excalidraw.md)
+![height:800](../../../../../../Excalidraw/Tun%20NIC%20flow.excalidraw.md)
 
 ## 0x03 Clash Tun Basic Logical
 

@@ -379,6 +379,7 @@ TCP/IP 中在发出 SYN 请求报文，你会收到 SYN-ACK 做为回应报文�
 
 - "Any hints would be highly appreciated."
 - "Thanks in advance."
+- "Many thanks for considering my request."
 
 又譬如 在阐述自己的推测时添加类似
 
