@@ -10,7 +10,7 @@
 # Notes
 
 <!--notes toc start-->
-<!--85aa951f-402b-4cb5-86a8-57b74f6520fd-->
+<!--78ee05fe-0bd9-412c-bbed-659fa9d392ef-->
 ## [AI](Notes/AI)
   - [Huggingface](Notes/AI/Huggingface)
   - [LLAM](Notes/AI/LLAM)
@@ -282,12 +282,12 @@
   - [Rsshub](Notes/Sundries/Rsshub)
   - [Typora](Notes/Sundries/Typora)
 
-<!--notes toc end-->                                                                      
+<!--notes toc end-->                                                                       
 
 # Howto
 
 <!--howto toc start-->
-<!--e300df4a-ba3a-4fc3-8837-8aef4f0be158-->
+<!--44fd6b2e-ff64-41b0-86b7-875cbe1f82f6-->
 - [How to Answer](Howto/How%20to%20Answer.md)
 - [How to Ask Questions](Howto/How%20to%20Ask%20Questions.md)
 - [How to Choose Licenses](Howto/How%20to%20Choose%20Licenses.md)
@@ -301,7 +301,7 @@
 - [How to Write Commit Messages](Howto/How%20to%20Write%20Commit%20Messages.md)
 - [How to Write Notes](Howto/How%20to%20Write%20Notes.md)
 
-<!--howto toc end-->                                                                    
+<!--howto toc end-->                                                                     
 
 # License
 
