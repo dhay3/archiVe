@@ -3,16 +3,20 @@
   "hideExcluded": false,
   "downrankedFoldersFilters": [],
   "ignoreDiacritics": true,
+  "ignoreArabicDiacritics": false,
   "indexedFileTypes": [],
+  "displayTitle": "",
   "PDFIndexing": false,
   "officeIndexing": false,
   "imagesIndexing": false,
+  "aiImageIndexing": false,
   "unsupportedFilesIndexing": "no",
   "splitCamelCase": false,
   "openInNewPane": false,
   "vimLikeNavigationShortcut": false,
   "ribbonIcon": true,
   "showExcerpt": true,
+  "maxEmbeds": 5,
   "renderLineReturnInExcerpts": true,
   "showCreateButton": false,
   "highlight": true,
@@ -32,5 +36,6 @@
   "httpApiNotice": true,
   "welcomeMessage": "1.21.0",
   "verboseLogging": false,
-  "DANGER_httpHost": null
+  "DANGER_httpHost": null,
+  "DANGER_forceSaveCache": false
 }
