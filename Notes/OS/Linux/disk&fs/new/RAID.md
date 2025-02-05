@@ -61,7 +61,7 @@ mirroring 是指将数据以镜像(复制)的形式，存储在不同的磁盘�
 
 1. 多块磁盘用作一块，磁盘容量使用率低
 
-> [!NOTE] 
+> [!note] 
 > mirroring 提供数据容灾
 
 ## 0x04 Parity
@@ -136,7 +136,7 @@ SSD2 340GB 300MB/s read/write I/O
 
 那么组成 RAID 0 后，read I/O 为 600MB/s，write I/O 为 600MB/s，240GB 提供 striping，剩余的 120GB 只提供存储
 
-> [!NOTE] Choosing Criteria
+> [!note] Choosing Criteria
 > 如果需要最好的 read/write I/O 性能优先选择 RAID 0
 
 ### 0x05b RAID 1
@@ -164,7 +164,7 @@ SSD3 400GB 400MB/s read/write I/O
 
 那么组成 RAID 1 后，read I/O 在 100MB/s 至 400MB/s 之间，write I/O 为 100MB/s，100GB 提供 mirroring，剩余的 700GB 只提供存储
 
-> [!NOTE] Choosing Criteria
+> [!note] Choosing Criteria
 > 如果需要最好的数据高可用优先选择 RAID 1
 
 ### 0x05c RAID 2
@@ -202,7 +202,7 @@ SSD3 400GB 400MB/s read/write I/O 用于 parity
 
 那么组成 RAID 3 后，read I/O 为 200MB/s，write I/O 为 $\lt 200MB/s$，SSD1 SSD2 各提供 100GB striping/parity，SSD3 提供 100GB 存储 parity，剩余的 500GB 只提供存储
 
-> [!NOTE] Choosing Criteria
+> [!note] Choosing Criteria
 > 通常不会使用 RAID 3，使用 RAID 5 替代
 
 ### 0x05e RAID 4
@@ -232,7 +232,7 @@ SSD3 400GB 400MB/s read/write I/O 用于 parity
 
 那么组成 RAID 4 后，read I/O 为 200MB/s，write I/O 为 $\lt 200MB/s$，SSD1 SSD2 各提供 100GB striping/parity，SSD3 提供 100GB 存储 parity，剩余的 500GB 只提供存储
 
-> [!NOTE] Choosing Criteria
+> [!note] Choosing Criteria
 > 通常不会使用 RAID 4，使用 RAID 5 替代
 
 ### 0x05f RAID 5
@@ -264,7 +264,7 @@ SSD3 400GB 400MB/s read/write I/O
 
 那么组成 RAID 5 后，read I/O 大于 200MB/s（当 SSD3 存储 parity） 小于 600MB/s（当 SSD1 存储 parity），write I/O 为 $\lt 300MB/s$，SSD1 SSD2 SSD3 加起来可以提供 200GB 用于 striping/parity，SSD1 SSD2 SSD3 加起来可以提供100GB 用于存储 parity，剩余 500GB 只提供存储
 
-> [!NOTE] Choosing Criteria
+> [!note] Choosing Criteria
 > 需要较好的 read/write I/O 性能，不要求数据完全高可用优先选择 RAID 5(可以看作是 RAID 0 和 RIAD 1 的折中)
 
 ### 0x05g RAID 6
@@ -282,7 +282,7 @@ SSD3 400GB 400MB/s read/write I/O
 
 **Capacity**
 
-- n 块容量相同(或者不相同)的磁盘组成 RAID 6，提供 $sum(capacity)$ 容量，只有 $(n - 2) \times min(non-parity\ disk\ capacity)$ 的容量提供 striping/parity， $2 \times min(non-parity\ disk\ capacity)$ 的容量存储 parity 数据，剩余的容量只用于存储
+- n 块容量相同(或者不相同)的磁盘组成 RAID 6，提供 $sum(capacity)$ 容量，只有 $(n - 2) \times min(\mbox{non-parity\ disk\ capacity})$ 的容量提供 striping/parity， $2 \times min(\mbox{non-parity\ disk\ capacity})$ 的容量存储 parity 数据，剩余的容量只用于存储
 
 假设
 
@@ -296,7 +296,7 @@ SSD4 500GB 500MB/s read/write I/O
 
 那么组成 RAID 6 后，read I/O 大于 200MB/s（当 SSD3 SSD4 存储 parity） 小于 800MB/s（当 SSD1 SSD2 存储 parity） ，write I/O 为 $\lt 400MB/s$，SSD1 SSD2 SSD3 SSD4 加起来可以提供 200GB 用于 striping/parity，SSD1 SSD2 SSD3 SSD4 加起来可以提供 200GB 用于存储 parity，剩余 900GB 只提供存储
 
-> [!NOTE] Choosing Criteria
+> [!note] Choosing Criteria
 > 需要较好的 read/write I/O 性能，数据需要较高的可用优先选择 RAID 6
 
 ## 0x06 Comparision
