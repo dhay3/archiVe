@@ -156,6 +156,8 @@ freerdp 同时也支持类似 Virtualbox 中的 <kbd>Right-Ctrl</kbd> 临时切�
 
 ```
 /usr/bin/xfreerdp /u:admin /p: /v:10.100.4.127 /bpp:64 /fonts /cert:ignore /scale:140 /scale-desktop:125 /dynamic-resolution
+
+/usr/bin/xfreerdp /u:"admin" /p:"nimda"  /v:192.168.137.1 /tls-seclevel:0 /cert:tofu /bpp:64 /vedio /fonts /scale:140 /scale-desktop:125 /f
 ```
 
 **references**
