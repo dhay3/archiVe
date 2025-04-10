@@ -10,7 +10,7 @@
 # Notes
 
 <!--notes toc start-->
-<!--96a70e74-458c-468c-ba39-682ed1a718d5-->
+<!--33282401-ed9d-4b93-8c10-e629cc204cd9-->
 ## [AI](Notes/AI)
   - [Huggingface](Notes/AI/Huggingface)
   - [LLAM](Notes/AI/LLAM)
@@ -128,6 +128,7 @@
     - [disk&fs](Notes/OS/Linux/disk%26fs)
       - [LVM](Notes/OS/Linux/disk%26fs/LVM)
       - [new](Notes/OS/Linux/disk%26fs/new)
+        - [RAID](Notes/OS/Linux/disk%26fs/new/RAID)
     - [display](Notes/OS/Linux/display)
       - [xorg](Notes/OS/Linux/display/xorg)
     - [distro](Notes/OS/Linux/distro)
@@ -283,12 +284,12 @@
   - [Rsshub](Notes/Sundries/Rsshub)
   - [Typora](Notes/Sundries/Typora)
 
-<!--notes toc end-->                                                                        
+<!--notes toc end-->                                                                         
 
 # Howto
 
 <!--howto toc start-->
-<!--ce1a786f-d10c-44a4-90c7-d6df3de17890-->
+<!--adcd1aed-8903-4278-96e0-57820188465e-->
 - [How to Answer](Howto/How%20to%20Answer.md)
 - [How to Ask Questions](Howto/How%20to%20Ask%20Questions.md)
 - [How to Choose Licenses](Howto/How%20to%20Choose%20Licenses.md)
@@ -302,7 +303,7 @@
 - [How to Write Commit Messages](Howto/How%20to%20Write%20Commit%20Messages.md)
 - [How to Write Notes](Howto/How%20to%20Write%20Notes.md)
 
-<!--howto toc end-->                                                                      
+<!--howto toc end-->                                                                       
 
 # License
 
