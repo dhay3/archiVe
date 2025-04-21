@@ -10,7 +10,7 @@
 # Notes
 
 <!--notes toc start-->
-<!--33282401-ed9d-4b93-8c10-e629cc204cd9-->
+<!--a96853eb-5445-4167-986d-a5941ff17317-->
 ## [AI](Notes/AI)
   - [Huggingface](Notes/AI/Huggingface)
   - [LLAM](Notes/AI/LLAM)
@@ -192,6 +192,7 @@
     - [gh-cli](Notes/Ops/Github/gh-cli)
     - [github-actions](Notes/Ops/Github/github-actions)
     - [github-general](Notes/Ops/Github/github-general)
+  - [IPMI](Notes/Ops/IPMI)
   - [Jenkins](Notes/Ops/Jenkins)
   - [John](Notes/Ops/John)
   - [Kurbernetes](Notes/Ops/Kurbernetes)
@@ -221,6 +222,7 @@
   - [Postman](Notes/Ops/Postman)
   - [SaltStack](Notes/Ops/SaltStack)
   - [TOR](Notes/Ops/TOR)
+  - [Tailscale](Notes/Ops/Tailscale)
   - [Tmux](Notes/Ops/Tmux)
   - [Vagrant](Notes/Ops/Vagrant)
     - [new](Notes/Ops/Vagrant/new)
@@ -232,7 +234,10 @@
     - [Virtualbox](Notes/Ops/Virtualization/Virtualbox)
     - [Vmware](Notes/Ops/Virtualization/Vmware)
   - [W3m](Notes/Ops/W3m)
+  - [Wine](Notes/Ops/Wine)
+  - [Wireguard](Notes/Ops/Wireguard)
   - [Zabbix](Notes/Ops/Zabbix)
+  - [Zerotier](Notes/Ops/Zerotier)
   - [keepalived](Notes/Ops/keepalived)
 ## [Passwall](Notes/Passwall)
   - [Board](Notes/Passwall/Board)
@@ -284,12 +289,12 @@
   - [Rsshub](Notes/Sundries/Rsshub)
   - [Typora](Notes/Sundries/Typora)
 
-<!--notes toc end-->                                                                         
+<!--notes toc end-->                                                                          
 
 # Howto
 
 <!--howto toc start-->
-<!--adcd1aed-8903-4278-96e0-57820188465e-->
+<!--68607e78-dae5-4726-843f-30d4b3a060f0-->
 - [How to Answer](Howto/How%20to%20Answer.md)
 - [How to Ask Questions](Howto/How%20to%20Ask%20Questions.md)
 - [How to Choose Licenses](Howto/How%20to%20Choose%20Licenses.md)
@@ -303,7 +308,7 @@
 - [How to Write Commit Messages](Howto/How%20to%20Write%20Commit%20Messages.md)
 - [How to Write Notes](Howto/How%20to%20Write%20Notes.md)
 
-<!--howto toc end-->                                                                       
+<!--howto toc end-->                                                                        
 
 # License
 
