@@ -1,6 +1,6 @@
 # GNS3 Instanllation 	
 
-> ==注意为了正常运行GNS3，需要保证GUI和VM版本对应，否则导入IOS时可能会失效==
+> ==注意为了正常运行GNS3，需要保证 GUI 和 VM 版本对应，否则导入IOS时可能会失效==
 
 ## GNS3 GUI
 

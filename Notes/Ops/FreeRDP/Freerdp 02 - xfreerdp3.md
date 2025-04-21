@@ -6,7 +6,7 @@ tags:
  - "#hash2"
 ---
 
-# Freerdp 02 - xfreerdp
+# Freerdp 02 - xfreerdp3
 
 ## 0x01 Preface
 

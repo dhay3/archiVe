@@ -149,7 +149,7 @@ freerdp3 对 freerdp2 的一些参数做了修改[^2]，例如
 
 具体可以查看 manual page
 
-## 0x05 wlfreerdp
+## 0x06 wlfreerdp
 
 freerdp 虽然支持 wayland，但是 wlfreerdp 目前还有很多问题，所以更加推荐使用 xfreerdp
 

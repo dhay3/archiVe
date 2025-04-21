@@ -203,6 +203,7 @@ latte-dock
 | timeshift                | 备份                                           |
 | clash verge rev          | 代理客户端                                     |
 | bitwarden                | keepass                                        |
+| freetube                 | youtube client                                 | 
 | qbittorrent              | bt 下载                                        |
 | obsidian                 | 知识库                                         |
 | typora                   | markdown 编辑器                                |
@@ -271,15 +272,18 @@ latte-dock
 | Name                                                     | Description                                            |
 | -------------------------------------------------------- | ------------------------------------------------------ |
 | sysbench                                                 | benchmark                                              |
+| hyperfine                                                | software benchmark                                     |
 | lm-sensor                                                | 硬件温度检测                                           |
 | smartmontools                                            | 磁盘健康检查，配合 badlock 一起使用                    |
 | qemu                                                     | kvm                                                    |
 | zsh                                                      | Shell                                                  |
+| nushell                                                  | Shell for nut                                          |
 | tor                                                      | tor core                                               |
 | manjaro-pipewire                                         | 替代 pulseaudio                                        |
 | tldr                                                     | 懒人命令查询                                           |
 | bc                                                       | 终端计算器                                             |
 | tmux                                                     | multiplexer                                            |
+| zerotier                                                 | 组网                                                       |
 | zfs                                                      | filesystem                                             |
 | transhell                                                | TUI 翻译                                               |
 | delta                                                    | diff3 替代                                             |
@@ -355,6 +359,7 @@ latte-dock
 | gitmoji                                                  | git commit                                             |
 | lazygit                                                  | 懒人 git                                               |
 | lazydocker                                               | 懒人 docker                                            |
+| act                                                      | github action locally                                  |
 | cowsay/lolcat                                            | garbage                                                |
 
 **references**

@@ -1,61 +1,143 @@
-# Linux tcpdump
+---
+createTime: 2025-04-15 16:33
+license: cc by 4.0
+tags:
+  - "#hash1"
+  - "#hash2"
+---
+# Linux tcpdump_new
 
-## 0x01 Digest
+## 0x01 Preface
 
-syntax
+`tcpdump`[^1] 是一个基于 `libpcap`[^2] 开发的网络抓包 CLI 工具，类似的还有 wireshark 的 `tshark`
+
+## 0x02 EBNF
 
 ```
-       tcpdump [ -AbdDefhHIJKlLnNOpqStuUvxX# ] [ -B buffer_size ]
-               [ -c count ] [ --count ] [ -C file_size ]
-               [ -E spi@ipaddr algo:secret,...  ]
-               [ -F file ] [ -G rotate_seconds ] [ -i interface ]
-               [ --immediate-mode ] [ -j tstamp_type ] [ -m module ]
-               [ -M secret ] [ --number ] [ --print ] [ -Q in|out|inout ]
-               [ -r file ] [ -s snaplen ] [ -T type ] [ --version ]
-               [ -V file ] [ -w file ] [ -W filecount ] [ -y datalinktype ]
-               [ -z postrotate-command ] [ -Z user ]
-               [ --time-stamp-precision=tstamp_precision ]
-               [ --micro ] [ --nano ]
-               [ expression ]
+tcpdump [ -AbdDefhHIJKlLnNOpqStuUvxX# ] [ -B buffer_size ]
+			 [ -c count ] [ --count ] [ -C file_size ]
+			 [ -E spi@ipaddr algo:secret,...  ]
+			 [ -F file ] [ -G rotate_seconds ] [ -i interface ]
+			 [ --immediate-mode ] [ -j tstamp_type ] [ -m module ]
+			 [ -M secret ] [ --number ] [ --print ] [ -Q in|out|inout ]
+			 [ -r file ] [ -s snaplen ] [ -T type ] [ --version ]
+			 [ -V file ] [ -w file ] [ -W filecount ] [ -y datalinktype ]
+			 [ -z postrotate-command ] [ -Z user ]
+			 [ --time-stamp-precision=tstamp_precision ]
+			 [ --micro ] [ --nano ]
+			 [ expression ]
 ```
 
-tcpdump 是一个基于 C 开发的 CLI 抓包工具，同样的还有 wireshark 出品的 tshark
+其中 expression 是过滤表达式，如果没有指定会抓取所有的包，反之只会过滤 expression boolean "true" 的包
 
-## 0x02 Terms
+> [!NOTE]
+> 具体的 expression 可以参考 `man pcap-filter.7`
 
-- buffer size
+## 0x03 Terms[^3]
 
-  packets that arrive for a capture are stored in a buffer, so that they do not have to be read by the application as soon as they arrive. On some platforms, the buffer’s size can be set; a size that’s too small could mean that, if too many packets are being captured and the snapshot length dosen’t limit the amount of data that’s buffered, packets could be dropped if the buffer fills up before the application can read packets from it, while a size that’s too large could use more non-pageable operating system memory than is necessary to prevent packets from being droppingq
+### 0x03a Buffer Size
 
-- promiscuous mode
+> Packets that arrive for a capture are stored in a buffer, so that they do not have to be read by the application as soon as they arrive. On some platforms, the buffer’s size can be set; a size that’s too small could mean that, if too many packets are being captured and the snapshot length dosen’t limit the amount of data that’s buffered, packets could be dropped if the buffer fills up before the application can read packets from it, while a size that’s too large could use more non-pageable operating system memory than is necessary to prevent packets from being dropping
 
-  简短的说如果NIC被置于混杂模式，LAN中的所有数据包都会到该NIC。所以需要注意的一点是，混杂模式是不安全的。例如宿主机的NIC设置成了 混杂模式，那么宿主机上的所有其他虚拟机都能获取到其他虚拟机上的数据包
+在系统中包并不会立即发送或者是被应用立即处理，而是会先存储在一个空间，这个空间被称为 buffer，在 Linux 中可以通过 `sudo sysctl -a | grep -P 'rmem|wmem'` 来查看(单位 byte)
 
-  On broadcast LANs such as Ethernet, if the network isn’t switched, or if the adapter is connected to a “mirror port” on a switch to which all packets passing through the switch are sent, a network adapter receives all packets on the LAN, including unicast or multicast packets not sent to a network address that the netwrok adapter isn’t configured to recognize
+```
+$ sudo sysctl -a | grep -P 'rmem|wmem'
+net.core.rmem_default = 262144
+net.core.rmem_max = 67108864
+net.core.wmem_default = 262144
+net.core.wmem_max = 67108864
+net.ipv4.tcp_rmem = 4096        102400  67108864
+net.ipv4.tcp_wmem = 4096        102400  67108864
+net.ipv4.udp_rmem_min = 4096
+net.ipv4.udp_wmem_min = 4096
+```
 
-  Normally, the adapter will discard those packets; however, many network adpaters support “promiscuous mode”, ==which is a mode in which all packets, even if they are not sent to an address that the adpater recognizes, are provided to the host.==This is useful for passively capturing traffic between two or more other hosts for analysis
+如果 buffer 设置的太小会导致包被系统直接丢弃，可以通过 `ethtool -S <NIC>` 来查看是否有被丢弃的包
 
-  Note that even if an application dose not set promiscuous mode, the adpter could well be in promiscuous mode for some other reason
+```
+NIC statistics:
+	 rx_packets: 3162478
+	 rx_bytes: 2863210135
+	 rx_duplicates: 0
+	 rx_fragments: 75249
+	 rx_dropped: 0
+	 tx_packets: 839069
+	 tx_bytes: 93148153
+	 tx_filtered: 0
+	 tx_retry_failed: 0
+	 tx_retries: 149
+	 sta_state: 4
+	 txrate: 0
+	 rxrate: 286700000
+	 signal: 0
+	 channel: 2437
+	 noise: 160
+	 ch_time: 56
+	 ch_time_busy: 24
+	 ch_time_ext_busy: 18446744073709551615
+	 ch_time_rx: 18446744073709551615
+	 ch_time_tx: 18446744073709551615
+```
 
-  ==For now, this doesn’t work on the “any” device; if an argument of “any” or NULL is supplied, the setting of promiscuous mode is ignored==
+在 `tcpdump` 中可以通过 `--buffer-size=<buffer_size>` 来设置 buffer size，无需修改 kernel tunable paramters
 
-  `tcpdump -i any` 不支持混杂模式
+### 0x03b Snapshot Length
 
-  promiscuous mode is often used to diagnose network connectivity issues. There are programs that make use of this feature ot show the user all the data being transferrred over the network. Some protocols like FTP and Telnet transfer data and passwords in clear text, without encryption, and network scanners can see this data. Therefore, computer users are encourage to stay away from insecure protocols like telnet and use more ones such as SSH
+> If, when capturing, you capture the entire contents of the packet, that requires more CPU time to copy the packet to your application, more disk and possibly network bandwidth to write the packet data to a file, and more disk space to save the packet. If you don't need the entire contents of the packet - for example, if you are only interested in the TCP headers of packets - you can set the "snapshot length" for the capture to an appropriate value. If the snapshot length is set to snaplen, and snaplen is less than the size of a packet that is captured, only the first snaplen bytes of that packet will be captured and provided as packet data
 
-- monitor mode
+tcpdump 默认会抓取整个包，通常意味需要消耗更多的 CPU/buffer/带宽/存储 资源。而我们分析包的时候，通常只分析包头(少数情况下需要分析 payload)，就可以通过 `-s <snapshot>`(单位 byte) 来抓取指定长度的包，这个包也被称为 snapshot
 
-  On ==IEEE 802.11 wireless LANs==（可以直接理解成 WIFI）, even if an adapter is in promiscuous mode, it will supply to the host only frames for the network with which it’s associated. It might also supply only data frames
+例如只想分析 tcp headers 就可以使用 `tcpdump -i any -s 40 tcp`
 
-  In “monitor mode”, sometimes also called “rfmon mode” ( for “Radio Frequency MONitor” ), the adapter will supply all frames that it receives, with 802.11 headers, and might supply a pseudo-header with radia information about the frames as well.
+### 0x03c Mode
 
-  Note that in monitor mode the adapter might disassociate from the network with which it’s associated, so that you will not be able to use any wireless networks with that adapter. This could prevent accessing files on a network server, or resolving host names or network addresses, if you are capturing in monitor mode and are not connected to anohter network with which it’s associated, so that you will not be able to use any wireless networks with that adapter. 
+#### Promiscuous Mode
 
-  kali wifi attacker 就是使用 monitor mode 来监听数据包，然后 hack WIFI
+> On broadcast LANs such as Ethernet, if the network isn’t switched, or if the adapter is connected to a “mirror port” on a switch to which all packets passing through the switch are sent, a network adapter receives all packets on the LAN, including unicast or multicast packets not sent to a network address that the netwrok adapter isn’t configured to recognize
+> 
+> Normally, the adapter will discard those packets; however, many network adpaters support “promiscuous mode”, ==which is a mode in which all packets, even if they are not sent to an address that the adpater recognizes, are provided to the host.==This is useful for passively capturing traffic between two or more other hosts for analysis
+> 
+> Note that even if an application dose not set promiscuous mode, the adpter could well be in promiscuous mode for some other reason
+> 
+> ==For now, this doesn’t work on the “any” device; if an argument of “any” or NULL is supplied, the setting of promiscuous mode is ignored==
 
-## 0x03 Statistics
+在传统的网络中，只有在 isn't switched network(特指 Hub 连接的网络，现存的网络几乎都是 switched network) 或者是 mirror port(镜像端口，镜像另外一个端口的流量) 的情况下，才会将不是发往本机的 unicast/multicast 流量(例如 arp request)发送到本机，除此外会自动将这些包丢弃。而一些 NIC 可以设置为 promiscuous mode(混杂模式)，从而将这些本应该丢弃的包发往本机
 
-tcpdump 后会抓包结束后显示抓包的数量
+`tcpdump` 中可以使用 `-i <interface>` 来将 NIC 置为混杂模式，使用 `-p` 来强制关闭混杂模式，但是有几种情况不支持混杂模式
+
+- 未指定 NIC
+- `-i` 使用 any pseudo-interface(`tcpdump -i any`)
+- `-i` 使用 WIFI NIC(`tcpdump -i wlpxx`)
+
+TODO pismc flag
+
+> [!IMPORTANT]
+> Promiscuous mode is often used to diagnose network connectivity issues. There are programs that make use of this feature ot show the user all the data being transferrred over the network. Some protocols like FTP and Telnet transfer data and passwords in clear text, without encryption, and network scanners can see this data. Therefore, computer users are encourage to stay away from insecure protocols like telnet and use more ones such as SSH
+> 
+> 但是需要注意一点是混杂模式并不安全。例如宿主机的 NIC 设置成了混杂模式，那么宿主机上的所有其他虚拟机都能获取到其他虚拟机上的数据包
+
+#### Monitor Mode
+
+> On IEEE 802.11 wireless LANs, even if an adapter is in promiscuous mode, it will supply to the host only frames for the network with which it’s associated. It might also supply only data frames
+> 
+> In “monitor mode”, sometimes also called “rfmon mode” ( for “Radio Frequency MONitor” ), the adapter will supply all frames that it receives, with 802.11 headers, and might supply a pseudo-header with radia information about the frames as well.
+> 
+> ==Note that in monitor mode the adapter might disassociate from the network with which it’s associated, so that you will not be able to use any wireless networks with that adapter==. This could prevent accessing files on a network server, or resolving host names or network addresses, if you are capturing in monitor mode and are not connected to anohter network with which it’s associated, so that you will not be able to use any wireless networks with that adapter. 
+
+在 802.11 wireless LANs(WIFI) 中，即使 WIFI NIC 被置为混杂模式，也只会接收关联本机的包。想要达到混杂模式的效果，需要将 WIFI NIC 置为 monitor mode(监听模式，也被称为 rfmon mode)，`aircrack-ng` 就是使用 monitor mode 来监听数据包的
+
+==需要注意的一点是监听模式会将网络断开==
+
+#### Immediate Mode
+
+> In immediate mode, packets are always delivered as soon as they arrive, with no buffering. 
+
+包直接跳过系统的 buffer 打到 `tcpdump`，可以使用 `--immediate-mode` 来开启
+
+## 0x04 Statistics
+
+tcpdump 抓包结束后会显示抓包的数量
 
 ```
 82 packets captured
@@ -63,15 +145,19 @@ tcpdump 后会抓包结束后显示抓包的数量
 0 packets dropped by kernel
 ```
 
-1. captured，this is the number of packets that tcpdump has received and processed
+- captured，this is the number of packets that tcpdump has received and processed
 
-2. received by filter，the meaning of this depneds on the OS on which you are running tcpdump. If a filter was specified on the command line, on some OSes it counts packets regardless of whether they were matched by the filter expression and, even if they were matched by the filter expression, regardless of whether tcpdump has read and process them yet, on other OSes it counts only packets that were matched by the filter expression regardless of whether tcpdump has read and processed them yet, and on ohter OSes it counts only packets that were matched by the filter expression and were processed by tcpdump
+	`tcpdump` 按照 expression 抓到的包数量
 
-   简单来说该值根据系统不同捕捉的数字也不同
+- received by filter，the meaning of this depneds on the OS on which you are running tcpdump. If a filter was specified on the command line, on some OSes it counts packets regardless of whether they were matched by the filter expression and, even if they were matched by the filter expression, regardless of whether tcpdump has read and process them yet, on other OSes it counts only packets that were matched by the filter expression regardless of whether tcpdump has read and processed them yet, and on ohter OSes it counts only packets that were matched by the filter expression and were processed by tcpdump
 
-3. dropped by kernel, this is the number of packets that were dropped, due to a lack of buffer space, by the packet capture machanism in the OS
+	系统判断 `tcpdump` 抓到的包数量，系统不同判断的方式也不同
 
-## 0x04 Optional args
+- dropped by kernel, this is the number of packets that were dropped, due to a lack of buffer space, by the packet capture machanism in the OS
+
+	系统丢包数量，不包括 `iptables`/`ntftables` 的丢包，只计算 buffer 不足情况下的丢包数量
+
+## 0x05 Optional args
 
 ### Common args
 
@@ -135,7 +221,7 @@ tcpdump 后会抓包结束后显示抓包的数量
 
 ​	snarf  snaplen  bytes  of  data  from  each packet rather than the default of 262144 bytes
 
-​	限定每个报文的大小
+​	限定每个包的大小
 
 - `-e`
 
@@ -428,11 +514,11 @@ TCP header 通常 20 字节(octets)，除非指定了 TCP options。从 0 开始
 
 如果需要只匹配含有某个标志位的包需要怎么办？这时就需要组合表达式。例如
 
-`tcp[13] & 2 == 2 and tcp[13] & 16 == 16` 就只会匹配含有 SYN 报文的，不会匹配含有 ACK 报文的
+`tcp[13] & 2 == 2 and tcp[13] & 16 == 16` 就只会匹配含有 SYN 包的，不会匹配含有 ACK 包的
 
 ## 0x06 Capture domain name packets
 
-tcpdump 和 wireshark 不一样， tcpdump 可以直接抓指定域名的报文
+tcpdump 和 wireshark 不一样， tcpdump 可以直接抓指定域名的包
 
 ```
 pl in ~ λ sudo tcpdump -nni wlp1s0 host baidu.com 
@@ -595,10 +681,28 @@ tcpdump -nveSA#i ens0
  tcpdump -nni any host 10.0.1.75 -w - -U | tee /tmp/a | tcpdump -nnr - 
 ```
 
-**references**
+
+
+
+---
+*Value your freedom or you will lose it, teaches history. Don't bother us with politics, respond those who don't want to learn.*
+
+***See also***
+
+- [tcpdump-little-book](https://nanxiao.github.io/tcpdump-little-book/)
+- `man tcpdump`
+- `man pcap.3pcap`
+- `man pcap-filter.7`
+
+***References***
+
+[^1]:[GitHub - the-tcpdump-group/tcpdump: the TCPdump network dissector](https://github.com/the-tcpdump-group/tcpdump)
+[^2]:[GitHub - the-tcpdump-group/libpcap: the LIBpcap interface to various kernel packet capture mechanism](https://github.com/the-tcpdump-group/libpcap)
+[^3]:`man pcap.3pcap`
+
 
 [^1]:https://www.tcpdump.org/
 [^2]:https://en.wikipedia.org/wiki/Promiscuous_mode
 [^3]:https://superuser.com/questions/925286/does-tcpdump-bypass-iptables
-[^4]:man pcap(3PCAP)
+[^4]:man pcap.3pcap
 [^5]:https://stackoverflow.com/questions/25603831/how-can-i-have-tcpdump-write-to-file-and-standard-output-the-appropriate-data#25604237

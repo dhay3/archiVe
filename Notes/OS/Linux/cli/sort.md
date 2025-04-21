@@ -12,6 +12,7 @@ syntax：`sort [options] [file]`
 
 如果没有指定 file 或者 file 的位置是 `-`，表示从 stdin 读取
 
+
 ## Optional args
 
 ### input options
