@@ -2,11 +2,11 @@
 
 ## 0x01 Overview
 
-PAM 全称 Pluggable Authentication Modules, 是 Linux 中一个用于鉴权的 centralized 机制，由多个模块组成（其实就是 shared libraries，也就意味着可以被其他应用调用）
+PAM 全称 Pluggable Authentication Modules, 是 Linux 中一个用于鉴权的 centralized 框架，由多个模块组成（其实就是 shared libraries，也就意味着可以被其他应用调用）
 
 Rhel 中大多数应用都基于 PAM 来进行 authentication 和 authroization
 
-## 0x02 Configuration
+## 0x02 Configuration[]
 
 > 强烈不推荐直接修改对应的 PAM 配置文件，应该使用 `authconfig` 来配置
 

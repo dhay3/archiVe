@@ -478,7 +478,7 @@ specifying `-a`, `-U`, and `-u foo` produces a  listing  of  only  UNIX  socket 
 
 - `-n`
 
-  将hostname转为ip输出，默认以hostname输出
+  将 hostname 转为 ip 输出，默认以 hostname 输出
 
   ```
   root in /home/ubuntu λ lsof -ln  -i @172.16.253.1

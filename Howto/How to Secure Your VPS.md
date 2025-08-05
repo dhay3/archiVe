@@ -102,7 +102,7 @@ sudo pacman -Syy plasma-desktop
 
 ## 0x03 Fully Update
 
-不管是 kernel 还是 softwares 都是人开发的，所以一定会有逻辑上的漏洞。这些被发现的漏洞在学术上称为 CVE[^2]，通常开发者会针对 CVE 发布更新。所以为了保证旧 CVE 不被利用，在确保稳定的情况下，应该要做 fully update
+不管是 kernel 还是 softwares 都是人开发的，所以一定会有逻辑上的漏洞。这些被发现的漏洞在学术上称为 CVE[^2]，通常开发者会针对 CVE 发布更新。所以为了保证旧 CVE 不被利用，在确保稳定的情况下，应该要对系统做 fully update
 
 例如 Arch 可以通过如下命令来 fully update
 
@@ -127,7 +127,7 @@ pacman -Syyu
 可以使用一些无规则的用户名，例如
 
 ```
-useradd solovki5x0
+useradd solovkiwan2dan
 ```
 
 ### 0x04b Password[^2]

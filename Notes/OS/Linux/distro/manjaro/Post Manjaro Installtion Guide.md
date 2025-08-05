@@ -203,7 +203,7 @@ latte-dock
 | timeshift                | 备份                                           |
 | clash verge rev          | 代理客户端                                     |
 | bitwarden                | keepass                                        |
-| freetube                 | youtube client                                 | 
+| freetube                 | youtube client                                 |
 | qbittorrent              | bt 下载                                        |
 | obsidian                 | 知识库                                         |
 | typora                   | markdown 编辑器                                |
@@ -226,6 +226,7 @@ latte-dock
 | vlc                      | 视频                                           |
 | rustdesk                 | VNC 工具                                       |
 | spotube                  | 听歌 替代 spotify                              |
+| youtube-music-bin        | youtube music                                  | 
 | netease cloud music gtk4 | 听歌                                           |
 | betterbird               | 邮箱                                           |
 | localsend-bin            | 传输（替代 kde connect），需要开启防火墙       |
@@ -275,6 +276,7 @@ latte-dock
 | hyperfine                                                | software benchmark                                     |
 | lm-sensor                                                | 硬件温度检测                                           |
 | smartmontools                                            | 磁盘健康检查，配合 badlock 一起使用                    |
+| tlp                                                      | 替代 power-profiles-daemon                             | 
 | qemu                                                     | kvm                                                    |
 | zsh                                                      | Shell                                                  |
 | nushell                                                  | Shell for nut                                          |
@@ -283,7 +285,7 @@ latte-dock
 | tldr                                                     | 懒人命令查询                                           |
 | bc                                                       | 终端计算器                                             |
 | tmux                                                     | multiplexer                                            |
-| zerotier                                                 | 组网                                                       |
+| zerotier                                                 | 组网                                                   |
 | zfs                                                      | filesystem                                             |
 | transhell                                                | TUI 翻译                                               |
 | delta                                                    | diff3 替代                                             |
@@ -298,6 +300,7 @@ latte-dock
 | vagrant                                                  | 虚拟机管理                                             |
 | git/git-lfs                                              | 版本控制                                               |
 | gh                                                       | github 管理                                            |
+| pre-commit                                               | git hook                                               |
 | tio                                                      | 串行设备连接                                           |
 | bettercap                                                | 抓包                                                   |
 | viddy                                                    | watch alternate                                        |

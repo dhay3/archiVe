@@ -30,7 +30,7 @@ iptables -t filter -A SSHOPEN -p tcp --dport 65522 -j DROP
 iptables -t filter -A SSHOPEN -p tcp --dport 22 -m recent --name SSHOPEN --rcheck --seconds 600 -j ACCEPT
 iptables -t filter -A SSHOPEN -j DROP
 
-iptables -t filter -A INPUT -j SSHOPEN
+iptables -t filter -A INPUT -j SSHOPENiptables
 ```
 
 - 对 HTTPS 报文负载均衡
