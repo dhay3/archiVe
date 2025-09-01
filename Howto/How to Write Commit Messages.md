@@ -38,7 +38,7 @@ Commit Messages 是你在每次 git commit 时必须要填的。你可能会不�
 
 ### 0x02a Type
 
-按照 commit 意图分为如下几类，type 必须全小写
+按照 commit 意图分为如下几类(具体可以参考 [Angular convention](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines))，type 必须全小写
 
 - init 
 	a project has been initialed
@@ -74,6 +74,21 @@ Commit Messages 是你在每次 git commit 时必须要填的。你可能会不�
 	reverts a previous commit
 	```
 	revert: revert commit [hash1] to [hash2]
+	```
+- build
+	Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+	```
+	build: update dockerfile
+	```
+- ci
+	Changes to CI configuration files and scripts
+	```
+	ci: add release ci
+	```
+- test
+	Adding missing tests or correcting existing tests
+	```
+	test: add unitest module 
 	```
 
 另外可以在 type 前使用 exclamation 表示在对应类别有重要的修改，例如
@@ -149,7 +164,9 @@ gitmoji -c
 - ⬆️ Upgrade dependencies
 - ⬇️ Downgrade dependencies
 - ⏪️ Revert changes.
-  
+
+可以使用 `gitmoji -l` 查看所有的 emoji
+
 ### 0x03b Scope
 
 同 [Conventional Commits#Optional Scope](#Optional%20Scope) 相同
@@ -164,6 +181,7 @@ gitmoji -c
 ***See Also***
 
 - [How to Write Better Git Commit Messages – A Step-By-Step Guide](https://www.freecodecamp.org/news/how-to-write-better-git-commit-messages/)
+- [angular/CONTRIBUTING.md](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines)
 
 ***References***
 
