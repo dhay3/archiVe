@@ -10,7 +10,7 @@
 # Notes
 
 <!--notes toc start-->
-<!--ca04cbac-a859-4a37-af8a-6c22796afe21-->
+<!--0628c878-8d26-4ce9-a17e-f1b1f1497a38-->
 ## [AI](Notes/AI)
   - [Huggingface](Notes/AI/Huggingface)
   - [LLAM](Notes/AI/LLAM)
@@ -221,6 +221,7 @@
     - [packer builder](Notes/Ops/Packer/packer%20builder)
   - [Pandoc](Notes/Ops/Pandoc)
   - [Postman](Notes/Ops/Postman)
+  - [RustDesk](Notes/Ops/RustDesk)
   - [SaltStack](Notes/Ops/SaltStack)
   - [TOR](Notes/Ops/TOR)
   - [Tailscale](Notes/Ops/Tailscale)
@@ -291,12 +292,12 @@
   - [Rsshub](Notes/Sundries/Rsshub)
   - [Typora](Notes/Sundries/Typora)
 
-<!--notes toc end-->                                                                            
+<!--notes toc end-->                                                                             
 
 # Howto
 
 <!--howto toc start-->
-<!--c809c354-c0e4-49ea-acf5-37fb4e777d80-->
+<!--7e7be790-3501-4980-94eb-880da03d273a-->
 - [How to Answer](Howto/How%20to%20Answer.md)
 - [How to Ask Questions](Howto/How%20to%20Ask%20Questions.md)
 - [How to Choose Licenses](Howto/How%20to%20Choose%20Licenses.md)
@@ -310,7 +311,7 @@
 - [How to Write Commit Messages](Howto/How%20to%20Write%20Commit%20Messages.md)
 - [How to Write Notes](Howto/How%20to%20Write%20Notes.md)
 
-<!--howto toc end-->                                                                          
+<!--howto toc end-->                                                                           
 
 # License
 
