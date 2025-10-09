@@ -10,7 +10,7 @@
 # Notes
 
 <!--notes toc start-->
-<!--ff9b4905-7098-4f87-8ee0-fb04d759d7ee-->
+<!--ca04cbac-a859-4a37-af8a-6c22796afe21-->
 ## [AI](Notes/AI)
   - [Huggingface](Notes/AI/Huggingface)
   - [LLAM](Notes/AI/LLAM)
@@ -196,6 +196,7 @@
   - [Jenkins](Notes/Ops/Jenkins)
   - [John](Notes/Ops/John)
   - [Kurbernetes](Notes/Ops/Kurbernetes)
+    - [Kurbernetes_new](Notes/Ops/Kurbernetes/Kurbernetes_new)
     - [components](Notes/Ops/Kurbernetes/components)
     - [kubeadm](Notes/Ops/Kurbernetes/kubeadm)
     - [kubectl](Notes/Ops/Kurbernetes/kubectl)
@@ -237,6 +238,7 @@
   - [Wine](Notes/Ops/Wine)
   - [Wireguard](Notes/Ops/Wireguard)
   - [Zabbix](Notes/Ops/Zabbix)
+    - [Zabbix_new](Notes/Ops/Zabbix/Zabbix_new)
   - [Zerotier](Notes/Ops/Zerotier)
   - [keepalived](Notes/Ops/keepalived)
 ## [Passwall](Notes/Passwall)
@@ -289,12 +291,12 @@
   - [Rsshub](Notes/Sundries/Rsshub)
   - [Typora](Notes/Sundries/Typora)
 
-<!--notes toc end-->                                                                           
+<!--notes toc end-->                                                                            
 
 # Howto
 
 <!--howto toc start-->
-<!--a21085ad-0fa6-4e12-8f40-4b8f5d9a50bd-->
+<!--c809c354-c0e4-49ea-acf5-37fb4e777d80-->
 - [How to Answer](Howto/How%20to%20Answer.md)
 - [How to Ask Questions](Howto/How%20to%20Ask%20Questions.md)
 - [How to Choose Licenses](Howto/How%20to%20Choose%20Licenses.md)
@@ -308,7 +310,7 @@
 - [How to Write Commit Messages](Howto/How%20to%20Write%20Commit%20Messages.md)
 - [How to Write Notes](Howto/How%20to%20Write%20Notes.md)
 
-<!--howto toc end-->                                                                         
+<!--howto toc end-->                                                                          
 
 # License
 
