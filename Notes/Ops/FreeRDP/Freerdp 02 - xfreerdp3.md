@@ -30,6 +30,10 @@ xfreerdp 是 freerdp 基于 X11 协议的实现
 
   账户对应的密码
 
+- `/drive:remote,local`
+
+  将 local 目录以 NFS 的形式挂载到 remote
+
 - `/g:<gateway>[:port]`
 
   跳板机地址

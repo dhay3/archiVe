@@ -276,10 +276,11 @@ latte-dock
 | hyperfine                                                | software benchmark                                     |
 | lm-sensor                                                | 硬件温度检测                                           |
 | smartmontools                                            | 磁盘健康检查，配合 badlock 一起使用                    |
-| tlp                                                      | 替代 power-profiles-daemon                             | 
+| tlp                                                      | 替代 power-profiles-daemon                             |
+| xorrisofs                                                | 文件写入 ISO                                           | 
 | qemu                                                     | kvm                                                    |
 | zsh                                                      | Shell                                                  |
-| nushell                                                  | Shell for nut                                          |
+| openconnect                                              | easyconnect for linux                                  |
 | tor                                                      | tor core                                               |
 | manjaro-pipewire                                         | 替代 pulseaudio                                        |
 | tldr                                                     | 懒人命令查询                                           |

@@ -1,0 +1,1 @@
+如果开了 Clash 一定要 bypass relay 否则会卡
