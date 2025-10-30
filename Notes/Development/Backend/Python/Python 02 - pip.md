@@ -24,6 +24,7 @@ tags:
 在介绍使用方法之前，需要了解 requirement specifier，`pip` 大多 commands 都会用到 requirement specifier
 
 为了方便记忆，定义如下 EBNF
+
 ```
 requirement specifier=package-name[operator version]
 package-name = [a-zA-z]*
@@ -32,15 +33,18 @@ version = [1-0]*
 ```
 
 例如
+
 ```
 selenium == 4.12.0
 selenium > 4.12.0
 ```
 
 如果 requirement specifier 和 commands 一起使用，最好使用 quote(一些特殊符号在 Shell 中有特殊含义)
+
 ```
 pip install "request>=2.8.1"
 ```
+
 如果在 requirements file 中使用，就无需使用 quote
 
 ### 0x02a install/uninstall
@@ -48,28 +52,46 @@ pip install "request>=2.8.1"
 #### install
 
 安装包
+
 ```
 python -m pip install [options] <requirement specifier> [package-index-options] ...
 python -m pip install [options] -r <requirements file> [package-index-options] ...
 ```
 
-eg
+例如
+
 ```
 python -m pip install "requests>=2.8.1"
 ```
 
-当使用 `-r` 时，requirements file 的格式参考 [Requirements File Format - pip documentation v24.1.1](https://pip.pypa.io/en/stable/reference/requirements-file-format/#requirements-file-format)
+可以使用 `-r` 来指定 requirements file 来批量安装包
 
-eg
+```
+python -m pip install -r requirements.txt
+```
+
+requirements file 的格式参考 [Requirements File Format - pip documentation v24.1.1](https://pip.pypa.io/en/stable/reference/requirements-file-format/#requirements-file-format)
+
+例如
+
 ```
 pytest
 docopt == 0.6.1
 requests >= 2.8.1
 ```
 
+一些环境可能连不上官方的 PyPI 源，可以通过 `-i` 来手动指定源
+
+例如
+
+```
+python -m pip install -i "http://mirrors.cloud.aliyuncs.com/pypi/simple/" "requests"
+```
+
 #### uninstall
 
 卸载包
+
 ```
 python -m pip uninstall [options] <package> ...
 python -m pip uninstall [options] -r <requirements file> ...
@@ -80,6 +102,7 @@ python -m pip uninstall [options] -r <requirements file> ...
 ### 0x02b list
 
 列出已经安装的包
+
 ```
 python -m pip list [options]
 ```
@@ -87,11 +110,13 @@ python -m pip list [options]
 ### 0x02c show
 
 查看包的详细信息，安装目录，依赖
+
 ```
 python -m pip list [options]
 ```
 
-eg
+例如
+
 ```
 $ pip show trash-cli
 Name: trash-cli
@@ -109,6 +134,7 @@ Required-by:
 ### 0x02d freeze
 
 将当前安装的包的列表，以 requirement files 的格式输出
+
 ```
 python -m pip freeze [options]
 ```
@@ -116,7 +142,6 @@ python -m pip freeze [options]
 ### 0x02e search
 
 PyPI 已经不支持直接使用 `pip search` 的功能了
-
 
 ## 0x03 Where to install[^5]
 

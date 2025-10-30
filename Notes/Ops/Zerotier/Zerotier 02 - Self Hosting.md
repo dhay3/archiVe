@@ -105,7 +105,9 @@ sudo systemctl restart zerotier-one
 
 重启 zerotier
 
-完成后可以使用 `zerotier-cli peers` 查看 zerotier 是否成功将自建的 Root 作为中继，自建的 Root 会以 role MOON 标示
+---
+
+完成后在 client 侧可以使用 `zerotier-cli peers` 查看 zerotier 是否成功将自建的 Root 作为中继，自建的 Root 会以 role MOON 标示。role LEAF 为当前网络下的其他 peers
 
 ```
 sudo zerotier-cli peers
@@ -118,6 +120,24 @@ cafe04eba9 -      PLANET   502 DIRECT   2406     106943   84.17.53.155/9993
 cafe80ed74 -      PLANET   587 DIRECT   2406     106920   185.152.67.145/9993
 cafefd6717 -      PLANET   411 DIRECT   2406     107034   79.127.159.187/9993
 d5e5fb6537 1.15.3 LEAF      -1 DIRECT   2406     13984    35.209.81.44/51982
+```
+
+server 侧连接当前 Root 的 client 会以 role LEAF 标示（可以核对 client ztaddr 来校验）
+
+> [!note] 
+> ztaddr 可以使用 zerotier-cli info 来查看 
+
+```
+zerotier-cli peers
+200 peers
+<ztaddr>   <ver>  <role> <lat> <link>   <lastTX> <lastRX> <path>
+3f7285bd35 1.16.0 LEAF      15 DIRECT   468      468      183.247.147.173/17839
+5ede4bf411 1.14.2 LEAF       8 DIRECT   410      410      183.247.147.172/36445
+778cde7190 -      PLANET   234 DIRECT   5824     95723    103.195.103.66/9993
+cafe04eba9 -      PLANET   167 DIRECT   5824     80779    84.17.53.155/9993
+cafe80ed74 -      PLANET   161 DIRECT   819      80783    185.152.67.145/9993
+cafefd6717 -      PLANET   214 DIRECT   5824     80732    79.127.159.187/9993
+d5e5fb6537 1.15.3 LEAF     208 DIRECT   5824     11446    35.209.81.44/51982
 ```
 
 ##### Mobile

@@ -100,7 +100,7 @@ START_HOURS_RANGE=3-22
 
 - id `cron.daily` 每天都会执行，当 $current time - timestamp file stores time >= 1 day$ 时，任务会在 5 mins 内执行
 - id `cron.weekly` 每周都会执行，当 $current time - timestamp file stores time >= 1 week$ 时，任务会在 25 mins 内执行
-- id `cron.monthly` 每月都会执行，当 $current time - timestamp file stores time >= 1 month$ 时，仍会会在 45 mins 内执行
+- id `cron.monthly` 每月都会执行，当 $current time - timestamp file stores time >= 1 month$ 时，任务会在 45 mins 内执行
 
 > [!NOTE] 
 > 没有使用 `nice` 默认优先级值为 0，使用 `nice` 但是没有指定 `-n` 参数默认优先级值为 10，值越大优先级越低
